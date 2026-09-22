@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\NilaiRumus;
 use App\Models\Periode;
 use App\Services\KalkulatorRumus;
+use App\Support\Rumus\HasilRumus;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use InvalidArgumentException;
@@ -254,7 +255,7 @@ class KalkulatorRumusTest extends TestCase
         $this->expectExceptionMessageMatches('/tidak ada di tabel rumus/');
 
         $this->kalkulator()->simpan(
-            new \App\Support\Rumus\HasilRumus(kode: 'RUMUS-PALSU', nilai: 1.0),
+            new HasilRumus(kode: 'RUMUS-PALSU', nilai: 1.0),
             Periode::firstOrFail(),
         );
     }
