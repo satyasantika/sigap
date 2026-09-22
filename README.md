@@ -76,7 +76,9 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
 
 - **`data/*.json` adalah sumber kebenaran.** Nomor elemen, bobot, rumus, ambang
   syarat perlu, dan butir DKPS diambil dari dokumen resmi LAMDIK. Seeder membaca
-  berkas itu; jangan pernah menyalin isinya ke larik PHP.
+  berkas itu; jangan pernah menyalin isinya ke larik PHP. Layar Referensi pun
+  hanya-baca: mengubah instrumen berarti menyunting `data/*.json` lalu
+  menjalankan seeder, dengan commit tersendiri berjenis `data:`.
 - **Seluruh kunci utama UUID**, termasuk tabel bawaan Laravel.
 - **TS adalah parameter.** Tidak boleh ada tahun yang ditulis mati di `app/`
   atau `database/migrations/`; semuanya diturunkan dari `periode.ts_tahun`.
@@ -94,7 +96,7 @@ terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 | Tahap | Isi | Status |
 |---|---|---|
 | 1 | Fondasi: login, peran, prodi, periode, pokja, matriks izin | **selesai** |
-| 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 28 butir DKPS | belum |
+| 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 28 butir DKPS | **selesai** |
 | 3 | Tagihan, penugasan, alur status, riwayat | belum |
 | 4 | Bukti, tautan Drive, narasi LED | belum |
 | 5 | DKPS dan perhitungan rumus | belum |
