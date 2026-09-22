@@ -95,6 +95,10 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
   ambang skor 4 justru lebih rendah daripada ambang syarat perlu lima tahun.
   `KalkulatorRumus` mengembalikan keduanya sebagai medan terpisah, dan
   antarmuka tidak boleh menyamakannya.
+- **Progres selalu tertimbang bobot, tidak pernah cacah tagihan**, dan setiap
+  persen didampingi angka absolut. Dasbor yang menghitung cacah akan membuat
+  orang mengerjakan yang mudah lebih dulu dan meninggalkan elemen berbobot
+  besar sampai tenggat.
 - **Otorisasi diputuskan di satu tempat**: `app/Support/Izin.php` yang membaca
   `data/izin.json`. Tidak ada perbandingan peran di tempat lain, tidak ada
   `Gate::before`, tidak ada peran super.
@@ -124,7 +128,7 @@ terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 | 3 | Tagihan, penugasan, alur status, riwayat | **selesai** |
 | 4 | Bukti, tautan Drive, narasi LED | **selesai** |
 | 5 | DKPS dan perhitungan rumus | **selesai** |
-| 6 | Dasbor progres | belum |
+| 6 | Dasbor progres | **selesai** |
 | 7 | Uji, seed contoh, serah terima | belum |
 
 ## Rujukan
