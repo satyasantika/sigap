@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -50,6 +51,19 @@ class Elemen extends Model
     public function tagihan(): HasMany
     {
         return $this->hasMany(Tagihan::class);
+    }
+
+    public function bukti(): BelongsToMany
+    {
+        return $this->belongsToMany(Bukti::class, 'bukti_elemen')
+            ->using(BuktiElemen::class)
+            ->withPivot(['id', 'keterangan'])
+            ->withTimestamps();
+    }
+
+    public function narasi(): HasMany
+    {
+        return $this->hasMany(Narasi::class);
     }
 
     /**

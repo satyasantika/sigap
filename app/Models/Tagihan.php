@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -94,6 +95,11 @@ class Tagihan extends Model
     public function penyetuju(): BelongsTo
     {
         return $this->belongsTo(User::class, 'disetujui_oleh');
+    }
+
+    public function bukti(): BelongsToMany
+    {
+        return $this->belongsToMany(Bukti::class, 'bukti_tagihan');
     }
 
     public function riwayat(): HasMany
