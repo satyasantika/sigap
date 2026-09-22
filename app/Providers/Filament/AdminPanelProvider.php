@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             // Urutan kelompok menu mengikuti vibecoding/docs/05-layar-dan-widget.md.
             // Kelompok Pengumpulan, Data, dan Penilaian menyusul di tahap 3-6.
             ->navigationGroups([
+                'Referensi',
                 'Pengaturan',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
