@@ -39,9 +39,10 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Emerald,
             ])
             // Urutan kelompok menu mengikuti vibecoding/docs/05-layar-dan-widget.md.
-            // Kelompok Data dan Penilaian menyusul di tahap 5-6.
+            // Kelompok Penilaian menyusul di tahap 6.
             ->navigationGroups([
                 'Pengumpulan',
+                'Data',
                 'Referensi',
                 'Pengaturan',
             ])
