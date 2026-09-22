@@ -88,7 +88,13 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
   menjalankan seeder, dengan commit tersendiri berjenis `data:`.
 - **Seluruh kunci utama UUID**, termasuk tabel bawaan Laravel.
 - **TS adalah parameter.** Tidak boleh ada tahun yang ditulis mati di `app/`
-  atau `database/migrations/`; semuanya diturunkan dari `periode.ts_tahun`.
+  atau `database/migrations/`; semuanya diturunkan dari `periode.ts_tahun`
+  lewat `app/Services/JendelaTs.php` — satu-satunya tempat aritmetika tahun
+  boleh terjadi. Ada uji yang menjaganya.
+- **Skor penuh bukan berarti syarat perlu terpenuhi.** Pada PDS3 dan PPDTPS,
+  ambang skor 4 justru lebih rendah daripada ambang syarat perlu lima tahun.
+  `KalkulatorRumus` mengembalikan keduanya sebagai medan terpisah, dan
+  antarmuka tidak boleh menyamakannya.
 - **Otorisasi diputuskan di satu tempat**: `app/Support/Izin.php` yang membaca
   `data/izin.json`. Tidak ada perbandingan peran di tempat lain, tidak ada
   `Gate::before`, tidak ada peran super.
@@ -117,7 +123,7 @@ terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 | 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 28 butir DKPS | **selesai** |
 | 3 | Tagihan, penugasan, alur status, riwayat | **selesai** |
 | 4 | Bukti, tautan Drive, narasi LED | **selesai** |
-| 5 | DKPS dan perhitungan rumus | belum |
+| 5 | DKPS dan perhitungan rumus | **selesai** |
 | 6 | Dasbor progres | belum |
 | 7 | Uji, seed contoh, serah terima | belum |
 
