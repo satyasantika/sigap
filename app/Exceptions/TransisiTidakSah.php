@@ -45,8 +45,18 @@ class TransisiTidakSah extends DomainException
         return new self('Tagihan belum punya penanggung jawab, jadi belum bisa dikerjakan.');
     }
 
-    public static function narasiBelumLayak(array $alasan): self
+    public static function belumLayakDiajukan(array $alasan): self
     {
-        return new self('Narasi belum bisa diajukan: '.implode(' ', $alasan));
+        return new self('Tagihan belum bisa diajukan: '.implode(' ', $alasan));
+    }
+
+    /**
+     * Alasan disebut satu per satu, bukan digabung menjadi "buktinya
+     * bermasalah": keterbacaan dan keabsahan adalah dua sumbu terpisah, dan
+     * orang yang hanya diberi tahu salah satunya akan memperbaiki yang salah.
+     */
+    public static function buktiBelumLayak(array $alasan): self
+    {
+        return new self('Tagihan belum bisa disetujui: '.implode(' ', $alasan));
     }
 }

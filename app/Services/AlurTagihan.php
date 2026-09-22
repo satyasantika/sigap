@@ -94,16 +94,59 @@ class AlurTagihan
             throw TransisiTidakSah::belumPunyaPenanggungJawab();
         }
 
-        // Narasi harus layak sebelum diajukan: 200-600 kata dan elemennya
-        // punya bukti tertaut. Pemeriksaan bukti baru aktif setelah tahap 4;
-        // sampai saat itu PengelolaNarasi hanya memeriksa cacah kata.
-        if ($ke === StatusTagihan::Diajukan && $t->jenis === JenisTagihan::Narasi) {
-            $alasan = $this->narasi->alasanBelumLayak($t);
+        // Setiap data yang diinputkan wajib punya bukti — berlaku untuk SEMUA
+        // jenis tagihan, bukan hanya narasi (AGENTS.md aturan 9).
+        if ($ke === StatusTagihan::Diajukan) {
+            $alasan = $this->alasanBelumBolehDiajukan($t);
 
             if ($alasan !== []) {
-                throw TransisiTidakSah::narasiBelumLayak($alasan);
+                throw TransisiTidakSah::belumLayakDiajukan($alasan);
             }
         }
+
+        // Dua sumbu bukti harus hijau sebelum tagihan disetujui, dan alasannya
+        // disebut SATU PER SATU. Menggabungkan "tidak terbuka" dengan "belum
+        // divalidasi" menyembunyikan salah satunya, dan orang memperbaiki yang
+        // salah lalu heran mengapa masih ditolak.
+        if ($ke === StatusTagihan::Disetujui) {
+            $alasan = $this->alasanBuktiBelumLayak($t);
+
+            if ($alasan !== []) {
+                throw TransisiTidakSah::buktiBelumLayak($alasan);
+            }
+        }
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function alasanBelumBolehDiajukan(Tagihan $t): array
+    {
+        $alasan = $t->jenis === JenisTagihan::Narasi
+            ? $this->narasi->alasanBelumLayak($t)
+            : [];
+
+        if ($t->bukti()->count() === 0) {
+            $alasan[] = 'Belum ada bukti yang ditautkan ke tagihan ini.';
+        }
+
+        return $alasan;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function alasanBuktiBelumLayak(Tagihan $t): array
+    {
+        $alasan = [];
+
+        foreach ($t->bukti as $bukti) {
+            foreach ($bukti->alasanBelumLayak() as $satu) {
+                $alasan[] = $satu;
+            }
+        }
+
+        return $alasan;
     }
 
     /**

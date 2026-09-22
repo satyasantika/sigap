@@ -2,19 +2,20 @@
 
 namespace App\Services;
 
+use App\Models\Narasi;
+use App\Models\NarasiVersi;
 use App\Models\Tagihan;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Kelayakan naskah LED sebelum diajukan.
+ * Naskah LED: penghitungan kata, pemversian, dan kelayakan pengajuan.
  *
- * Tahap 3 baru memeriksa cacah kata; tabel `narasi` dan tautan bukti lahir di
- * tahap 4. Kerangkanya disiapkan sekarang supaya AlurTagihan tidak perlu
- * diubah lagi nanti — cukup metode di kelas ini yang diisi.
- *
- * Cacah kata memakai pemisahan spasi sederhana, dan pemisah yang sama dipakai
- * di seluruh aplikasi. Angkanya hanya berguna kalau semua orang melihat angka
- * yang sama; penghitung yang lebih pintar di satu tempat justru menimbulkan
- * selisih yang membingungkan.
+ * Cacah kata memakai pemisahan spasi sederhana, dan pemisah YANG SAMA dipakai
+ * di seluruh aplikasi — penghitung, penanda 200/600, dan uji. Angkanya hanya
+ * berguna kalau semua orang melihat angka yang sama; penghitung yang lebih
+ * pintar di satu tempat justru menimbulkan selisih yang membingungkan
+ * ("di layar saya 201, kata sistem 199").
  */
 class PengelolaNarasi
 {
@@ -28,48 +29,115 @@ class PengelolaNarasi
             return 0;
         }
 
-        return count(preg_split('/\s+/u', trim($teks), -1, PREG_SPLIT_NO_EMPTY) ?: []);
+        return count(preg_split('/\s+/u', trim(strip_tags($teks)), -1, PREG_SPLIT_NO_EMPTY) ?: []);
     }
 
     /**
-     * Daftar alasan sebuah tagihan narasi belum boleh diajukan.
-     * Larik kosong berarti layak.
+     * Menyimpan naskah dan SELALU menulis satu baris versi.
      *
-     * Sengaja mengembalikan DAFTAR, bukan boolean: orang yang naskahnya ditolak
-     * harus tahu semua yang kurang sekaligus, bukan menemukannya satu per satu
-     * lewat percobaan berulang.
+     * Tidak ada penyimpanan yang tidak meninggalkan jejak, termasuk penyimpanan
+     * yang isinya sama — kapan seseorang membuka dan menyimpan ulang juga
+     * informasi.
+     */
+    public function simpan(Narasi $narasi, ?string $isi, User $oleh): Narasi
+    {
+        return DB::transaction(function () use ($narasi, $isi, $oleh) {
+            $kata = $this->jumlahKata($isi);
+
+            $narasi->forceFill([
+                'isi' => $isi,
+                'jumlah_kata' => $kata,
+                'penulis_id' => $oleh->getKey(),
+            ])->save();
+
+            NarasiVersi::create([
+                'narasi_id' => $narasi->getKey(),
+                'isi' => $isi,
+                'jumlah_kata' => $kata,
+                'user_id' => $oleh->getKey(),
+            ]);
+
+            // Nomor versi DITURUNKAN dari cacah baris versinya, bukan dinaikkan
+            // sendiri. Baris narasi lahir lebih dulu lewat firstOrCreate saat
+            // layar dibuka, jadi menaikkan penghitung terpisah membuat "versi 4"
+            // padahal baru tiga kali disimpan.
+            $narasi->forceFill([
+                'versi' => NarasiVersi::where('narasi_id', $narasi->getKey())->count(),
+            ])->save();
+
+            return $narasi->refresh();
+        });
+    }
+
+    /**
+     * Daftar alasan naskah ini belum boleh diajukan; larik kosong berarti layak.
+     *
+     * Sengaja DAFTAR, bukan boolean: orang yang naskahnya ditolak harus tahu
+     * semua yang kurang sekaligus, bukan menemukannya satu per satu lewat
+     * percobaan berulang.
      *
      * @return array<int, string>
      */
-    public function alasanBelumLayak(Tagihan $tagihan): array
+    public function bolehDiajukan(Narasi $narasi): array
     {
         $alasan = [];
-
-        $narasi = $this->narasiUntuk($tagihan);
-        $kata = $this->jumlahKata($narasi);
+        $kata = $narasi->jumlah_kata;
 
         if ($kata === 0) {
             $alasan[] = 'Naskahnya masih kosong.';
         } elseif ($kata < self::MINIMAL_KATA) {
-            $alasan[] = "Baru {$kata} kata, minimal ".self::MINIMAL_KATA.' kata.';
+            $kurang = self::MINIMAL_KATA - $kata;
+            $alasan[] = "Baru {$kata} kata, kurang {$kurang} kata dari minimal ".self::MINIMAL_KATA.'.';
         }
 
-        // Lebih dari 600 kata hanya diperingatkan, tidak menghalangi —
+        // Lebih dari 600 kata hanya diperingatkan di layar, tidak menghalangi —
         // vibecoding/docs/01-domain-dan-aturan.md bagian "Aturan narasi LED".
+
+        if ($narasi->elemen_id !== null && ! $this->elemenPunyaBukti($narasi)) {
+            $alasan[] = 'Elemen ini belum punya bukti tertaut. Klaim tanpa bukti tidak bisa dinilai asesor.';
+        }
 
         return $alasan;
     }
 
     /**
-     * Naskah yang tertaut pada tagihan ini.
+     * Alasan sebuah TAGIHAN narasi belum layak diajukan.
      *
-     * Tahap 3 belum punya tabel `narasi`, jadi sementara membaca `deskripsi`
-     * tidak masuk akal — yang benar adalah mengembalikan null dan membiarkan
-     * pemeriksaan cacah kata menolak pengajuan sampai tahap 4 memasang
-     * sumbernya. Diganti di tahap 4, bukan ditambal di sini.
+     * @return array<int, string>
      */
-    private function narasiUntuk(Tagihan $tagihan): ?string
+    public function alasanBelumLayak(Tagihan $tagihan): array
     {
-        return null;
+        if ($tagihan->elemen_id === null) {
+            return [];
+        }
+
+        $narasi = Narasi::where('periode_id', $tagihan->periode_id)
+            ->where('elemen_id', $tagihan->elemen_id)
+            ->first();
+
+        if ($narasi === null) {
+            return ['Naskahnya belum pernah ditulis.'];
+        }
+
+        return $this->bolehDiajukan($narasi);
+    }
+
+    /** Naskah untuk satu elemen di satu periode, dibuat bila belum ada. */
+    public function untukElemen(string $periodeId, string $elemenId, string $prodiId): Narasi
+    {
+        return Narasi::firstOrCreate(
+            ['periode_id' => $periodeId, 'elemen_id' => $elemenId],
+            ['prodi_id' => $prodiId],
+        );
+    }
+
+    private function elemenPunyaBukti(Narasi $narasi): bool
+    {
+        return DB::table('bukti_elemen')
+            ->join('bukti', 'bukti.id', '=', 'bukti_elemen.bukti_id')
+            ->where('bukti_elemen.elemen_id', $narasi->elemen_id)
+            ->where('bukti.periode_id', $narasi->periode_id)
+            ->whereNull('bukti.deleted_at')
+            ->exists();
     }
 }
