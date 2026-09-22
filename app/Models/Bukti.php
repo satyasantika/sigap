@@ -106,6 +106,11 @@ class Bukti extends Model
         return $this->belongsToMany(Tagihan::class, 'bukti_tagihan');
     }
 
+    public function dkpsBaris(): BelongsToMany
+    {
+        return $this->belongsToMany(DkpsBaris::class, 'bukti_dkps_baris');
+    }
+
     public function komentar(): MorphMany
     {
         return $this->morphMany(Komentar::class, 'commentable')->latest('created_at');
