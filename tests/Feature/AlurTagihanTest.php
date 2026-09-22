@@ -2,12 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Enums\AksesTautan;
+use App\Enums\JenisBukti;
 use App\Enums\JenisTagihan;
 use App\Enums\PeranPengguna;
 use App\Enums\StatusPeriode;
 use App\Enums\StatusTagihan;
+use App\Enums\SumberData;
+use App\Enums\ValidasiBukti;
 use App\Exceptions\RiwayatTidakBolehDiubah;
 use App\Exceptions\TransisiTidakSah;
+use App\Models\Bukti;
 use App\Models\Periode;
 use App\Models\Pokja;
 use App\Models\Prodi;
@@ -97,6 +102,30 @@ class AlurTagihanTest extends TestCase
         return app(AlurTagihan::class);
     }
 
+    /**
+     * Bukti yang kedua sumbunya hijau, ditautkan ke tagihan.
+     *
+     * Sejak tahap 4, setiap tagihan wajib punya bukti sebelum diajukan, dan
+     * kedua sumbu bukti wajib hijau sebelum disetujui.
+     */
+    private function buktiLayak(Tagihan $t, User $oleh): Bukti
+    {
+        $bukti = Bukti::create([
+            'prodi_id' => $this->prodi->id,
+            'periode_id' => $this->periode->id,
+            'judul' => 'Bukti uji',
+            'jenis' => JenisBukti::Berkas,
+            'tanggal_kejadian' => now()->subMonth(),
+            'sumber' => SumberData::Manual,
+            'diunggah_oleh' => $oleh->getKey(),
+        ]);
+
+        $bukti->forceFill(['validasi_status' => ValidasiBukti::Sah])->save();
+        $t->bukti()->attach($bukti->id);
+
+        return $bukti;
+    }
+
     // ---- Jalur transisi -------------------------------------------------
 
     /** @return array<string, array{string, string}> */
@@ -135,6 +164,7 @@ class AlurTagihanTest extends TestCase
         $ketua = $this->pengguna(PeranPengguna::Ketua);
 
         $t = $this->tagihan(['penanggung_jawab_id' => $pj->id]);
+        $this->buktiLayak($t, $pj);
 
         $this->alur()->pindah($t, StatusTagihan::Dikerjakan, $pj);
         $this->alur()->pindah($t->fresh(), StatusTagihan::Diajukan, $pj);
@@ -245,14 +275,16 @@ class AlurTagihanTest extends TestCase
     }
 
     #[Test]
-    public function narasi_tanpa_naskah_tidak_bisa_diajukan(): void
+    public function tagihan_tanpa_bukti_tertaut_tidak_bisa_diajukan(): void
     {
+        // AGENTS.md aturan 9: setiap data yang diinputkan wajib punya bukti,
+        // untuk SEMUA jenis tagihan — bukan hanya narasi.
         $pj = $this->pengguna(PeranPengguna::Anggota, $this->pokjaDik);
-        $t = $this->tagihan(['jenis' => JenisTagihan::Narasi, 'penanggung_jawab_id' => $pj->id]);
+        $t = $this->tagihan(['penanggung_jawab_id' => $pj->id]);
         $t->forceFill(['status' => StatusTagihan::Dikerjakan])->save();
 
         $this->expectException(TransisiTidakSah::class);
-        $this->expectExceptionMessageMatches('/Narasi belum bisa diajukan/');
+        $this->expectExceptionMessageMatches('/Belum ada bukti yang ditautkan/');
 
         $this->alur()->pindah($t, StatusTagihan::Diajukan, $pj);
     }
@@ -350,6 +382,74 @@ class AlurTagihanTest extends TestCase
     }
 
     // ---- Status tidak bisa diubah di luar AlurTagihan --------------------
+
+    #[Test]
+    public function bukti_yang_tidak_terbuka_menghalangi_persetujuan(): void
+    {
+        $pj = $this->pengguna(PeranPengguna::Anggota, $this->pokjaDik);
+        $ketua = $this->pengguna(PeranPengguna::Ketua);
+        $t = $this->tagihan(['penanggung_jawab_id' => $pj->id]);
+
+        $bukti = $this->buktiLayak($t, $pj);
+        $bukti->forceFill([
+            'jenis' => JenisBukti::Tautan,
+            'url_kanonik' => 'https://drive.google.com/file/d/X/view',
+            'akses_status' => AksesTautan::PerluIzin,
+        ])->save();
+
+        $t->forceFill(['status' => StatusTagihan::Direviu])->save();
+
+        $this->expectException(TransisiTidakSah::class);
+        $this->expectExceptionMessageMatches('/tidak bisa dibuka tanpa izin/');
+
+        $this->alur()->pindah($t->fresh(), StatusTagihan::Disetujui, $ketua);
+    }
+
+    #[Test]
+    public function bukti_yang_belum_divalidasi_menghalangi_persetujuan(): void
+    {
+        $pj = $this->pengguna(PeranPengguna::Anggota, $this->pokjaDik);
+        $ketua = $this->pengguna(PeranPengguna::Ketua);
+        $t = $this->tagihan(['penanggung_jawab_id' => $pj->id]);
+
+        $bukti = $this->buktiLayak($t, $pj);
+        $bukti->forceFill(['validasi_status' => ValidasiBukti::BelumDivalidasi])->save();
+
+        $t->forceFill(['status' => StatusTagihan::Direviu])->save();
+
+        $this->expectException(TransisiTidakSah::class);
+        $this->expectExceptionMessageMatches('/keabsahannya belum divalidasi/');
+
+        $this->alur()->pindah($t->fresh(), StatusTagihan::Disetujui, $ketua);
+    }
+
+    #[Test]
+    public function kedua_sumbu_bermasalah_disebut_satu_per_satu(): void
+    {
+        $pj = $this->pengguna(PeranPengguna::Anggota, $this->pokjaDik);
+        $ketua = $this->pengguna(PeranPengguna::Ketua);
+        $t = $this->tagihan(['penanggung_jawab_id' => $pj->id]);
+
+        $bukti = $this->buktiLayak($t, $pj);
+        $bukti->forceFill([
+            'jenis' => JenisBukti::Tautan,
+            'url_kanonik' => 'https://drive.google.com/file/d/X/view',
+            'akses_status' => AksesTautan::TidakDitemukan,
+            'validasi_status' => ValidasiBukti::TidakSah,
+        ])->save();
+
+        $t->forceFill(['status' => StatusTagihan::Direviu])->save();
+
+        try {
+            $this->alur()->pindah($t->fresh(), StatusTagihan::Disetujui, $ketua);
+            $this->fail('Seharusnya ditolak.');
+        } catch (TransisiTidakSah $e) {
+            // Menggabungkan keduanya jadi "buktinya bermasalah" membuat orang
+            // memperbaiki satu sumbu lalu heran mengapa masih ditolak.
+            $this->assertStringContainsString('tidak ditemukan', $e->getMessage());
+            $this->assertStringContainsString('tidak sah', $e->getMessage());
+        }
+    }
 
     #[Test]
     public function status_tidak_fillable_lewat_mass_assignment(): void
