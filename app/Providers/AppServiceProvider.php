@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Listeners\CatatWaktuMasuk;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,8 +18,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(Login::class, CatatWaktuMasuk::class);
 
-        // Pesan validasi bawaan Laravel berbahasa Inggris. Seluruh antarmuka
-        // SIGAP berbahasa Indonesia (AGENTS.md bagian 3), termasuk pesan galat.
-        Validator::replacer('required', fn ($pesan, $atribut) => "Kolom {$atribut} wajib diisi.");
+        // Terjemahan pesan validasi ada di lang/id/validation.php, bukan
+        // ditambal satu per satu di sini. Laravel 11 ke atas tidak menyertakan
+        // berkas terjemahan apa pun, jadi tanpa berkas itu pesannya muncul
+        // sebagai kunci mentah ("validation.required").
     }
 }
