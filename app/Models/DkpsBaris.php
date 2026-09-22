@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\SumberData;
+use App\Models\Concerns\MenolakSumberKosong;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DkpsBaris extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids, MenolakSumberKosong, SoftDeletes;
 
     protected $table = 'dkps_baris';
 

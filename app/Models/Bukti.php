@@ -6,6 +6,7 @@ use App\Enums\AksesTautan;
 use App\Enums\JenisBukti;
 use App\Enums\SumberData;
 use App\Enums\ValidasiBukti;
+use App\Models\Concerns\MenolakSumberKosong;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bukti extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids, MenolakSumberKosong, SoftDeletes;
 
     protected $table = 'bukti';
 
