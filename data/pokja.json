@@ -1,0 +1,122 @@
+[
+ {
+  "kode": "POKJA-SDM",
+  "nama": "Dosen, Tendik, Penelitian, dan PkM",
+  "elemen": [
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55
+  ],
+  "bobot": 29.75,
+  "syarat_perlu": [
+   "E17",
+   "E51"
+  ],
+  "catatan": "Memegang dua syarat perlu dengan waktu tempuh terpanjang. Mulai paling awal."
+ },
+ {
+  "kode": "POKJA-DIK",
+  "nama": "Pendidikan dan Kurikulum",
+  "elemen": [
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47
+  ],
+  "bobot": 30.5,
+  "syarat_perlu": [
+   "E34",
+   "E45"
+  ],
+  "catatan": "Kriteria terbesar, hampir sepertiga bobot instrumen. Butuh anggota paling banyak."
+ },
+ {
+  "kode": "POKJA-MUTU",
+  "nama": "Visi, Tata Pamong, dan Penjaminan Mutu",
+  "elemen": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   56,
+   57,
+   58,
+   59
+  ],
+  "bobot": 20.0,
+  "syarat_perlu": [
+   "E58"
+  ],
+  "catatan": "E58 berbobot 3,00, tunggal terbesar, dan hanya bernilai 4 bila PPEPP berbasis TI."
+ },
+ {
+  "kode": "POKJA-MAWA",
+  "nama": "Mahasiswa",
+  "elemen": [
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "bobot": 11.75,
+  "syarat_perlu": [],
+  "catatan": "E10 menuntut KETUJUH jenis layanan mahasiswa tersedia untuk skor 4."
+ },
+ {
+  "kode": "POKJA-SARPRAS",
+  "nama": "Keuangan, Sarana, dan Prasarana",
+  "elemen": [
+   24,
+   25,
+   26,
+   27,
+   28,
+   29
+  ],
+  "bobot": 8.0,
+  "syarat_perlu": [],
+  "catatan": "E27 menuntut 7 aspek platform digital, termasuk analisis dampak yang sering terlewat."
+ },
+ {
+  "kode": "POKJA-DATA",
+  "nama": "Data dan DKPS (lintas pokja)",
+  "elemen": [],
+  "bobot": 0.0,
+  "syarat_perlu": [],
+  "catatan": "Tidak memiliki elemen. Memegang 28 butir DKPS, penetapan TS, dan seluruh perhitungan rumus. Melayani kelima pokja lain."
+ }
+]

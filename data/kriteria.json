@@ -1,0 +1,83 @@
+[
+ {
+  "kode": "K1",
+  "nama": "Visi Keilmuan PS",
+  "urutan": 1,
+  "elemen_dari": 1,
+  "elemen_sampai": 4,
+  "jumlah_elemen": 4,
+  "bobot": 5.5
+ },
+ {
+  "kode": "K2",
+  "nama": "Tata Pamong dan Tata Kelola UPPS",
+  "urutan": 2,
+  "elemen_dari": 5,
+  "elemen_sampai": 8,
+  "jumlah_elemen": 4,
+  "bobot": 6.0
+ },
+ {
+  "kode": "K3",
+  "nama": "Mahasiswa",
+  "urutan": 3,
+  "elemen_dari": 9,
+  "elemen_sampai": 15,
+  "jumlah_elemen": 7,
+  "bobot": 11.75
+ },
+ {
+  "kode": "K4",
+  "nama": "Dosen dan Tenaga Kependidikan",
+  "urutan": 4,
+  "elemen_dari": 16,
+  "elemen_sampai": 23,
+  "jumlah_elemen": 8,
+  "bobot": 12.75
+ },
+ {
+  "kode": "K5",
+  "nama": "Keuangan, Sarana, dan Prasarana Pendidikan",
+  "urutan": 5,
+  "elemen_dari": 24,
+  "elemen_sampai": 29,
+  "jumlah_elemen": 6,
+  "bobot": 8.0
+ },
+ {
+  "kode": "K6",
+  "nama": "Pendidikan",
+  "urutan": 6,
+  "elemen_dari": 30,
+  "elemen_sampai": 47,
+  "jumlah_elemen": 18,
+  "bobot": 30.5
+ },
+ {
+  "kode": "K7",
+  "nama": "Penelitian",
+  "urutan": 7,
+  "elemen_dari": 48,
+  "elemen_sampai": 53,
+  "jumlah_elemen": 6,
+  "bobot": 13.0
+ },
+ {
+  "kode": "K8",
+  "nama": "Pengabdian kepada Masyarakat",
+  "urutan": 8,
+  "elemen_dari": 54,
+  "elemen_sampai": 55,
+  "jumlah_elemen": 2,
+  "bobot": 4.0
+ },
+ {
+  "kode": "K9",
+  "nama": "Penjaminan Mutu",
+  "urutan": 9,
+  "elemen_dari": 56,
+  "elemen_sampai": 59,
+  "jumlah_elemen": 4,
+  "bobot": 8.5
+ }
+]

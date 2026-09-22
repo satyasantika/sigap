@@ -1,0 +1,52 @@
+[
+ {
+  "elemen_no": 17,
+  "elemen_nama": "Kualifikasi Akademik dan Jabatan Akademik DTPS",
+  "bobot": 1.5,
+  "jenis_ambang": "ambang_kuantitatif",
+  "ambang_3_tahun": "PDS3 >= 20% DTPS berkualifikasi doktor DAN >= 3 DTPS berjabatan minimal lektor kepala",
+  "ambang_5_tahun": "PDS3 >= 50% DTPS berkualifikasi doktor DAN >= 4 DTPS berjabatan minimal lektor kepala",
+  "catatan": "Lebih ketat daripada skor 4 pada matriks (PDS3 >= 40% sudah memberi skor 4). Skor 4 TIDAK berarti syarat perlu terpenuhi.",
+  "nomor_di_tabel_1_3_buku_4": 17
+ },
+ {
+  "elemen_no": 34,
+  "elemen_nama": "Perkuliahan Microteaching atau Keterampilan Sejenis",
+  "bobot": 2.0,
+  "jenis_ambang": "ambang_skor",
+  "ambang_3_tahun": "Skor elemen >= 3,0",
+  "ambang_5_tahun": "Skor elemen >= 3,5",
+  "catatan": "Skala bulat 1-4, jadi >= 3,5 berarti HARUS tepat 4. Pembeda skor 4: frekuensi praktik >= 3 kali per mahasiswa per semester (skor 3 hanya 2 kali) dan laboratorium lengkap, terawat, berfungsi.",
+  "nomor_di_tabel_1_3_buku_4": 35
+ },
+ {
+  "elemen_no": 45,
+  "elemen_nama": "Asesmen Pencapaian CPL",
+  "bobot": 2.0,
+  "jenis_ambang": "ambang_skor",
+  "ambang_3_tahun": "Skor elemen >= 3,0",
+  "ambang_5_tahun": "Skor elemen >= 3,5",
+  "catatan": "Skala bulat 1-4, jadi HARUS tepat 4. Pembeda skor 4: asesmen CPL pada >= 20% mata kuliah penciri keilmuan, evaluasi rinci dan komprehensif, tindak lanjut, bukti LENGKAP DAN SAHIH (skor 3 hanya sahih).",
+  "nomor_di_tabel_1_3_buku_4": 46
+ },
+ {
+  "elemen_no": 51,
+  "elemen_nama": "Jumlah DTPS yang melakukan Publikasi Karya Ilmiah",
+  "bobot": 2.75,
+  "jenis_ambang": "ambang_kuantitatif",
+  "ambang_3_tahun": "PPDTPS >= 20% DTPS",
+  "ambang_5_tahun": "PPDTPS >= 40% DTPS",
+  "catatan": "Lebih ketat daripada skor 4 pada matriks (PPDTPS >= 20% sudah memberi skor 4). Yang dihitung SEBARAN dosen, bukan jumlah artikel.",
+  "nomor_di_tabel_1_3_buku_4": 52
+ },
+ {
+  "elemen_no": 58,
+  "elemen_nama": "Pelaksanaan SPMI dengan Siklus PPEPP Standar Pendidikan Tinggi",
+  "bobot": 3.0,
+  "jenis_ambang": "ambang_skor",
+  "ambang_3_tahun": "Skor elemen >= 3,0",
+  "ambang_5_tahun": "Skor elemen >= 3,5",
+  "catatan": "Skala bulat 1-4, jadi HARUS tepat 4. Satu-satunya pembeda skor 4 dari skor 3: siklus PPEPP lima tahap dijalankan BERBASIS TEKNOLOGI INFORMASI. Bobot tunggal terbesar dalam instrumen.",
+  "nomor_di_tabel_1_3_buku_4": 59
+ }
+]

@@ -1,0 +1,73 @@
+# ---------------------------------------------------------------------------
+# .gitignore proyek Laravel SIGAP.
+# ---------------------------------------------------------------------------
+
+# --- Bahan kerja pra-vibecoding: tetap ada di cakram, tidak ikut riwayat ---
+# Agen coding masih bisa membacanya; yang tidak dibawa hanya riwayat commit.
+# Perhatikan: data/ TIDAK ada di sini — ia sudah dipindah ke akar dan wajib
+# tetap terlacak. Lihat blok penutup di bawah.
+/vibecoding/
+
+# --- Bukti akreditasi: JANGAN PERNAH masuk riwayat ---
+# Isinya nama dosen, nomor serdik, dan dokumen bertanda tangan. Sekali
+# ter-commit, menghapusnya berarti menulis ulang seluruh riwayat repo.
+/storage/app/bukti/
+/storage/app/private/
+/public/storage
+
+# --- Rahasia dan kunci ---
+.env
+.env.backup
+.env.production
+/storage/*.key
+/auth.json
+
+# --- Dump dan cadangan basis data ---
+*.sql
+*.sql.gz
+*.dump
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# --- Dependensi dan hasil bangun ---
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/fonts-manifest.dev.json
+/storage/pail
+/bootstrap/cache/*.php
+*.log
+npm-debug.log
+yarn-error.log
+
+# --- Keluaran perkakas analisis ---
+/graphify-out/
+
+# --- Perkakas dan sistem ---
+/.phpunit.cache
+.phpunit.result.cache
+.phpactor.json
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+/.codex
+/.cursor/
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------------------
+# Yang WAJIB tetap terlacak — jangan pernah ditambahkan ke daftar di atas:
+#   data/*.json         sumber kebenaran seeder dan uji; tanpa ini
+#                       `migrate:fresh --seed` gagal dan MatriksIzinTest
+#                       tidak bisa membangun data provider-nya
+#   data/verifikasi.py  33 pemeriksaan atas data itu
+#   CLAUDE.md           aturan yang mengikat agen di setiap sesi
+#   AGENTS.md           salinan kembar CLAUDE.md untuk perkakas lain
+# ---------------------------------------------------------------------------

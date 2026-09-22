@@ -1,0 +1,62 @@
+[
+ {
+  "kode": "belum",
+  "nama": "Belum dikerjakan",
+  "urutan": 1,
+  "warna": "abu",
+  "berikutnya": [
+   "dikerjakan"
+  ],
+  "hitung_selesai": false
+ },
+ {
+  "kode": "dikerjakan",
+  "nama": "Sedang dikerjakan",
+  "urutan": 2,
+  "warna": "biru",
+  "berikutnya": [
+   "diajukan"
+  ],
+  "hitung_selesai": false
+ },
+ {
+  "kode": "diajukan",
+  "nama": "Diajukan untuk reviu",
+  "urutan": 3,
+  "warna": "kuning",
+  "berikutnya": [
+   "direviu",
+   "dikembalikan"
+  ],
+  "hitung_selesai": false
+ },
+ {
+  "kode": "direviu",
+  "nama": "Lolos reviu koordinator",
+  "urutan": 4,
+  "warna": "ungu",
+  "berikutnya": [
+   "disetujui",
+   "dikembalikan"
+  ],
+  "hitung_selesai": false
+ },
+ {
+  "kode": "dikembalikan",
+  "nama": "Dikembalikan untuk perbaikan",
+  "urutan": 5,
+  "warna": "merah",
+  "berikutnya": [
+   "dikerjakan"
+  ],
+  "hitung_selesai": false
+ },
+ {
+  "kode": "disetujui",
+  "nama": "Disetujui ketua",
+  "urutan": 6,
+  "warna": "hijau",
+  "berikutnya": [],
+  "hitung_selesai": true
+ }
+]

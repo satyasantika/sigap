@@ -1,0 +1,267 @@
+{
+ "catatan": "Sumber kebenaran tunggal untuk otorisasi. Policy WAJIB dibangkitkan dari berkas ini, bukan ditulis ulang. Uji otomatis WAJIB menelusuri seluruh sel.",
+ "prinsip": [
+  "admin mengelola SISTEM (pengguna, prodi, periode, kunci), bukan ISI akreditasi. Karena itu admin tidak menyetujui, tidak menulis narasi, dan tidak mengunggah bukti.",
+  "ketua memegang seluruh wewenang akreditasi, tetapi tidak mengelola pengguna.",
+  "Tidak ada peran yang 'bisa semuanya'. Tidak ada Gate::before yang meloloskan siapa pun.",
+  "Pada periode berstatus dikunci atau selesai, seluruh aksi penulisan menjadi tidak untuk SEMUA peran; hanya periode.kunci dan periode.kelola yang tetap berlaku bagi admin.",
+  "Validasi bukti adalah penilaian MANUSIA atas keabsahan isi, terpisah dari pemeriksaan MESIN atas keterbacaan tautan (akses_status). Tautan bisa terbuka tetapi berisi dokumen yang keliru."
+ ],
+ "lingkup": {
+  "ya": "Diizinkan untuk seluruh baris dalam periode aktif.",
+  "tidak": "Ditolak. Wajib ada uji yang membuktikan penolakan, bukan sekadar tombol disembunyikan.",
+  "pokjanya": "Hanya untuk baris yang pokja_id-nya termasuk pokja tempat pengguna terdaftar.",
+  "miliknya": "Hanya untuk baris yang penanggung_jawab_id-nya sama dengan id pengguna.",
+  "pokja_data": "Hanya bila pengguna terdaftar di pokja berkode POKJA-DATA."
+ },
+ "peran": [
+  "admin",
+  "ketua",
+  "pimpinan",
+  "koordinator",
+  "anggota",
+  "auditor"
+ ],
+ "aksi": [
+  {
+   "kode": "dasbor.lihat",
+   "label": "Membuka dasbor",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "ya",
+   "koordinator": "ya",
+   "anggota": "ya",
+   "auditor": "ya"
+  },
+  {
+   "kode": "tagihan.lihat",
+   "label": "Melihat tagihan",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "ya",
+   "koordinator": "pokjanya",
+   "anggota": "miliknya",
+   "auditor": "ya"
+  },
+  {
+   "kode": "tagihan.buat",
+   "label": "Membuat tagihan",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "tagihan.tugaskan",
+   "label": "Menugaskan penanggung jawab",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "tagihan.ubah_tenggat",
+   "label": "Mengubah tenggat",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "tagihan.ajukan",
+   "label": "Mengajukan untuk reviu",
+   "admin": "tidak",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "miliknya",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "tagihan.reviu",
+   "label": "Meloloskan reviu",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "tagihan.setujui",
+   "label": "Menyetujui final",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "tagihan.kembalikan",
+   "label": "Mengembalikan untuk perbaikan",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "bukti.unggah",
+   "label": "Mengunggah berkas atau menambah tautan",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "ya",
+   "anggota": "ya",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "bukti.hapus",
+   "label": "Menghapus bukti",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "bukti.validasi",
+   "label": "Memvalidasi keabsahan bukti",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "narasi.tulis",
+   "label": "Menulis naskah LED",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "miliknya",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "dkps.isi",
+   "label": "Mengisi baris DKPS",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokja_data",
+   "anggota": "pokja_data",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "impor.jalankan",
+   "label": "Menjalankan impor massal tempel-tabel",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
+   "anggota": "miliknya",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "dkps.verifikasi",
+   "label": "Memverifikasi baris DKPS",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokja_data",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "penilaian.isi",
+   "label": "Mengisi asesmen mandiri",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "ya",
+   "anggota": "tidak",
+   "auditor": "ya"
+  },
+  {
+   "kode": "syarat_perlu.ubah",
+   "label": "Mengubah level syarat perlu",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "periode.kunci",
+   "label": "Mengunci dan membuka periode",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "pokja.kelola",
+   "label": "Mengelola pokja dan keanggotaan",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "periode.kelola",
+   "label": "Membuat dan menyunting periode",
+   "admin": "ya",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "prodi.kelola",
+   "label": "Mengelola prodi",
+   "admin": "ya",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "pengguna.kelola",
+   "label": "Mengelola pengguna dan peran",
+   "admin": "ya",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "komentar.tulis",
+   "label": "Menulis komentar",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "ya",
+   "koordinator": "ya",
+   "anggota": "ya",
+   "auditor": "ya"
+  }
+ ]
+}

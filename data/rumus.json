@@ -1,0 +1,170 @@
+[
+ {
+  "kode": "PDS3",
+  "nama": "Persentase DTPS berkualifikasi doktor",
+  "elemen": 17,
+  "ekspresi": "(NDS3 / NDTPS) * 100",
+  "variabel": {
+   "NDS3": "Jumlah DTPS dengan kualifikasi akademik tertinggi Doktor",
+   "NDTPS": "Jumlah dosen tetap pengampu MK dengan keahlian sesuai kompetensi inti PS"
+  },
+  "skor": "PDS3 >= 40 -> skor(a)=4; PDS3 < 40 -> skor(a) = 2 + (5 * PDS3/100)",
+  "jendela": "saat TS"
+ },
+ {
+  "kode": "PGBLKL",
+  "nama": "Persentase DTPS berjabatan akademik",
+  "elemen": 17,
+  "ekspresi": "((NDGB + NDLK + NDL) / NDTPS) * 100",
+  "variabel": {
+   "NDGB": "DTPS Guru Besar",
+   "NDLK": "DTPS Lektor Kepala",
+   "NDL": "DTPS Lektor",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "PGBLKL >= 70 -> skor(b)=4; < 70 -> skor(b) = 2 + ((20 * PGBLKL/100) / 7)",
+  "jendela": "saat TS",
+  "catatan": "Skor elemen 17 = (3*(a+b) + c) / 7, dengan c = skor analisis keterpenuhan."
+ },
+ {
+  "kode": "RK",
+  "nama": "Rasio kerja sama tridharma",
+  "elemen": 7,
+  "ekspresi": "((3*N1) + (2*N2) + (1*N3)) / NDTPS",
+  "variabel": {
+   "N1": "Jumlah kerja sama tingkat internasional",
+   "N2": "Jumlah kerja sama tingkat nasional",
+   "N3": "Jumlah kerja sama tingkat wilayah/lokal",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "RK >= 4 -> A = 4; RK < 4 -> A = RK",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "PPDTPS",
+  "nama": "Persentase DTPS yang berpublikasi",
+  "elemen": 51,
+  "ekspresi": "(jumlah DTPS dengan >=1 publikasi memenuhi syarat / NDTPS) * 100",
+  "variabel": {
+   "syarat_publikasi": "Jurnal nasional terakreditasi minimal Sinta 2 dan/atau internasional bereputasi (Scopus atau WoS), sebagai penulis pertama ATAU corresponding author"
+  },
+  "skor": "PPDTPS >= 20 -> 4; 15 <= PPDTPS < 20 -> 3; 10 <= PPDTPS < 15 -> 2; < 10 -> 1",
+  "jendela": "TS-2 s.d. TS",
+  "catatan": "Skor(a) di atas digabung skor(b) analisis tren: Skor = (3*a + b)/4. Syarat perlu unggul 5 tahun menuntut PPDTPS >= 40, jauh di atas ambang skor 4."
+ },
+ {
+  "kode": "RSA",
+  "nama": "Rasio artikel DTPS yang disitasi",
+  "elemen": 52,
+  "ekspresi": "NAS / NDTPS",
+  "variabel": {
+   "NAS": "Jumlah artikel yang disitasi",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "RSA >= 9 -> 4; 6 <= RSA < 9 -> 3; 3 <= RSA < 6 -> 2; < 3 -> 1",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "RIPK",
+  "nama": "Rata-rata IPK lulusan",
+  "elemen": 38,
+  "ekspresi": "rata-rata IPK lulusan",
+  "variabel": {},
+  "skor": "RIPK >= 3,25 -> 4; 2,00 <= RIPK < 3,25 -> ((8 * RIPK) - 6) / 5",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "RMS",
+  "nama": "Rata-rata masa studi",
+  "elemen": 39,
+  "ekspresi": "rata-rata masa studi mahasiswa (semester/tahun sesuai ketentuan)",
+  "variabel": {},
+  "skor": "3,5 < RMS <= 4,0 -> 4; 4 < RMS <= 5 -> berskala; RMS > 5 -> 1",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "PKMS",
+  "nama": "Persentase keberhasilan studi",
+  "elemen": 41,
+  "ekspresi": "(lulus / total angkatan) * 100",
+  "variabel": {},
+  "skor": "45% <= PKMS < 85% -> ((80 * PKMS) - 24) / 11 (PKMS dalam desimal)",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "WTMP",
+  "nama": "Waktu tunggu mendapatkan pekerjaan (bulan)",
+  "elemen": 43,
+  "ekspresi": "rata-rata waktu tunggu lulusan sampai pekerjaan pertama",
+  "variabel": {},
+  "skor": "WTMP < 6 -> 4; 6 <= WTMP <= 12 -> (18 - WTMP) / 3; WTMP > 12 -> 1",
+  "jendela": "TS-4 s.d. TS-2"
+ },
+ {
+  "kode": "TKM",
+  "nama": "Tingkat kepuasan mahasiswa",
+  "elemen": 14,
+  "ekspresi": "TKM = sum(TKMi) / 5 ; TKMi = (4*ai) + (3*bi) + (2*ci) + di",
+  "variabel": {
+   "ai": "persentase Sangat Baik",
+   "bi": "persentase Baik",
+   "ci": "persentase Cukup",
+   "di": "persentase Kurang",
+   "dimensi": "TKM1 Reliability, TKM2 Responsiveness, TKM3 Assurance, TKM4 Empathy, TKM5 Tangible"
+  },
+  "skor": "TKM >= 75% -> 4; 50-75% -> 3; 25-50% -> 2; < 25% -> 1",
+  "jendela": "setiap akhir semester",
+  "catatan": "Skor elemen = (skor(a) + 3*skor(b)) / 4, dengan a = pemenuhan 6 aspek pelaksanaan."
+ },
+ {
+  "kode": "TKi",
+  "nama": "Tingkat kepuasan pengguna lulusan",
+  "elemen": 44,
+  "ekspresi": "Skor = TKi / 9",
+  "variabel": {
+   "aspek": "9 aspek: etika, keahlian bidang ilmu, bahasa asing, penggunaan TI, komunikasi, kerja sama, pengembangan diri, berpikir kritis, kreativitas"
+  },
+  "skor": "Skor = TKi / 9",
+  "jendela": "TS-4 s.d. TS-2"
+ },
+ {
+  "kode": "NDTPSPK",
+  "nama": "Persentase DTPS yang mengikuti pengembangan kompetensi",
+  "elemen": 20,
+  "ekspresi": "(DTPS yang mengikuti pengembangan kompetensi / NDTPS) * 100",
+  "variabel": {},
+  "skor": ">= 80% -> 4; 70-80% -> 3; 60-70% -> 2; < 60% -> 1",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "NTENDIKPK",
+  "nama": "Persentase tendik yang mengikuti pengembangan kompetensi",
+  "elemen": 21,
+  "ekspresi": "(tendik yang mengikuti pengembangan kompetensi / total tendik) * 100",
+  "variabel": {},
+  "skor": ">= 40% -> 4; 25-40% -> 3; 10-25% -> 2; < 10% -> 1",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "RRD",
+  "nama": "Rasio pengakuan kepakaran DTPS",
+  "elemen": 19,
+  "ekspresi": "jumlah pengakuan kepakaran / NDTPS",
+  "variabel": {},
+  "skor": "RRD >= 1 -> 4; RRD < 1 -> 2 + (2 * RRD)",
+  "jendela": "TS-2 s.d. TS"
+ },
+ {
+  "kode": "NA",
+  "nama": "Nilai Akreditasi",
+  "elemen": null,
+  "ekspresi": "NA = sum(skor_i * bobot_i), dengan sum(bobot_i) = 100; ekuivalen NA = 300 + sum((skor_i - 3) * bobot_i)",
+  "variabel": {
+   "skor_i": "1..4 per elemen",
+   "bobot_i": "bobot elemen"
+  },
+  "skor": "NA >= 361 syarat nilai untuk Unggul 5 tahun; 321 <= NA < 361 maksimal Unggul 3 tahun; 200 <= NA < 321 Terakreditasi; NA < 200 Tidak Terakreditasi",
+  "jendela": "-",
+  "catatan": "Surplus = NA - 300. Target surplus >= 61."
+ }
+]

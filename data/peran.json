@@ -1,0 +1,93 @@
+[
+ {
+  "kode": "admin",
+  "nama": "Administrator Sistem",
+  "ringkas": "Kelola pengguna, prodi, periode akreditasi, dan setelan TS.",
+  "boleh": [
+   "kelola semua data referensi",
+   "kelola pengguna dan peran",
+   "buat dan tutup periode akreditasi",
+   "kelola setelan TS"
+  ],
+  "tidak_boleh": [
+   "menyetujui tagihan atas nama ketua"
+  ]
+ },
+ {
+  "kode": "ketua",
+  "nama": "Ketua Task Force",
+  "ringkas": "Melihat seluruh progres, menugaskan, menyetujui atau mengembalikan tagihan.",
+  "boleh": [
+   "lihat semua tagihan lintas pokja",
+   "tugaskan penanggung jawab dan tenggat",
+   "setujui atau kembalikan tagihan",
+   "kunci periode menjelang unggah",
+   "lihat seluruh dasbor"
+  ],
+  "tidak_boleh": [
+   "mengubah data referensi instrumen"
+  ]
+ },
+ {
+  "kode": "pimpinan",
+  "nama": "Pimpinan (Dekan, Wakil Dekan, Kaprodi)",
+  "ringkas": "Hanya memantau. Tidak mengubah apa pun.",
+  "boleh": [
+   "lihat dasbor progres",
+   "lihat rekap per pokja dan per kriteria",
+   "lihat proyeksi NA dan status lima syarat perlu",
+   "beri komentar"
+  ],
+  "tidak_boleh": [
+   "mengubah tagihan",
+   "mengunggah bukti",
+   "menyetujui tagihan"
+  ]
+ },
+ {
+  "kode": "koordinator",
+  "nama": "Koordinator Pokja",
+  "ringkas": "Mengelola dan mereviu pekerjaan di dalam pokjanya sendiri.",
+  "boleh": [
+   "lihat dan kelola tagihan pokjanya",
+   "tugaskan ulang antar anggota pokja",
+   "reviu hasil anggota sebelum diajukan ke ketua",
+   "unggah bukti"
+  ],
+  "tidak_boleh": [
+   "mengubah tagihan pokja lain",
+   "menyetujui final (itu hak ketua)"
+  ]
+ },
+ {
+  "kode": "anggota",
+  "nama": "Anggota Pokja",
+  "ringkas": "Mengerjakan tagihan yang ditugaskan kepadanya.",
+  "boleh": [
+   "lihat tagihan yang ditugaskan kepadanya",
+   "unggah bukti",
+   "tulis narasi LED",
+   "isi baris DKPS",
+   "ajukan tagihan untuk direviu"
+  ],
+  "tidak_boleh": [
+   "menugaskan",
+   "menyetujui",
+   "melihat tagihan pokja lain kecuali diberi akses"
+  ]
+ },
+ {
+  "kode": "auditor",
+  "nama": "Auditor Mutu Internal (SPMI)",
+  "ringkas": "Membaca dan memberi catatan mutu tanpa mengubah isi.",
+  "boleh": [
+   "lihat semua tagihan dan bukti",
+   "beri komentar dan temuan",
+   "lihat jejak audit"
+  ],
+  "tidak_boleh": [
+   "mengubah atau menghapus data",
+   "menyetujui tagihan"
+  ]
+ }
+]

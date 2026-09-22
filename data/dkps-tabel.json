@@ -1,0 +1,198 @@
+[
+ {
+  "no": 1,
+  "nama": "Kerjasama Tridharma Perguruan Tinggi",
+  "label_tabel": "Tabel 1",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan kerjasama tridharma perguruan tinggi di Unit Pengelola Program Studi (UPPS) dalam 3 tahun terakhir dengan mengikuti format Tabel 1 berikut ini. Tabel 1 Kerjasama Tridharma Perguruan Tinggi Tingkat 1) Judul Manfaat bagi Waktu Bukti Lembaga No. Interna- Nasional Wilayah/ Kegiatan PS yang dan Kerjasama Mitra sional Lokal Kerjasama 2) diakreditasi Durasi 3)"
+ },
+ {
+  "no": 2,
+  "nama": "Mahasiswa",
+  "label_tabel": "Tabel 2",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data Mahasiswa/peserta PPG (calon guru dan guru tertentu) berdasarkan hasil seleksi nasional dan data lapor diri dalam 3 tahun terakhir dengan mengikuti format Tabel 2 berikut ini. Tabel 2 Mahasiswa PPG Lulus Seleksi Lapor Diri Jumlah Mahasiswa Aktif Tahun Kuota Guru Guru Calon Guru Akademik Calon Guru Calon Guru"
+ },
+ {
+  "no": 3,
+  "nama": "Prestasi Mahasiswa",
+  "label_tabel": "Tabel 3",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Prestasi yang dicapai antara lain: menjadi juara juara 1,2,3 dalam lomba akademik dan sejenisnya), prestasi dalam bidang olahraga, seni dan budaya, dan kepemimpinan/ organisasi. Tuliskan prestasi akademik dan non-akademik yang dicapai mahasiswa program studi yang diakreditasi dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 3 berikut ini. Tabel 3 Prestasi Mahasiswa Tahun Tingkat 1) Prestasi yang No. Nama Kegiatan"
+ },
+ {
+  "no": 4,
+  "nama": "Kepuasan Mahasiswa",
+  "label_tabel": "Tabel 4",
+  "jendela_data": "saat TS",
+  "keterangan": "Tuliskan hasil pengukuran kepuasan mahasiswa terhadap proses pendidikan, performa mengajar dosen, dan sarana dan prasarana dengan mengikuti format Tabel 4 berikut ini. Data diambil dari hasil penelusuran yang dilakukan pada saat TS. Tabel 4 Kepuasan Mahasiswa"
+ },
+ {
+  "no": 5,
+  "nama": "Dosen Pengelola Program Studi PPG",
+  "label_tabel": "Tabel 5",
+  "jendela_data": "saat TS",
+  "keterangan": "Tuliskan data Dosen Pengelola Program Studi (DPP) pada saat TS dengan mengikuti format Tabel 5 berikut ini. DPP adalah dosen PS yang diberi tugas oleh Perguruan Tinggi untuk mengelola Program Studi PPG. Tabel 5 Dosen Pengelola Program Studi Pendidikan Pasca Kesesuaian Mata Sarjana 1) Kesesuaian Sertifikat Mata kuliah Bidang kuliah Jabatan Nama NIDN/ Bidang dengan Pendidik yang diampu Keahlian yang No NUPTK Akademik"
+ },
+ {
+  "no": 6,
+  "nama": "Dosen Bidang Studi (DBS) dan Dosen Pengampu",
+  "label_tabel": "Tabel 6",
+  "jendela_data": "saat TS",
+  "keterangan": "Tuliskan data dosen bidang studi dan dosen pengampu pada setiap bidang studi pada saat TS dengan mengikuti format Tabel 6 berikut ini. DBSP adalah dosen PS yang diberi tugas oleh Perguruan Tinggi untuk mengelola bidang studi di PS PPG. Tabel 6 Dosen Bidang Studi dan Dosen Pengampu Pendidikan Pasca Mata kuliah Kesesuaian Mata Sarjana 2) yang Bidang Kesesuaian Sertifikat kuliah Nama Bidang Jabatan diampu Keahlian"
+ },
+ {
+  "no": 7,
+  "nama": "Beban Kerja DTPS",
+  "label_tabel": "Tabel 7",
+  "jendela_data": "saat TS",
+  "keterangan": "Tuliskan data Beban Kerja Dosen Tetap yang ditugaskan di program studi yang diakreditasi pada saat TS, dengan mengikuti format Tabel 7 berikut ini. Tabel 7 Beban Kerja DTPS Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks) Pendidikan: Pembelajaran dan Tugas Rata-rata persemester (sks) Jumlah No. Nama Dosen Tetap Pembimbingan Tambahan Penelitian PkM (sks)"
+ },
+ {
+  "no": 8,
+  "nama": "Prestasi/Kepakaran/Rekognisi Dosen",
+  "label_tabel": "Tabel 8",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan pengakuan/rekognisi atas kepakaran/prestasi/kinerja DTPS yang diterima dalam 3 tahun terakhir dengan mengikuti format Tabel 8. Tabel 8 Rekognisi Kepakaran/Prestasi DTPS Tingkat 2) Nama Bidang Bukti No Rekognisi 1) Tahun Interna- Dosen Keahlian Wilayah Nasional Pendukung sional"
+ },
+ {
+  "no": 9,
+  "nama": "Pengembangan Kompetensi DTPS",
+  "label_tabel": "Tabel 9",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data pengembangan kompetensi yang diikuti oleh DTPS dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 9 berikut ini. Pengembangan kompetensi yang diikuti harus relevan dengan bidang ilmu program studi dan mendukung kompetensi DTPS. Tabel 9 Pengembangan Kompetensi DTPS Waktu Manfaat No. Nama DTPS1) Jenis Kegiatan2) Tempat3) Pelaksanaan Kegiatan"
+ },
+ {
+  "no": 10,
+  "nama": "Tenaga Kependidikan",
+  "label_tabel": "Tabel 10",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data Tenaga pada tingkat Perguruan Tinggi/UPPS/PS yang melayani mahasiswa. Program Studi yang diakreditasi dengan mengikuti format Tabel 10 berikut ini. Tabel 10 Tenaga Kependidikan Jumlah Tenaga Kependidikan dengan No. Jenis Tenaga Kependidikan Pendidikan Terakhir 2) Unit Kerja 3) S3 S2 S1 D4 D3 SMA/SMK (1) (2) (3) (4) (5) (6) (7) (8) (9)"
+ },
+ {
+  "no": 11,
+  "nama": "Pengembangan Kompetensi Tenaga Kependidikan",
+  "label_tabel": "Tabel 11",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data pengembangan kompetensi yang diikuti oleh tenaga kependidikan dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 11 berikut ini. Pengembangan kompetensi yang diikuti harus relevan mendukung peningkatakan kompetensi keahlian tenaga kependidikan. Tabel 11 Pengembangan Kompetensi Tenaga Kependidikan Nama Tenaga Jenis Pengembangan Waktu Manfaat No. Tempat2) Kependidikan Kompetensi1) Pelaksanaan Kegiatan"
+ },
+ {
+  "no": 12,
+  "nama": "Guru Pamong",
+  "label_tabel": "Tabel 12",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data guru pamong untuk pada setiap bidang studi yang berasal dari sekolah mitra dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 12 berikut ini. Tabel 12 Guru Pamong Asal Sekolah Mitra Jabatan Pendidikan ST Gurung No. Bidang Studi1) Nama Guru Pamong No.Serdik3) Nama Bukti Fungsional2) Tertinggi Akreditasi4) Pamong6) Sekolah MoU/PKS5)"
+ },
+ {
+  "no": 13,
+  "nama": "Penggunaan Dana",
+  "label_tabel": "Tabel 14",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data penggunaan dana yang dikelola oleh UPPS dan data penggunaan dana yang dialokasikan ke program studi yang diakreditasi dalam 3 tahun terakhir dengan mengikuti format Tabel 14. Tabel 14 Penggunaan Dana Unit Pengelola Program Studi (Rupiah) Program Studi (Rupiah) No Jenis Penggunaan TS-2 TS-1 TS Rata-rata TS-2 TS-1 TS Rata-rata (1) (2) (3) (4) (5) (6) (7) (8) (9) (10) 1 Biaya Operasional Pendidikan"
+ },
+ {
+  "no": 14,
+  "nama": "Sarana Laboratorium dan Pembelajaran",
+  "label_tabel": "Tabel 15",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan prasarana dan peralatan utama di laboratorium, ruang kelas, dan ruang lainnya yang dipergunakan dalam proses pembelajaran (perkuliahan, pembimbingan, ujian, seminar, dan lain-lain) oleh program studi yang diakreditasi dengan mengikuti format Tabel 15 berikut ini. Tabel 15 Sarana Laboratorium dan Pembelajaran Jumlah Alat 4) Kepemilikan 5) Kondisi 6) Rata-rata Nama Kualitas Waktu No. Laboratorium/ Nama Alat/ Peraga 2) 3"
+ },
+ {
+  "no": 15,
+  "nama": "Prasarana Pendidikan",
+  "label_tabel": "Tabel 16",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data prasarana tanah dan gedung (rektorat, fakultas, biro, sarana ibadah, pusat komputer, perpustakaan, pusat kesehatan, lembaga penelitian dan PkM, dan lain-lain) di PT/UPPS dengan mengikuti format Tabel 16 berikut ini. Tabel 16 Prasarana Pendidikan Kepemilikan3) Kondisi4) No. Nama Sarana1) Fungsi Jumlat Unit Total Luas (m2) Kualitas2) Milik Sendiri Sewa Terawat Tidak Terawat (1) (2) (3) (4) (5) (6) (7) (8) (9) (10) "
+ },
+ {
+  "no": 16,
+  "nama": "Teknologi Informasi dan Komunikasi",
+  "label_tabel": "Tabel 17",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data infrastruktur teknologi informasi dan sistem informasi di PT/UPPS yang digunakan oleh PS dalam mendukung proses pembelajaran dengan mengikuti format Tabel 17 berikut ini. Tabel 17 Teknologi Informasi dan Komunikasi Kepemilikan2) Kemudahan Akses3) Nama Deskripsi Infrastruktur/Sistem Ketersediaan No. Jumlah Milik Terintegrasi4) Kemutahiran5) Infrastruktur/ Informasi Sewa Mudah Sulit Panduan6) Sendiri"
+ },
+ {
+  "no": 17,
+  "nama": "Kurikulum",
+  "label_tabel": "Tabel 18",
+  "jendela_data": "saat TS",
+  "keterangan": "Tuliskan struktur dan kelengkapan data mata kuliah sesuai dokumen kurikulum program studi yang berlaku pada saat TS dengan mengikuti format Tabel 18 berikut ini. Tabel 18 Kurikulum Bobot Kredit (sks) Capaian Pembelajaran 3)"
+ },
+ {
+  "no": 18,
+  "nama": "Integrasi Penelitian dan PkM dalam Pembelajaran",
+  "label_tabel": "Tabel 19",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan judul penelitian/PkM DTPS yang terintegrasi ke dalam pembelajaran/ pengembangan matakuliah dalam 3 tahun terakhir dengan mengikuti format Tabel 19 berikut ini. Tabel 19 Integrasi Penelitian/PkM dalam Pembelajaran Tahun No. Judul Nama Mata Bentuk Integrasi 2) Penelitian/PkM Tahun Penelitian/PkM 1) Dosen Kuliah TS-3 TS-2 TS (YYYY) (1) (2) (3) (4) (5) (6) (7) (7) (9)"
+ },
+ {
+  "no": 19,
+  "nama": "Praktik Pengalaman Lapangan (PPL)",
+  "label_tabel": "Tabel 20",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data pelaksanaan PPL, DTPS yang menjadi PPL 1), jumlah mahasiswa yang dibimbing, dan rata-rata jumlah pertemuan pembimbingan PPL dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 20 berikut ini. Tabel 20 Praktik Pengalaman Lapangan Rata-rata lama `Jumlah Mahasiswa 2) Jumlah pertemuan dengan pelaksanaan No. Nama Dosen mahasiswa 3) PPL4)"
+ },
+ {
+  "no": 20,
+  "nama": "IPK Lulusan",
+  "label_tabel": "Tabel 21",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan data jumlah lulusan dan Indeks Prestasi Kumulatif (IPK) lulusan dalam 3 (tiga) tahun terakhir (TS-2 s.d TS) dengan mengikuti format Tabel 21 berikut ini. Peserta PPG dinyatakan lulus apabila telah menempuh seluruh beban belajar, seluruh mata kuliah dinyatakan lulus dan nilai minimal B, IPK >= 3.0, dan dinyatakan lulus dalam UKPPPG. Tabel 21 IPK Lulusan Indeks Prestasi Kumulatif (IPK) Tahun Lulus Jumlah Lulusan Min. Ra"
+ },
+ {
+  "no": 21,
+  "nama": "Masa studi lulusan",
+  "label_tabel": "Tabel 22",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan masa studi lulusan program studi yang diakreditasi dengan mengikuti format Tabel 22 berikut ini. Tabel 22 Masa Studi Lulusan Jumlah Mahasiswa yang Lulus pada Jumlah Tahun Jumlah Mahasiswa Rata-rata Akhir TS-2 Akhir TS-1 Akhir TS Lulusan Masuk diterima 1) masa studi"
+ },
+ {
+  "no": 22,
+  "nama": "Waktu Tunggu Mendapatkan Pekerjaan",
+  "label_tabel": "Tabel 23",
+  "jendela_data": "TS-4 s.d. TS-2",
+  "keterangan": "Tuliskan data waktu tunggu lulusan untuk mendapatkan pekerjaan pertama dalam 3 (tiga) tahun terakhir, mulai TS-4 sampai dengan TS-2, dengan mengikuti format Tabel 23 berikut ini. Data diambil dari hasil studi penelusuran lulusan (tracer study). Tabel 23 Waktu Tunggu Mendapatkan Pekerjaan Pertama Jumlah Lulusan Terlacak dengan Waktu Tunggu Jumlah Jumlah Lulusan Mendapatkan Pekerjaan Tahun Lulus Lulusan1) yang Terlacak2) 6 ≤ WT "
+ },
+ {
+  "no": 23,
+  "nama": "Kepuasan Pengguna Lulusan",
+  "label_tabel": "Tabel 24",
+  "jendela_data": "TS-4 s.d. TS-2",
+  "keterangan": "Tuliskan hasil pengukuran kepuasan pengguna lulusan berdasarkan aspek (1) Etika, (2) keahlian pada bidang ilmu (kompetensi utama), (3) kemampuan berbahasa asing, (4) penggunaan teknologi informasi, (5) kemampuan berkomunikasi, (6) kerjasama, dan (7) Pengembangan diri, (8) berfikir kritis, dan (9) kreativitas mulai TS-4 s.d TS-2, dengan mengikuti format Tabel 24 berikut ini. Data diambil dari hasil studi penelusuran lulusan (tr"
+ },
+ {
+  "no": 24,
+  "nama": "Penelitian DTPS",
+  "label_tabel": "Tabel 25",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan jumlah judul penelitian 1) yang dilaksanakan DTPS berdasarkan sumber pembiayaan, yang relevan dengan bidang program studi dalam 3 (tiga) tahun terakhir (TS-2 s.d TS) dengan mengikuti format Tabel 25 berikut ini. Tabel 25 Penelitian DTPS Jumlah Judul No. Sumber Pembiayaan Jumlah TS-2 TS-1 TS (1) (2) (3) (4) (5) (6) 1 a. Perguruan Tinggi"
+ },
+ {
+  "no": 25,
+  "nama": "Publikasi Ilmiah DTPS",
+  "label_tabel": "Tabel 26",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan jumlah publikasi ilmiah DTPS yang relevan dengan bidang program studi, yang dihasilkan dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 26 berikut ini. Tabel 26 Publikasi Ilmiah DTPS Jumlah Judul No. Media Publikasi Jumlah TS-2 TS-1 TS (1) (2) (3) (4) (5) (6) 1 Jurnal nasional tidak terakreditasi NA1 ="
+ },
+ {
+  "no": 26,
+  "nama": "Publikasi Ilmiah DTPS pada Jurnal Nasional Terakreditasi/Internasional Bereputasi",
+  "label_tabel": "Tabel 27",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan judul artikel karya ilmiah DTPS yang dipublikasikan pada pada jurnal nasional terakreditasi minimal Sinta 2 dan/atau internasional bereputasi (terindeks scopus atau WoS) sebagai penulis pertama atau corresponding authors dalam 3 tahun terakhir dengan mengikuti format Tabel 27 berikut ini. Tabel 27 Publikasi Ilmiah DTPS pada Jurnal Nasional Terakreditasi/Internasional bereputasi Judul Artikel yang Penulis"
+ },
+ {
+  "no": 27,
+  "nama": "Karya Ilmiah yang Disitasi",
+  "label_tabel": "Tabel 28",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan judul artikel karya ilmiah DTPS yang disitasi dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 28. Judul artikel yang disitasi harus relevan dengan bidang ilmu program studi."
+ },
+ {
+  "no": 28,
+  "nama": "Pengabdian kepada Masyarakat (PkM)",
+  "label_tabel": "Tabel 29",
+  "jendela_data": "TS-2 s.d. TS",
+  "keterangan": "Tuliskan jumlah judul PkM 1) yang dilaksanakan DTPS berdasarkan sumber pembiayaan, yang relevan dengan bidang program studi dalam 3 (tiga) tahun terakhir (TS-2 s.d TS) dengan mengikuti format Tabel 29 berikut ini. Tabel 29 PkM DTPS Jumlah Judul No. Sumber Pembiayaan Jumlah TS-2 TS-1 TS (1) (2) (3) (4) (5) (6)"
+ }
+]
