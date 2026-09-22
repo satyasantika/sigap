@@ -119,6 +119,95 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
 Dokumen rancangan lengkap dan prompt bertahap ada di `vibecoding/` — tidak
 terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 
+## Merawat sistem ini
+
+### Membuat periode akreditasi baru
+
+Satu periode mewakili satu siklus akreditasi. Periode lama **tidak dihapus** —
+seluruh tagihan, bukti, dan naskahnya tetap tertaut ke sana, dan itulah yang
+membuat "bagaimana kita tahun lalu?" bisa dijawab.
+
+1. **Pengaturan → Periode → Buat.** Isi nama (`PPG 2032`), tahun acuan TS, dan
+   tanggal target unggah. Biarkan statusnya `persiapan`.
+2. **Pengaturan → Pokja.** Pokja terikat periode, jadi keenamnya perlu dibuat
+   ulang untuk periode baru. Pakai kode yang sama (`POKJA-DIK` dan seterusnya)
+   supaya pembangkit tagihan menemukannya.
+3. Ubah status periode menjadi `berjalan`. **Hanya satu periode boleh
+   `berjalan`** — dasbor dan seluruh layar membaca periode aktif dari sana.
+4. Bangkitkan tagihannya:
+
+   ```bash
+   docker exec sigap-php php artisan tagihan:bangkitkan "PPG 2032"
+   ```
+
+   Perintah ini aman dijalankan ulang: tagihan yang sudah ada dilewati, bukan
+   digandakan.
+
+### Mengganti TS dan akibatnya
+
+`periode.ts_tahun` adalah **satu-satunya** sumber tahun di seluruh aplikasi.
+Mengubahnya di satu tempat menggeser seluruh jendela data sekaligus:
+
+| Jendela | TS = 2027 | TS = 2030 |
+|---|---|---|
+| `saat TS` | 2027 | 2030 |
+| `TS-2 s.d. TS` | 2025–2027 | 2028–2030 |
+| `TS-4 s.d. TS-2` | 2023–2025 | 2026–2028 |
+| `5 tahun terakhir` | 2023–2027 | 2026–2030 |
+
+Yang ikut bergeser: pilihan tahun pada layar isian DKPS, rentang data yang
+dipakai `KalkulatorRumus`, dan keterangan jendela di tiap butir.
+
+Yang **tidak** ikut bergeser: baris DKPS yang sudah telanjur diisi. Kolomnya
+menyimpan label relatif (`TS-2`), bukan tahun mutlak, jadi baris lama akan
+menunjuk tahun yang berbeda setelah TS diubah. **Ubah TS sebelum data diisi**,
+atau periksa ulang seluruh baris DKPS sesudahnya.
+
+### Menambah prodi lain
+
+Tidak perlu migrasi. `prodi_id` sudah ada di setiap tabel transaksional sejak
+migrasi pertama — `tagihan`, `bukti`, `narasi`, `dkps_baris`, `penilaian`,
+`nilai_rumus`, `status_syarat_perlu`, dan `impor_batch` — meskipun sampai
+sekarang hanya ada satu prodi.
+
+1. **Pengaturan → Prodi → Buat.**
+2. Buat periode untuk prodi itu, lalu pokja-pokjanya, lalu bangkitkan tagihan.
+3. Tetapkan `prodi_id` pengguna yang bekerja di prodi itu.
+
+Instrumen (59 elemen, 9 kriteria, 15 rumus, 28 butir DKPS) **dipakai bersama**
+seluruh prodi — ia berasal dari dokumen LAMDIK, bukan milik satu prodi.
+
+### Mencadangkan
+
+Dua hal yang harus dicadangkan bersama-sama; salah satunya saja tidak berguna.
+
+```bash
+# 1. Basis data
+docker exec sigap-php sh -c 'mysqldump -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE"' \
+  > ~/cadangan/sigap-$(date +%F).sql
+
+# 2. Berkas bukti — TIDAK ada di git dan tidak bisa dibangun ulang
+tar czf ~/cadangan/bukti-$(date +%F).tar.gz -C storage/app bukti
+```
+
+Berkas `.sql` dan isi `storage/app/bukti/` **tidak pernah masuk riwayat git**:
+isinya nama dosen, nomor serdik, dan dokumen bertanda tangan. Simpan cadangannya
+di luar folder proyek.
+
+Untuk memulihkan, kembalikan keduanya lalu jalankan `php artisan migrate` —
+jangan `migrate:fresh`, yang akan menghapus isinya.
+
+### Data demonstrasi
+
+```bash
+docker exec sigap-php php artisan migrate:fresh --seed --seeder=Database\\Seeders\\DemoSeeder
+```
+
+Menghasilkan keadaan pertengahan periode yang **sengaja tidak serba hijau**:
+ada tagihan terlambat, bukti yang tidak bisa dibuka asesor, dan satu syarat
+perlu yang belum terpenuhi. **Jangan dijalankan di basis data sungguhan** —
+`migrate:fresh` menghapus seluruh isinya.
+
 ## Status pembangunan
 
 | Tahap | Isi | Status |
@@ -129,7 +218,14 @@ terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 | 4 | Bukti, tautan Drive, narasi LED | **selesai** |
 | 5 | DKPS dan perhitungan rumus | **selesai** |
 | 6 | Dasbor progres | **selesai** |
-| 7 | Uji, seed contoh, serah terima | belum |
+| 7 | Uji, seed contoh, serah terima | **selesai** |
+
+## Sebelum menyerahkan ke orang lain
+
+Baca [`CATATAN-SERAH-TERIMA.md`](CATATAN-SERAH-TERIMA.md). Isinya keputusan yang
+diambil agen pembangun sendiri, asumsi yang masih menunggu konfirmasi LAMDIK,
+bagian yang sengaja belum dibangun, dan hal-hal yang paling mungkin menyusahkan
+enam bulan lagi.
 
 ## Rujukan
 
