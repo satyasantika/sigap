@@ -56,6 +56,33 @@ enum PeranPengguna: string
         };
     }
 
+    /**
+     * Ubin dasbor yang relevan bagi peran ini, sesuai tabel di
+     * vibecoding/docs/10-kpi-dan-bento.md.
+     *
+     * Ini pemetaan TAMPILAN, bukan otorisasi: seluruh peran boleh membuka
+     * dasbor (`dasbor.lihat` bernilai `ya` untuk keenamnya), dan pimpinan yang
+     * melihat K9 bukan lubang keamanan melainkan kebisingan. Karena itu
+     * tempatnya di sini bersama label dan warna, bukan di App\Support\Izin —
+     * kelas itu khusus untuk keputusan wewenang.
+     *
+     * Pimpinan tidak melihat K5 dan K9 karena keduanya operasional. Anggota
+     * cukup daftar kerjanya sendiri ditambah K2 sebagai konteks.
+     *
+     * @return array<int, string>
+     */
+    public function ubinDasbor(): array
+    {
+        return match ($this) {
+            self::Pimpinan => ['K1', 'K2', 'K3', 'K4', 'K6', 'K7', 'K8'],
+            self::Auditor => ['K1', 'K2', 'K3', 'K4', 'K6', 'K7', 'K8', 'K9'],
+            self::Anggota => ['K2', 'K9'],
+            self::Admin, self::Ketua, self::Koordinator => [
+                'K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8', 'K9',
+            ],
+        };
+    }
+
     /** @return array<string, string> nilai => label, untuk pilihan di formulir. */
     public static function pilihan(): array
     {
