@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/**
+ * SIGAP adalah aplikasi internal tanpa halaman publik. Akar situs langsung
+ * mengarah ke panel; tidak ada halaman sambutan dan tidak ada pendaftaran.
+ */
+Route::redirect('/', '/panel');
