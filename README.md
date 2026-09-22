@@ -46,6 +46,10 @@ docker exec sigap-php php artisan migrate:fresh --seed
 # 6. Bangkitkan tagihan untuk periode itu (137 tagihan, bobot total 100,000)
 docker exec sigap-php php artisan tagihan:bangkitkan "PPG 2027"
 
+# Pemeriksaan keterbacaan tautan berjalan harian lewat penjadwal; untuk
+# menjalankannya sekarang juga:
+docker exec sigap-php php artisan bukti:periksa-tautan
+
 # 7. Aset frontend
 docker exec -w /var/www/html/sigap laravel-node22 npm run build
 ```
@@ -94,6 +98,11 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
 - **Jumlah `bobot_terkait` satu periode harus tetap 100,000.** Progres dihitung
   dari bobot, jadi selisih di sini muncul sebagai persentase yang salah di
   dasbor ketua.
+- **Bukti dinilai pada dua sumbu terpisah.** `akses_status` diperiksa mesin
+  tanpa kredensial apa pun — meniru asesor yang tidak punya akses; memakai
+  kredensial membuat pemeriksaan selalu lulus dan tidak berguna.
+  `validasi_status` dinilai manusia. Keduanya harus hijau sebelum tagihan bisa
+  disetujui, dan alasan penolakannya disebut satu per satu.
 - **Isi `storage/app/bukti/` tidak pernah masuk riwayat git.** Isinya nama
   dosen, nomor serdik, dan dokumen bertanda tangan.
 
@@ -107,7 +116,7 @@ terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 | 1 | Fondasi: login, peran, prodi, periode, pokja, matriks izin | **selesai** |
 | 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 28 butir DKPS | **selesai** |
 | 3 | Tagihan, penugasan, alur status, riwayat | **selesai** |
-| 4 | Bukti, tautan Drive, narasi LED | belum |
+| 4 | Bukti, tautan Drive, narasi LED | **selesai** |
 | 5 | DKPS dan perhitungan rumus | belum |
 | 6 | Dasbor progres | belum |
 | 7 | Uji, seed contoh, serah terima | belum |
