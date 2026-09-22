@@ -43,7 +43,10 @@ foreach (["db_sigap", "db_sigap_test"] as $d) {
 # 5. Migrasi dan data awal
 docker exec sigap-php php artisan migrate:fresh --seed
 
-# 6. Aset frontend
+# 6. Bangkitkan tagihan untuk periode itu (137 tagihan, bobot total 100,000)
+docker exec sigap-php php artisan tagihan:bangkitkan "PPG 2027"
+
+# 7. Aset frontend
 docker exec -w /var/www/html/sigap laravel-node22 npm run build
 ```
 
@@ -85,6 +88,12 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
 - **Otorisasi diputuskan di satu tempat**: `app/Support/Izin.php` yang membaca
   `data/izin.json`. Tidak ada perbandingan peran di tempat lain, tidak ada
   `Gate::before`, tidak ada peran super.
+- **Status tagihan hanya berpindah lewat `AlurTagihan::pindah()`.** Kolomnya
+  tidak fillable. Setiap perpindahan menulis satu baris `tagihan_riwayat`, dan
+  riwayat itu menolak disunting maupun dihapus.
+- **Jumlah `bobot_terkait` satu periode harus tetap 100,000.** Progres dihitung
+  dari bobot, jadi selisih di sini muncul sebagai persentase yang salah di
+  dasbor ketua.
 - **Isi `storage/app/bukti/` tidak pernah masuk riwayat git.** Isinya nama
   dosen, nomor serdik, dan dokumen bertanda tangan.
 
@@ -97,7 +106,7 @@ terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
 |---|---|---|
 | 1 | Fondasi: login, peran, prodi, periode, pokja, matriks izin | **selesai** |
 | 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 28 butir DKPS | **selesai** |
-| 3 | Tagihan, penugasan, alur status, riwayat | belum |
+| 3 | Tagihan, penugasan, alur status, riwayat | **selesai** |
 | 4 | Bukti, tautan Drive, narasi LED | belum |
 | 5 | DKPS dan perhitungan rumus | belum |
 | 6 | Dasbor progres | belum |
