@@ -54,13 +54,13 @@ class NilaiRumusesTable
             ->filters([
                 Filter::make('terakhir')->label('Hanya hasil terakhir tiap rumus')
                     ->default()
-                    ->query(function (Builder $q) {
+                    ->query(function (Builder $query) {
                         $periode = Periode::aktif()->first();
 
-                        return $periode === null ? $q : $q->terakhir($periode->id);
+                        return $periode === null ? $query : $query->terakhir($periode->id);
                     }),
                 Filter::make('syarat_perlu')->label('Hanya rumus terkait syarat perlu')
-                    ->query(fn (Builder $q) => $q->whereNotNull('memenuhi_syarat_5_tahun')),
+                    ->query(fn (Builder $query) => $query->whereNotNull('memenuhi_syarat_5_tahun')),
             ])
             ->defaultSort('dihitung_pada', 'desc')
             ->emptyStateHeading('Belum ada perhitungan')

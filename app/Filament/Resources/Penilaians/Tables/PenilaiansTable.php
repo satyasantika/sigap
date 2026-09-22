@@ -56,9 +56,9 @@ class PenilaiansTable
                     ->options([1 => '1', 2 => '2', 3 => '3', 4 => '4']),
                 SelectFilter::make('penilai_id')->label('Penilai')->relationship('penilai', 'nama_lengkap'),
                 Filter::make('syarat_perlu')->label('Hanya elemen syarat perlu')
-                    ->query(fn (Builder $q) => $q->whereHas('elemen', fn (Builder $e) => $e->where('syarat_perlu', true))),
+                    ->query(fn (Builder $query) => $query->whereHas('elemen', fn (Builder $e) => $e->where('syarat_perlu', true))),
                 Filter::make('diperselisihkan')->label('Diperselisihkan antarpenilai')
-                    ->query(fn (Builder $q) => $q->whereIn('elemen_id', function ($sub) {
+                    ->query(fn (Builder $query) => $query->whereIn('elemen_id', function ($sub) {
                         $sub->select('elemen_id')->from('penilaian')
                             ->whereNull('deleted_at')
                             ->groupBy('elemen_id', 'periode_id')

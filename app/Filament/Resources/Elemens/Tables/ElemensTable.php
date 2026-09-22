@@ -46,7 +46,7 @@ class ElemensTable
                         ->distinct()->orderBy('pokja_kode')->pluck('pokja_kode', 'pokja_kode')->all()
                 ),
                 Filter::make('syarat_perlu')->label('Hanya syarat perlu')
-                    ->query(fn (Builder $q) => $q->where('syarat_perlu', true)),
+                    ->query(fn (Builder $query) => $query->where('syarat_perlu', true)),
             ])
             ->recordActions([ViewAction::make()->label('Lihat')])
             ->defaultSort('no')

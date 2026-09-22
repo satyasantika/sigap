@@ -63,16 +63,16 @@ class TagihansTable
                     ->searchable(),
                 SelectFilter::make('kriteria')->label('Kriteria')
                     ->options(fn () => Kriteria::orderBy('urutan')->pluck('kode', 'id')->all())
-                    ->query(fn (Builder $q, array $data) => $q->when(
+                    ->query(fn (Builder $query, array $data) => $query->when(
                         $data['value'] ?? null,
-                        fn (Builder $q, $v) => $q->whereHas('elemen', fn (Builder $e) => $e->where('kriteria_id', $v)),
+                        fn (Builder $query, $v) => $query->whereHas('elemen', fn (Builder $e) => $e->where('kriteria_id', $v)),
                     )),
                 Filter::make('terlambat')->label('Hanya yang terlambat')
-                    ->query(fn (Builder $q) => $q->terlambat()),
+                    ->query(fn (Builder $query) => $query->terlambat()),
                 Filter::make('syarat_perlu')->label('Hanya elemen syarat perlu')
-                    ->query(fn (Builder $q) => $q->whereHas('elemen', fn (Builder $e) => $e->where('syarat_perlu', true))),
+                    ->query(fn (Builder $query) => $query->whereHas('elemen', fn (Builder $e) => $e->where('syarat_perlu', true))),
                 Filter::make('tanpa_pj')->label('Belum ditugaskan')
-                    ->query(fn (Builder $q) => $q->whereNull('penanggung_jawab_id')),
+                    ->query(fn (Builder $query) => $query->whereNull('penanggung_jawab_id')),
             ])
             ->recordActions([
                 ViewAction::make()->label('Lihat'),

@@ -59,17 +59,17 @@ class BuktisTable
                 SelectFilter::make('akses_status')->label('Keterbacaan')->options(AksesTautan::pilihan())->multiple(),
                 SelectFilter::make('validasi_status')->label('Keabsahan')->options(ValidasiBukti::pilihan())->multiple(),
                 Filter::make('bermasalah')->label('Tidak bisa dibuka asesor')
-                    ->query(fn (Builder $q) => $q->bermasalah()),
+                    ->query(fn (Builder $query) => $query->bermasalah()),
                 Filter::make('perlu_ditinjau')->label('Antre divalidasi')
-                    ->query(fn (Builder $q) => $q->perluDitinjau()),
+                    ->query(fn (Builder $query) => $query->perluDitinjau()),
                 Filter::make('tanggal_kejadian')
                     ->schema([
                         DatePicker::make('dari')->label('Dari tanggal')->native(false),
                         DatePicker::make('sampai')->label('Sampai tanggal')->native(false),
                     ])
-                    ->query(fn (Builder $q, array $data) => $q
-                        ->when($data['dari'] ?? null, fn (Builder $q, $v) => $q->whereDate('tanggal_kejadian', '>=', $v))
-                        ->when($data['sampai'] ?? null, fn (Builder $q, $v) => $q->whereDate('tanggal_kejadian', '<=', $v))),
+                    ->query(fn (Builder $query, array $data) => $query
+                        ->when($data['dari'] ?? null, fn (Builder $query, $v) => $query->whereDate('tanggal_kejadian', '>=', $v))
+                        ->when($data['sampai'] ?? null, fn (Builder $query, $v) => $query->whereDate('tanggal_kejadian', '<=', $v))),
             ])
             ->recordActions([
                 ViewAction::make()->label('Lihat'),

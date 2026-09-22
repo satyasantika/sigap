@@ -59,17 +59,17 @@ class NarasisTable
             ->filters([
                 SelectFilter::make('kriteria')->label('Kriteria')
                     ->options(fn () => Kriteria::orderBy('urutan')->pluck('kode', 'id')->all())
-                    ->query(fn (Builder $q, array $data) => $q->when(
+                    ->query(fn (Builder $query, array $data) => $query->when(
                         $data['value'] ?? null,
-                        fn (Builder $q, $v) => $q->whereHas('elemen', fn (Builder $e) => $e->where('kriteria_id', $v)),
+                        fn (Builder $query, $v) => $query->whereHas('elemen', fn (Builder $e) => $e->where('kriteria_id', $v)),
                     )),
                 Filter::make('kurang_kata')->label('Di bawah 200 kata')
-                    ->query(fn (Builder $q) => $q->where('jumlah_kata', '<', PengelolaNarasi::MINIMAL_KATA)),
+                    ->query(fn (Builder $query) => $query->where('jumlah_kata', '<', PengelolaNarasi::MINIMAL_KATA)),
                 Filter::make('tanpa_bukti')->label('Belum punya bukti')
-                    ->query(fn (Builder $q) => $q->whereDoesntHave('elemen', fn (Builder $e) => $e
+                    ->query(fn (Builder $query) => $query->whereDoesntHave('elemen', fn (Builder $e) => $e
                         ->whereHas('bukti'))),
                 Filter::make('syarat_perlu')->label('Hanya elemen syarat perlu')
-                    ->query(fn (Builder $q) => $q->whereHas('elemen', fn (Builder $e) => $e->where('syarat_perlu', true))),
+                    ->query(fn (Builder $query) => $query->whereHas('elemen', fn (Builder $e) => $e->where('syarat_perlu', true))),
             ])
             ->defaultSort('elemen.no')
             ->paginated([25, 59, 100])

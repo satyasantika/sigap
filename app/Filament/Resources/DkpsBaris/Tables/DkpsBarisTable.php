@@ -54,12 +54,12 @@ class DkpsBarisTable
                     ->options(['TS' => 'TS', 'TS-1' => 'TS-1', 'TS-2' => 'TS-2', 'TS-3' => 'TS-3', 'TS-4' => 'TS-4']),
                 SelectFilter::make('sumber')->label('Sumber')->options(SumberData::pilihan()),
                 Filter::make('belum_diverifikasi')->label('Belum diverifikasi')
-                    ->query(fn (Builder $q) => $q->whereNull('diverifikasi_pada')),
+                    ->query(fn (Builder $query) => $query->whereNull('diverifikasi_pada')),
                 Filter::make('calon_selisih')->label('Manual, seharusnya dari SIAKAD')
-                    ->query(fn (Builder $q) => $q->where('sumber', SumberData::Manual)
+                    ->query(fn (Builder $query) => $query->where('sumber', SumberData::Manual)
                         ->whereHas('butir', fn (Builder $b) => $b->whereIn('no', DkpsBaris::BUTIR_DARI_SIAKAD))),
                 Filter::make('tanpa_bukti')->label('Belum punya bukti')
-                    ->query(fn (Builder $q) => $q->whereDoesntHave('bukti')),
+                    ->query(fn (Builder $query) => $query->whereDoesntHave('bukti')),
             ])
             ->recordActions([
                 ViewAction::make()->label('Lihat'),
