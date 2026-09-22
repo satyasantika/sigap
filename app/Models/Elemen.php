@@ -47,6 +47,11 @@ class Elemen extends Model
         return $this->hasMany(Rumus::class);
     }
 
+    public function tagihan(): HasMany
+    {
+        return $this->hasMany(Tagihan::class);
+    }
+
     /**
      * Sengaja TIDAK dinamai scopeSyaratPerlu: namanya akan bertabrakan dengan
      * relasi syaratPerlu() di atas, dan Eloquent memilih relasinya lebih dulu.

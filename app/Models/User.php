@@ -61,6 +61,11 @@ class User extends Authenticatable implements FilamentUser
             ->withPivot('peran_dalam_pokja');
     }
 
+    public function tagihan(): HasMany
+    {
+        return $this->hasMany(Tagihan::class, 'penanggung_jawab_id');
+    }
+
     /** Pokja yang dikoordinasi pengguna ini. */
     public function pokjaDikoordinasi(): HasMany
     {

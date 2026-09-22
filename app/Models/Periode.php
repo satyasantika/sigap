@@ -40,6 +40,11 @@ class Periode extends Model
         return $this->hasMany(Pokja::class);
     }
 
+    public function tagihan(): HasMany
+    {
+        return $this->hasMany(Tagihan::class);
+    }
+
     /** Periode yang sedang dikerjakan. */
     public function scopeAktif(Builder $q): Builder
     {
