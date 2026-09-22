@@ -38,6 +38,19 @@ return [
             'report' => false,
         ],
 
+        // SIGAP: seluruh bukti akreditasi mendarat di sini. Sengaja privat —
+        // isinya nama dosen, nomor serdik, dan dokumen bertanda tangan.
+        // Disiapkan agar mudah dipindah ke S3 tanpa mengubah pemanggilnya.
+        'bukti' => [
+            'driver' => 'local',
+            'root' => storage_path('app/bukti'),
+            // TIDAK disajikan lewat URL publik. Bukti hanya boleh keluar lewat
+            // pengendali yang memeriksa Policy lebih dulu (tahap 4).
+            'serve' => false,
+            'throw' => false,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
