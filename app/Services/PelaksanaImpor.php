@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Bukti;
+use App\Models\DkpsBaris;
 use App\Models\ImporBatch;
 use App\Models\Periode;
 use App\Models\User;
@@ -113,17 +114,25 @@ class PelaksanaImpor
             $idDibuat = collect($batch->ringkasan['dibuat'] ?? [])->pluck('id')->all();
 
             if ($idDibuat !== []) {
+                // Dihapus dari kedua sasaran: profil bukti mendarat di `bukti`,
+                // keempat profil DKPS mendarat di `dkps_baris`. Id-nya UUID,
+                // jadi tidak mungkin bertabrakan antartabel.
                 Bukti::whereIn('id', $idDibuat)->delete();
+                DkpsBaris::whereIn('id', $idDibuat)->delete();
             }
 
             // withTrashed() penting di sini: tanpa itu, baris yang terlanjur
             // terhapus pada versi sebelumnya tidak akan pernah dikembalikan
             // karena kuerinya menyaringnya lebih dulu.
             foreach ($batch->ringkasan['sebelum'] ?? [] as $catatan) {
+                $nilai = collect($catatan['nilai']);
+
                 Bukti::withTrashed()->where('id', $catatan['id'])->update(
-                    collect($catatan['nilai'])
-                        ->only(['judul', 'keterangan', 'tanggal_kejadian', 'sumber'])
-                        ->all()
+                    $nilai->only(['judul', 'keterangan', 'tanggal_kejadian', 'sumber'])->all()
+                );
+
+                DkpsBaris::withTrashed()->where('id', $catatan['id'])->update(
+                    $nilai->only(['data', 'sumber', 'kunci_normal'])->all()
                 );
             }
 
@@ -146,7 +155,8 @@ class PelaksanaImpor
         // yang baru dibuat, sehingga `updated_at > created_at` tidak pernah
         // benar dan pembatalan akan tetap terbuka selamanya.
         foreach ($batch->ringkasan['dibuat'] ?? [] as $catatan) {
-            $baris = Bukti::withTrashed()->find($catatan['id']);
+            $baris = Bukti::withTrashed()->find($catatan['id'])
+                ?? DkpsBaris::withTrashed()->find($catatan['id']);
 
             if ($baris === null) {
                 continue;
