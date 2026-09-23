@@ -245,6 +245,42 @@ docker exec sigap-php grep -n SIGAP-7KQ3M2XA storage/logs/laravel.log
 Halaman 500 hanya muncul bila `APP_DEBUG=false`. Di lingkungan pengembangan
 Laravel menampilkan jejak tumpukan, dan itu memang lebih berguna.
 
+### Tur terpandu dan demo hidup
+
+Selain manual, ada dua jalan lain mengenal SIGAP, keduanya bergerbang dari
+halaman muka:
+
+| | Alamat | Perlu apa | Menjawab |
+|---|---|---|---|
+| **Tur terpandu** | `/tur` | tidak perlu apa-apa | "saya harus mulai dari mana" |
+| **Demo hidup** | `/demo` | kode akses dari admin | "bagaimana rasanya memakainya" |
+
+Tur dibangkitkan dari `docs/manual/tur.json` — sumber yang sama dengan manual,
+jadi keduanya berubah bersama. Ia tidak menyentuh basis data sama sekali.
+
+Demo memberi **sesi sungguhan** di dalam aplikasi, jadi ia bergerbang kode.
+Admin membukanya dari layar **Penilaian &rsaquo; Simulasi**, pada simulasi
+berjenis *periode latihan*:
+
+1. Buat periode latihan (menyalin kerangka periode sungguhan: pokja + 137 tagihan).
+2. Tekan **Buka demo**, tentukan masa berlakunya (maksimal 90 hari).
+3. Bagikan kodenya — berbentuk `DEMO-XXXXXX`, tanpa huruf yang mudah tertukar
+   saat didiktekan lewat telepon.
+4. **Tutup demo** mencabut kode dan menghapus seluruh akun demonya. Membuang
+   periode latihannya melakukan keduanya sekaligus.
+
+Yang menjaga demo tetap aman, dan tidak boleh dilonggarkan:
+
+- Sesi demo hanya melihat periode demonya. Tidak ada satu baris pun dari periode
+  sungguhan yang terjangkau — dijaga global scope `TerikatPeriode`.
+- **Tidak ada akun demo berperan admin.** Wewenang admin menyentuh pengguna,
+  prodi, dan periode, dan tidak satu pun dari itu terikat periode.
+- Akun demo tidak muncul di daftar Pengguna, tidak bisa ditiru, dan tidak bisa
+  ditugaskan tagihan sungguhan.
+- `php artisan sigap:cek-kesiapan` menyebutkan demo yang sedang terbuka dan
+  **menggagalkan** pemeriksaan bila ada demo kedaluwarsa yang akunnya belum
+  dicabut.
+
 ### Manual pengguna
 
 Enam manual bergambar, satu per peran, ada di [`docs/manual/`](docs/manual/) dan
@@ -380,6 +416,7 @@ atas MariaDB 10.11 pada setiap dorongan dan setiap pull request.
 | + | Menu per peran dan halaman galat yang menjelaskan | **selesai** |
 | + | Halaman muka publik dengan tautan ke manual | **selesai** |
 | + | Kesiapan penggelaran: subfolder, pemeriksa, GitHub Actions | **selesai** |
+| + | Pemisahan periode, tur terpandu, dan demo hidup bergerbang kode | **selesai** |
 
 ## Sebelum menyerahkan ke orang lain
 

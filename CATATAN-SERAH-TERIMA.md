@@ -436,6 +436,66 @@ Dua jebakan yang sudah dihindari dan mudah dilupakan:
   suatu saat ada `forceDelete()` lain, ia akan menembus seluruh pengaman ini
   tanpa suara.
 
+### 4.16 Periode latihan sempat bocor ke layar kerja sungguhan
+
+Fitur periode sandbox menandai dirinya dengan `periode.simulasi`, dan
+`Periode::scopeAktif()` mengecualikannya — tetapi scope itu menjawab "periode
+mana yang sedang berjalan", bukan "baris mana yang muncul di daftar". Tidak ada
+satu pun Resource yang menyaring menurut periode.
+
+Akibatnya terukur: satu periode latihan membuat ketua melihat **274 tagihan
+alih-alih 137**, bercampur tanpa penanda apa pun. Fitur yang dimaksudkan sebagai
+tempat berlatih justru merusak layar yang dipakai bekerja, dan tidak ada galat
+apa pun yang menandainya.
+
+Penyebabnya bukan kecerobohan satu tempat. `TagihanResource::getEloquentQuery()`
+menyaring menurut peran dengan sangat rapi — penyaringan periode memang belum
+terpikir saat itu ditulis, karena periode simulasi belum ada. Delapan Resource
+yang harus mengingat adalah delapan tempat yang bisa terlewat, jadi
+penjagaannya sekarang berupa global scope `TerikatPeriode`, bukan catatan.
+
+Dua hal yang wajib diingat tentang scope itu:
+
+- **Layanan yang menerima periode sebagai parameter harus memakai
+  `LingkupPeriode::paksa()`.** Tanpa itu `Simulator::buatSandbox()` gagal dengan
+  "periode belum punya pokja": pokja yang baru saja ia buat tidak terlihat
+  olehnya sendiri, karena admin terikat periode sungguhan. Ini sudah terjadi
+  sekali saat scope-nya dipasang.
+- **Akun demo tidak pernah jatuh kembali ke periode sungguhan.** Akun demo yang
+  periodenya sudah dibuang adalah akun yatim; ia melihat kosong, bukan
+  diam-diam berubah menjadi pengguna biasa. Versi pertama kode ini salah di
+  titik itu, dan ujinya yang menangkap.
+
+### 4.17 Demo hidup adalah fitur paling berisiko di SIGAP
+
+Ia memberi **sesi sungguhan di dalam aplikasi** kepada orang di luar organisasi.
+Setiap pagar di bawah ini menahan sesuatu yang konkret; melonggarkan salah
+satunya tidak akan menimbulkan gejala sampai ada yang mencarinya.
+
+| Pagar | Yang ditahannya |
+|---|---|
+| Kode akses + masa berlaku | sesi anonim untuk siapa pun di internet |
+| `TerikatPeriode` | sesi demo membaca data akreditasi sungguhan |
+| Aksi `demo.coba` (admin `tidak`) | demo admin menyunting pengguna sungguhan |
+| `User::scopeBisaDitugaskan` | akun demo ditugaskan tagihan sungguhan lalu lenyap |
+| `Impersonasi` menolak akun demo | jejak penyamaran yang menggantung |
+| `UserResource` menyembunyikannya | admin mengira ada enam pengguna yang tak ia buat |
+
+Yang paling mudah terlupa justru bukan salah satu di atas, melainkan **demo
+yang dibuat sekali lalu dilupakan**. Ia tidak menimbulkan gejala apa pun, dan
+kodenya tetap berlaku sampai ada yang menutupnya. Karena itu masa berlaku wajib
+diisi saat membuka, dan `sigap:cek-kesiapan` menyebutkan demo yang terbuka
+sekaligus menggagalkan pemeriksaan bila ada yang kedaluwarsa tetapi akunnya
+belum dicabut.
+
+Satu batas yang disengaja dan bisa terasa seperti kekurangan: **peran
+administrator sistem tidak bisa didemokan.** Wewenangnya menyentuh pengguna,
+prodi, dan periode — tidak satu pun terikat periode, jadi tidak ada cara
+mengurungnya di dalam periode latihan. Peran itu dipelajari lewat tur terpandu.
+Bila suatu saat ada yang ingin "sekalian demo admin juga", jawabannya bukan
+melonggarkan `demo.coba` melainkan mengikat data admin ke periode lebih dulu —
+dan itu pekerjaan yang jauh lebih besar daripada kelihatannya.
+
 ---
 
 ## 5. Pertentangan dalam dokumen yang ditemukan, dan cara menanganinya
