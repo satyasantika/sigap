@@ -3,7 +3,8 @@
  "prinsip": [
   "Impersonasi dan simulasi bukan wewenang atas isi akreditasi, melainkan atas sistem. Karena itu keduanya milik admin, bukan ketua.",
   "Tetap tidak ada peran super. Admin yang sedang menyamar memegang wewenang peran yang ditirunya, bukan gabungan keduanya.",
-  "Auditor boleh MEMBACA log aktivitas dan hasil simulasi, tidak boleh mengubah apa pun — sesuai sifat perannya di izin.json."
+  "Auditor boleh MEMBACA log aktivitas dan hasil simulasi, tidak boleh mengubah apa pun — sesuai sifat perannya di izin.json.",
+  "Peran admin TIDAK bisa dicoba lewat demo. Wewenangnya menyentuh pengguna, prodi, dan periode — dan tidak satu pun dari itu terikat pada satu periode, jadi LingkupPeriode tidak bisa mengurungnya di dalam periode latihan. Demo admin akan menyunting data sungguhan."
  ],
  "lingkup": {
   "ya": "Diizinkan.",
@@ -56,6 +57,16 @@
    "pimpinan": "ya",
    "koordinator": "tidak",
    "anggota": "tidak",
+   "auditor": "ya"
+  },
+  {
+   "kode": "demo.coba",
+   "label": "Boleh dicoba lewat demo",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "ya",
+   "koordinator": "ya",
+   "anggota": "ya",
    "auditor": "ya"
   }
  ]
