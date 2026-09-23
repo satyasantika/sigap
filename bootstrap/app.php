@@ -13,7 +13,22 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        /*
+         * SIGAP dipasang di belakang server balik fakultas
+         * (https://supportfkip.unsil.ac.id/sigap). Tanpa ini Laravel membaca
+         * skema dari sambungan ke PHP — yang HTTP polos — lalu membangun
+         * tautan http:// di halaman https://, dan peramban memblokirnya.
+         *
+         * Daftar proksinya diambil dari TRUSTED_PROXIES. Isi '*' berarti
+         * mempercayai header X-Forwarded-* dari siapa pun yang bisa menjangkau
+         * PHP; itu aman HANYA bila PHP tidak terbuka langsung ke jaringan.
+         * Bila ragu, tulis alamat IP proksinya.
+         */
+        $proksi = env('TRUSTED_PROXIES');
+
+        if (filled($proksi)) {
+            $middleware->trustProxies(at: $proksi === '*' ? '*' : explode(',', $proksi));
+        }
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
