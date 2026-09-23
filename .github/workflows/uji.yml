@@ -1,0 +1,57 @@
+# Menjalankan seluruh uji sebelum penggelaran diizinkan.
+#
+# SIGAP menguji di atas MariaDB, bukan SQLite, dan itu bukan pilihan gaya:
+# whereJsonContains() lulus di SQLite tetapi gagal di MariaDB, jadi uji di atas
+# SQLite akan meloloskan kueri yang rusak di produksi.
+name: Uji sigap
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+jobs:
+  uji:
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: db_sigap_test
+        ports: [ '3306:3306' ]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Siapkan PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, bcmath, intl, zip, gd
+          coverage: none
+
+      - name: Pasang dependensi PHP
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Siapkan .env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          sed -i 's/^DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+          sed -i 's/^DB_DATABASE=.*/DB_DATABASE=db_sigap_test/' .env
+          sed -i 's/^DB_USERNAME=.*/DB_USERNAME=root/' .env
+          sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=root/' .env
+
+      - name: Bangun aset frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Verifikasi data instrumen
+        run: python3 data/verifikasi.py
+
+      - name: Jalankan uji
+        run: php artisan test
