@@ -7,6 +7,7 @@ use App\Filament\Resources\DkpsButirs\Pages\ViewDkpsButir;
 use App\Filament\Resources\DkpsButirs\Schemas\DkpsButirInfolist;
 use App\Filament\Resources\DkpsButirs\Tables\DkpsButirsTable;
 use App\Models\DkpsButir;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -41,6 +42,17 @@ class DkpsButirResource extends Resource
     public static function table(Table $table): Table
     {
         return DkpsButirsTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'dkps_butir');
     }
 
     public static function getPages(): array

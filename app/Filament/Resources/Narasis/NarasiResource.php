@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Narasis;
 use App\Filament\Resources\Narasis\Pages\ListNarasis;
 use App\Filament\Resources\Narasis\Tables\NarasisTable;
 use App\Models\Narasi;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
@@ -38,6 +39,17 @@ class NarasiResource extends Resource
     public static function table(Table $table): Table
     {
         return NarasisTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'narasi');
     }
 
     public static function getPages(): array

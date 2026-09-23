@@ -8,6 +8,7 @@ use App\Filament\Resources\Pokjas\Pages\ListPokjas;
 use App\Filament\Resources\Pokjas\Schemas\PokjaForm;
 use App\Filament\Resources\Pokjas\Tables\PokjasTable;
 use App\Models\Pokja;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -39,6 +40,17 @@ class PokjaResource extends Resource
     public static function table(Table $table): Table
     {
         return PokjasTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'pokja');
     }
 
     public static function getPages(): array

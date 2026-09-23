@@ -7,6 +7,7 @@ use App\Filament\Resources\Rumuses\Pages\ViewRumus;
 use App\Filament\Resources\Rumuses\Schemas\RumusInfolist;
 use App\Filament\Resources\Rumuses\Tables\RumusesTable;
 use App\Models\Rumus;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -41,6 +42,17 @@ class RumusResource extends Resource
     public static function table(Table $table): Table
     {
         return RumusesTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'rumus');
     }
 
     public static function getPages(): array

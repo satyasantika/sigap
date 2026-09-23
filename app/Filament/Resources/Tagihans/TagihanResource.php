@@ -83,6 +83,17 @@ class TagihanResource extends Resource
         };
     }
 
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'tagihan');
+    }
+
     public static function getPages(): array
     {
         return [

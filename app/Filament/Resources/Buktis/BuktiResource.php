@@ -10,6 +10,7 @@ use App\Filament\Resources\Buktis\Schemas\BuktiForm;
 use App\Filament\Resources\Buktis\Schemas\BuktiInfolist;
 use App\Filament\Resources\Buktis\Tables\BuktisTable;
 use App\Models\Bukti;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -48,6 +49,17 @@ class BuktiResource extends Resource
     public static function table(Table $table): Table
     {
         return BuktisTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'bukti');
     }
 
     public static function getPages(): array

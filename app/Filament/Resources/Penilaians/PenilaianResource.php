@@ -6,6 +6,7 @@ use App\Filament\Resources\Penilaians\Pages\ListPenilaians;
 use App\Filament\Resources\Penilaians\Schemas\PenilaianForm;
 use App\Filament\Resources\Penilaians\Tables\PenilaiansTable;
 use App\Models\Penilaian;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -43,6 +44,17 @@ class PenilaianResource extends Resource
     public static function table(Table $table): Table
     {
         return PenilaiansTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'penilaian');
     }
 
     public static function getPages(): array

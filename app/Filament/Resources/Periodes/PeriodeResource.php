@@ -8,6 +8,7 @@ use App\Filament\Resources\Periodes\Pages\ListPeriodes;
 use App\Filament\Resources\Periodes\Schemas\PeriodeForm;
 use App\Filament\Resources\Periodes\Tables\PeriodesTable;
 use App\Models\Periode;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -39,6 +40,17 @@ class PeriodeResource extends Resource
     public static function table(Table $table): Table
     {
         return PeriodesTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'periode');
     }
 
     public static function getPages(): array

@@ -85,4 +85,15 @@ class MatriksIzin extends Page
         // Setiap orang yang bisa membuka dasbor boleh melihat aturannya.
         return auth()->check() && Izin::boleh(auth()->user(), 'dasbor.lihat');
     }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: canAccess() di atas yang menolak.
+     * Lihat App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canAccess() && Izin::bolehMenu(auth()->user(), 'matriks_izin');
+    }
 }

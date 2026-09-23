@@ -7,6 +7,7 @@ use App\Filament\Resources\Kriterias\Pages\ViewKriteria;
 use App\Filament\Resources\Kriterias\Schemas\KriteriaInfolist;
 use App\Filament\Resources\Kriterias\Tables\KriteriasTable;
 use App\Models\Kriteria;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -41,6 +42,17 @@ class KriteriaResource extends Resource
     public static function table(Table $table): Table
     {
         return KriteriasTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'kriteria');
     }
 
     public static function getPages(): array

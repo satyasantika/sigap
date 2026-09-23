@@ -9,6 +9,7 @@ use App\Filament\Resources\DkpsBaris\Pages\ViewDkpsBaris;
 use App\Filament\Resources\DkpsBaris\Schemas\DkpsBarisForm;
 use App\Filament\Resources\DkpsBaris\Tables\DkpsBarisTable;
 use App\Models\DkpsBaris as ModelDkpsBaris;
+use App\Support\Izin;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -40,6 +41,17 @@ class DkpsBarisResource extends Resource
     public static function table(Table $table): Table
     {
         return DkpsBarisTable::configure($table);
+    }
+
+    /**
+     * Menu ini muncul hanya bagi peran yang memang mengurusnya.
+     *
+     * Menyembunyikan, bukan menolak: penolakannya tetap milik Policy. Lihat
+     * App\Support\Izin::bolehMenu() dan data/menu.json.
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && Izin::bolehMenu(auth()->user(), 'dkps_baris');
     }
 
     public static function getPages(): array
