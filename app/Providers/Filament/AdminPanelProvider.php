@@ -3,7 +3,9 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\Masuk;
+use App\Filament\Sistem\MenuPengguna;
 use App\Http\Middleware\PaksaGantiSandi;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -11,6 +13,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -33,6 +36,15 @@ class AdminPanelProvider extends PanelProvider
             // Lihat vibecoding/docs/08-auth-dan-izin.md bagian 1.
             ->profile(isSimple: false)
             ->brandName('SIGAP')
+            // Tema terang adalah bawaan (CLAUDE.md bagian 7 butir 10). Penukar
+            // tema tetap ada — yang ditetapkan di sini adalah tampilan pertama
+            // bagi pengguna baru, bukan larangan memakai tema gelap. Sebagian
+            // besar pekerjaan SIGAP dilakukan siang hari di ruang kerja terang,
+            // dan tangkapan layar pada manual pengguna dibuat dengan tema ini.
+            ->defaultThemeMode(ThemeMode::Light)
+            // Tanpa tema sendiri, kelas Tailwind di Blade kita tidak ikut
+            // terkompilasi dan dasbor bento tampil sebagai teks polos.
+            ->viteTheme('resources/css/filament/panel/theme.css')
             ->colors([
                 'primary' => Color::Emerald,
             ])
@@ -62,6 +74,17 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            // Menu keluar diganti: selalu meminta konfirmasi, dan menyediakan
+            // "Kembali ke akun saya" selama penyamaran berjalan.
+            ->userMenuItems(MenuPengguna::item())
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_BEFORE,
+                fn (): string => view('sigap.spanduk-impersonasi')->render(),
+            )
+            ->renderHook(
+                PanelsRenderHook::FOOTER,
+                fn (): string => view('sigap.footer')->render(),
+            )
             ->authMiddleware([
                 Authenticate::class,
                 PaksaGantiSandi::class,
