@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\KodeRujukan;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,4 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        /*
+         * Kode rujukan ikut ke SETIAP baris log galat, dan kode yang sama
+         * ditampilkan halaman 500. Itulah gunanya: laporan "tadi pagi error"
+         * berubah menjadi `grep SIGAP-7KQ3M2XA storage/logs`.
+         *
+         * KodeRujukan mengingat nilainya per permintaan, jadi satu permintaan
+         * yang memicu beberapa baris log tetap membawa satu kode.
+         */
+        $exceptions->context(fn (): array => ['kode_rujukan' => KodeRujukan::kode()]);
     })->create();
