@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\StatusTagihan;
 use App\Exceptions\RiwayatTidakBolehDiubah;
+use App\Models\Concerns\MencatatImpersonasi;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class TagihanRiwayat extends Model
 {
-    use HasUuids;
+    use HasUuids, MencatatImpersonasi;
 
     protected $table = 'tagihan_riwayat';
 

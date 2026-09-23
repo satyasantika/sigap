@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Enums\PeranPengguna;
+use App\Filament\Actions\AksiMasukSebagai;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -34,7 +35,10 @@ class UsersTable
                     ->falseLabel('Hanya yang nonaktif')
                     ->placeholder('Semua'),
             ])
-            ->recordActions([EditAction::make()->label('Sunting')])
+            ->recordActions([
+                EditAction::make()->label('Sunting'),
+                AksiMasukSebagai::buat(),
+            ])
             ->defaultSort('nama_lengkap')
             ->emptyStateHeading('Belum ada pengguna')
             ->emptyStateDescription('Pengguna dibuat di sini oleh admin. Tidak ada pendaftaran mandiri.');
