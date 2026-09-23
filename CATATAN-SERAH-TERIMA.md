@@ -400,6 +400,42 @@ sadar: server balik yang memangkas `/sigap` sebelum meneruskan ke PHP tidak
 meninggalkan jejak yang bisa diandalkan, dan menebaknya dari `X-Forwarded-*`
 berarti menaruh kepercayaan pada header yang bisa dipalsukan.
 
+### 4.15 Aturan 8 sempat dipenuhi sebagian, tanpa satu pun uji
+
+Sampai pemeriksaan ini, sembilan tabel memang sudah memakai hapus lunak dan
+tiga tabel riwayat memang sudah menolak dihapus — semuanya bekerja. Yang tidak
+ada: satu pun uji yang membuktikannya. `assertSoftDeleted` hanya muncul sekali
+di seluruh berkas uji, dan itu pun untuk `simulasi`.
+
+Akibatnya empat tabel lolos tanpa pengaman apa pun — `nilai_rumus`,
+`status_syarat_perlu`, `impor_batch`, `impersonasi_sesi` — ditambah `komentar`.
+Tidak ada yang menghapusnya hari ini, jadi tidak ada gejala. Bahayanya justru
+itu: satu `DeleteAction` yang ditambahkan enam bulan lagi akan menghapusnya
+permanen, dan tidak ada yang akan menyadarinya sampai ada yang mencari baris
+yang sudah tidak ada.
+
+Yang menjaga sekarang: `PenghapusanDataTest` memuat daftar lengkap semua model
+beserta nasibnya, dan **menolak model baru yang belum didaftarkan**. Menambah
+model tanpa memutuskan nasibnya membuat ujinya merah.
+
+Dua jebakan yang sudah dihindari dan mudah dilupakan:
+
+- **Kendala unik bertabrakan dengan hapus lunak.** `status_syarat_perlu` punya
+  `unique(periode_id, elemen_id)`. Bila ia dibuat hapus-lunak, satu baris
+  terhapus akan menghalangi `updateOrCreate` di layar Syarat Perlu dengan galat
+  SQL mentah. Karena itu ia menolak dihapus, bukan dihapus lunak. Jebakan yang
+  sama mengintai `prodi.kode`, `periode(prodi_id, nama)`, `pokja(periode_id,
+  kode)`, dan `users.email` — semuanya sudah hapus-lunak, jadi nama yang sama
+  tidak bisa dipakai ulang selama barisnya masih tersimpan. Validasi Laravel
+  menahannya dengan pesan "sudah dipakai" atas baris yang tidak kelihatan di
+  layar; bila ada yang melapor bingung, itu sebabnya.
+- **Penghapusan berantai basis data melewati peristiwa model.** `MenolakDihapus`
+  dipasang lewat `deleting`, jadi ia tidak menahan `cascadeOnDelete`.
+  Satu-satunya yang memicunya adalah `forceDelete()` atas periode sandbox di
+  `Simulator`, dan membuang periode latihan beserta isinya memang gunanya. Bila
+  suatu saat ada `forceDelete()` lain, ia akan menembus seluruh pengaman ini
+  tanpa suara.
+
 ---
 
 ## 5. Pertentangan dalam dokumen yang ditemukan, dan cara menanganinya
