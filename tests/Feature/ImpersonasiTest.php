@@ -87,8 +87,16 @@ class ImpersonasiTest extends TestCase
     {
         $matriks = Izin::matriksSistem();
 
-        $this->assertCount(4, $matriks, 'Empat aksi sistem.');
-        $this->assertCount(24, self::selSistem(), '4 aksi x 6 peran.');
+        // Jumlahnya diturunkan dari berkasnya, bukan dipatok: menambah aksi
+        // sistem baru harus otomatis menambah kasus uji, bukan membuat uji ini
+        // merah karena angkanya bergeser.
+        $berkas = json_decode(
+            file_get_contents(dirname(__DIR__, 2).'/data/izin-sistem.json'),
+            true, flags: JSON_THROW_ON_ERROR
+        );
+
+        $this->assertCount(count($berkas['aksi']), $matriks);
+        $this->assertCount(count($berkas['aksi']) * count($berkas['peran']), self::selSistem());
 
         // Yang dijaga di sini: aksi sistem TIDAK bocor ke tabel izin, karena
         // angka 144 dipatok seeder, uji MatriksIzinTest, dan data/verifikasi.py.
