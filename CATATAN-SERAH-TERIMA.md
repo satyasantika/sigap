@@ -236,6 +236,12 @@ satunya merah, yang salah adalah kodenya.
 | NA "rubrik+refleksi 4, data 3" = 363,25 | `KalkulatorNaTest` |
 | PDS3 41,67 → skor 4, syarat 5 tahun **tidak** terpenuhi | `KalkulatorRumusTest` |
 
+Satu lagi ditambahkan kemudian, dan alasannya sama kerasnya:
+
+| Uji | Berkas |
+|---|---|
+| Halaman muka tidak menjalankan satu kueri pun | `BerandaTest` |
+
 ### 4.7 Hal kecil yang memakan waktu bila tidak tahu
 
 - **`php artisan tinker` gagal menulis konfigurasi** di dalam container.
@@ -329,6 +335,25 @@ waktu habis untuk mencari galat yang sebenarnya tercatat rapi.
 Satu hal lagi: halaman 500 hanya tampil bila `APP_DEBUG=false`. Menguji
 tampilannya di lingkungan pengembangan berarti merender view-nya langsung,
 seperti yang dilakukan `HalamanGalatTest`.
+
+### 4.12 Halaman muka publik: satu kueri saja sudah cukup merusaknya
+
+`/` kini halaman muka terbuka, bukan pengalihan ke `/panel`. Batas yang menjaganya
+bukan pagar teknis melainkan satu aturan: halaman itu tidak menyentuh basis data.
+
+Godaannya nyata dan akan datang. "Sekalian tampilkan berapa persen progresnya"
+terdengar wajar, tidak akan terasa salah saat ditulis, dan tidak akan membuat satu
+pun uji lama menjadi merah. Yang terjadi sesudahnya: angka Nilai Akreditasi prodi
+terbaca siapa pun yang tahu alamatnya, berbulan-bulan sebelum ada yang sadar.
+
+`BerandaTest::halaman_muka_tidak_menyentuh_basis_data` memeriksa log kueri kosong
+setelah permintaan. Uji itu masuk daftar yang tidak boleh disesuaikan agar cocok
+dengan kode — bila ia merah, yang salah kodenya.
+
+Angka di halaman muka dibaca dari `data/*.json` lewat cache larik, jadi ia tetap
+tampil ketika basis data mati. Itu bukan kebetulan: halaman muka yang masih hidup
+saat sistemnya tidak adalah halaman yang masih bisa memberi tahu orang apa yang
+sedang terjadi.
 
 ---
 

@@ -57,7 +57,13 @@ docker exec sigap-php php artisan bukti:periksa-tautan
 docker exec -w /var/www/html/sigap laravel-node22 npm run build
 ```
 
-Buka http://localhost:8021 — akan langsung dialihkan ke `/panel`.
+Buka http://localhost:8021 — halaman muka, dengan tautan ke manual pengguna
+dan ke halaman masuk. Panelnya sendiri di `/panel`.
+
+Halaman muka terbuka tanpa masuk dan **tidak memuat satu pun angka akreditasi**:
+tidak ada NA, tidak ada progres, tidak ada nama dosen. Yang tampil hanya bentuk
+instrumennya, dibaca dari `data/*.json`. `BerandaController` sengaja tidak
+menyentuh basis data sama sekali, dan ada uji yang menegakkannya.
 
 Pengguna contoh dari seeder, satu per peran, kata sandi `password`:
 `admin@sigap.test`, `ketua@sigap.test`, `pimpinan@sigap.test`,
@@ -241,9 +247,19 @@ Laravel menampilkan jejak tumpukan, dan itu memang lebih berguna.
 
 ### Manual pengguna
 
-Enam manual bergambar, satu per peran, ada di [`docs/manual/`](docs/manual/) —
-buka `docs/manual/index.html` di peramban. Seluruh gambarnya adalah tangkapan
-layar sungguhan dari sistem ini, bukan mockup.
+Enam manual bergambar, satu per peran, ada di [`docs/manual/`](docs/manual/) dan
+tersaji di http://localhost:8021/manual. Seluruh gambarnya adalah tangkapan layar
+sungguhan dari sistem ini, bukan mockup.
+
+Disajikan lewat symlink `public/manual` &rarr; `docs/manual`, pola yang sama
+dengan `public/storage`. Bila symlink-nya hilang setelah klon ulang:
+
+```bash
+ln -s ../docs/manual public/manual
+```
+
+Bukan lewat pengendali PHP, karena nginx menangani `.png` dan `.css` pada
+`location ~* \.(js|css|png|...)$` yang tidak pernah meneruskan ke PHP.
 
 Bila tampilan berubah, perbarui keduanya:
 
@@ -286,6 +302,7 @@ dirujuk benar-benar ada, dan tidak ada gambar yatim yang tertinggal.
 | 7 | Uji, seed contoh, serah terima | **selesai** |
 | + | Impersonasi, konfirmasi keluar, tema terang, footer, simulasi, manual | **selesai** |
 | + | Menu per peran dan halaman galat yang menjelaskan | **selesai** |
+| + | Halaman muka publik dengan tautan ke manual | **selesai** |
 
 ## Sebelum menyerahkan ke orang lain
 
