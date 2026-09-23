@@ -1,0 +1,62 @@
+{
+ "catatan": "Wewenang PENGELOLAAN SISTEM, terpisah dari matriks 144 sel di izin.json. Dipisah dengan sengaja: izin.json memuat wewenang atas ISI akreditasi dan jumlah selnya dijaga verifikasi.py; menambah aksi di sana akan memecah angka 24 x 6 = 144 yang dipatok aturan. Berkas ini dibaca kelas Izin yang sama, jadi otorisasi tetap diputuskan di satu tempat (AGENTS.md aturan 10).",
+ "prinsip": [
+  "Impersonasi dan simulasi bukan wewenang atas isi akreditasi, melainkan atas sistem. Karena itu keduanya milik admin, bukan ketua.",
+  "Tetap tidak ada peran super. Admin yang sedang menyamar memegang wewenang peran yang ditirunya, bukan gabungan keduanya.",
+  "Auditor boleh MEMBACA log aktivitas dan hasil simulasi, tidak boleh mengubah apa pun — sesuai sifat perannya di izin.json."
+ ],
+ "lingkup": {
+  "ya": "Diizinkan.",
+  "tidak": "Ditolak. Wajib ada uji yang membuktikan penolakan."
+ },
+ "peran": [
+  "admin",
+  "ketua",
+  "pimpinan",
+  "koordinator",
+  "anggota",
+  "auditor"
+ ],
+ "aksi": [
+  {
+   "kode": "impersonasi.mulai",
+   "label": "Masuk sebagai pengguna lain",
+   "admin": "ya",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "impersonasi.log",
+   "label": "Membaca log aktivitas",
+   "admin": "ya",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "ya"
+  },
+  {
+   "kode": "simulasi.kelola",
+   "label": "Membuat dan menghapus simulasi",
+   "admin": "ya",
+   "ketua": "tidak",
+   "pimpinan": "tidak",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "simulasi.lihat",
+   "label": "Melihat hasil simulasi",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "ya",
+   "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "ya"
+  }
+ ]
+}
