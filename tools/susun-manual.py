@@ -693,6 +693,23 @@ def halaman_indeks() -> str:
     <figcaption>Halaman masuk — sama untuk seluruh peran.</figcaption>
   </figure>
 
+  <h2 id="tur-dan-demo">Manual, tur, dan demo</h2>
+  <p>Selain manual ini ada dua jalan lain mengenal SIGAP, dan ketiganya menjawab
+  pertanyaan yang berbeda:</p>
+  <ul>
+    <li><strong>Manual</strong> — halaman ini. Satu halaman per peran, lengkap, bisa
+    dibuka di bagian mana pun. Menjawab <em>&ldquo;layar ini apa dan mengapa
+    begini&rdquo;</em>.</li>
+    <li><strong><a href="/tur">Tur terpandu</a></strong> — alur kerja tiap peran,
+    langkah demi langkah, dengan gambar yang sama persis dengan manual ini.
+    Menjawab <em>&ldquo;saya harus mulai dari mana&rdquo;</em>. Sekitar lima menit
+    per peran, tanpa masuk.</li>
+    <li><strong><a href="/demo">Demo hidup</a></strong> — masuk sungguhan sebagai
+    peran pilihan Anda dan kerjakan periode latihan. Perlu kode akses dari
+    administrator sistem, dan peran administrator sendiri tidak tersedia di sana:
+    wewenangnya menyentuh pengguna dan periode yang tidak terikat periode latihan.</li>
+  </ul>
+
   <h2 id="menu">Menu Anda hanya memuat urusan Anda</h2>
   <p>Menu yang muncul berbeda per peran, dan perbedaannya disengaja. Anggota pokja
   tidak melihat menu Pengguna atau Prodi; administrator sistem tidak melihat menu
@@ -739,6 +756,55 @@ def halaman_indeks() -> str:
     return kerangka("Manual pengguna", kepala + "\n<!--PISAH-->\n" + badan)
 
 
+def tulis_tur() -> None:
+    """Menulis docs/manual/tur.json — sumber tunggal tur terpandu di aplikasi.
+
+    Naskah dan gambar tur SAMA PERSIS dengan manual. Dipisah menjadi berkas
+    data supaya halaman tur di aplikasi tidak perlu menyalin prosanya: manual
+    dan tur berubah bersama, atau tidak berubah sama sekali. Manual dan tur
+    yang menceritakan dua versi sistem yang berbeda lebih buruk daripada salah
+    satunya tidak ada.
+    """
+    import json
+    import re
+
+    def polos(html_: str) -> str:
+        """HTML prosa dibiarkan apa adanya; hanya dirapikan spasinya."""
+        return re.sub(r"\s+", " ", html_).strip()
+
+    tur = {
+        "catatan": "DIBANGKITKAN tools/susun-manual.py. Jangan disunting langsung.",
+        "peran": {},
+    }
+
+    for kunci, data in PERAN.items():
+        langkah = []
+
+        for berkas, tajuk, prosa in data["bagian"]:
+            if not (GAMBAR / kunci / f"{berkas}.png").is_file():
+                continue
+
+            langkah.append({
+                "gambar": f"{kunci}/{berkas}.png",
+                "judul": tajuk,
+                "isi": polos(prosa),
+            })
+
+        tur["peran"][kunci] = {
+            "judul": data["judul"],
+            "ringkas": data["ringkas"],
+            "pembuka": polos(data["pembuka"]),
+            "langkah": langkah,
+        }
+
+    (KELUARAN / "tur.json").write_text(
+        json.dumps(tur, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+    )
+
+    jumlah = sum(len(p["langkah"]) for p in tur["peran"].values())
+    print(f"docs/manual/tur.json ({len(tur['peran'])} peran, {jumlah} langkah)")
+
+
 def main() -> int:
     KELUARAN.mkdir(parents=True, exist_ok=True)
     (KELUARAN / "manual.css").write_text(GAYA.strip() + "\n", encoding="utf-8")
@@ -749,6 +815,8 @@ def main() -> int:
     for kunci, data in PERAN.items():
         (KELUARAN / f"{kunci}.html").write_text(halaman_peran(kunci, data), encoding="utf-8")
         print(f"docs/manual/{kunci}.html")
+
+    tulis_tur()
 
     return 0
 

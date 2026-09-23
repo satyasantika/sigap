@@ -1,0 +1,267 @@
+{
+ "catatan": "DIBANGKITKAN tools/susun-manual.py. Jangan disunting langsung.",
+ "peran": {
+  "admin": {
+   "judul": "Administrator Sistem",
+   "ringkas": "Mengelola sistem, bukan isi akreditasi.",
+   "pembuka": "<p>Administrator sistem memegang kendali atas <strong>siapa</strong> yang boleh masuk dan <strong>kapan</strong> periode dibuka atau dikunci — bukan atas isi akreditasinya. Anda tidak menyetujui tagihan, tidak menulis narasi, dan tidak mengunggah bukti. Pembagian ini disengaja: orang yang bisa mengubah daftar pengguna sebaiknya bukan orang yang sama dengan yang memutuskan sebuah bukti sah atau tidak.</p> <p>Bila Anda perlu melakukan sesuatu yang bukan wewenang admin, jangan mencari jalan pintas lewat basis data. Mintalah kepada ketua task force, atau — bila memang perlu memeriksa sendiri apa yang dilihat seseorang — gunakan fitur <em>Masuk sebagai</em> yang dijelaskan di bawah.</p>",
+   "langkah": [
+    {
+     "gambar": "admin/01-dasbor.png",
+     "judul": "Dasbor",
+     "isi": "<p>Dasbor menampilkan keadaan periode berjalan. Sebagai admin Anda melihat ubin yang sama dengan peran lain, tetapi tidak ada tombol tindakan di dalamnya.</p> <p>Angka <strong>Progres bobot</strong> selalu dihitung dari bobot elemen, bukan dari cacah tagihan. Dua puluh tagihan ringan yang selesai tidak menggeser angka sebanyak satu elemen berbobot besar, dan memang begitu seharusnya.</p>"
+    },
+    {
+     "gambar": "admin/02-pengguna.png",
+     "judul": "Pengguna",
+     "isi": "<p>Seluruh akun dibuat di sini. Tidak ada pendaftaran mandiri, tidak ada lupa kata sandi lewat surel — bila seseorang kehilangan sandinya, Anda yang menyetel ulang.</p> <p>Menonaktifkan pengguna lebih baik daripada menghapusnya. Akun yang dinonaktifkan ditolak masuk dengan pesan yang jelas, sementara seluruh jejaknya di riwayat tagihan tetap utuh dan tetap bisa dibaca.</p>"
+    },
+    {
+     "gambar": "admin/03-periode.png",
+     "judul": "Periode",
+     "isi": "<p>Satu periode mewakili satu siklus akreditasi, dan TS-nya (<em>tahun sekarang</em>) ditentukan di sini. Seluruh label tahun di DKPS — TS, TS-1, TS-2 — diturunkan dari angka itu, tidak ada satu pun yang ditulis mati di dalam kode.</p> <p><strong>Mengunci periode menutup seluruh penulisan untuk semua peran</strong>, termasuk ketua. Satu-satunya yang tetap bisa bergerak adalah admin lewat menu periode itu sendiri, supaya periode yang keliru dikunci masih bisa dibuka kembali.</p>"
+    },
+    {
+     "gambar": "admin/04-pokja.png",
+     "judul": "Pokja",
+     "isi": "<p>Enam pokja membagi habis 59 elemen. Keanggotaan pokja menentukan apa yang dilihat koordinator dan anggota: lingkup <code>pokjanya</code> pada matriks izin berarti \"hanya baris yang pokjanya sama dengan pokja pengguna\".</p> <p>POKJA-DATA berbeda dari lima lainnya — ia tidak memegang elemen, melainkan mengisi dan memverifikasi DKPS.</p>"
+    },
+    {
+     "gambar": "admin/05-matriks-izin.png",
+     "judul": "Matriks izin",
+     "isi": "<p>Halaman hanya-baca berisi 144 sel: 24 aksi &times; 6 peran. Inilah jawaban atas pertanyaan \"kenapa tombol itu tidak muncul di layar saya\". Siapa pun boleh membukanya sendiri tanpa bertanya.</p> <p>Matriks tidak bisa disunting dari layar. Mengubahnya berarti menyunting <code>data/izin.json</code> lalu menjalankan seeder, dan perubahan itu tercatat di riwayat git.</p>"
+    },
+    {
+     "gambar": "admin/06-log-aktivitas.png",
+     "judul": "Log aktivitas",
+     "isi": "<p>Tempat seluruh jejak berkumpul dalam satu urutan waktu. Kolom <strong>Sebenarnya</strong> hanya terisi bila tindakan itu dilakukan seseorang yang sedang menyamar.</p> <p>Catatan ini tidak bisa diubah dan tidak bisa dihapus — penolakannya dipasang di tingkat model, bukan sekadar disembunyikan tombolnya. Tidak ada layar dan tidak ada perintah artisan yang bisa merapikannya di belakang.</p>"
+    },
+    {
+     "gambar": "admin/09-masuk-sebagai-modal.png",
+     "judul": "Masuk sebagai — meminta alasan",
+     "isi": "<p>Tombol <em>Masuk sebagai</em> ada di setiap baris daftar pengguna, kecuali baris admin lain dan baris Anda sendiri. Menekannya membuka modal yang <strong>mewajibkan alasan</strong>.</p> <p>Alasan itu bukan formalitas. Ia satu-satunya bagian dari jejak yang menjelaskan <em>mengapa</em>; tanpanya, log hanya memberitahu bahwa admin pernah menjadi ketua selama sebelas menit tanpa ada yang bisa menilai apakah itu wajar.</p>"
+    },
+    {
+     "gambar": "admin/10-spanduk-penyamaran.png",
+     "judul": "Selama menyamar",
+     "isi": "<p>Spanduk kuning menempel di atas setiap halaman dan tidak bisa ditutup. Selama menyamar Anda memegang <strong>seluruh wewenang peran yang ditiru</strong> — termasuk menyetujui tagihan. Tidak ada pagar yang menahan; yang menjaga pertanggungjawaban adalah jejaknya.</p> <p>Ada dua jalan keluar, keduanya tidak mengakhiri sesi Anda: tombol <em>Kembali ke akun saya</em> di spanduk, dan menu serupa di dalam menu pengguna di pojok kanan atas.</p>"
+    },
+    {
+     "gambar": "admin/11-log-setelah-menyamar.png",
+     "judul": "Jejak yang ditinggalkan",
+     "isi": "<p>Setiap tindakan selama penyamaran menyimpan dua nama: pengguna yang ditiru dan admin di baliknya. Bukan hanya di log aktivitas — <code>tagihan_riwayat</code>, <code>narasi_versi</code>, dan <code>komentar</code> semuanya membawa kolom yang sama.</p> <p>Akibatnya sebuah persetujuan tagihan selalu bisa dilacak ke tangan yang benar-benar menekannya.</p>"
+    },
+    {
+     "gambar": "admin/07-simulasi.png",
+     "judul": "Simulasi",
+     "isi": "<p>Dua bentuk simulasi, keduanya dibuat dan dihapus seperlunya.</p> <p><strong>Pengandaian skor</strong> menjawab \"bagaimana bila E58 naik ke 4?\" dengan menghitung ulang NA memakai skor yang Anda andaikan. Tabel penilaian tidak tersentuh sama sekali — dan itu syarat yang tidak bisa ditawar, karena begitu simulasi boleh menulis ke sana, tidak ada lagi cara membedakan skor yang dinilai dari skor yang diandaikan.</p> <p><strong>Periode latihan</strong> menyalin kerangka periode sungguhan — pokja dan seluruh tagihannya — ke periode baru bertanda <code>[SIMULASI]</code>. Narasi, bukti, dan penilaian tidak ikut disalin; periode latihan memang dimulai kosong untuk dilatih mengisinya. Ia tidak pernah muncul sebagai periode berjalan.</p> <p>Menghapus periode latihan membuang periodenya beserta seluruh isinya, permanen. Data periode sungguhan tidak tersentuh.</p>"
+    },
+    {
+     "gambar": "admin/08-prodi.png",
+     "judul": "Program studi",
+     "isi": "<p>Identitas prodi, UPPS, dan perguruan tinggi. Jarang disentuh setelah pemasangan, tetapi ada karena sistem ini dirancang untuk bisa menaungi lebih dari satu prodi tanpa migrasi ulang.</p>"
+    },
+    {
+     "gambar": "admin/99-konfirmasi-keluar.png",
+     "judul": "Keluar",
+     "isi": "<p>Keluar selalu bertanya lebih dulu. Tombolnya bertetangga dengan tombol profil dan penukar tema, dan satu salah klik di tengah menyusun narasi berarti kehilangan isian yang belum tersimpan.</p> <p>Bila Anda sedang menyamar, modalnya berbunyi berbeda: ia mengingatkan bahwa keluar mengakhiri penyamaran <em>sekaligus</em> sesi Anda, dan menyarankan <em>Kembali ke akun saya</em> bila itu yang Anda maksud.</p>"
+    }
+   ]
+  },
+  "ketua": {
+   "judul": "Ketua Task Force",
+   "ringkas": "Memegang seluruh wewenang isi akreditasi.",
+   "pembuka": "<p>Ketua task force adalah satu-satunya peran yang memegang seluruh wewenang atas isi akreditasi: membuat dan menugaskan tagihan, menyetujui atau mengembalikannya, menulis narasi, memvalidasi bukti, mengisi penilaian, dan menetapkan level syarat perlu.</p> <p>Yang tidak Anda pegang adalah pengelolaan pengguna. Itu milik admin. Bila Anda butuh akun baru atau peran seseorang diubah, mintalah kepadanya.</p>",
+   "langkah": [
+    {
+     "gambar": "ketua/01-dasbor.png",
+     "judul": "Dasbor",
+     "isi": "<p>Ubin <strong>Gerbang Unggul</strong> adalah yang paling penting di layar ini, dan letaknya paling atas karena satu alasan: NA tinggi tanpa syarat perlu tetap berujung \"Terakreditasi\", bukan \"Unggul\". Progres 90% tidak menghasilkan Unggul bila salah satu dari lima syarat perlu masih merah.</p> <p>Angka NA proyeksi selalu didampingi kalimat kejujuran: berapa elemen yang belum dinilai dan karenanya diandaikan berskor 3. Bacalah kalimat itu sebelum mengutip angkanya.</p> <p>Ubin <strong>Laju dan perkiraan</strong> membaca riwayat tagihan untuk memperkirakan kapan pengumpulan rampung dengan kecepatan sekarang. Perkiraan, bukan janji.</p>"
+    },
+    {
+     "gambar": "ketua/02-tagihan.png",
+     "judul": "Semua tagihan",
+     "isi": "<p>137 tagihan membagi habis bobot 100: 59 narasi, 50 bukti, 28 DKPS. Setiap tagihan membawa bobot terkaitnya sendiri, dan jumlah seluruhnya persis 100,000.</p> <p>Status bergerak lewat satu pintu: <em>belum &rarr; dikerjakan &rarr; diajukan &rarr; direviu &rarr; disetujui</em>, dengan <em>dikembalikan</em> sebagai jalan mundur. Setiap perpindahan menulis satu baris riwayat yang tidak pernah ditimpa.</p> <p>Tagihan tidak bisa disetujui selama masih ada buktinya yang tidak terbuka. Itu pagar yang disengaja — bukti yang tidak terbaca oleh mesin juga tidak akan terbaca oleh asesor.</p>"
+    },
+    {
+     "gambar": "ketua/03-narasi.png",
+     "judul": "Naskah LED",
+     "isi": "<p>Narasi ditulis manusia. Sistem menyediakan angka, bukti, dan kerangka; kalimatnya Anda yang susun.</p> <p>Setiap penyimpanan membuat versi baru — versi lama tidak pernah hilang dan tidak pernah ditimpa. Anda bisa membandingkan dan kembali ke versi mana pun.</p>"
+    },
+    {
+     "gambar": "ketua/04-bukti.png",
+     "judul": "Bukti",
+     "isi": "<p>Bukti dinilai pada <strong>dua sumbu yang terpisah</strong>, dan keduanya harus hijau:</p> <ul> <li><strong>Keterbacaan</strong> (<code>akses_status</code>) — diperiksa mesin. Tautan Drive dibuka <em>tanpa kredensial apa pun</em>, persis seperti asesor akan membukanya. Memeriksanya sambil membawa akun yang punya akses akan membuat pemeriksaan selalu lulus dan karena itu tidak berguna.</li> <li><strong>Keabsahan</strong> (<code>validasi_status</code>) — dinilai manusia. Tautan bisa terbuka lebar tetapi berisi dokumen yang keliru.</li> </ul> <p>Setiap bukti wajib punya tanggal kejadian dan sumber. Bukti tanpa keduanya ditolak saat disimpan, bukan sekadar diberi peringatan.</p>"
+    },
+    {
+     "gambar": "ketua/05-penilaian.png",
+     "judul": "Asesmen mandiri",
+     "isi": "<p>Skor 1&ndash;4 per elemen. Kolom <strong>Selisih</strong> menandai elemen yang dinilai berbeda oleh dua penilai — dan elemen itulah yang paling berguna didiskusikan sebelum asesor datang, karena beda penilaian hampir selalu berarti buktinya belum meyakinkan.</p>"
+    },
+    {
+     "gambar": "ketua/06-syarat-perlu.png",
+     "judul": "Syarat perlu",
+     "isi": "<p>Lima syarat perlu, masing-masing berlevel <em>belum</em>, <em>tiga tahun</em>, atau <em>lima tahun</em>. Yang dihitung adalah <strong>kelimanya</strong>, bukan sebagian: empat dari lima terpenuhi tetap berarti tidak terpenuhi.</p> <p>Inilah gerbang yang menentukan apakah NA tinggi berubah menjadi \"Unggul\" atau berhenti di \"Terakreditasi\".</p>"
+    },
+    {
+     "gambar": "ketua/07-nilai-rumus.png",
+     "judul": "Nilai rumus",
+     "isi": "<p>Tujuh rumus LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK — dihitung dari isian DKPS. Hasilnya menunjukkan skor sekaligus apakah syarat tiga atau lima tahun terpenuhi; keduanya angka yang berbeda dan ditampilkan terpisah.</p>"
+    },
+    {
+     "gambar": "ketua/08-simulasi.png",
+     "judul": "Simulasi",
+     "isi": "<p>Anda bisa membaca hasil simulasi, tetapi membuat dan menghapusnya adalah wewenang admin. Gunakan halaman ini untuk menjawab \"apa yang harus naik supaya statusnya berubah\" sebelum memutuskan ke mana tenaga pokja diarahkan.</p> <p>Ingat lencana SIMULASI di bagian atas: angka di halaman ini bukan nilai akreditasi.</p>"
+    }
+   ]
+  },
+  "pimpinan": {
+   "judul": "Pimpinan",
+   "ringkas": "Membaca keadaan, tidak mengubah isinya.",
+   "pembuka": "<p>Peran pimpinan dirancang untuk memantau, bukan mengerjakan. Anda melihat seluruh angka dan seluruh tagihan, dan Anda bisa menulis komentar — tetapi Anda tidak menyetujui tagihan, tidak menulis narasi, dan tidak mengunggah bukti.</p> <p>Pembatasan ini bukan soal kepercayaan melainkan soal kejelasan: bila pimpinan ikut menyetujui, tidak ada lagi lapisan yang memeriksa keputusan ketua. Karena itu menu Anda pendek — hanya layar yang memang urusan pimpinan yang muncul.</p>",
+   "langkah": [
+    {
+     "gambar": "pimpinan/01-dasbor.png",
+     "judul": "Dasbor",
+     "isi": "<p>Satu layar yang menjawab pertanyaan yang biasanya ditanyakan pimpinan: di mana posisi kita, apa yang menahan, dan kapan kira-kira selesai.</p> <p>Bacalah <strong>Gerbang Unggul</strong> lebih dulu, bukan <strong>Progres bobot</strong>. Progres yang tinggi tidak berarti apa pun bila salah satu syarat perlu masih merah.</p>"
+    },
+    {
+     "gambar": "pimpinan/02-syarat-perlu.png",
+     "judul": "Syarat perlu",
+     "isi": "<p>Lima baris yang menentukan status akhir. Bila ada yang masih <em>belum</em>, di sinilah perhatian pimpinan paling berguna — biasanya yang dibutuhkan bukan tenaga tambahan melainkan keputusan di tingkat fakultas.</p>"
+    },
+    {
+     "gambar": "pimpinan/03-tagihan.png",
+     "judul": "Semua tagihan",
+     "isi": "<p>137 tagihan beserta status dan tenggatnya. Hanya-baca bagi pimpinan: menugaskan dan menyetujui adalah urusan ketua dan koordinator.</p> <p>Kolom yang paling berguna bagi pimpinan adalah tenggat dan bobot — tagihan terlambat yang berbobot besar jauh lebih mendesak daripada sepuluh tagihan ringan yang juga terlambat.</p>"
+    },
+    {
+     "gambar": "pimpinan/04-nilai-rumus.png",
+     "judul": "Nilai rumus",
+     "isi": "<p>Tujuh rumus LAMDIK beserta hasilnya. Angka di sini datang dari isian DKPS, jadi rumus yang hasilnya mengejutkan biasanya menandakan isian DKPS yang belum lengkap, bukan kinerja yang buruk.</p>"
+    },
+    {
+     "gambar": "pimpinan/05-simulasi.png",
+     "judul": "Simulasi",
+     "isi": "<p>Hasil simulasi bisa Anda baca untuk menimbang keputusan — misalnya apakah menaikkan satu elemen berbobot besar lebih berdampak daripada menaikkan tiga elemen kecil.</p> <p>Angka di halaman ini bercampur pengandaian dan <strong>bukan</strong> nilai akreditasi. Jangan mengutipnya keluar tanpa lencana SIMULASI-nya.</p>"
+    }
+   ]
+  },
+  "koordinator": {
+   "judul": "Koordinator Pokja",
+   "ringkas": "Memimpin satu pokja, dari penugasan sampai reviu.",
+   "pembuka": "<p>Koordinator bekerja dalam lingkup pokjanya. Hampir seluruh wewenang Anda bertuliskan <code>pokjanya</code> di matriks izin, yang berarti: hanya baris yang pokjanya sama dengan pokja tempat Anda terdaftar.</p> <p>Anda menugaskan, mengubah tenggat, mereviu, dan mengembalikan tagihan — tetapi <strong>persetujuan akhir ada pada ketua</strong>. Reviu Anda adalah saringan pertama, bukan keputusan terakhir.</p> <p>Menu <strong>Isian DKPS</strong> dan <strong>Nilai Rumus</strong> hanya muncul bila pokja Anda berkode POKJA-DATA. Bila Anda memimpin pokja lain, keduanya memang bukan urusan Anda.</p>",
+   "langkah": [
+    {
+     "gambar": "koordinator/01-dasbor.png",
+     "judul": "Dasbor",
+     "isi": "<p>Ubin yang Anda lihat sama dengan peran lain, tetapi angkanya sudah disaring ke pokja Anda. Ubin <strong>Progres per pokja</strong> berguna untuk membandingkan: pokja yang tertinggal biasanya bukan pokja yang malas, melainkan pokja yang memegang elemen paling berat.</p>"
+    },
+    {
+     "gambar": "koordinator/02-tagihan-saya.png",
+     "judul": "Tagihan Saya",
+     "isi": "<p>Tagihan yang ditugaskan kepada Anda sendiri — koordinator juga mengerjakan, bukan hanya membagi. Tersaring yang belum selesai, terurut tenggat terdekat.</p>"
+    },
+    {
+     "gambar": "koordinator/03-tagihan.png",
+     "judul": "Tagihan pokja",
+     "isi": "<p>Menugaskan tagihan adalah pekerjaan koordinator yang paling sering. Tagihan tanpa penanggung jawab tidak akan bergerak sendiri, dan ubin dasbor menghitungnya terang-terangan.</p> <p>Saat mereviu, perhatikan dua hal sebelum meneruskan ke ketua: buktinya terbaca, dan isinya memang menjawab elemen yang dimaksud. Mengembalikan lebih murah daripada menarik persetujuan.</p>"
+    },
+    {
+     "gambar": "koordinator/04-narasi.png",
+     "judul": "Narasi pokja",
+     "isi": "<p>Narasi elemen di pokja Anda. Versi lama tidak pernah hilang, jadi jangan ragu menyimpan draf — menyimpan setengah jadi lebih baik daripada menunda sampai sempurna.</p>"
+    },
+    {
+     "gambar": "koordinator/05-bukti.png",
+     "judul": "Bukti pokja",
+     "isi": "<p>Anda memvalidasi keabsahan bukti di pokja Anda. Keterbacaan tautannya diperiksa mesin secara terpisah, tanpa kredensial — jadi tautan yang terbuka di peramban Anda belum tentu terbuka bagi asesor. Percayai status mesin, bukan pengalaman Anda sendiri.</p>"
+    },
+    {
+     "gambar": "koordinator/06-penilaian.png",
+     "judul": "Asesmen mandiri",
+     "isi": "<p>Koordinator ikut memberi skor 1&ndash;4 per elemen. Kolom <strong>Selisih</strong> menandai elemen yang dinilai berbeda oleh dua penilai — dan itulah yang paling berguna didiskusikan sebelum asesor datang.</p>"
+    }
+   ]
+  },
+  "anggota": {
+   "judul": "Anggota Pokja",
+   "ringkas": "Mengerjakan tagihan yang ditugaskan kepada Anda.",
+   "pembuka": "<p>Anggota pokja melihat dan mengerjakan <strong>tagihannya sendiri</strong>. Anda menulis narasi, mengunggah bukti, dan mengajukan tagihan untuk direviu koordinator.</p> <p>Anda tidak menyetujui tagihan — termasuk tagihan Anda sendiri. Itu bukan soal kepercayaan, melainkan supaya setiap tagihan dibaca setidaknya oleh dua pasang mata sebelum menjadi bahan akreditasi.</p>",
+   "langkah": [
+    {
+     "gambar": "anggota/01-tagihan-saya.png",
+     "judul": "Tagihan Saya",
+     "isi": "<p>Layar harian Anda, dan tempat paling masuk akal untuk memulai pagi: hanya tagihan milik Anda, hanya yang belum selesai, terurut tenggat terdekat.</p> <p>Halaman ini sengaja dipisahkan dari <em>Semua Tagihan</em>. Orang yang membuka panel pagi hari ingin melihat apa yang harus dikerjakan hari ini, bukan 137 baris yang harus disaring dulu setiap kali.</p>"
+    },
+    {
+     "gambar": "anggota/02-dasbor.png",
+     "judul": "Dasbor",
+     "isi": "<p>Gambaran keadaan periode. Sebagai anggota, angka tagihan pada dasbor sudah disaring ke milik Anda sendiri.</p>"
+    },
+    {
+     "gambar": "anggota/03-narasi.png",
+     "judul": "Menulis narasi",
+     "isi": "<p>Sistem tidak menulis narasi untuk Anda dan memang tidak dirancang untuk itu. Yang disediakan adalah angka, bukti, dan kerangka.</p> <p>Setiap simpan membuat versi baru. Simpanlah sering — tidak ada yang hilang, dan versi lama selalu bisa dibuka lagi.</p>"
+    },
+    {
+     "gambar": "anggota/04-bukti.png",
+     "judul": "Mengunggah bukti",
+     "isi": "<p>Dua hal yang wajib dan sering terlupa: <strong>tanggal kejadian</strong> dan <strong>sumber</strong>. Bukti tanpa keduanya ditolak saat disimpan.</p> <p>Untuk tautan Drive, pastikan tautannya bisa dibuka oleh orang yang <em>tidak</em> punya akun di organisasi kita. Sistem memeriksanya persis seperti itu — tanpa kredensial apa pun — karena begitulah asesor akan membukanya.</p>"
+    },
+    {
+     "gambar": "anggota/05-profil.png",
+     "judul": "Profil dan kata sandi",
+     "isi": "<p>Nama dan kata sandi Anda sendiri diubah di sini. Tidak ada pemulihan sandi lewat surel; bila Anda lupa, hubungi administrator sistem.</p>"
+    },
+    {
+     "gambar": "anggota/99-konfirmasi-keluar.png",
+     "judul": "Keluar",
+     "isi": "<p>Keluar selalu bertanya lebih dulu, supaya narasi yang sedang Anda tulis tidak hilang karena salah klik.</p>"
+    }
+   ]
+  },
+  "auditor": {
+   "judul": "Auditor Mutu Internal",
+   "ringkas": "Memeriksa tanpa mengubah.",
+   "pembuka": "<p>Auditor membaca seluruhnya dan mengubah hampir tidak ada apa pun. Yang bisa Anda tulis hanya dua: skor asesmen mandiri Anda sendiri, dan komentar.</p> <p>Susunan ini disengaja. Pemeriksaan kehilangan artinya bila pemeriksanya juga ikut memperbaiki apa yang diperiksanya.</p>",
+   "langkah": [
+    {
+     "gambar": "auditor/01-dasbor.png",
+     "judul": "Dasbor",
+     "isi": "<p>Mulailah dari <strong>Gerbang Unggul</strong> dan <strong>Bukti bermasalah</strong>. Dua ubin itu yang paling sering menunjukkan jarak antara apa yang diklaim dan apa yang bisa dibuktikan.</p>"
+    },
+    {
+     "gambar": "auditor/02-tagihan.png",
+     "judul": "Semua tagihan",
+     "isi": "<p>Seluruh 137 tagihan beserta riwayat status masing-masing. Riwayatnya bersifat <em>append only</em>: tidak pernah ditimpa dan tidak pernah dihapus, jadi urutan kejadian yang Anda baca adalah urutan yang sebenarnya.</p>"
+    },
+    {
+     "gambar": "auditor/03-bukti.png",
+     "judul": "Bukti",
+     "isi": "<p>Perhatikan kedua sumbu secara terpisah. Bukti yang tautannya terbuka tetapi validasinya merah adalah dokumen yang keliru, bukan dokumen yang hilang — dan keduanya menuntut tindakan yang berbeda.</p>"
+    },
+    {
+     "gambar": "auditor/04-penilaian.png",
+     "judul": "Asesmen mandiri",
+     "isi": "<p>Auditor memberi skor sendiri, terpisah dari skor ketua. Justru selisih antara keduanya yang berguna: elemen yang dinilai 4 oleh ketua dan 2 oleh auditor hampir selalu elemen yang buktinya belum meyakinkan.</p>"
+    },
+    {
+     "gambar": "auditor/05-syarat-perlu.png",
+     "judul": "Syarat perlu",
+     "isi": "<p>Lima baris yang menentukan status akhir. Periksalah bukti pendukungnya, bukan hanya levelnya: level yang ditetapkan tanpa bukti yang terbaca tidak akan bertahan di tangan asesor.</p>"
+    },
+    {
+     "gambar": "auditor/06-log-aktivitas.png",
+     "judul": "Log aktivitas",
+     "isi": "<p>Auditor membaca log yang sama dengan admin, dan itu disengaja: yang diperiksa tidak boleh menjadi satu-satunya pihak yang memegang catatan pemeriksaan.</p> <p>Kolom <strong>Sebenarnya</strong> menandai tindakan yang dilakukan lewat penyamaran. Bila ada persetujuan yang lahir dari penyamaran, periksalah alasan yang tercatat pada baris <code>impersonasi.mulai</code> di sesi yang sama.</p>"
+    },
+    {
+     "gambar": "auditor/07-simulasi.png",
+     "judul": "Simulasi",
+     "isi": "<p>Anda bisa membaca simulasi untuk memahami pertimbangan yang diambil task force. Pastikan angka simulasi tidak pernah tercampur ke dalam laporan audit — halamannya diberi lencana SIMULASI justru untuk itu.</p>"
+    }
+   ]
+  }
+ }
+}

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ImpersonasiController;
+use App\Http\Controllers\TurController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -31,6 +32,13 @@ Route::get('/', BerandaController::class)->name('beranda');
  */
 Route::redirect('/manual', '/manual/index.html')->name('manual');
 
+/**
+ * Tur terpandu per peran. Terbuka tanpa masuk, dan seperti halaman muka ia
+ * tidak menyentuh basis data sama sekali — yang ditampilkan hanya tangkapan
+ * layar dengan data contoh.
+ */
+Route::get('/tur', [TurController::class, 'index'])->name('tur');
+Route::get('/tur/{peran}', [TurController::class, 'peran'])->name('tur.peran');
 /**
  * Mengakhiri penyamaran. Satu-satunya rute di luar panel, dan sengaja begitu:
  * tombol di spanduk harus tetap bekerja walau JavaScript gagal dimuat.
