@@ -500,8 +500,19 @@ header.utama {
 
 header.utama .bungkus { padding-bottom: 0; }
 
-.jenama { font-weight: 700; letter-spacing: -0.02em; font-size: 1.1rem; }
+.jenama {
+    display: flex; align-items: baseline; gap: 1.25rem;
+    font-weight: 700; letter-spacing: -0.02em; font-size: 1.1rem;
+}
 .jenama a { color: var(--tinta); text-decoration: none; }
+/* Tautan ke beranda dan halaman masuk memakai jalur absolut, jadi ia hidup
+   ketika manual disajikan lewat /manual dan mati ketika berkasnya dibuka
+   langsung dari cakram. Itu pertukaran yang disengaja: jalur relatif akan
+   menunjuk folder docs/ yang bukan halaman apa pun. */
+.jenama .ke-beranda {
+    font-size: 0.85rem; font-weight: 500; color: var(--sorot);
+}
+.jenama .ke-beranda:hover { text-decoration: underline; }
 
 h1 { font-size: 2.1rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0.75rem 0 0.35rem; }
 h2 {
@@ -598,7 +609,11 @@ def kerangka(judul: str, isi: str) -> str:
 <body>
 <header class="utama">
   <div class="bungkus">
-    <div class="jenama"><a href="index.html">Manual SIGAP</a></div>
+    <div class="jenama">
+      <a href="index.html">Manual SIGAP</a>
+      <a class="ke-beranda" href="/">Beranda</a>
+      <a class="ke-beranda" href="/panel">Masuk</a>
+    </div>
 {isi.split('<!--PISAH-->')[0]}
   </div>
 </header>
