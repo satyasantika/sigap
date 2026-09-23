@@ -248,6 +248,88 @@ satunya merah, yang salah adalah kodenya.
 - **`migrate:fresh --seed --class=`** tidak sah; yang benar `--seeder=`.
   Prompt tahap 7 menuliskannya keliru.
 
+### 4.8 Panel tanpa tema Vite sendiri tampil polos, dan uji tidak menangkapnya
+
+Sampai fitur impersonasi dibangun, panel tidak punya
+`resources/css/filament/panel/theme.css`. Akibatnya CSS yang dimuat panel adalah
+CSS bawaan Filament, yang hanya memuat kelas utilitas milik komponen Filament
+sendiri. Setiap kelas Tailwind yang ditulis di Blade kita — grid bento dasbor,
+angka besar KPI, bilah progres pokja — tidak punya aturan CSS sama sekali.
+Dasbor K1–K9 tampil sebagai tumpukan teks polos selama enam tahap, dan
+514 uji tetap hijau seluruhnya.
+
+Kenapa tidak ketahuan: `php artisan test` memeriksa HTML, bukan tampilan. Uji
+yang mencari teks "Gerbang Unggul" tetap lulus walau teks itu tampil tanpa
+warna, tanpa ukuran, dan tanpa tata letak.
+
+Baru ketahuan saat layarnya ditangkap untuk manual pengguna. Itu alasan
+tambahan untuk memperbarui `docs/manual/gambar/` setiap kali tampilan berubah:
+tangkapan layar adalah satu-satunya pemeriksaan tampilan yang ada di proyek ini.
+
+Yang mengikat sekarang: `ManualPenggunaTest::tema_panel_terpasang` menjaga agar
+`->viteTheme()` tidak hilang lagi, dan menambah folder Blade baru berarti
+menambah `@source` di berkas tema lalu `npm run build`.
+
+### 4.9 Impersonasi: yang menahannya adalah jejak, bukan pagar
+
+Admin yang sedang menyamar memegang wewenang PENUH peran yang ditirunya,
+termasuk menyetujui tagihan — dan itu keputusan manusia, bukan kelalaian.
+Yang menjaga pertanggungjawaban adalah `impersonasi_oleh` yang ikut tersimpan di
+`tagihan_riwayat`, `narasi_versi`, `komentar`, dan `log_aktivitas`.
+
+Kolom itu diisi trait `MencatatImpersonasi` lewat peristiwa `creating`, bukan
+oleh pemanggil. Sengaja begitu: pemanggilnya lima tempat sekarang dan akan
+bertambah, dan satu tempat yang lupa mengisinya berarti satu persetujuan yang
+tampak ditekan ketua padahal ditekan admin. Tabel riwayat baru yang menyimpan
+"siapa melakukan" WAJIB memakai trait itu.
+
+Satu jebakan yang sudah ditangani dan mudah dipatahkan kembali:
+`Impersonasi::segarkanHashSandi()`. Middleware `AuthenticateSession`
+membandingkan hash sandi pengguna yang sedang masuk dengan salinan di sesi, dan
+mengeluarkan siapa pun yang tidak cocok. Berganti pengguna di tengah permintaan
+meninggalkan salinan milik pengguna lama, jadi permintaan BERIKUTNYA menendang
+keluar orang yang baru saja mulai menyamar. Menghapus pemanggilan itu membuat
+impersonasi "kadang jalan, kadang langsung terlempar ke halaman masuk" —
+gejala yang sangat mahal untuk dilacak.
+
+### 4.10 Menu yang terbuka lebar karena `viewAny` dipetakan ke `dasbor.lihat`
+
+Enam Policy — Periode, Pokja, Prodi, Penilaian, StatusSyaratPerlu, NilaiRumus —
+memetakan `viewAny` ke `dasbor.lihat`, yang bernilai `ya` untuk keenam peran.
+Filament memakai `viewAny` untuk memutuskan apakah sebuah Resource muncul di
+menu, jadi akibatnya **anggota pokja melihat menu Pengguna, Periode, Pokja, dan
+Prodi**. Tidak ada yang gagal karenanya: Policy tetap menolak begitu tombolnya
+ditekan. Yang rusak adalah kepercayaan — menu penuh halaman yang menolak
+membuat orang berhenti percaya sistem tahu siapa mereka.
+
+Diperbaiki dengan memisahkan dua hal yang sebelumnya menumpang pada satu nilai:
+
+- **Boleh berbuat** tetap `data/izin.json` lewat Policy. Tidak berubah sama
+  sekali, dan 144 sel `MatriksIzinTest` tetap hijau.
+- **Muncul di menu** kini `data/menu.json` lewat `Izin::bolehMenu()`, dipakai
+  `shouldRegisterNavigation()`.
+
+Jebakan yang tersisa: **jangan tergoda menyatukan keduanya.** Menyamakan
+`canAccess()` dengan `bolehMenu()` akan membuat menu menjadi pagar otorisasi,
+dan aturan 7 melarangnya justru karena pagar yang berupa tombol tersembunyi
+akan bocor pada tautan langsung, pada aksi massal, dan pada endpoint Livewire.
+
+### 4.11 Kode rujukan galat hanya berguna bila layar dan log sepakat
+
+Halaman 500 menampilkan `App\Exceptions\KodeRujukan::kode()`, dan
+`bootstrap/app.php` menyuntikkan nilai yang SAMA ke setiap baris log lewat
+`$exceptions->context()`. Nilainya diingat per permintaan justru supaya keduanya
+sepakat.
+
+Bila suatu saat kode itu dibangkitkan ulang di salah satu sisi — misalnya dengan
+memanggil `Str::random()` langsung di Blade — fiturnya tidak akan gagal, ia akan
+menjadi jebakan: pelapor menyebut satu kode, `grep` tidak menemukannya, dan
+waktu habis untuk mencari galat yang sebenarnya tercatat rapi.
+
+Satu hal lagi: halaman 500 hanya tampil bila `APP_DEBUG=false`. Menguji
+tampilannya di lingkungan pengembangan berarti merender view-nya langsung,
+seperti yang dilakukan `HalamanGalatTest`.
+
 ---
 
 ## 5. Pertentangan dalam dokumen yang ditemukan, dan cara menanganinya

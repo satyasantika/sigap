@@ -50,7 +50,10 @@ docker exec sigap-php php artisan tagihan:bangkitkan "PPG 2027"
 # menjalankannya sekarang juga:
 docker exec sigap-php php artisan bukti:periksa-tautan
 
-# 7. Aset frontend
+# 7. Aset frontend — WAJIB, bukan opsional.
+# Panel memakai tema Vite sendiri (resources/css/filament/panel/theme.css).
+# Tanpa langkah ini, dasbor bento tampil sebagai tumpukan teks polos.
+# Node dijalankan di container terpisah: Vite 8 butuh Node 20+.
 docker exec -w /var/www/html/sigap laravel-node22 npm run build
 ```
 
@@ -208,6 +211,68 @@ ada tagihan terlambat, bukti yang tidak bisa dibuka asesor, dan satu syarat
 perlu yang belum terpenuhi. **Jangan dijalankan di basis data sungguhan** —
 `migrate:fresh` menghapus seluruh isinya.
 
+### Menu per peran
+
+Menu yang muncul diatur `data/menu.json` (20 menu x 6 peran), dibaca
+`Izin::bolehMenu()` dan dipakai `shouldRegisterNavigation()` di setiap Resource
+dan Page. Menu **menyembunyikan, bukan menolak**: penolakan tetap milik Policy
+dan `data/izin.json`, dan halaman yang hilang dari menu tetap menolak bila
+dibuka lewat tautan langsung.
+
+`MenuPeranTest` menelusuri seluruh 120 sel dua kali — sekali di tingkat
+`Izin::bolehMenu()`, sekali pada HTML sidebar yang benar-benar dirender.
+
+### Halaman galat
+
+`resources/views/errors/` memuat 401, 403, 404, 419, 429, 500, dan 503.
+Masing-masing menyebut apa yang terjadi, mengapa, dan apa yang bisa dilakukan
+sekarang. Gayanya inline dengan sengaja — halaman galat harus tetap terbaca
+ketika yang rusak justru panel atau berkas asetnya.
+
+Halaman 500 menampilkan kode rujukan seperti `SIGAP-7KQ3M2XA`. Kode yang sama
+masuk ke setiap baris log, jadi laporan galat bisa ditelusuri langsung:
+
+```bash
+docker exec sigap-php grep -n SIGAP-7KQ3M2XA storage/logs/laravel.log
+```
+
+Halaman 500 hanya muncul bila `APP_DEBUG=false`. Di lingkungan pengembangan
+Laravel menampilkan jejak tumpukan, dan itu memang lebih berguna.
+
+### Manual pengguna
+
+Enam manual bergambar, satu per peran, ada di [`docs/manual/`](docs/manual/) —
+buka `docs/manual/index.html` di peramban. Seluruh gambarnya adalah tangkapan
+layar sungguhan dari sistem ini, bukan mockup.
+
+Bila tampilan berubah, perbarui keduanya:
+
+```bash
+# sekali saja: pasang peramban untuk penangkap layar (tanpa root)
+python3 -m pip install --user --break-system-packages playwright
+python3 -m playwright install chromium
+
+# siapkan data demo, lalu tangkap ulang dan susun ulang
+docker exec sigap-php php artisan migrate:fresh --seed --seeder=Database\\Seeders\\DemoSeeder
+docker exec sigap-php php artisan sigap:siapkan-manual
+docker exec sigap-php php artisan cache:clear          # lepaskan pembatas laju masuk
+python3 tools/tangkap-layar.py
+python3 tools/susun-manual.py
+```
+
+Bila `chrome-headless-shell` mengeluh `libnspr4.so` hilang dan Anda tidak punya
+`sudo`, unduh pustakanya sebagai pengguna biasa:
+
+```bash
+mkdir -p ~/.local/pw-deps/debs && cd ~/.local/pw-deps/debs
+apt-get download libnspr4 libnss3 libasound2t64 libasound2-data fonts-liberation
+for d in *.deb; do dpkg-deb -x "$d" ~/.local/pw-deps/root; done
+export LD_LIBRARY_PATH=~/.local/pw-deps/root/usr/lib/x86_64-linux-gnu
+```
+
+`ManualPenggunaTest` menjaga agar setiap peran punya halaman, setiap gambar yang
+dirujuk benar-benar ada, dan tidak ada gambar yatim yang tertinggal.
+
 ## Status pembangunan
 
 | Tahap | Isi | Status |
@@ -219,6 +284,8 @@ perlu yang belum terpenuhi. **Jangan dijalankan di basis data sungguhan** —
 | 5 | DKPS dan perhitungan rumus | **selesai** |
 | 6 | Dasbor progres | **selesai** |
 | 7 | Uji, seed contoh, serah terima | **selesai** |
+| + | Impersonasi, konfirmasi keluar, tema terang, footer, simulasi, manual | **selesai** |
+| + | Menu per peran dan halaman galat yang menjelaskan | **selesai** |
 
 ## Sebelum menyerahkan ke orang lain
 
