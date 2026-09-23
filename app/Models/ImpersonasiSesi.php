@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\MenolakDihapus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ImpersonasiSesi extends Model
 {
-    use HasUuids;
+    use HasUuids, MenolakDihapus;
 
     protected $table = 'impersonasi_sesi';
 
@@ -66,5 +67,16 @@ class ImpersonasiSesi extends Model
         }
 
         return $this->dimulai_pada->diffForHumans($this->diakhiri_pada, short: true, syntax: true);
+    }
+
+    /**
+     * CLAUDE.md bagian 7 butir 8 menjadikan pencatatan sebagai SYARAT diizinkannya
+     * impersonasi, bukan pelengkap. Baris yang bisa dihapus membatalkan syarat itu.
+     */
+    public function alasanTidakBolehDihapus(): string
+    {
+        return 'Sesi penyamaran adalah jejak yang membuat impersonasi boleh ada sama sekali. '
+            .'Menghapusnya menyisakan tindakan atas nama orang lain tanpa keterangan siapa '
+            .'yang sebenarnya menekan.';
     }
 }

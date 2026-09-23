@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\MenolakDihapus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ImporBatch extends Model
 {
-    use HasUuids;
+    use HasUuids, MenolakDihapus;
 
     protected $table = 'impor_batch';
 
@@ -31,5 +32,17 @@ class ImporBatch extends Model
     public function dibatalkan(): bool
     {
         return $this->dibatalkan_pada !== null;
+    }
+
+    /**
+     * Menghapus baris ini menghapus satu-satunya jalan mengembalikan data ke keadaan
+     * sebelum impor. Kolom `dibatalkan_pada` sudah menyediakan cara membatalkan
+     * tanpa kehilangan riwayatnya.
+     */
+    public function alasanTidakBolehDihapus(): string
+    {
+        return 'Batch impor adalah catatan apa yang pernah masuk dan dari mana. Impor yang '
+            .'keliru dibatalkan lewat pembatalan — yang justru MEMBUTUHKAN barisnya tetap ada '
+            .'karena ringkasannya menyimpan nilai sebelum impor.';
     }
 }

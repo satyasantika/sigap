@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\MenolakDihapus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class NilaiRumus extends Model
 {
-    use HasUuids;
+    use HasUuids, MenolakDihapus;
 
     protected $table = 'nilai_rumus';
 
@@ -64,5 +65,16 @@ class NilaiRumus extends Model
                     ->where('periode_id', $periodeId)
                     ->groupBy('rumus_kode');
             });
+    }
+
+    /**
+     * Angka rumus disimpan sebagai deret, bukan satu nilai berjalan. Menghapus satu
+     * baris memutus deretnya dan membuat riwayat perhitungan tidak bisa dibaca lagi.
+     */
+    public function alasanTidakBolehDihapus(): string
+    {
+        return 'Tabel ini append only: KalkulatorRumus menyimpan hasil baru tanpa menimpa yang lama, '
+            .'supaya pertanyaan "kapan PDS3 kita turun di bawah 50?" masih bisa dijawab saat '
+            .'ada sengketa.';
     }
 }
