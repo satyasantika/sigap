@@ -1,0 +1,36 @@
+{
+ "catatan": "Menu mana yang MUNCUL bagi tiap peran. Terpisah dari izin.json, yang mengatur apa yang BOLEH DILAKUKAN. Dua hal berbeda: admin punya tagihan.lihat=ya sehingga berhak membuka layar tagihan, tetapi menu Semua Tagihan tidak muncul baginya karena admin tidak mengurus isi akreditasi. Sumber tabel ini: vibecoding/docs/05-layar-dan-widget.md.",
+ "prinsip": [
+  "Menu menyembunyikan, bukan menolak. Penolakan tetap diputuskan izin.json lewat Policy — menu yang hilang tidak boleh menjadi satu-satunya pagar.",
+  "Bila docs/05 dan izin.json berbeda, izin.json menang. Karena itu ketua melihat Periode dan Pokja (punya periode.kunci dan pokja.kelola) tetapi TIDAK melihat Pengguna dan Prodi, meski docs/05 menuliskan keempatnya sebagai satu kelompok 'admin, ketua'.",
+  "Matriks Izin terbuka untuk semua peran dengan sengaja: vibecoding/docs/08-auth-dan-izin.md aturan 5 meminta siapa pun bisa memeriksa sendiri mengapa sebuah tombol tidak muncul."
+ ],
+ "lingkup": {
+  "ya": "Menu muncul.",
+  "tidak": "Menu tidak muncul. Halamannya mungkin tetap bisa dibuka lewat tautan langsung bila izin.json mengizinkan — itu disengaja.",
+  "pokja_data": "Menu muncul hanya bila pengguna terdaftar di pokja berkode POKJA-DATA."
+ },
+ "peran": ["admin", "ketua", "pimpinan", "koordinator", "anggota", "auditor"],
+ "menu": [
+  {"kode": "dasbor",       "label": "Dasbor",          "grup": "—",           "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "tagihan_saya", "label": "Tagihan Saya",    "grup": "Pengumpulan", "admin": "tidak", "ketua": "tidak", "pimpinan": "tidak", "koordinator": "ya",      "anggota": "ya",         "auditor": "tidak"},
+  {"kode": "tagihan",      "label": "Semua Tagihan",   "grup": "Pengumpulan", "admin": "tidak", "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "tidak",      "auditor": "ya"},
+  {"kode": "bukti",        "label": "Bukti",           "grup": "Pengumpulan", "admin": "tidak", "ketua": "ya", "pimpinan": "tidak", "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "narasi",       "label": "Naskah LED",      "grup": "Pengumpulan", "admin": "tidak", "ketua": "ya", "pimpinan": "tidak", "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "penilaian",    "label": "Asesmen Mandiri", "grup": "Penilaian",   "admin": "tidak", "ketua": "ya", "pimpinan": "tidak", "koordinator": "ya",         "anggota": "tidak",      "auditor": "ya"},
+  {"kode": "syarat_perlu", "label": "Syarat Perlu",    "grup": "Penilaian",   "admin": "tidak", "ketua": "ya", "pimpinan": "ya",    "koordinator": "tidak",      "anggota": "tidak",      "auditor": "ya"},
+  {"kode": "simulasi",     "label": "Simulasi",        "grup": "Penilaian",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "tidak",      "anggota": "tidak",      "auditor": "ya"},
+  {"kode": "dkps_baris",   "label": "Isian DKPS",      "grup": "Data",        "admin": "tidak", "ketua": "ya", "pimpinan": "tidak", "koordinator": "pokja_data", "anggota": "pokja_data", "auditor": "tidak"},
+  {"kode": "nilai_rumus",  "label": "Nilai Rumus",     "grup": "Data",        "admin": "tidak", "ketua": "ya", "pimpinan": "ya",    "koordinator": "pokja_data", "anggota": "pokja_data", "auditor": "tidak"},
+  {"kode": "elemen",       "label": "Elemen",          "grup": "Referensi",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "kriteria",     "label": "Kriteria",        "grup": "Referensi",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "rumus",        "label": "Rumus",           "grup": "Referensi",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "dkps_butir",   "label": "Butir DKPS",      "grup": "Referensi",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "periode",      "label": "Periode",         "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "tidak", "koordinator": "tidak",      "anggota": "tidak",      "auditor": "tidak"},
+  {"kode": "pokja",        "label": "Pokja",           "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "tidak", "koordinator": "tidak",      "anggota": "tidak",      "auditor": "tidak"},
+  {"kode": "pengguna",     "label": "Pengguna",        "grup": "Pengaturan",  "admin": "ya",    "ketua": "tidak", "pimpinan": "tidak", "koordinator": "tidak",   "anggota": "tidak",      "auditor": "tidak"},
+  {"kode": "prodi",        "label": "Prodi",           "grup": "Pengaturan",  "admin": "ya",    "ketua": "tidak", "pimpinan": "tidak", "koordinator": "tidak",   "anggota": "tidak",      "auditor": "tidak"},
+  {"kode": "matriks_izin", "label": "Matriks Izin",    "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
+  {"kode": "log_aktivitas","label": "Log Aktivitas",   "grup": "Pengaturan",  "admin": "ya",    "ketua": "tidak", "pimpinan": "tidak", "koordinator": "tidak",   "anggota": "tidak",      "auditor": "ya"}
+ ]
+}
