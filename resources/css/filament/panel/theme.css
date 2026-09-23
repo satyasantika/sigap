@@ -1,0 +1,20 @@
+/*
+ * Tema panel SIGAP.
+ *
+ * Tanpa berkas ini panel memakai CSS bawaan Filament, yang hanya memuat kelas
+ * utilitas yang dipakai komponen Filament sendiri. Akibatnya setiap kelas
+ * Tailwind yang ditulis di Blade kita — grid bento dasbor, angka besar KPI,
+ * warna spanduk penyamaran — tidak punya aturan CSS sama sekali dan halaman
+ * tampil sebagai tumpukan teks polos. Itu tidak terlihat saat menguji lewat
+ * PHPUnit; baru terlihat saat layarnya ditangkap.
+ *
+ * @source di bawah menentukan berkas mana yang dipindai Tailwind untuk
+ * menemukan nama kelas. Menambah folder Blade baru berarti menambah barisnya
+ * di sini, lalu `npm run build`.
+ */
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/sigap/**/*';
+@source '../../../../resources/views/livewire/**/*';

@@ -6,7 +6,12 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                // Tema panel Filament. Lihat berkas itu untuk alasannya.
+                'resources/css/filament/panel/theme.css',
+            ],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
