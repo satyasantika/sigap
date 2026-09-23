@@ -157,7 +157,10 @@
             @if ($this->lihat('K4'))
                 @php $bermasalah = $this->buktiBermasalah(); @endphp
                 <div class="order-5 lg:col-span-3">
-                    <a href="/panel/buktis?tableFilters[bermasalah][isActive]=true" class="block">
+                    {{-- Jalur dibangun dari Resource, bukan ditulis "/panel/buktis".
+                         Jalur absolut akan patah begitu aplikasi dipasang di
+                         bawah subfolder seperti /sigap. --}}
+                    <a href="{{ \App\Filament\Resources\Buktis\BuktiResource::getUrl(parameters: ['tableFilters' => ['bermasalah' => ['isActive' => true]]]) }}" class="block">
                         <x-filament::section>
                             <x-slot name="heading">Bukti bermasalah</x-slot>
                             <div @class(['text-4xl font-bold tabular-nums',

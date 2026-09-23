@@ -505,10 +505,10 @@ header.utama .bungkus { padding-bottom: 0; }
     font-weight: 700; letter-spacing: -0.02em; font-size: 1.1rem;
 }
 .jenama a { color: var(--tinta); text-decoration: none; }
-/* Tautan ke beranda dan halaman masuk memakai jalur absolut, jadi ia hidup
-   ketika manual disajikan lewat /manual dan mati ketika berkasnya dibuka
-   langsung dari cakram. Itu pertukaran yang disengaja: jalur relatif akan
-   menunjuk folder docs/ yang bukan halaman apa pun. */
+/* Tautan ke beranda dan halaman masuk RELATIF (`../`), bukan absolut (`/`).
+   Aplikasi ini juga dipasang di bawah subfolder — https://…/sigap — dan di
+   sana `/panel` akan menunjuk ke luar aplikasi. Dari /manual/ maupun
+   /sigap/manual/, `../panel` selalu benar. */
 .jenama .ke-beranda {
     font-size: 0.85rem; font-weight: 500; color: var(--sorot);
 }
@@ -611,8 +611,8 @@ def kerangka(judul: str, isi: str) -> str:
   <div class="bungkus">
     <div class="jenama">
       <a href="index.html">Manual SIGAP</a>
-      <a class="ke-beranda" href="/">Beranda</a>
-      <a class="ke-beranda" href="/panel">Masuk</a>
+      <a class="ke-beranda" href="../">Beranda</a>
+      <a class="ke-beranda" href="../panel">Masuk</a>
     </div>
 {isi.split('<!--PISAH-->')[0]}
   </div>
