@@ -8,6 +8,7 @@ use App\Models\Izin as ModelIzin;
 use App\Models\Periode;
 use App\Models\Pokja;
 use App\Models\Rumus;
+use App\Models\Simulasi;
 use App\Models\SyaratPerlu;
 use App\Models\User;
 use App\Support\Pemasangan;
@@ -253,6 +254,31 @@ class CekKesiapan extends Command
             $adminAktif > 0,
             'Tanpa admin aktif, tidak ada yang bisa membuat pengguna atau membuka periode. '
             .'Jalankan: php artisan make:filament-user lalu ubah perannya di basis data.');
+
+        // Demo memberi sesi sungguhan di dalam aplikasi kepada siapa pun yang
+        // memegang kodenya. Demo yang dibuat sekali lalu dilupakan adalah pintu
+        // yang dibiarkan terbuka — dan tidak ada gejala apa pun yang
+        // menandainya.
+        if (Schema::hasTable('simulasi')) {
+            $terbuka = Simulasi::demoBerjalan()->get();
+
+            if ($terbuka->isNotEmpty()) {
+                $this->catat('PERIKSA', 'Ada demo yang sedang terbuka',
+                    $terbuka->map(fn (Simulasi $s) => $s->nama.' (kode '.$s->kode_demo
+                        .', sampai '.$s->demo_berlaku_sampai->format('d M Y H:i').')')->implode('; ')
+                    .'. Pastikan itu memang disengaja; tutup lewat layar Simulasi bila tidak.');
+            }
+
+            $basi = Simulasi::whereNotNull('kode_demo')
+                ->where('demo_berlaku_sampai', '<=', now())
+                ->get();
+
+            $this->periksa('Tidak ada demo kedaluwarsa yang akunnya tertinggal',
+                $basi->isEmpty(),
+                'Demo berikut sudah lewat masa berlakunya tetapi kode dan akun demonya belum '
+                .'dicabut: '.$basi->pluck('nama')->implode(', ')
+                .'. Tutup lewat layar Simulasi agar akunnya benar-benar dihapus.');
+        }
 
         $this->periksa('Berkas bukti tidak tersaji langsung dari web',
             ! is_dir(public_path('bukti')) && ! is_link(public_path('bukti')),
