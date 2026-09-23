@@ -18,7 +18,7 @@ class Periode extends Model
 
     protected $fillable = [
         'prodi_id', 'nama', 'ts_tahun', 'tanggal_target_unggah',
-        'versi_instrumen', 'status',
+        'versi_instrumen', 'status', 'simulasi',
     ];
 
     protected function casts(): array
@@ -27,6 +27,7 @@ class Periode extends Model
             'status' => StatusPeriode::class,
             'ts_tahun' => 'integer',
             'tanggal_target_unggah' => 'date',
+            'simulasi' => 'boolean',
         ];
     }
 
@@ -45,10 +46,23 @@ class Periode extends Model
         return $this->hasMany(Tagihan::class);
     }
 
-    /** Periode yang sedang dikerjakan. */
+    /**
+     * Periode yang sedang dikerjakan.
+     *
+     * Periode simulasi SELALU dikecualikan. Ia berstatus `berjalan` supaya
+     * bisa dikerjakan seperti periode sungguhan, jadi satu-satunya yang
+     * memisahkannya dari periode asli adalah kolom `simulasi` — dan pemisahan
+     * itu harus terjadi di sini, bukan diingat satu per satu di setiap kueri.
+     */
     public function scopeAktif(Builder $q): Builder
     {
-        return $q->where('status', StatusPeriode::Berjalan);
+        return $q->where('status', StatusPeriode::Berjalan)->where('simulasi', false);
+    }
+
+    /** Periode sungguhan saja, apa pun statusnya. */
+    public function scopeSungguhan(Builder $q): Builder
+    {
+        return $q->where('simulasi', false);
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Models\Periode;
 use App\Models\StatusSyaratPerlu;
 use App\Models\User;
 use App\Support\Na\HasilNa;
+use App\Support\Na\Skenario;
 
 /**
  * Nilai Akreditasi: NA = Σ (skor × bobot), dengan Σbobot = 100.
@@ -27,13 +28,23 @@ class KalkulatorNa
 {
     public const SKOR_BAWAAN = 3;
 
-    public function hitung(Periode $periode, ?User $penilai = null): HasilNa
+    /**
+     * @param  Skenario|null  $skenario  pengandaian simulasi; null berarti apa adanya.
+     */
+    public function hitung(Periode $periode, ?User $penilai = null, ?Skenario $skenario = null): HasilNa
     {
         $elemen = Elemen::get(['id', 'bobot']);
 
         $skor = Penilaian::where('periode_id', $periode->id)
             ->when($penilai !== null, fn ($q) => $q->where('penilai_id', $penilai->getKey()))
             ->pluck('skor', 'elemen_id');
+
+        // Skor pengandaian menimpa skor sungguhan HANYA di dalam perhitungan
+        // ini. Tidak ada tulisan ke tabel `penilaian` di sepanjang jalur ini,
+        // dan tidak boleh ada.
+        foreach ($skenario?->skor ?? [] as $elemenId => $nilai) {
+            $skor[$elemenId] = $nilai;
+        }
 
         $na = 0.0;
         $bobotSkor4 = 0.0;
@@ -42,6 +53,10 @@ class KalkulatorNa
         foreach ($elemen as $e) {
             $bobot = (float) $e->bobot;
             $nilai = $skor[$e->id] ?? null;
+
+            if ($nilai !== null) {
+                $nilai = (int) $nilai;
+            }
 
             if ($nilai === null) {
                 $belumDinilai++;
@@ -57,7 +72,7 @@ class KalkulatorNa
 
         $na = round($na, 2);
 
-        [$syarat3, $syarat5] = $this->statusSyaratPerlu($periode);
+        [$syarat3, $syarat5] = $this->statusSyaratPerlu($periode, $skenario);
         [$status, $masa] = $this->tentukanStatus($na, $syarat3, $syarat5);
 
         return new HasilNa(
@@ -115,13 +130,17 @@ class KalkulatorNa
      *
      * @return array{bool, bool}
      */
-    private function statusSyaratPerlu(Periode $periode): array
+    private function statusSyaratPerlu(Periode $periode, ?Skenario $skenario = null): array
     {
         $wajib = Elemen::bersyaratPerlu()->pluck('id');
 
         $level = StatusSyaratPerlu::where('periode_id', $periode->id)
             ->whereIn('elemen_id', $wajib)
             ->pluck('level', 'elemen_id');
+
+        foreach ($skenario?->syaratPerlu ?? [] as $elemenId => $l) {
+            $level[$elemenId] = $l;
+        }
 
         $tiga = 0;
         $lima = 0;
