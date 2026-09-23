@@ -289,6 +289,82 @@ export LD_LIBRARY_PATH=~/.local/pw-deps/root/usr/lib/x86_64-linux-gnu
 `ManualPenggunaTest` menjaga agar setiap peran punya halaman, setiap gambar yang
 dirujuk benar-benar ada, dan tidak ada gambar yatim yang tertinggal.
 
+## Menggelar ke server
+
+SIGAP berjalan di dua tempat dengan bentuk alamat yang berbeda:
+`http://localhost:8021` di akar domain, dan
+`https://supportfkip.unsil.ac.id/sigap` **di bawah subfolder**. Yang kedua itu
+yang menuntut perhatian.
+
+### Pemeriksa kesiapan
+
+Jalankan setelah setiap penggelaran, bukan sekali saat pemasangan:
+
+```bash
+php artisan sigap:cek-kesiapan
+php artisan sigap:cek-kesiapan --subfolder=/sigap   # bila APP_URL belum disetel
+```
+
+Ia memeriksa lingkungan, aset terbangun, migrasi tertunda, keutuhan data
+instrumen, izin tulis berkas, dan — yang paling mudah terlupa — **kata sandi
+contoh yang tertinggal**. Seeder memasang sandi `password` pada enam pengguna
+contoh; di basis data demo itu pantas, di server sungguhan itu pintu terbuka,
+dan tidak ada satu pun galat yang muncul karenanya.
+
+Keluaran `GAGAL` membuat perintahnya keluar dengan kode 1, jadi ia bisa dipakai
+sebagai gerbang di skrip penggelaran. Baris `PERIKSA` adalah hal yang hanya
+manusia bisa pastikan — cron berjalan, pekerja antrean hidup, jalur keluar ke
+internet terbuka.
+
+### Yang wajib disetel untuk subfolder
+
+Salin blok penggelaran di akhir `.env.example`. Tiga yang paling menentukan:
+
+| Kunci | Nilai | Bila salah |
+|---|---|---|
+| `APP_URL` | `https://supportfkip.unsil.ac.id/sigap` | setiap tautan menunjuk ke luar aplikasi |
+| `SESSION_PATH` | `/sigap` | cookie sesi bertabrakan dengan aplikasi tetangga |
+| `SESSION_SECURE_COOKIE` | `true` | cookie sesi bisa terkirim lewat HTTP |
+
+`APP_URL` adalah satu-satunya sumber yang dipakai `App\Support\Pemasangan`
+untuk membangun tautan — bukan header permintaan, karena server balik yang
+memangkas awalan tidak meninggalkan jejak yang bisa diandalkan.
+
+Kegagalan yang paling mahal di sini tidak berisik: kalau `APP_URL` salah,
+halaman mukanya **tetap tampil**. Pemasangannya kelihatan berhasil sampai ada
+yang menekan tombol Masuk. `PemasanganTest` menguji bentuk tautannya di kedua
+alamat supaya kekeliruan itu tertangkap sebelum digelar, bukan sesudah.
+
+### Yang harus disiapkan di server
+
+```bash
+# Folder bukti — tidak ada di git, dan tidak bisa dibangun ulang
+mkdir -p storage/app/bukti && chown -R www-data: storage bootstrap/cache
+
+# Symlink manual, bila hilang setelah klon ulang
+ln -s ../docs/manual public/manual
+
+# Penjadwal: pemeriksaan tautan bukti harian pukul 02:00 WIB
+* * * * * cd /path/ke/sigap && php artisan schedule:run >> /dev/null 2>&1
+
+# Pekerja antrean, karena QUEUE_CONNECTION=database
+php artisan queue:work
+```
+
+`PemeriksaTautan` membuka tautan Drive **tanpa kredensial apa pun**. Bila server
+berada di balik proksi keluar, pastikan jalurnya terbuka — kalau tidak, seluruh
+bukti akan ditandai tidak terbaca padahal sebenarnya baik-baik saja.
+
+### Penggelaran otomatis
+
+`.github/workflows/deploy.yml` mengikuti pola yang sama dengan repositori lain
+di server ini: mendorong ke `main` memicu SSH ke server lalu menjalankan
+`~/docker-apps/deploy.sh sigap`. Rahasia yang dibutuhkan:
+`SERVER_HOST`, `SERVER_USER`, `SSH_PRIVATE_KEY`.
+
+`.github/workflows/uji.yml` menjalankan seluruh uji dan `data/verifikasi.py` di
+atas MariaDB 10.11 pada setiap dorongan dan setiap pull request.
+
 ## Status pembangunan
 
 | Tahap | Isi | Status |
@@ -303,6 +379,7 @@ dirujuk benar-benar ada, dan tidak ada gambar yatim yang tertinggal.
 | + | Impersonasi, konfirmasi keluar, tema terang, footer, simulasi, manual | **selesai** |
 | + | Menu per peran dan halaman galat yang menjelaskan | **selesai** |
 | + | Halaman muka publik dengan tautan ke manual | **selesai** |
+| + | Kesiapan penggelaran: subfolder, pemeriksa, GitHub Actions | **selesai** |
 
 ## Sebelum menyerahkan ke orang lain
 

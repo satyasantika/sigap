@@ -355,6 +355,51 @@ tampil ketika basis data mati. Itu bukan kebetulan: halaman muka yang masih hidu
 saat sistemnya tidak adalah halaman yang masih bisa memberi tahu orang apa yang
 sedang terjadi.
 
+### 4.13 Zona waktu yang diam-diam UTC selama tujuh tahap
+
+`config/app.php` bawaan Laravel menuliskan `'timezone' => 'UTC'` apa adanya dan
+TIDAK membaca `APP_TIMEZONE`. Sementara itu `.env` dan `.env.example` sama-sama
+menuliskan `Asia/Jakarta`. Tidak ada galat, tidak ada peringatan, dan 880 uji
+tetap hijau — karena seluruh uji memakai zona waktu yang sama secara konsisten.
+
+Akibatnya di dunia nyata: selisih tujuh jam. Antara pukul 00.00 dan 07.00 WIB
+aplikasi masih menganggap hari kemarin, jadi tagihan yang jatuh tempo hari ini
+belum terhitung terlambat dan tagihan kemarin masih tampak belum lewat. Ubin
+"Tagihan terlambat" di dasbor salah selama tujuh jam setiap hari. Penjadwal
+`dailyAt('02:00')` sebenarnya berjalan pukul 09.00 WIB — di tengah jam kerja,
+bukan dini hari seperti yang dimaksud.
+
+Ditemukan `sigap:cek-kesiapan`, bukan oleh uji. Itu bukan kebetulan: perbedaan
+antara "yang tertulis di .env" dan "yang benar-benar dipakai aplikasi" hanya
+kelihatan bila ada yang membandingkan keduanya dengan sengaja.
+
+Satu catatan bila basis data sungguhan sudah berisi data sebelum perbaikan ini:
+baris lama ditulis dengan jam UTC, baris baru dengan jam WIB, dan keduanya
+duduk di kolom yang sama. Untuk SIGAP ini tidak menjadi masalah karena
+perbaikannya mendahului penggelaran pertama — tetapi bila suatu saat zona waktu
+diubah lagi, data lama harus digeser, bukan dibiarkan.
+
+### 4.14 Subfolder: kegagalan yang tidak berisik
+
+Di `https://supportfkip.unsil.ac.id/sigap`, tautan yang ditulis absolut
+(`href="/panel"`) menunjuk ke `https://supportfkip.unsil.ac.id/panel` — ke luar
+aplikasi. Yang membuatnya mahal: halaman mukanya **tetap tampil dengan benar**.
+Penggelarannya kelihatan berhasil sampai ada yang menekan tombol Masuk.
+
+Dua pelanggaran memang ada dan sudah diperbaiki: satu di `dasbor.blade.php`
+(tautan ke Bukti bermasalah) dan satu di kepala manual. Keduanya ditulis jauh
+sebelum ada rencana menggelar ke subfolder, dan keduanya benar sampai saat itu.
+
+Yang menjaga sekarang:
+`PemasanganTest::tidak_ada_jalur_absolut_yang_ditulis_mati_di_tampilan`
+menyisir `resources/views/` dan `app/` mencari `href="/`, `src="/`, dan
+`action="/`. Bila uji itu merah, yang salah adalah jalurnya — bukan ujinya.
+
+Awalan diturunkan dari `APP_URL`, bukan dari header permintaan. Itu pilihan
+sadar: server balik yang memangkas `/sigap` sebelum meneruskan ke PHP tidak
+meninggalkan jejak yang bisa diandalkan, dan menebaknya dari `X-Forwarded-*`
+berarti menaruh kepercayaan pada header yang bisa dipalsukan.
+
 ---
 
 ## 5. Pertentangan dalam dokumen yang ditemukan, dan cara menanganinya
