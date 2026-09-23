@@ -48,7 +48,14 @@ class PanelTest extends TestCase
     public function panel_berada_di_slash_panel(): void
     {
         $this->get('/panel/login')->assertSuccessful();
-        $this->get('/')->assertRedirect('/panel');
+
+        // Akar situs dulu mengalihkan ke /panel. Sejak ada halaman muka, ia
+        // menyajikan halamannya sendiri dan MENAUTKAN panel — lihat CLAUDE.md
+        // bagian 7 butir 18. Yang tetap dijaga di sini: panelnya masih di
+        // /panel dan masih bisa dicapai dari akar.
+        $this->get('/')
+            ->assertOk()
+            ->assertSee(url('/panel'), escape: false);
     }
 
     #[Test]
