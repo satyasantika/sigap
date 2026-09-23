@@ -8,6 +8,7 @@ use App\Models\Pokja;
 use App\Models\Simulasi;
 use App\Models\User;
 use App\Support\Izin;
+use App\Support\LingkupPeriode;
 use App\Support\Na\HasilNa;
 use App\Support\Na\Skenario;
 use Illuminate\Support\Facades\DB;
@@ -104,10 +105,10 @@ class Simulator
             ? ($simulasi->periodeSandbox ?? $simulasi->periode)
             : $simulasi->periode;
 
-        return $this->kalkulator->hitung(
+        return LingkupPeriode::paksa($periode, fn () => $this->kalkulator->hitung(
             $periode,
             skenario: Skenario::dariParameter($simulasi->parameter),
-        );
+        ));
     }
 
     /**
@@ -121,7 +122,10 @@ class Simulator
      */
     public function bandingkan(Simulasi $simulasi): array
     {
-        $nyata = $this->kalkulator->hitung($simulasi->periode);
+        $nyata = LingkupPeriode::paksa(
+            $simulasi->periode,
+            fn () => $this->kalkulator->hitung($simulasi->periode),
+        );
         $andai = $this->hitung($simulasi);
 
         return [
@@ -161,6 +165,11 @@ class Simulator
                 'simulasi' => true,
             ]);
 
+            // Daftar id periode sungguhan diingat per permintaan; tanpa ini,
+            // periode yang baru lahir tidak akan pernah terlihat oleh kueri
+            // berikutnya di permintaan yang sama.
+            LingkupPeriode::lupakan();
+
             foreach ($acuan->pokja()->get() as $p) {
                 $salinan = Pokja::create([
                     'periode_id' => $sandbox->id,
@@ -177,7 +186,11 @@ class Simulator
                 );
             }
 
-            $this->pembangkit->untuk($sandbox);
+            // Pokja yang baru saja disalin belum terlihat oleh admin yang
+            // membuatnya — ia terikat periode latihan, dan admin terikat
+            // periode sungguhan. Pembangkitan dijalankan dalam lingkup periode
+            // itu sendiri.
+            LingkupPeriode::paksa($sandbox, fn () => $this->pembangkit->untuk($sandbox));
 
             $simulasi = Simulasi::create([
                 'prodi_id' => $acuan->prodi_id,
@@ -233,6 +246,7 @@ class Simulator
 
                 $simulasi->update(['periode_sandbox_id' => null]);
                 $sandbox?->forceDelete();
+                LingkupPeriode::lupakan();
             }
 
             $simulasi->delete();

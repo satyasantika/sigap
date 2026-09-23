@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\JenisTagihan;
 use App\Enums\StatusTagihan;
+use App\Models\Concerns\TerikatPeriode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Tagihan extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids, SoftDeletes, TerikatPeriode;
 
     protected $table = 'tagihan';
 

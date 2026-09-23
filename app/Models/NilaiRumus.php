@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\MenolakDihapus;
+use App\Models\Concerns\TerikatPeriode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class NilaiRumus extends Model
 {
-    use HasUuids, MenolakDihapus;
+    use HasUuids, MenolakDihapus, TerikatPeriode;
 
     protected $table = 'nilai_rumus';
 

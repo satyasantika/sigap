@@ -6,6 +6,7 @@ use App\Enums\PeranPengguna;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,8 @@ class User extends Authenticatable implements FilamentUser
         'prodi_id',
         'peran',
         'aktif',
+        'demo',
+        'periode_demo_id',
         'terakhir_masuk_pada',
         'wajib_ganti_sandi',
     ];
@@ -45,9 +48,38 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
             'peran' => PeranPengguna::class,
             'aktif' => 'boolean',
+            'demo' => 'boolean',
             'wajib_ganti_sandi' => 'boolean',
             'terakhir_masuk_pada' => 'datetime',
         ];
+    }
+
+    /**
+     * Pengguna yang boleh dipilih sebagai penanggung jawab, penilai, atau
+     * koordinator.
+     *
+     * Aktif DAN bukan akun demo. Akun demo hidup hanya selama demonstrasi
+     * berjalan; menugaskan tagihan sungguhan kepadanya berarti tagihan itu
+     * kehilangan penanggung jawab saat demonya dibuang.
+     *
+     * Sengaja satu scope bernama, bukan `where('aktif', true)` yang diulang di
+     * lima layar — lima tempat yang harus diingat adalah lima tempat yang bisa
+     * terlewat.
+     */
+    public function scopeBisaDitugaskan(Builder $q): Builder
+    {
+        return $q->where('aktif', true)->where('demo', false);
+    }
+
+    public function scopeBukanDemo(Builder $q): Builder
+    {
+        return $q->where('demo', false);
+    }
+
+    /** Akun ini lahir dari sebuah demonstrasi, bukan dari daftar pengguna. */
+    public function akunDemo(): bool
+    {
+        return (bool) $this->demo;
     }
 
     public function prodi(): BelongsTo

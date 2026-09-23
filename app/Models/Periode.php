@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\StatusPeriode;
+use App\Support\LingkupPeriode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,22 @@ class Periode extends Model
             'tanggal_target_unggah' => 'date',
             'simulasi' => 'boolean',
         ];
+    }
+
+    /**
+     * Daftar id periode sungguhan diingat App\Support\LingkupPeriode selama
+     * satu permintaan. Setiap perubahan pada tabel ini membatalkan ingatan itu
+     * — termasuk `simulasi` yang berubah, karena itulah yang menentukan sebuah
+     * periode masuk daftar atau tidak.
+     */
+    protected static function booted(): void
+    {
+        $lupakan = fn () => LingkupPeriode::lupakan();
+
+        static::created($lupakan);
+        static::updated($lupakan);
+        static::deleted($lupakan);
+        static::restored($lupakan);
     }
 
     public function prodi(): BelongsTo
