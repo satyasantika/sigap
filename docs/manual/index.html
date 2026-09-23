@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual pengguna &middot; Manual SIGAP</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header class="utama">
+  <div class="bungkus">
+    <div class="jenama"><a href="index.html">Manual SIGAP</a></div>
+    <h1>Manual pengguna SIGAP</h1>
+    <p class="ringkas">Satu manual untuk tiap peran. Seluruh gambar adalah tangkapan
+    layar sungguhan dari sistem ini.</p>
+
+  </div>
+</header>
+<main class="bungkus">
+
+
+  <p>SIGAP membagi wewenang ke enam peran. Setiap orang hanya melihat apa yang
+  menjadi urusannya, dan pembagian itu ditentukan satu matriks 144 sel yang bisa
+  dibuka siapa pun lewat menu <em>Matriks Izin</em>. Bila sebuah tombol tidak muncul
+  di layar Anda, jawabannya ada di sana — bukan pada kesalahan sistem.</p>
+
+  <div class="kartu-peran">
+    <a class="kartu" href="admin.html"><strong>Administrator Sistem</strong><span>Mengelola sistem, bukan isi akreditasi.</span></a>
+    <a class="kartu" href="ketua.html"><strong>Ketua Task Force</strong><span>Memegang seluruh wewenang isi akreditasi.</span></a>
+    <a class="kartu" href="pimpinan.html"><strong>Pimpinan</strong><span>Membaca keadaan, tidak mengubah isinya.</span></a>
+    <a class="kartu" href="koordinator.html"><strong>Koordinator Pokja</strong><span>Memimpin satu pokja, dari penugasan sampai reviu.</span></a>
+    <a class="kartu" href="anggota.html"><strong>Anggota Pokja</strong><span>Mengerjakan tagihan yang ditugaskan kepada Anda.</span></a>
+    <a class="kartu" href="auditor.html"><strong>Auditor Mutu Internal</strong><span>Memeriksa tanpa mengubah.</span></a>
+  </div>
+
+  <h2 id="masuk">Masuk ke SIGAP</h2>
+
+        <p>Semua peran masuk lewat halaman yang sama. Tidak ada pendaftaran mandiri —
+        akun dibuat oleh administrator sistem — dan tidak ada pemulihan kata sandi lewat
+        surel.</p>
+        <p>Bila akun Anda dinonaktifkan, pesannya akan mengatakan demikian dengan jelas,
+        supaya Anda berhenti menebak-nebak kata sandi sendiri. Untuk kata sandi yang
+        salah, pesannya sengaja dibuat tidak membedakan akun yang ada dari akun yang
+        tidak ada.</p>
+    
+  <figure>
+    <img src="gambar/bersama/00-masuk.png" alt="Halaman masuk SIGAP" loading="lazy">
+    <figcaption>Halaman masuk — sama untuk seluruh peran.</figcaption>
+  </figure>
+
+  <h2 id="menu">Menu Anda hanya memuat urusan Anda</h2>
+  <p>Menu yang muncul berbeda per peran, dan perbedaannya disengaja. Anggota pokja
+  tidak melihat menu Pengguna atau Prodi; administrator sistem tidak melihat menu
+  Bukti atau Naskah LED. Tabelnya ada di <code>data/menu.json</code> dan diturunkan
+  dari dokumen rancangan layar.</p>
+  <p>Menu yang hilang <strong>menyembunyikan, bukan menolak</strong>. Penolakan tetap
+  diputuskan matriks izin, dan halaman yang tidak ada di menu Anda tetap akan menolak
+  bila dibuka lewat tautan langsung. Dua lapis itu memang disengaja: menyembunyikan
+  tombol tidak pernah boleh menjadi satu-satunya pengaman.</p>
+
+  <h2 id="galat">Kalau ada yang salah</h2>
+  <p>SIGAP tidak menampilkan halaman galat kosong. Setiap halaman galat menyebut
+  apa yang terjadi, mengapa, dan apa yang bisa Anda lakukan sekarang.</p>
+  <figure>
+    <img src="gambar/bersama/01-galat-403.png" alt="Halaman 403 SIGAP" loading="lazy">
+    <figcaption>403 — halaman bukan wewenang Anda. Menyebut nama dan peran Anda, lalu
+    menunjuk Matriks Izin supaya Anda bisa memeriksa sendiri.</figcaption>
+  </figure>
+  <figure>
+    <img src="gambar/bersama/02-galat-404.png" alt="Halaman 404 SIGAP" loading="lazy">
+    <figcaption>404 — alamat tidak dikenali.</figcaption>
+  </figure>
+  <p>Bila yang muncul adalah <strong>500</strong>, halamannya menampilkan
+  <strong>kode rujukan</strong> seperti <code>SIGAP-7KQ3M2XA</code>. Salin kode itu
+  saat melapor: kode yang sama tersimpan di berkas log, jadi administrator bisa
+  menemukan baris yang tepat tanpa menebak jam kejadian. Jangan mengulang tindakan
+  yang sama berkali-kali — bila tindakan itu sempat menulis sebagian data,
+  pengulangan bisa menggandakannya.</p>
+
+  <h2 id="tentang-gambar">Tentang gambar di manual ini</h2>
+  <p>Setiap gambar di sini ditangkap dari SIGAP yang benar-benar berjalan, lewat
+  peramban sungguhan, dengan data contoh dari <code>DemoSeeder</code>. Tidak ada
+  gambar stok, tidak ada mockup, dan tidak ada tangkapan layar dari aplikasi lain.
+  Nama orang yang muncul di gambar adalah nama akun contoh, bukan dosen sungguhan.</p>
+
+  <div class="catatan">
+    <p><strong>Bila tampilan berubah, gambarnya harus ikut diperbarui.</strong>
+    Jalankan <code>python3 tools/tangkap-layar.py</code> lalu
+    <code>python3 tools/susun-manual.py</code>. Manual yang menampilkan layar lama
+    lebih menyesatkan daripada manual yang tidak bergambar sama sekali.</p>
+  </div>
+
+</main>
+<footer class="utama">
+  <div class="bungkus">
+    &copy; 2026 Satya Santika. Sistem Informasi Gugus Akreditasi Program Studi.
+  </div>
+</footer>
+</body>
+</html>

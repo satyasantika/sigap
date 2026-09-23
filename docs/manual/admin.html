@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administrator Sistem &middot; Manual SIGAP</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header class="utama">
+  <div class="bungkus">
+    <div class="jenama"><a href="index.html">Manual SIGAP</a></div>
+    <h1>Administrator Sistem</h1>
+    <p class="ringkas">Mengelola sistem, bukan isi akreditasi.</p>
+
+  </div>
+</header>
+<main class="bungkus">
+
+  <a class="kembali" href="index.html">&larr; Semua manual</a>
+
+            <p>Administrator sistem memegang kendali atas <strong>siapa</strong> yang
+            boleh masuk dan <strong>kapan</strong> periode dibuka atau dikunci — bukan
+            atas isi akreditasinya. Anda tidak menyetujui tagihan, tidak menulis narasi,
+            dan tidak mengunggah bukti. Pembagian ini disengaja: orang yang bisa
+            mengubah daftar pengguna sebaiknya bukan orang yang sama dengan yang
+            memutuskan sebuah bukti sah atau tidak.</p>
+            <p>Bila Anda perlu melakukan sesuatu yang bukan wewenang admin, jangan
+            mencari jalan pintas lewat basis data. Mintalah kepada ketua task force,
+            atau — bila memang perlu memeriksa sendiri apa yang dilihat seseorang —
+            gunakan fitur <em>Masuk sebagai</em> yang dijelaskan di bawah.</p>
+        
+  <nav class="daftar"><strong>Isi halaman ini</strong>
+    <ol>
+      <li><a href="#01-dasbor">Dasbor</a></li>
+      <li><a href="#02-pengguna">Pengguna</a></li>
+      <li><a href="#03-periode">Periode</a></li>
+      <li><a href="#04-pokja">Pokja</a></li>
+      <li><a href="#05-matriks-izin">Matriks izin</a></li>
+      <li><a href="#06-log-aktivitas">Log aktivitas</a></li>
+      <li><a href="#09-masuk-sebagai-modal">Masuk sebagai — meminta alasan</a></li>
+      <li><a href="#10-spanduk-penyamaran">Selama menyamar</a></li>
+      <li><a href="#11-log-setelah-menyamar">Jejak yang ditinggalkan</a></li>
+      <li><a href="#07-simulasi">Simulasi</a></li>
+      <li><a href="#08-prodi">Program studi</a></li>
+      <li><a href="#99-konfirmasi-keluar">Keluar</a></li>
+    </ol>
+  </nav>
+  <h2 id="01-dasbor">Dasbor</h2>
+
+                <p>Dasbor menampilkan keadaan periode berjalan. Sebagai admin Anda
+                melihat ubin yang sama dengan peran lain, tetapi tidak ada tombol
+                tindakan di dalamnya.</p>
+                <p>Angka <strong>Progres bobot</strong> selalu dihitung dari bobot
+                elemen, bukan dari cacah tagihan. Dua puluh tagihan ringan yang selesai
+                tidak menggeser angka sebanyak satu elemen berbobot besar, dan memang
+                begitu seharusnya.</p>
+            
+  <figure>
+    <img src="gambar/admin/01-dasbor.png" alt="Dasbor pada SIGAP" loading="lazy">
+    <figcaption>Dasbor — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="02-pengguna">Pengguna</h2>
+
+                <p>Seluruh akun dibuat di sini. Tidak ada pendaftaran mandiri, tidak
+                ada lupa kata sandi lewat surel — bila seseorang kehilangan sandinya,
+                Anda yang menyetel ulang.</p>
+                <p>Menonaktifkan pengguna lebih baik daripada menghapusnya. Akun yang
+                dinonaktifkan ditolak masuk dengan pesan yang jelas, sementara seluruh
+                jejaknya di riwayat tagihan tetap utuh dan tetap bisa dibaca.</p>
+            
+  <figure>
+    <img src="gambar/admin/02-pengguna.png" alt="Pengguna pada SIGAP" loading="lazy">
+    <figcaption>Pengguna — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="03-periode">Periode</h2>
+
+                <p>Satu periode mewakili satu siklus akreditasi, dan TS-nya
+                (<em>tahun sekarang</em>) ditentukan di sini. Seluruh label tahun di
+                DKPS — TS, TS-1, TS-2 — diturunkan dari angka itu, tidak ada satu pun
+                yang ditulis mati di dalam kode.</p>
+                <p><strong>Mengunci periode menutup seluruh penulisan untuk semua
+                peran</strong>, termasuk ketua. Satu-satunya yang tetap bisa bergerak
+                adalah admin lewat menu periode itu sendiri, supaya periode yang keliru
+                dikunci masih bisa dibuka kembali.</p>
+            
+  <figure>
+    <img src="gambar/admin/03-periode.png" alt="Periode pada SIGAP" loading="lazy">
+    <figcaption>Periode — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="04-pokja">Pokja</h2>
+
+                <p>Enam pokja membagi habis 59 elemen. Keanggotaan pokja menentukan
+                apa yang dilihat koordinator dan anggota: lingkup
+                <code>pokjanya</code> pada matriks izin berarti "hanya baris yang
+                pokjanya sama dengan pokja pengguna".</p>
+                <p>POKJA-DATA berbeda dari lima lainnya — ia tidak memegang elemen,
+                melainkan mengisi dan memverifikasi DKPS.</p>
+            
+  <figure>
+    <img src="gambar/admin/04-pokja.png" alt="Pokja pada SIGAP" loading="lazy">
+    <figcaption>Pokja — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="05-matriks-izin">Matriks izin</h2>
+
+                <p>Halaman hanya-baca berisi 144 sel: 24 aksi &times; 6 peran. Inilah
+                jawaban atas pertanyaan "kenapa tombol itu tidak muncul di layar saya".
+                Siapa pun boleh membukanya sendiri tanpa bertanya.</p>
+                <p>Matriks tidak bisa disunting dari layar. Mengubahnya berarti
+                menyunting <code>data/izin.json</code> lalu menjalankan seeder, dan
+                perubahan itu tercatat di riwayat git.</p>
+            
+  <figure>
+    <img src="gambar/admin/05-matriks-izin.png" alt="Matriks izin pada SIGAP" loading="lazy">
+    <figcaption>Matriks izin — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="06-log-aktivitas">Log aktivitas</h2>
+
+                <p>Tempat seluruh jejak berkumpul dalam satu urutan waktu. Kolom
+                <strong>Sebenarnya</strong> hanya terisi bila tindakan itu dilakukan
+                seseorang yang sedang menyamar.</p>
+                <p>Catatan ini tidak bisa diubah dan tidak bisa dihapus — penolakannya
+                dipasang di tingkat model, bukan sekadar disembunyikan tombolnya. Tidak
+                ada layar dan tidak ada perintah artisan yang bisa merapikannya di
+                belakang.</p>
+            
+  <figure>
+    <img src="gambar/admin/06-log-aktivitas.png" alt="Log aktivitas pada SIGAP" loading="lazy">
+    <figcaption>Log aktivitas — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="09-masuk-sebagai-modal">Masuk sebagai — meminta alasan</h2>
+
+                <p>Tombol <em>Masuk sebagai</em> ada di setiap baris daftar pengguna,
+                kecuali baris admin lain dan baris Anda sendiri. Menekannya membuka
+                modal yang <strong>mewajibkan alasan</strong>.</p>
+                <p>Alasan itu bukan formalitas. Ia satu-satunya bagian dari jejak yang
+                menjelaskan <em>mengapa</em>; tanpanya, log hanya memberitahu bahwa
+                admin pernah menjadi ketua selama sebelas menit tanpa ada yang bisa
+                menilai apakah itu wajar.</p>
+            
+  <figure>
+    <img src="gambar/admin/09-masuk-sebagai-modal.png" alt="Masuk sebagai — meminta alasan pada SIGAP" loading="lazy">
+    <figcaption>Masuk sebagai — meminta alasan — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="10-spanduk-penyamaran">Selama menyamar</h2>
+
+                <p>Spanduk kuning menempel di atas setiap halaman dan tidak bisa
+                ditutup. Selama menyamar Anda memegang <strong>seluruh wewenang peran
+                yang ditiru</strong> — termasuk menyetujui tagihan. Tidak ada pagar
+                yang menahan; yang menjaga pertanggungjawaban adalah jejaknya.</p>
+                <p>Ada dua jalan keluar, keduanya tidak mengakhiri sesi Anda: tombol
+                <em>Kembali ke akun saya</em> di spanduk, dan menu serupa di dalam menu
+                pengguna di pojok kanan atas.</p>
+            
+  <figure>
+    <img src="gambar/admin/10-spanduk-penyamaran.png" alt="Selama menyamar pada SIGAP" loading="lazy">
+    <figcaption>Selama menyamar — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="11-log-setelah-menyamar">Jejak yang ditinggalkan</h2>
+
+                <p>Setiap tindakan selama penyamaran menyimpan dua nama: pengguna yang
+                ditiru dan admin di baliknya. Bukan hanya di log aktivitas —
+                <code>tagihan_riwayat</code>, <code>narasi_versi</code>, dan
+                <code>komentar</code> semuanya membawa kolom yang sama.</p>
+                <p>Akibatnya sebuah persetujuan tagihan selalu bisa dilacak ke tangan
+                yang benar-benar menekannya.</p>
+            
+  <figure>
+    <img src="gambar/admin/11-log-setelah-menyamar.png" alt="Jejak yang ditinggalkan pada SIGAP" loading="lazy">
+    <figcaption>Jejak yang ditinggalkan — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="07-simulasi">Simulasi</h2>
+
+                <p>Dua bentuk simulasi, keduanya dibuat dan dihapus seperlunya.</p>
+                <p><strong>Pengandaian skor</strong> menjawab "bagaimana bila E58 naik
+                ke 4?" dengan menghitung ulang NA memakai skor yang Anda andaikan.
+                Tabel penilaian tidak tersentuh sama sekali — dan itu syarat yang tidak
+                bisa ditawar, karena begitu simulasi boleh menulis ke sana, tidak ada
+                lagi cara membedakan skor yang dinilai dari skor yang diandaikan.</p>
+                <p><strong>Periode latihan</strong> menyalin kerangka periode sungguhan
+                — pokja dan seluruh tagihannya — ke periode baru bertanda
+                <code>[SIMULASI]</code>. Narasi, bukti, dan penilaian tidak ikut
+                disalin; periode latihan memang dimulai kosong untuk dilatih mengisinya.
+                Ia tidak pernah muncul sebagai periode berjalan.</p>
+                <p>Menghapus periode latihan membuang periodenya beserta seluruh isinya,
+                permanen. Data periode sungguhan tidak tersentuh.</p>
+            
+  <figure>
+    <img src="gambar/admin/07-simulasi.png" alt="Simulasi pada SIGAP" loading="lazy">
+    <figcaption>Simulasi — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="08-prodi">Program studi</h2>
+
+                <p>Identitas prodi, UPPS, dan perguruan tinggi. Jarang disentuh setelah
+                pemasangan, tetapi ada karena sistem ini dirancang untuk bisa menaungi
+                lebih dari satu prodi tanpa migrasi ulang.</p>
+            
+  <figure>
+    <img src="gambar/admin/08-prodi.png" alt="Program studi pada SIGAP" loading="lazy">
+    <figcaption>Program studi — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+  <h2 id="99-konfirmasi-keluar">Keluar</h2>
+
+                <p>Keluar selalu bertanya lebih dulu. Tombolnya bertetangga dengan
+                tombol profil dan penukar tema, dan satu salah klik di tengah menyusun
+                narasi berarti kehilangan isian yang belum tersimpan.</p>
+                <p>Bila Anda sedang menyamar, modalnya berbunyi berbeda: ia mengingatkan
+                bahwa keluar mengakhiri penyamaran <em>sekaligus</em> sesi Anda, dan
+                menyarankan <em>Kembali ke akun saya</em> bila itu yang Anda maksud.</p>
+            
+  <figure>
+    <img src="gambar/admin/99-konfirmasi-keluar.png" alt="Keluar pada SIGAP" loading="lazy">
+    <figcaption>Keluar — tangkapan layar SIGAP dengan data contoh.</figcaption>
+  </figure>
+</main>
+<footer class="utama">
+  <div class="bungkus">
+    &copy; 2026 Satya Santika. Sistem Informasi Gugus Akreditasi Program Studi.
+  </div>
+</footer>
+</body>
+</html>
