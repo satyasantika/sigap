@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -53,6 +54,19 @@ class UserResource extends Resource
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->check() && Izin::bolehMenu(auth()->user(), 'pengguna');
+    }
+
+    /**
+     * Akun demo tidak muncul di daftar pengguna.
+     *
+     * Ia bukan orang: ia lahir bersama sebuah demonstrasi dan mati bersamanya.
+     * Menampilkannya di sini membuat admin mengira ada enam pengguna baru yang
+     * tidak pernah ia buat, dan membuka jalan menyuntingnya seolah-olah akun
+     * sungguhan. Pengelolaannya ada di layar Simulasi.
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->bukanDemo();
     }
 
     public static function getPages(): array

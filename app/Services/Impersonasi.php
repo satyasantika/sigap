@@ -179,7 +179,7 @@ class Impersonasi
      */
     public function targetTersedia(User $admin): Collection
     {
-        return User::where('aktif', true)
+        return User::bisaDitugaskan()
             ->whereKeyNot($admin->getKey())
             ->orderBy('nama_lengkap')
             ->get()
@@ -207,6 +207,13 @@ class Impersonasi
 
         if (! $target->aktif) {
             throw new RuntimeException('Pengguna ini dinonaktifkan dan tidak bisa ditiru.');
+        }
+
+        // Akun demo hanya melihat periode demonya. Menyamarinya tidak
+        // memperlihatkan apa pun tentang sistem sungguhan, dan jejaknya
+        // menggantung begitu demonya dibuang.
+        if ($target->akunDemo()) {
+            throw new RuntimeException('Akun demo tidak bisa ditiru. Masuklah ke demonya langsung.');
         }
 
         if ($this->sedangBerlangsung()) {

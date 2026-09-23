@@ -6,6 +6,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class PokjaForm
 {
@@ -28,7 +29,13 @@ class PokjaForm
                 ->maxLength(120),
             Select::make('koordinator_id')
                 ->label('Koordinator')
-                ->relationship('koordinator', 'nama_lengkap')
+                ->relationship(
+                    'koordinator',
+                    'nama_lengkap',
+                    // Akun demo tidak boleh jadi koordinator pokja sungguhan:
+                    // ia lenyap begitu demonya dibuang.
+                    fn (Builder $query) => $query->bisaDitugaskan(),
+                )
                 ->searchable()
                 ->preload()
                 ->placeholder('Belum ditunjuk')

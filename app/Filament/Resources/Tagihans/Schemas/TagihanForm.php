@@ -26,7 +26,7 @@ class TagihanForm
 
             Select::make('penanggung_jawab_id')
                 ->label('Penanggung jawab')
-                ->options(fn () => User::where('aktif', true)->orderBy('nama_lengkap')
+                ->options(fn () => User::bisaDitugaskan()->orderBy('nama_lengkap')
                     ->pluck('nama_lengkap', 'id')->all())
                 ->searchable()
                 ->placeholder('Belum ditugaskan')

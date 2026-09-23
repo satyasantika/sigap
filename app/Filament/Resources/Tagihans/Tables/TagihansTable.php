@@ -58,7 +58,7 @@ class TagihansTable
                 SelectFilter::make('jenis')->label('Jenis')->options(JenisTagihan::pilihan()),
                 SelectFilter::make('status')->label('Status')->options(StatusTagihan::pilihan())->multiple(),
                 SelectFilter::make('penanggung_jawab_id')->label('Penanggung jawab')
-                    ->options(fn () => User::where('aktif', true)->orderBy('nama_lengkap')
+                    ->options(fn () => User::bisaDitugaskan()->orderBy('nama_lengkap')
                         ->pluck('nama_lengkap', 'id')->all())
                     ->searchable(),
                 SelectFilter::make('kriteria')->label('Kriteria')
@@ -88,7 +88,7 @@ class TagihansTable
                         ->schema([
                             Select::make('penanggung_jawab_id')
                                 ->label('Penanggung jawab')
-                                ->options(fn () => User::where('aktif', true)->orderBy('nama_lengkap')
+                                ->options(fn () => User::bisaDitugaskan()->orderBy('nama_lengkap')
                                     ->pluck('nama_lengkap', 'id')->all())
                                 ->searchable()->required()->native(false),
                         ])
