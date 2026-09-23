@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Simulasi extends Model
@@ -17,11 +18,16 @@ class Simulasi extends Model
     protected $fillable = [
         'prodi_id', 'periode_id', 'jenis', 'nama', 'keterangan',
         'parameter', 'hasil', 'periode_sandbox_id', 'dibuat_oleh',
+        'kode_demo', 'demo_berlaku_sampai',
     ];
 
     protected function casts(): array
     {
-        return ['parameter' => 'array', 'hasil' => 'array'];
+        return [
+            'parameter' => 'array',
+            'hasil' => 'array',
+            'demo_berlaku_sampai' => 'datetime',
+        ];
     }
 
     public function periode(): BelongsTo
@@ -37,6 +43,31 @@ class Simulasi extends Model
     public function pembuat(): BelongsTo
     {
         return $this->belongsTo(User::class, 'dibuat_oleh');
+    }
+
+    /** Demo terbuka: punya kode dan masa berlakunya belum lewat. */
+    public function demoTerbuka(): bool
+    {
+        return $this->kode_demo !== null
+            && $this->demo_berlaku_sampai !== null
+            && $this->demo_berlaku_sampai->isFuture();
+    }
+
+    /** Punya kode tetapi masa berlakunya sudah lewat. */
+    public function demoKedaluwarsa(): bool
+    {
+        return $this->kode_demo !== null && ! $this->demoTerbuka();
+    }
+
+    /** Akun demo yang lahir bersama demo ini. */
+    public function penggunaDemo(): HasMany
+    {
+        return $this->hasMany(User::class, 'periode_demo_id', 'periode_sandbox_id');
+    }
+
+    public function scopeDemoBerjalan(Builder $q): Builder
+    {
+        return $q->whereNotNull('kode_demo')->where('demo_berlaku_sampai', '>', now());
     }
 
     public function scopeSkor(Builder $q): Builder

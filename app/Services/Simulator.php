@@ -234,6 +234,14 @@ class Simulator
             $nama = $simulasi->nama;
             $jenis = $simulasi->jenis;
 
+            // Demo ditutup lebih dulu, bukan dibiarkan ikut hanyut. Menutupnya
+            // menghapus akun demo secara lunak dan mencatat penutupannya;
+            // membiarkannya akan meninggalkan akun yang periodenya sudah tidak
+            // ada tanpa satu baris pun yang menjelaskan mengapa.
+            if ($simulasi->kode_demo !== null) {
+                app(Demo::class)->tutup($oleh, $simulasi);
+            }
+
             if ($jenis === 'periode' && $simulasi->periode_sandbox_id !== null) {
                 $sandbox = Periode::withTrashed()->find($simulasi->periode_sandbox_id);
 

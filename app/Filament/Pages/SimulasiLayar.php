@@ -6,6 +6,7 @@ use App\Enums\LevelSyaratPerlu;
 use App\Models\Elemen;
 use App\Models\Periode;
 use App\Models\Simulasi;
+use App\Services\Demo;
 use App\Services\Simulator;
 use App\Support\Izin;
 use App\Support\Na\Skenario;
@@ -262,6 +263,19 @@ class SimulasiLayar extends Page implements HasTable
                     ->label('Periode latihan')
                     ->placeholder('—')
                     ->toggleable(),
+                TextColumn::make('kode_demo')
+                    ->label('Demo')
+                    ->placeholder('tertutup')
+                    ->badge()
+                    ->copyable()
+                    ->copyMessage('Kode demo disalin')
+                    ->color(fn (Simulasi $record) => $record->demoTerbuka() ? 'success' : 'gray')
+                    ->description(fn (Simulasi $record) => match (true) {
+                        $record->demoTerbuka() => 'berlaku sampai '
+                            .$record->demo_berlaku_sampai->translatedFormat('d M Y, H:i'),
+                        $record->demoKedaluwarsa() => 'masa berlakunya lewat',
+                        default => null,
+                    }),
                 TextColumn::make('pembuat.nama_lengkap')->label('Dibuat oleh')->toggleable(),
                 TextColumn::make('created_at')->label('Dibuat')->dateTime('d F Y, H:i')->sortable(),
             ])
@@ -287,13 +301,64 @@ class SimulasiLayar extends Page implements HasTable
                             ->info()
                             ->send();
                     }),
+                Action::make('buka_demo')
+                    ->label(fn (Simulasi $record) => $record->demoTerbuka() ? 'Perpanjang demo' : 'Buka demo')
+                    ->icon(Heroicon::OutlinedKey)
+                    ->color('success')
+                    ->visible(fn (Simulasi $record) => $this->bolehKelola() && $record->jenis === 'periode')
+                    ->modalHeading('Buka demo untuk periode latihan ini')
+                    ->modalDescription('Demo memberi sesi SUNGGUHAN di dalam aplikasi kepada siapa pun '
+                        .'yang memegang kodenya. Yang dilihatnya hanya periode latihan ini — tidak ada '
+                        .'data akreditasi sungguhan yang terjangkau. Peran administrator sistem tidak '
+                        .'tersedia di demo karena wewenangnya tidak terikat periode.')
+                    ->modalSubmitActionLabel('Buka')
+                    ->schema([
+                        TextInput::make('hari')
+                            ->label('Berlaku berapa hari')
+                            ->helperText('Demo yang dibuat sekali lalu dilupakan adalah pintu yang '
+                                .'dibiarkan terbuka. Maksimal '.Demo::MAKSIMAL_HARI.' hari.')
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(Demo::MAKSIMAL_HARI)
+                            ->default(14)
+                            ->required(),
+                    ])
+                    ->action(function (Simulasi $record, array $data, Demo $demo) {
+                        $this->jalankan(function () use ($record, $data, $demo) {
+                            $kode = $demo->buka(Auth::user(), $record, (int) $data['hari']);
+
+                            Notification::make()
+                                ->title("Demo terbuka — kode {$kode}")
+                                ->body('Bagikan kode ini hanya kepada orang yang memang perlu mencoba. '
+                                    .'Kodenya bisa dibaca lagi di kolom Demo.')
+                                ->success()
+                                ->persistent()
+                                ->send();
+                        }, 'Demo terbuka.');
+                    }),
+
+                Action::make('tutup_demo')
+                    ->label('Tutup demo')
+                    ->icon(Heroicon::OutlinedLockClosed)
+                    ->color('warning')
+                    ->visible(fn (Simulasi $record) => $this->bolehKelola() && $record->kode_demo !== null)
+                    ->requiresConfirmation()
+                    ->modalHeading('Tutup demo?')
+                    ->modalDescription('Kode dicabut dan seluruh akun demo dihapus. Orang yang sedang '
+                        .'berada di dalam demo akan terlempar keluar. Periode latihannya sendiri tetap ada.')
+                    ->action(fn (Simulasi $record, Demo $demo) => $this->jalankan(
+                        fn () => $demo->tutup(Auth::user(), $record),
+                        'Demo ditutup dan akun demonya dihapus.',
+                    )),
+
                 DeleteAction::make()
                     ->label('Hapus')
                     ->visible(fn () => $this->bolehKelola())
                     ->modalHeading('Hapus simulasi?')
                     ->modalDescription(fn (Simulasi $record) => $record->jenis === 'periode'
                         ? 'Periode latihan "'.($record->periodeSandbox?->nama ?? '—').'" ikut dibuang '
-                            .'BESERTA seluruh tagihan, narasi, dan bukti latihan di dalamnya. '
+                            .'BESERTA seluruh tagihan, narasi, dan bukti latihan di dalamnya, dan '
+                            .'bila demonya terbuka, kode beserta akun demonya ikut lenyap. '
                             .'Tidak bisa dikembalikan. Data periode sungguhan tidak tersentuh.'
                         : 'Pengandaian ini dibuang. Tidak ada data penilaian yang tersentuh — '
                             .'simulasi skor memang tidak pernah menulis ke sana.')

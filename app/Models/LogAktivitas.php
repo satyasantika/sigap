@@ -44,14 +44,21 @@ class LogAktivitas extends Model
         });
     }
 
+    /**
+     * Pelaku, termasuk yang akunnya sudah dihapus.
+     *
+     * `withTrashed()` penting: akun demo dihapus lunak begitu demonya ditutup,
+     * dan tanpa ini seluruh baris log demo berubah menjadi "Pengguna terhapus"
+     * — jejak yang masih ada tetapi tidak lagi bisa dibaca.
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'impersonasi_oleh');
+        return $this->belongsTo(User::class, 'impersonasi_oleh')->withTrashed();
     }
 
     public function sesi(): BelongsTo

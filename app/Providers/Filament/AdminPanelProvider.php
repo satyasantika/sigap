@@ -79,7 +79,8 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems(MenuPengguna::item())
             ->renderHook(
                 PanelsRenderHook::TOPBAR_BEFORE,
-                fn (): string => view('sigap.spanduk-impersonasi')->render(),
+                fn (): string => view('sigap.spanduk-impersonasi')->render()
+                    .view('sigap.spanduk-demo')->render(),
             )
             ->renderHook(
                 PanelsRenderHook::FOOTER,

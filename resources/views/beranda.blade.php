@@ -31,6 +31,7 @@
         <nav class="flex items-center gap-1 text-sm">
             <a href="#cara-kerja" class="hidden rounded-lg px-3 py-2 text-zinc-600 hover:bg-zinc-100 sm:block dark:text-zinc-400 dark:hover:bg-zinc-900">Cara kerja</a>
             <a href="#peran" class="hidden rounded-lg px-3 py-2 text-zinc-600 hover:bg-zinc-100 sm:block dark:text-zinc-400 dark:hover:bg-zinc-900">Peran</a>
+            <a href="{{ url('/tur') }}" class="rounded-lg px-3 py-2 text-zinc-600 hover:bg-zinc-100 sm:block dark:text-zinc-400 dark:hover:bg-zinc-900">Tur</a>
             <a href="{{ url('/manual') }}" class="rounded-lg px-3 py-2 font-medium text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-500/10">Manual</a>
             <a href="{{ url('/panel') }}" class="rounded-lg bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-500">Masuk</a>
         </nav>
@@ -59,6 +60,9 @@
     <div class="mt-8 flex flex-wrap gap-3">
         <a href="{{ url('/panel') }}" class="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white hover:bg-emerald-500">
             Masuk ke {{ \App\Support\Jati::nama() }}
+        </a>
+        <a href="{{ url('/tur') }}" class="rounded-xl border border-zinc-300 px-6 py-3 font-semibold hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900">
+            Ikuti tur terpandu
         </a>
         <a href="{{ url('/manual') }}" class="rounded-xl border border-zinc-300 px-6 py-3 font-semibold hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900">
             Baca manual pengguna
@@ -168,9 +172,8 @@
 
         <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @foreach ($peran as $p)
-                <a href="{{ url('/manual/'.$p['kode'].'.html') }}"
-                   class="group flex flex-col rounded-xl border border-zinc-200 bg-white p-6 transition hover:border-emerald-500 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-emerald-500">
-                    <h3 class="font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
+                <div class="flex flex-col rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
+                    <h3 class="font-semibold">
                         {{ $p['nama'] }}
                     </h3>
                     <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ $p['ringkas'] }}</p>
@@ -186,10 +189,13 @@
                         <span class="font-semibold">Menu:</span> {{ implode(' · ', $p['menu']) }}
                     </p>
 
-                    <span class="mt-4 text-sm font-medium text-emerald-700 dark:text-emerald-400">
-                        Buka manual &rarr;
+                    <span class="mt-4 flex gap-3 text-sm font-medium">
+                        <a class="text-emerald-700 hover:underline dark:text-emerald-400"
+                           href="{{ url('/tur/'.$p['kode']) }}">Ikuti tur</a>
+                        <a class="text-zinc-600 hover:underline dark:text-zinc-400"
+                           href="{{ url('/manual/'.$p['kode'].'.html') }}">Manual</a>
                     </span>
-                </a>
+                </div>
             @endforeach
         </div>
     </div>
@@ -198,7 +204,47 @@
 {{-- ------------------------------------------------------------------ --}}
 {{-- Manual                                                              --}}
 {{-- ------------------------------------------------------------------ --}}
-<section class="mx-auto max-w-6xl px-6 py-16">
+<section id="mengenal" class="mx-auto max-w-6xl px-6 py-16">
+    <h2 class="text-2xl font-bold tracking-tight">Tiga cara mengenal sistem ini</h2>
+    <p class="mt-2 max-w-3xl text-zinc-600 dark:text-zinc-400">
+        Ketiganya menjawab pertanyaan yang berbeda. Pilih yang sesuai dengan waktu yang Anda punya.
+    </p>
+
+    <div class="mt-8 grid gap-4 lg:grid-cols-3">
+        <a href="{{ url('/tur') }}" class="group flex flex-col rounded-xl border border-zinc-200 p-6 transition hover:border-emerald-500 dark:border-zinc-800 dark:hover:border-emerald-500">
+            <p class="text-xs font-semibold tracking-wider text-zinc-500 uppercase">Lima menit</p>
+            <h3 class="mt-2 text-lg font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-400">Tur terpandu</h3>
+            <p class="mt-2 flex-1 text-zinc-600 dark:text-zinc-400">
+                Alur kerja tiap peran, langkah demi langkah, dengan tangkapan layar sungguhan.
+                Menjawab &ldquo;saya harus mulai dari mana&rdquo;. Tanpa masuk.
+            </p>
+            <span class="mt-4 text-sm font-medium text-emerald-700 dark:text-emerald-400">Mulai tur &rarr;</span>
+        </a>
+
+        <a href="{{ url('/manual') }}" class="group flex flex-col rounded-xl border border-zinc-200 p-6 transition hover:border-emerald-500 dark:border-zinc-800 dark:hover:border-emerald-500">
+            <p class="text-xs font-semibold tracking-wider text-zinc-500 uppercase">Rujukan</p>
+            <h3 class="mt-2 text-lg font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-400">Manual pengguna</h3>
+            <p class="mt-2 flex-1 text-zinc-600 dark:text-zinc-400">
+                Satu halaman per peran, lengkap, bisa dibuka di bagian mana pun.
+                Menjawab &ldquo;layar ini apa dan mengapa begini&rdquo;.
+            </p>
+            <span class="mt-4 text-sm font-medium text-emerald-700 dark:text-emerald-400">Buka manual &rarr;</span>
+        </a>
+
+        <a href="{{ url('/demo') }}" class="group flex flex-col rounded-xl border border-zinc-200 p-6 transition hover:border-emerald-500 dark:border-zinc-800 dark:hover:border-emerald-500">
+            <p class="text-xs font-semibold tracking-wider text-zinc-500 uppercase">Perlu kode akses</p>
+            <h3 class="mt-2 text-lg font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-400">Demo hidup</h3>
+            <p class="mt-2 flex-1 text-zinc-600 dark:text-zinc-400">
+                Masuk sungguhan sebagai peran pilihan Anda dan kerjakan
+                <strong>periode latihan</strong> — salinan kerangka yang bisa dibuang utuh.
+                Data akreditasi sungguhan tidak terjangkau dari dalamnya.
+            </p>
+            <span class="mt-4 text-sm font-medium text-emerald-700 dark:text-emerald-400">Masukkan kode &rarr;</span>
+        </a>
+    </div>
+</section>
+
+<section class="mx-auto max-w-6xl px-6 pb-16">
     <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
         <div>
             <h2 class="text-2xl font-bold tracking-tight">Manual bergambar, bukan daftar istilah</h2>
@@ -233,7 +279,9 @@
     <div class="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between dark:text-zinc-500">
         <p>{{ \App\Support\Jati::hakCipta() }}. {{ \App\Support\Jati::namaPanjang() }}.</p>
         <p class="flex gap-4">
+            <a href="{{ url('/tur') }}" class="hover:text-emerald-700 dark:hover:text-emerald-400">Tur</a>
             <a href="{{ url('/manual') }}" class="hover:text-emerald-700 dark:hover:text-emerald-400">Manual</a>
+            <a href="{{ url('/demo') }}" class="hover:text-emerald-700 dark:hover:text-emerald-400">Demo</a>
             <a href="{{ url('/panel') }}" class="hover:text-emerald-700 dark:hover:text-emerald-400">Masuk</a>
         </p>
     </div>

@@ -193,6 +193,19 @@ class Izin
             ->all();
     }
 
+    /**
+     * Nilai mentah satu sel matriks sistem.
+     *
+     * Dipakai ketika yang ditanyakan adalah PERAN, bukan pengguna tertentu —
+     * misalnya "peran mana saja yang boleh dicoba lewat demo". Tanpa ini,
+     * pertanyaan semacam itu dijawab dengan `$peran === PeranPengguna::Admin`
+     * di luar kelas ini, dan aturan 10 patah.
+     */
+    public static function nilaiSistem(string $aksi, string $peran): string
+    {
+        return self::matriksSistem()[$aksi][$peran] ?? 'tidak';
+    }
+
     /** Label manusiawi tiap aksi sistem, untuk halaman matriks. */
     public static function labelSistem(): array
     {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\ImpersonasiController;
 use App\Http\Controllers\TurController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,23 @@ Route::redirect('/manual', '/manual/index.html')->name('manual');
  */
 Route::get('/tur', [TurController::class, 'index'])->name('tur');
 Route::get('/tur/{peran}', [TurController::class, 'peran'])->name('tur.peran');
+
+/**
+ * Demo hidup, bergerbang kode akses dari administrator sistem.
+ *
+ * Dibatasi laju dengan sengaja: kode demo pendek supaya bisa didiktekan lewat
+ * telepon, dan kode pendek adalah kode yang bisa ditebak bila percobaannya
+ * tidak dibatasi.
+ */
+Route::get('/demo', [DemoController::class, 'index'])->name('demo');
+Route::post('/demo/kode', [DemoController::class, 'periksaKode'])
+    ->middleware('throttle:8,1')
+    ->name('demo.kode');
+Route::post('/demo/masuk', [DemoController::class, 'masuk'])
+    ->middleware('throttle:20,1')
+    ->name('demo.masuk');
+Route::post('/demo/keluar', [DemoController::class, 'keluar'])->name('demo.keluar');
+
 /**
  * Mengakhiri penyamaran. Satu-satunya rute di luar panel, dan sengaja begitu:
  * tombol di spanduk harus tetap bekerja walau JavaScript gagal dimuat.
