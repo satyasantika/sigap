@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
  * Ini satu-satunya sumber kebenaran otorisasi. Yang membacanya hanya
  * app/Support/Izin.php. Tidak ada perbandingan peran di controller, Resource,
  * atau Blade; tidak ada Gate::before; tidak ada peran super.
- * Lihat AGENTS.md aturan 10 dan vibecoding/docs/08-auth-dan-izin.md.
+ * Lihat aturan proyek 10 dan vibecoding/docs/08-auth-dan-izin.md.
  */
 return new class extends Migration
 {

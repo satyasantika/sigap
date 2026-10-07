@@ -300,7 +300,7 @@ class DkpsTest extends TestCase
         $u = $this->pengguna(PeranPengguna::Ketua);
         $profil = new ImporDtps($this->periode->id, $this->prodi->id, $u->id);
 
-        // AGENTS.md aturan 3: tahun acuan selalu relatif terhadap TS.
+        // aturan proyek 3: tahun acuan selalu relatif terhadap TS.
         $pratinjau = PratinjauImpor::susun([
             ['tahun_acuan' => '2027', 'sumber' => 'siakad', 'nidn' => '0412088001', 'nama_dosen' => 'A'],
         ], $profil, $this->periode->id);

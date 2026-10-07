@@ -34,7 +34,7 @@ class OrganisasiSeeder extends Seeder
         );
 
         // ts_tahun sengaja ditulis di seeder, bukan di kueri atau logika.
-        // AGENTS.md aturan 3 melarang tahun mati di app/ dan migrasi, bukan di
+        // aturan proyek 3 melarang tahun mati di app/ dan migrasi, bukan di
         // data awal — justru di sinilah satu-satunya tempatnya ditetapkan.
         $periode = Periode::updateOrCreate(
             ['prodi_id' => $prodi->id, 'nama' => 'PPG 2027'],

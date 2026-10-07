@@ -10,7 +10,7 @@ use RuntimeException;
 /**
  * Menyemai 144 sel izin dari data/izin.json.
  *
- * AGENTS.md aturan 1: tidak boleh menyalin isinya ke larik PHP. Bila berkasnya
+ * aturan proyek 1: tidak boleh menyalin isinya ke larik PHP. Bila berkasnya
  * hilang atau rusak, seeder GAGAL DENGAN KERAS — diam-diam menyemai matriks
  * kosong berarti seluruh aplikasi menolak semua orang tanpa alasan yang jelas.
  */

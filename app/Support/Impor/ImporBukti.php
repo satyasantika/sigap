@@ -37,7 +37,7 @@ class ImporBukti implements ProfilImpor
             'url' => ['label' => 'Tautan', 'wajib' => true, 'tipe' => 'url',
                 'contoh' => 'https://drive.google.com/file/d/.../view'],
             // Contoh tanggal diturunkan dari waktu berjalan, bukan ditulis
-            // mati: AGENTS.md aturan 3 melarang tahun literal di app/, dan
+            // mati: aturan proyek 3 melarang tahun literal di app/, dan
             // contoh yang menua ("2026-03-15" dibaca tahun 2029) justru
             // menyesatkan orang yang menyalinnya apa adanya.
             'tanggal_kejadian' => ['label' => 'Tanggal kejadian', 'wajib' => true, 'tipe' => 'tanggal',

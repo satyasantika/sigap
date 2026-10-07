@@ -277,7 +277,7 @@ class AlurTagihanTest extends TestCase
     #[Test]
     public function tagihan_tanpa_bukti_tertaut_tidak_bisa_diajukan(): void
     {
-        // AGENTS.md aturan 9: setiap data yang diinputkan wajib punya bukti,
+        // aturan proyek 9: setiap data yang diinputkan wajib punya bukti,
         // untuk SEMUA jenis tagihan — bukan hanya narasi.
         $pj = $this->pengguna(PeranPengguna::Anggota, $this->pokjaDik);
         $t = $this->tagihan(['penanggung_jawab_id' => $pj->id]);

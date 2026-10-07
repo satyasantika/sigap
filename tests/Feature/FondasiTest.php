@@ -64,7 +64,7 @@ class FondasiTest extends TestCase
         }
 
         $this->assertSame([], $terlarang,
-            "AGENTS.md aturan 4b: seluruh kunci utama UUID.\n".implode("\n", $terlarang));
+            "aturan proyek 4b: seluruh kunci utama UUID.\n".implode("\n", $terlarang));
     }
 
     #[Test]
@@ -111,7 +111,7 @@ class FondasiTest extends TestCase
         }
 
         $this->assertSame([], $pelanggar,
-            "AGENTS.md aturan 10: otorisasi hanya diputuskan di App\\Support\\Izin.\n".implode("\n", $pelanggar));
+            "aturan proyek 10: otorisasi hanya diputuskan di App\\Support\\Izin.\n".implode("\n", $pelanggar));
     }
 
     #[Test]
@@ -299,6 +299,6 @@ class FondasiTest extends TestCase
         }
 
         $this->assertSame([], $pelanggar,
-            "AGENTS.md aturan 3: tahun selalu diturunkan dari periode.ts_tahun.\n".implode("\n", $pelanggar));
+            "aturan proyek 3: tahun selalu diturunkan dari periode.ts_tahun.\n".implode("\n", $pelanggar));
     }
 }

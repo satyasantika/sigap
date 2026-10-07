@@ -300,7 +300,7 @@ class KriteriaTerimaTest extends TestCase
     public function seluruh_model_transaksional_memakai_soft_delete(): void
     {
         // Data akreditasi tidak pernah hilang permanen dari antarmuka
-        // (AGENTS.md aturan 8).
+        // (aturan proyek 8).
         $wajib = [
             Tagihan::class,
             Bukti::class,
@@ -353,7 +353,7 @@ class KriteriaTerimaTest extends TestCase
             $this->assertContains(
                 HasUuids::class,
                 class_uses_recursive($kelas),
-                "{$kelas} harus memakai HasUuids — AGENTS.md aturan 4b tanpa kecuali."
+                "{$kelas} harus memakai HasUuids — aturan proyek 4b tanpa kecuali."
             );
             $diperiksa++;
         }

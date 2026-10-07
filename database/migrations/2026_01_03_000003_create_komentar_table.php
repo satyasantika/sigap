@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
  * Polymorphic ke tagihan, bukti, dan narasi.
  *
  * `commentable_id` sengaja uuid, bukan morphs() bawaan yang menghasilkan
- * bigint — AGENTS.md aturan 4b tidak mengecualikan kolom polymorphic.
+ * bigint — aturan proyek 4b tidak mengecualikan kolom polymorphic.
  */
 return new class extends Migration
 {

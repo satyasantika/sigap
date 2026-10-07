@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * `ts_tahun` adalah SATU-SATUNYA sumber tahun acuan di seluruh aplikasi.
- * AGENTS.md aturan 3: tidak boleh ada tahun yang ditulis mati di kueri,
+ * aturan proyek 3: tidak boleh ada tahun yang ditulis mati di kueri,
  * migrasi, atau logika — semuanya diturunkan dari kolom ini lewat JendelaTs.
  */
 return new class extends Migration

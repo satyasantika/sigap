@@ -16,7 +16,7 @@ use RuntimeException;
  * vibecoding/docs/07 menuntut penandaan sumber yang jujur justru supaya baris
  * manual yang seharusnya dari SIAKAD bisa ditemukan sebelum asesor menemukannya.
  *
- * AGENTS.md aturan 6 juga menuntut penolakan di tingkat validasi, bukan
+ * aturan proyek 6 juga menuntut penolakan di tingkat validasi, bukan
  * sekadar peringatan. Karena basis data tidak bisa menegakkannya, model yang
  * menegakkannya.
  */

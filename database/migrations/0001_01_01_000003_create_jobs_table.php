@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Tabel antrean bawaan Laravel, ditulis ulang dengan kunci utama UUID.
- * AGENTS.md aturan 4b tidak mengecualikan tabel bawaan.
+ * aturan proyek 4b tidak mengecualikan tabel bawaan.
  */
 return new class extends Migration
 {

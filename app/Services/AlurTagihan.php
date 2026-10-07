@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
  * di mana bolongnya.
  *
  * Wewenang tidak diperiksa dengan membandingkan peran di sini, melainkan
- * dengan menanyakan App\Support\Izin — lihat AGENTS.md aturan 10.
+ * dengan menanyakan App\Support\Izin — lihat aturan proyek 10.
  */
 class AlurTagihan
 {
@@ -95,7 +95,7 @@ class AlurTagihan
         }
 
         // Setiap data yang diinputkan wajib punya bukti — berlaku untuk SEMUA
-        // jenis tagihan, bukan hanya narasi (AGENTS.md aturan 9).
+        // jenis tagihan, bukan hanya narasi (aturan proyek 9).
         if ($ke === StatusTagihan::Diajukan) {
             $alasan = $this->alasanBelumBolehDiajukan($t);
 

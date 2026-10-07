@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Pemberitahuan basis data bawaan Laravel. Tidak ada di skeleton Laravel 13
  * (biasanya dibangkitkan `make:notifications-table`), jadi ditulis di sini
- * dengan kunci utama UUID sesuai AGENTS.md aturan 4b.
+ * dengan kunci utama UUID sesuai aturan proyek 4b.
  *
  * `notifiable_id` sengaja uuid, bukan morphs() bawaan yang menghasilkan bigint.
  */

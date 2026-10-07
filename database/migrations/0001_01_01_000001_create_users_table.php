@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Tabel bawaan Laravel, ditulis ulang dengan kunci utama UUID.
  *
- * Lihat AGENTS.md aturan 4b dan vibecoding/docs/02-skema-data.md bagian
+ * Lihat aturan proyek 4b dan vibecoding/docs/02-skema-data.md bagian
  * "Kunci utama: UUID, tanpa kecuali". Alasannya keamanan: id menaik
  * membocorkan cacah baris dan membuat URL bisa ditelusuri satu per satu,
  * padahal isinya nama dosen dan nomor serdik.

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreignUuid('dkps_butir_id')->constrained('dkps_butir')->cascadeOnDelete();
 
             // TS, TS-1, ... TS-4 — relatif terhadap periode.ts_tahun, tidak
-            // pernah tahun mutlak. AGENTS.md aturan 3.
+            // pernah tahun mutlak. aturan proyek 3.
             $table->enum('tahun_acuan', ['TS', 'TS-1', 'TS-2', 'TS-3', 'TS-4']);
 
             $table->json('data');

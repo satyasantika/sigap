@@ -1,5 +1,5 @@
 {
- "catatan": "Wewenang PENGELOLAAN SISTEM, terpisah dari matriks 144 sel di izin.json. Dipisah dengan sengaja: izin.json memuat wewenang atas ISI akreditasi dan jumlah selnya dijaga verifikasi.py; menambah aksi di sana akan memecah angka 24 x 6 = 144 yang dipatok aturan. Berkas ini dibaca kelas Izin yang sama, jadi otorisasi tetap diputuskan di satu tempat (AGENTS.md aturan 10).",
+ "catatan": "Wewenang PENGELOLAAN SISTEM, terpisah dari matriks 144 sel di izin.json. Dipisah dengan sengaja: izin.json memuat wewenang atas ISI akreditasi dan jumlah selnya dijaga verifikasi.py; menambah aksi di sana akan memecah angka 24 x 6 = 144 yang dipatok aturan. Berkas ini dibaca kelas Izin yang sama, jadi otorisasi tetap diputuskan di satu tempat (aturan proyek 10).",
  "prinsip": [
   "Impersonasi dan simulasi bukan wewenang atas isi akreditasi, melainkan atas sistem. Karena itu keduanya milik admin, bukan ketua.",
   "Tetap tidak ada peran super. Admin yang sedang menyamar memegang wewenang peran yang ditirunya, bukan gabungan keduanya.",

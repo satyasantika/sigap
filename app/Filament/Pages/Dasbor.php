@@ -74,7 +74,7 @@ class Dasbor extends Page
      *
      * Pemetaannya ada di enum PeranPengguna bersama label dan warna — ia
      * tampilan, bukan wewenang. Tidak ada perbandingan peran di sini;
-     * AGENTS.md aturan 10 melarangnya di luar App\Support\Izin, dan ada uji
+     * aturan proyek 10 melarangnya di luar App\Support\Izin, dan ada uji
      * yang menelusurinya.
      *
      * @return array<int, string>

@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * SATU-SATUNYA tempat aritmetika tahun boleh terjadi di seluruh aplikasi.
  *
- * AGENTS.md aturan 3: TS adalah parameter, bukan tahun yang ditulis mati.
+ * aturan proyek 3: TS adalah parameter, bukan tahun yang ditulis mati.
  * Tidak boleh ada `2026` atau `2027` di dalam kueri, migrasi, atau logika —
  * semuanya diturunkan dari `periode.ts_tahun` lewat kelas ini. Ada uji yang
  * menelusuri seluruh app/ dan database/migrations/ untuk memastikannya.

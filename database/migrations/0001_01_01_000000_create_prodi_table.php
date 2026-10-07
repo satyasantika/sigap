@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Prodi berjalan lebih dulu dari `users` karena `users.prodi_id` menunjuk ke
  * sini. Sekarang hanya ada satu prodi (PPG), tetapi tabelnya tetap dibuat
- * sejak awal — AGENTS.md aturan 4: menambahkan `prodi_id` belakangan berarti
+ * sejak awal — aturan proyek 4: menambahkan `prodi_id` belakangan berarti
  * migrasi ulang seluruh basis data.
  */
 return new class extends Migration

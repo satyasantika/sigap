@@ -76,7 +76,7 @@ class Izin
      * `izin.json` dipatok 24 x 6 = 144 dan dijaga `data/verifikasi.py`;
      * menambah aksi di sana akan memecah angka itu. Yang penting tetap
      * terjaga: keputusannya lahir di kelas ini, bukan dari perbandingan peran
-     * yang berserakan di Resource atau Blade (AGENTS.md aturan 10).
+     * yang berserakan di Resource atau Blade (aturan proyek 10).
      *
      * Tidak mengenal lingkup `pokjanya`/`miliknya` dan tidak tunduk penguncian
      * periode — mengelola sistem justru yang dibutuhkan saat periode terkunci.
