@@ -14,9 +14,8 @@ use RuntimeException;
 /**
  * Personifikasi pengguna lain.
  *
- * `vibecoding/docs/08-auth-dan-izin.md` melarang fitur ini; larangan itu
- * dibatalkan keputusan manusia, dan syaratnya pencatatan. Lihat CLAUDE.md
- * bagian 7 butir 8.
+ * Dokumen rancangan awal melarang fitur ini; larangan itu dibatalkan
+ * keputusan manusia, dan syaratnya pencatatan.
  *
  * Selama impersonasi admin memegang wewenang PENUH peran yang ditirunya —
  * termasuk menyetujui tagihan dan memvalidasi bukti. Yang menahan agar

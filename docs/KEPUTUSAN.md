@@ -1,24 +1,22 @@
-# Catatan Serah Terima — SIGAP
+# Keputusan & Pengecualian — SIGAP
 
-Ditulis oleh agen pembangun pada akhir tahap 7, untuk orang yang melanjutkan.
-
-Sistemnya jalan dan ujinya hijau. Yang tidak terbaca dari kode dan tidak akan
-ditebak sendiri oleh orang berikutnya ada di bawah ini.
+Keputusan desain, asumsi yang masih menunggu konfirmasi LAMDIK, dan hal-hal
+yang paling mungkin menyusahkan di masa depan. Tidak terbaca dari kode dan
+tidak akan ditebak sendiri oleh orang yang melanjutkan.
 
 ---
 
 ## 1. Keputusan yang diambil sendiri
 
-Dokumen rancangan di `vibecoding/docs/` tidak menyebut hal-hal berikut, atau
-menyebutnya secara bertentangan. Keputusannya diambil dan dicatat di
-[`CLAUDE.md`](CLAUDE.md) bagian 7 supaya tiap tahap tidak mengadilinya ulang.
+Dokumen rancangan awal tidak menyebut hal-hal berikut, atau menyebutnya
+secara bertentangan. Keputusannya sudah diambil dan tidak perlu diadili ulang.
 
 ### Yang diputuskan bersama dosen
 
 | Hal | Keputusan | Mengapa |
 |---|---|---|
 | Basis data | **MariaDB 10.11**, bukan MySQL 8 | Itu yang terpasang; `README` proyek memang sudah menyebut MariaDB sejak awal |
-| `prodi_id` | Ada di **semua** tabel transaksional | `AGENTS.md` aturan 4 menang atas `docs/02` yang hanya memberikannya pada `bukti` |
+| `prodi_id` | Ada di **semua** tabel transaksional | Aturan baku proyek menang atas rancangan awal yang hanya memberikannya pada `bukti` |
 | `Izin::boleh` tanpa obyek | Mengembalikan **true** | Menolak akan menghilangkan menu dari koordinator dan anggota; konsekuensinya tiap kueri daftar wajib menyaring sendiri |
 | `ImporDtps`, `ImporKerjaSama` | Menyimpan ke `dkps_baris.data` | `docs/02` menyatakan tabel dosen sengaja belum dibuat, dan rumus DTPS memang membaca dari DKPS |
 | Normalisasi TKM | Dibagi 4 | Lihat bagian 2 — **masih menunggu konfirmasi LAMDIK** |
@@ -121,7 +119,7 @@ Keduanya bukan kelalaian melainkan penyempitan lingkup yang tidak pernah
 dibatalkan. Bila dibangun, tempatnya di `app/Notifications/` mengikuti pola dua
 yang sudah ada, dan yang kedua butuh satu entri di `routes/console.php`.
 
-### Yang memang di luar lingkup, sesuai `AGENTS.md`
+### Yang memang di luar lingkup
 
 - **SIAKAD tandingan.** Data mahasiswa dan dosen masuk lewat impor
   tempel-tabel; tabel `dosen` dan `mahasiswa` sengaja tidak dibuat.
@@ -500,7 +498,7 @@ dan itu pekerjaan yang jauh lebih besar daripada kelihatannya.
 
 ## 5. Pertentangan dalam dokumen yang ditemukan, dan cara menanganinya
 
-Tercatat lengkap di [`CLAUDE.md`](CLAUDE.md) bagian 7. Ringkasnya:
+Ringkasnya:
 
 | Pertentangan | Yang menang |
 |---|---|
@@ -524,7 +522,7 @@ Seeder-nya mengatakan itu terang-terangan di keluarannya.
 
 ## 6. Satu catatan jujur
 
-`vibecoding/README.md` menutup dengan kalimat yang layak diulang di sini:
+Satu kalimat yang layak diulang di sini:
 
 > Sistem ini membuat pekerjaan pengumpulan menjadi terlihat dan terukur. Ia
 > tidak menaikkan skor dengan sendirinya.

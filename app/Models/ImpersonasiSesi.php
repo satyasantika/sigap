@@ -70,8 +70,8 @@ class ImpersonasiSesi extends Model
     }
 
     /**
-     * CLAUDE.md bagian 7 butir 8 menjadikan pencatatan sebagai SYARAT diizinkannya
-     * impersonasi, bukan pelengkap. Baris yang bisa dihapus membatalkan syarat itu.
+     * Pencatatan adalah SYARAT diizinkannya impersonasi, bukan pelengkap —
+     * baris yang bisa dihapus membatalkan syarat itu.
      */
     public function alasanTidakBolehDihapus(): string
     {

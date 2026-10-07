@@ -25,7 +25,6 @@ use Tests\TestCase;
  * Tahap 1 menguji keputusan `Izin::boleh` secara langsung. Sembilan aksi
  * `tagihan.*` dan beberapa lainnya menyasar obyek yang baru lahir di tahap 3-4,
  * jadi assertion 403 lewat HTTP ditambahkan per tahap begitu Resource-nya ada.
- * Lihat CLAUDE.md bagian 7.
  */
 class MatriksIzinTest extends TestCase
 {

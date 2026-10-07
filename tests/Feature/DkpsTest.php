@@ -325,7 +325,7 @@ class DkpsTest extends TestCase
         $baris = DkpsBaris::where('impor_batch_id', $batch->id)->firstOrFail();
 
         // Mendarat di butir 6, bukan di tabel dosen tersendiri — keputusan yang
-        // tercatat di CLAUDE.md bagian 7.
+        // diambil karena tabel dosen sengaja belum dibuat.
         $this->assertSame(6, $baris->butir->no);
         $this->assertSame('0412088001', $baris->nilai('nidn'));
         $this->assertSame('S3', $baris->nilai('pendidikan'));

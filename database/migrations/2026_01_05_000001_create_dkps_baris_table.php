@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Schema;
  * Membuat 28 tabel terpisah akan menghasilkan 28 migrasi yang isinya hampir
  * sama dan tetap harus diubah tiap kali instrumen berganti.
  *
- * Bentuknya divalidasi di tingkat aplikasi, bukan basis data. Ingat larangan
- * di CLAUDE.md bagian 7 butir 7: JANGAN memakai whereJsonContains — di MariaDB
- * kolom JSON hanyalah alias LONGTEXT dan Laravel melemparkan kesalahan.
+ * Bentuknya divalidasi di tingkat aplikasi, bukan basis data. JANGAN memakai
+ * whereJsonContains — di MariaDB kolom JSON hanyalah alias LONGTEXT dan
+ * Laravel melemparkan kesalahan.
  * Penyaringan memakai kolom nyata di bawah ini.
  */
 return new class extends Migration

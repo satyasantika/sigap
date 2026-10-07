@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Naskah LED satu elemen.
  *
- * Nama kelasnya `Narasi`, bukan `NarasiLed` — lihat CLAUDE.md bagian 7 butir 4.
+ * Nama kelasnya `Narasi`, bukan `NarasiLed` (nama awal di dokumen rancangan).
  */
 class Narasi extends Model
 {

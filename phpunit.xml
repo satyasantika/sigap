@@ -27,7 +27,7 @@
             Uji berjalan di atas MariaDB yang sama dengan produksi, bukan SQLite.
             Alasannya konkret: `whereJsonContains()` JALAN di SQLite tetapi GAGAL
             di MariaDB, jadi uji di atas SQLite akan meloloskan kueri yang rusak
-            di produksi. Lihat CLAUDE.md bagian 7 butir 7.
+            di produksi.
             Basis data db_sigap_test dibuat sekali; lihat README.
         -->
         <env name="DB_CONNECTION" value="mysql"/>

@@ -12,7 +12,6 @@ use RuntimeException;
  * Pemetaan kunci JSON ke kolom yang perlu diperhatikan:
  *   `skor`   -> kolom `aturan_skor`
  *   `elemen` -> kolom `elemen_id` (nomor polos di JSON, null untuk NA)
- * Lihat CLAUDE.md bagian 7 butir 5.
  */
 class RumusSeeder extends Seeder
 {

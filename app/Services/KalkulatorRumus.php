@@ -213,9 +213,8 @@ class KalkulatorRumus
      * 100% dan 300 menjadi 75%. Ini konsisten — "seluruh responden menjawab
      * Sangat Baik" wajar bernilai 100%.
      *
-     * Tafsir ini BELUM DIKONFIRMASI. Layar Nilai Rumus menandainya, dan
-     * CLAUDE.md bagian 7 mencatatnya. Bila LAMDIK menjawab berbeda, yang
-     * berubah hanya metode ini dan satu peringatan.
+     * Tafsir ini BELUM DIKONFIRMASI. Layar Nilai Rumus menandainya. Bila LAMDIK
+     * menjawab berbeda, yang berubah hanya metode ini dan satu peringatan.
      *
      * @param  array<int, array{a: float, b: float, c: float, d: float}>  $dimensi  persentase per dimensi
      */

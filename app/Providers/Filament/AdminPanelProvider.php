@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             // Lihat vibecoding/docs/08-auth-dan-izin.md bagian 1.
             ->profile(isSimple: false)
             ->brandName('SIGAP')
-            // Tema terang adalah bawaan (CLAUDE.md bagian 7 butir 10). Penukar
+            // Tema terang adalah bawaan (keputusan rilis). Penukar
             // tema tetap ada — yang ditetapkan di sini adalah tampilan pertama
             // bagi pengguna baru, bukan larangan memakai tema gelap. Sebagian
             // besar pekerjaan SIGAP dilakukan siang hari di ruang kerja terang,

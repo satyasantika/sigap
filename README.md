@@ -88,7 +88,7 @@ di atas SQLite akan meloloskan kueri yang rusak di produksi.
 
 ## Yang perlu diketahui sebelum menyentuh kode
 
-Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringkasnya:
+Aturan yang mengikat untuk pengembangan lanjutan. Ringkasnya:
 
 - **`data/*.json` adalah sumber kebenaran.** Nomor elemen, bobot, rumus, ambang
   syarat perlu, dan butir DKPS diambil dari dokumen resmi LAMDIK. Seeder membaca
@@ -125,8 +125,8 @@ Aturan yang mengikat ada di [`CLAUDE.md`](CLAUDE.md) — baca lebih dulu. Ringka
 - **Isi `storage/app/bukti/` tidak pernah masuk riwayat git.** Isinya nama
   dosen, nomor serdik, dan dokumen bertanda tangan.
 
-Dokumen rancangan lengkap dan prompt bertahap ada di `vibecoding/` — tidak
-terlacak git, tetapi tetap ada di cakram dan tetap wajib dibaca.
+Dokumen rancangan lengkap dan prompt bertahap ada di `vibecoding/` (lokal,
+tidak terlacak git).
 
 ## Merawat sistem ini
 
@@ -420,10 +420,9 @@ atas MariaDB 10.11 pada setiap dorongan dan setiap pull request.
 
 ## Sebelum menyerahkan ke orang lain
 
-Baca [`CATATAN-SERAH-TERIMA.md`](CATATAN-SERAH-TERIMA.md). Isinya keputusan yang
-diambil agen pembangun sendiri, asumsi yang masih menunggu konfirmasi LAMDIK,
-bagian yang sengaja belum dibangun, dan hal-hal yang paling mungkin menyusahkan
-enam bulan lagi.
+Baca [`docs/KEPUTUSAN.md`](docs/KEPUTUSAN.md). Isinya keputusan desain,
+asumsi yang masih menunggu konfirmasi LAMDIK, bagian yang sengaja belum
+dibangun, dan hal-hal yang paling mungkin menyusahkan di masa depan.
 
 ## Rujukan
 

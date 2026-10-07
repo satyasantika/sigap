@@ -54,7 +54,7 @@ class TampilanTest extends TestCase
         $this->assertSame(
             ThemeMode::Light,
             Filament::getPanel('panel')->getDefaultThemeMode(),
-            'CLAUDE.md bagian 7 butir 10: tampilan pertama memakai tema terang.'
+            'Tampilan pertama memakai tema terang (keputusan rilis).'
         );
     }
 

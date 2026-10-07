@@ -100,8 +100,7 @@ class ManualPenggunaTest extends TestCase
     public function tema_panel_terpasang(): void
     {
         // Tanpa tema sendiri, kelas Tailwind di Blade kita tidak terkompilasi
-        // dan dasbor bento tampil sebagai teks polos. Lihat CLAUDE.md bagian 7
-        // butir 14.
+        // dan dasbor bento tampil sebagai teks polos.
         $this->assertNotNull(
             Filament::getPanel('panel')->getTheme(),
             'Panel wajib memakai tema Vite sendiri.'

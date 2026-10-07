@@ -18,7 +18,7 @@ use Tests\TestCase;
 
 /**
  * Pagar tagihan lewat HTTP — assertion 403 yang ditunda dari tahap 1 karena
- * obyeknya belum ada waktu itu (lihat CLAUDE.md bagian 7).
+ * obyeknya belum ada waktu itu.
  */
 class PanelTagihanTest extends TestCase
 {

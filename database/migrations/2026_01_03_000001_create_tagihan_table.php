@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Schema;
  * menghasilkan 0,625. Dua desimal akan membulatkannya dan jumlah seluruh
  * periode tidak lagi 100,000.
  *
- * prodi_id dipasang sesuai AGENTS.md aturan 4 meski docs/02 tidak menyebutnya —
- * lihat CLAUDE.md bagian 7 butir 3.
+ * prodi_id dipasang di semua tabel transaksional sejak migrasi pertama,
+ * meski docs/02 tidak menyebutnya pada tabel ini.
  */
 return new class extends Migration
 {

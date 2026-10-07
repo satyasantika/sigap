@@ -14,7 +14,7 @@ use RuntimeException;
  *
  * Pemetaan nama kolom sengaja ditulis terang-terangan di sini: kunci JSON
  * `kriteria` berisi kode "K1", sementara kolomnya `kriteria_id`; kunci `pokja`
- * menjadi kolom `pokja_kode`. Lihat CLAUDE.md bagian 7 butir 5.
+ * menjadi kolom `pokja_kode`.
  */
 class ElemenSeeder extends Seeder
 {

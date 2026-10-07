@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Model;
  * Induk keempat profil impor yang mendarat di `dkps_baris`.
  *
  * Seluruhnya menyimpan ke kolom `data` berbentuk json, bukan ke tabel dosen
- * atau kerja sama tersendiri — keputusan yang tercatat di CLAUDE.md bagian 7:
- * `docs/02` menyatakan tabel dosen sengaja belum dibuat, dan rumus PDS3,
- * PGBLKL, serta PPDTPS memang membaca angka DTPS dari DKPS.
+ * atau kerja sama tersendiri — tabel dosen sengaja belum dibuat, dan rumus
+ * PDS3, PGBLKL, serta PPDTPS memang membaca angka DTPS dari DKPS.
  *
  * Konsekuensinya kunci duplikasi (NIDN, DOI) hidup di dalam json, jadi
  * salinan ternormalkannya disimpan ke kolom nyata `kunci_normal` — mencarinya
- * di dalam json tidak mungkin di MariaDB (lihat CLAUDE.md bagian 7 butir 7).
+ * di dalam json tidak mungkin di MariaDB (JSON hanya alias LONGTEXT di sana,
+ * jadi pencarian isi json tidak didukung).
  */
 abstract class ProfilDkpsDasar implements ProfilImpor
 {

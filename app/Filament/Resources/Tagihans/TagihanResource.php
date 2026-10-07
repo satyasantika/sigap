@@ -24,7 +24,7 @@ use UnitEnum;
  * Kueri disaring menurut lingkup izin, bukan hanya tombolnya disembunyikan:
  * `Izin::boleh` mengembalikan true untuk lingkup `pokjanya` dan `miliknya`
  * ketika obyeknya null, sehingga penyaringan daftar menjadi tanggung jawab
- * Resource ini. Lihat CLAUDE.md bagian 7.
+ * Resource ini.
  */
 class TagihanResource extends Resource
 {

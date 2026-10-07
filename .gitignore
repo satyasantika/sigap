@@ -7,6 +7,8 @@
 # Perhatikan: data/ TIDAK ada di sini — ia sudah dipindah ke akar dan wajib
 # tetap terlacak. Lihat blok penutup di bawah.
 /vibecoding/
+/CLAUDE.md
+/AGENTS.md
 
 # --- Bukti akreditasi: JANGAN PERNAH masuk riwayat ---
 # Isinya nama dosen, nomor serdik, dan dokumen bertanda tangan. Sekali
@@ -71,6 +73,4 @@ desktop.ini
 #                       `migrate:fresh --seed` gagal dan MatriksIzinTest
 #                       tidak bisa membangun data provider-nya
 #   data/verifikasi.py  33 pemeriksaan atas data itu
-#   CLAUDE.md           aturan yang mengikat agen di setiap sesi
-#   AGENTS.md           salinan kembar CLAUDE.md untuk perkakas lain
 # ---------------------------------------------------------------------------

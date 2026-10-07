@@ -23,7 +23,9 @@ use RuntimeException;
  *
  * Selama menyamar, admin memegang wewenang penuh peran yang ditirunya —
  * termasuk menyetujui tagihan. Yang menjaga pertanggungjawaban adalah jejak,
- * bukan pagar. Lihat CLAUDE.md bagian 7 butir 8.
+ * bukan pagar: impersonasi DIIZINKAN dengan pencatatan wajib (hanya admin
+ * yang boleh memulai, dan setiap tindakan selama sesi menyimpan admin
+ * aslinya, bukan hanya pengguna yang ditiru).
  */
 class AksiMasukSebagai
 {

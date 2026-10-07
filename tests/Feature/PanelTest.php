@@ -50,9 +50,8 @@ class PanelTest extends TestCase
         $this->get('/panel/login')->assertSuccessful();
 
         // Akar situs dulu mengalihkan ke /panel. Sejak ada halaman muka, ia
-        // menyajikan halamannya sendiri dan MENAUTKAN panel — lihat CLAUDE.md
-        // bagian 7 butir 18. Yang tetap dijaga di sini: panelnya masih di
-        // /panel dan masih bisa dicapai dari akar.
+        // menyajikan halamannya sendiri dan MENAUTKAN panel. Yang tetap dijaga
+        // di sini: panelnya masih di /panel dan masih bisa dicapai dari akar.
         $this->get('/')
             ->assertOk()
             ->assertSee(url('/panel'), escape: false);

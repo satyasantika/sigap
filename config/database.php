@@ -58,7 +58,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            // SIGAP: InnoDB dipatok eksplisit — lihat CLAUDE.md bagian 1.
+            // SIGAP: InnoDB dipatok eksplisit (stack yang sudah diputuskan).
             'engine' => 'InnoDB',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),

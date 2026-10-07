@@ -15,7 +15,6 @@ use RuntimeException;
  * Membaca tabel `izin` (144 baris, disemai dari data/izin.json). Policy
  * meneruskan ke sini; tidak ada perbandingan peran di controller, Resource,
  * atau Blade; tidak ada Gate::before; tidak ada peran super.
- * Lihat AGENTS.md aturan 10 dan vibecoding/docs/08-auth-dan-izin.md.
  *
  * Lima nilai lingkup, tidak lebih:
  *   ya          seluruh baris pada periode aktif
@@ -25,9 +24,9 @@ use RuntimeException;
  *   pokja_data  hanya bila pengguna terdaftar di POKJA-DATA
  *
  * Obyek null: `pokjanya` dan `miliknya` mengembalikan true — artinya "boleh
- * membuka halaman daftar", dan penyaringan dilakukan di kueri. Lihat
- * CLAUDE.md bagian 7. Konsekuensinya setiap kueri daftar wajib menyaring
- * sendiri; kelas ini bukan lagi satu-satunya pagar untuk halaman daftar.
+ * membuka halaman daftar", dan penyaringan dilakukan di kueri. Konsekuensinya
+ * setiap kueri daftar wajib menyaring sendiri; kelas ini bukan lagi
+ * satu-satunya pagar untuk halaman daftar.
  */
 class Izin
 {

@@ -7,10 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Personifikasi pengguna, beserta harga yang harus dibayarnya.
  *
- * `vibecoding/docs/08-auth-dan-izin.md` melarang fitur ini; larangan itu
- * dibatalkan keputusan manusia (CLAUDE.md bagian 7 butir 8). Selama impersonasi
- * admin memegang wewenang penuh peran yang ditirunya — termasuk menyetujui
- * tagihan.
+ * Dokumen rancangan awal melarang fitur ini; larangan itu dibatalkan
+ * keputusan manusia. Selama impersonasi admin memegang wewenang penuh peran
+ * yang ditirunya — termasuk menyetujui tagihan.
  *
  * Itulah sebabnya tabel ini ada. Tanpa pencatatan, `disetujui_oleh` akan
  * menunjuk ketua padahal admin yang menekan, dan persetujuan akreditasi
