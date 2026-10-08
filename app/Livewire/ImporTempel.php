@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\ImporBatch;
 use App\Models\Periode;
 use App\Services\PelaksanaImpor;
+use App\Support\Impor\MemilikiSandiBaru;
 use App\Support\Impor\PenguraiTempelan;
 use App\Support\Impor\PratinjauImpor;
 use App\Support\Impor\ProfilImpor;
@@ -12,7 +13,7 @@ use Livewire\Component;
 use Throwable;
 
 /**
- * Impor tempel-tabel: tempel → petakan → pratinjau → jalankan.
+ * Impor tempel-tabel: tempel -> petakan -> pratinjau -> jalankan.
  *
  * Keempat langkah terjadi di DALAM SATU MODAL yang tidak pernah tertutup di
  * tengah jalan, termasuk perbandingan dengan baris lama dan hasil akhirnya.
@@ -20,6 +21,14 @@ use Throwable;
  * baru saja disusunnya, dan mereka berhenti memakai fiturnya.
  *
  * Komponen ini dipakai ulang apa adanya; yang berbeda hanya profilnya.
+ *
+ * Profil dan periode TIDAK disimpan sebagai objek pada properti Livewire:
+ * Livewire menghidrasi ulang komponen dari payload publik di setiap
+ * request, dan constructor-promoted property (bentuk semula berkas ini)
+ * tidak pernah terisi kembali setelah mount pertama -- $this->profil selalu
+ * null begitu pengguna menekan tombol apa pun. Sebagai gantinya disimpan
+ * nama kelas profil beserta argumen primitifnya, dan profil dibangun ulang
+ * lewat profil() pada setiap pemanggilan method.
  */
 class ImporTempel extends Component
 {
@@ -50,17 +59,47 @@ class ImporTempel extends Component
 
     public ?string $batchId = null;
 
-    public function __construct(
-        private readonly ?ProfilImpor $profil = null,
-        private readonly ?Periode $periode = null,
-    ) {}
+    /**
+     * Sandi acak yang baru dibuat untuk pengguna baru, ditampilkan SATU KALI
+     * di langkah hasil. Hanya terisi bila profilnya ImporPengguna -- lihat
+     * App\Support\Impor\MemilikiSandiBaru.
+     *
+     * @var array<int, array{email: string, sandi: string}>
+     */
+    public array $sandiBaru = [];
+
+    /** Kelas profil impor, mis. App\Support\Impor\ImporBukti::class. */
+    public string $profilKelas = '';
+
+    /** Argumen konstruktor profil, dalam urutan yang diterimanya. */
+    public array $profilArgs = [];
+
+    /** Periode akreditasi; null bila profilnya tidak terikat periode (mis. pengguna). */
+    public ?string $periodeId = null;
+
+    public function mount(string $profilKelas, array $profilArgs = [], ?string $periodeId = null): void
+    {
+        $this->profilKelas = $profilKelas;
+        $this->profilArgs = $profilArgs;
+        $this->periodeId = $periodeId;
+    }
+
+    public function profil(): ProfilImpor
+    {
+        return app()->make($this->profilKelas, $this->profilArgs);
+    }
+
+    public function periode(): ?Periode
+    {
+        return $this->periodeId === null ? null : Periode::find($this->periodeId);
+    }
 
     public function medan(): array
     {
-        return $this->profil?->medan() ?? [];
+        return $this->profil()->medan();
     }
 
-    /** Langkah 1 → 2: uraikan tempelan dan tebak pemetaannya. */
+    /** Langkah 1 -> 2: uraikan tempelan dan tebak pemetaannya. */
     public function uraikan(): void
     {
         $this->galat = null;
@@ -77,7 +116,7 @@ class ImporTempel extends Component
         }
     }
 
-    /** Langkah 2 → 3: susun pratinjau beserta deteksi duplikasi dua arah. */
+    /** Langkah 2 -> 3: susun pratinjau beserta deteksi duplikasi dua arah. */
     public function pratinjaukan(): void
     {
         $this->galat = null;
@@ -102,7 +141,7 @@ class ImporTempel extends Component
             return $hasil;
         })->all();
 
-        $this->pratinjau = PratinjauImpor::susun($terpetakan, $this->profil, $this->periode->id);
+        $this->pratinjau = PratinjauImpor::susun($terpetakan, $this->profil(), $this->periodeId);
 
         // Keputusan bawaan: yang baru diimpor, sisanya dilewati. Memperbarui
         // diam-diam menimpa pekerjaan orang lain.
@@ -134,23 +173,30 @@ class ImporTempel extends Component
         }
     }
 
-    /** Langkah 3 → 4: jalankan dalam satu transaksi. */
+    /** Langkah 3 -> 4: jalankan dalam satu transaksi. */
     public function jalankan(): void
     {
         $this->galat = null;
 
         try {
+            // Instance yang SAMA diteruskan ke pelaksana dan dibaca lagi
+            // setelahnya -- ImporPengguna menyimpan sandi acak yang baru
+            // dibuat ke properti instance-nya sendiri selama simpan()
+            // dipanggil; instance baru dari profil() tidak akan membawanya.
+            $profil = $this->profil();
+
             $batch = app(PelaksanaImpor::class)->jalankan(
-                $this->pratinjau, $this->keputusan, $this->profil, $this->periode, auth()->user(),
+                $this->pratinjau, $this->keputusan, $profil, $this->periode(), auth()->user(),
             );
 
             $this->batchId = $batch->getKey();
             $this->hasil = "{$batch->jumlah_impor} baris diimpor, "
                 ."{$batch->jumlah_perbarui} diperbarui, {$batch->jumlah_lewati} dilewati.";
+            $this->sandiBaru = $profil instanceof MemilikiSandiBaru ? $profil->sandiBaruDibuat() : [];
             $this->langkah = 4;
         } catch (Throwable $e) {
             // Satu baris gagal berarti tidak ada yang tersimpan, dan pesannya
-            // menyebut apa yang salah — impor separuh jalan jauh lebih buruk.
+            // menyebut apa yang salah -- impor separuh jalan jauh lebih buruk.
             $this->galat = 'Impor dibatalkan seluruhnya: '.$e->getMessage();
         }
     }
@@ -163,14 +209,14 @@ class ImporTempel extends Component
             return;
         }
 
-        app(PelaksanaImpor::class)->batalkan($batch, $this->profil, auth()->user());
+        app(PelaksanaImpor::class)->batalkan($batch, $this->profil(), auth()->user());
         $this->hasil = 'Impor dibatalkan. Baris yang dibuat dihapus, baris yang diperbarui dikembalikan.';
     }
 
     public function ulangi(): void
     {
         $this->reset(['langkah', 'tempelan', 'kepala', 'barisMentah', 'pemetaan',
-            'pratinjau', 'keputusan', 'galat', 'hasil', 'batchId']);
+            'pratinjau', 'keputusan', 'galat', 'hasil', 'batchId', 'sandiBaru']);
         $this->langkah = 1;
     }
 

@@ -51,6 +51,11 @@ interface ProfilImpor
     /** @param  array<string, mixed>  $baris */
     public function perbarui(Model $lama, array $baris, ImporBatch $batch): Model;
 
-    /** Baris yang sudah ada di basis data dengan kunci ini. */
-    public function cariYangAda(string $kunci, string $periodeId): ?Model;
+    /**
+     * Baris yang sudah ada di basis data dengan kunci ini.
+     *
+     * $periodeId null untuk profil yang tidak terikat periode (mis.
+     * pengguna) -- lihat ImporPengguna.
+     */
+    public function cariYangAda(string $kunci, ?string $periodeId): ?Model;
 }

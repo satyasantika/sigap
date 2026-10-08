@@ -86,7 +86,7 @@ abstract class ProfilDkpsDasar implements ProfilImpor
         return $lama;
     }
 
-    public function cariYangAda(string $kunci, string $periodeId): ?Model
+    public function cariYangAda(string $kunci, ?string $periodeId): ?Model
     {
         return DkpsBaris::where('periode_id', $periodeId)
             ->where('dkps_butir_id', $this->idButir())

@@ -32,7 +32,15 @@ trait TerikatPeriode
                 return;
             }
 
-            $kueri->whereIn($kueri->getModel()->getTable().'.periode_id', $id);
+            $kolom = $kueri->getModel()->getTable().'.periode_id';
+
+            // whereNull ikut disertakan: tanpanya baris dengan periode_id
+            // NULL (impor_batch milik ImporPengguna, yang sengaja tidak
+            // terikat periode) lenyap dari setiap pengguna yang masuk --
+            // SQL `NULL IN (...)` tidak pernah benar.
+            $kueri->where(function (Builder $q) use ($kolom, $id): void {
+                $q->whereIn($kolom, $id)->orWhereNull($kolom);
+            });
         });
     }
 }

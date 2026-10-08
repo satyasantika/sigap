@@ -60,6 +60,8 @@ class HalamanGalatTest extends TestCase
             "Halaman {$kode} kehilangan footer hak cipta.");
         $this->assertStringContainsString('Kembali ke SIGAP', $html,
             "Halaman {$kode} tidak menyediakan jalan pulang.");
+        $this->assertStringContainsString('history.back()', $html,
+            "Halaman {$kode} tidak menyediakan tombol kembali ke halaman sebelumnya.");
         $this->assertStringNotContainsString('Whoops', $html);
     }
 

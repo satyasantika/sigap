@@ -37,6 +37,8 @@ class User extends Authenticatable implements FilamentUser
         'periode_demo_id',
         'terakhir_masuk_pada',
         'wajib_ganti_sandi',
+        'impor_batch_id',
+        'kunci_normal',
     ];
 
     protected $hidden = ['password', 'remember_token'];

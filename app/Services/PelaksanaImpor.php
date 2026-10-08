@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\DB;
 class PelaksanaImpor
 {
     /**
+     * $periode null untuk profil yang tidak terikat periode (mis. pengguna)
+     * -- lihat App\Support\Impor\ImporPengguna.
+     *
      * @param  array<int, array{no: int, data: array<string, mixed>, status: string, id_lama: ?string}>  $pratinjau
      * @param  array<int, string>  $keputusan  nomor baris => impor|lewati|perbarui
      */
@@ -29,12 +32,12 @@ class PelaksanaImpor
         array $pratinjau,
         array $keputusan,
         ProfilImpor $profil,
-        Periode $periode,
+        ?Periode $periode,
         User $oleh,
     ): ImporBatch {
         return DB::transaction(function () use ($pratinjau, $keputusan, $profil, $periode, $oleh) {
             $batch = ImporBatch::create([
-                'periode_id' => $periode->id,
+                'periode_id' => $periode?->id,
                 'profil' => $profil->nama(),
                 'dijalankan_oleh' => $oleh->getKey(),
                 'jumlah_baris' => count($pratinjau),
@@ -54,7 +57,7 @@ class PelaksanaImpor
                 }
 
                 if ($pilihan === 'perbarui' && $baris['id_lama'] !== null) {
-                    $lama = $profil->cariYangAda($profil->kunciDuplikat($baris['data']), $periode->id);
+                    $lama = $profil->cariYangAda($profil->kunciDuplikat($baris['data']), $periode?->id);
 
                     if ($lama !== null) {
                         // Nilai lama disimpan supaya "Batalkan impor" bisa
@@ -114,11 +117,13 @@ class PelaksanaImpor
             $idDibuat = collect($batch->ringkasan['dibuat'] ?? [])->pluck('id')->all();
 
             if ($idDibuat !== []) {
-                // Dihapus dari kedua sasaran: profil bukti mendarat di `bukti`,
-                // keempat profil DKPS mendarat di `dkps_baris`. Id-nya UUID,
-                // jadi tidak mungkin bertabrakan antartabel.
+                // Dihapus dari seluruh sasaran: profil bukti mendarat di
+                // `bukti`, keempat profil DKPS mendarat di `dkps_baris`,
+                // profil pengguna mendarat di `users`. Id-nya UUID, jadi
+                // tidak mungkin bertabrakan antartabel.
                 Bukti::whereIn('id', $idDibuat)->delete();
                 DkpsBaris::whereIn('id', $idDibuat)->delete();
+                User::whereIn('id', $idDibuat)->delete();
             }
 
             // withTrashed() penting di sini: tanpa itu, baris yang terlanjur
@@ -133,6 +138,10 @@ class PelaksanaImpor
 
                 DkpsBaris::withTrashed()->where('id', $catatan['id'])->update(
                     $nilai->only(['data', 'sumber', 'kunci_normal'])->all()
+                );
+
+                User::withTrashed()->where('id', $catatan['id'])->update(
+                    $nilai->only(['nama_lengkap', 'name', 'nidn', 'jabatan', 'prodi_id', 'peran'])->all()
                 );
             }
 
@@ -156,7 +165,8 @@ class PelaksanaImpor
         // benar dan pembatalan akan tetap terbuka selamanya.
         foreach ($batch->ringkasan['dibuat'] ?? [] as $catatan) {
             $baris = Bukti::withTrashed()->find($catatan['id'])
-                ?? DkpsBaris::withTrashed()->find($catatan['id']);
+                ?? DkpsBaris::withTrashed()->find($catatan['id'])
+                ?? User::withTrashed()->find($catatan['id']);
 
             if ($baris === null) {
                 continue;

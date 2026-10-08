@@ -117,8 +117,8 @@
                                         <div class="mt-1 text-[11px]">{{ implode(' ', $baris['galat']) }}</div>
                                     @endif
                                 </td>
-                                <td class="p-2">{{ $baris['data']['judul'] ?? '—' }}</td>
-                                <td class="p-2 font-mono text-[11px]">{{ \Illuminate\Support\Str::limit($baris['data']['url_kanonik'] ?? '—', 48) }}</td>
+                                <td class="p-2">{{ $baris['data']['judul'] ?? $baris['data']['nama_lengkap'] ?? '—' }}</td>
+                                <td class="p-2 font-mono text-[11px]">{{ \Illuminate\Support\Str::limit($baris['data']['url_kanonik'] ?? $baris['data']['email'] ?? '—', 48) }}</td>
                                 <td class="p-2">
                                     @if ($baris['status'] === 'galat')
                                         <span class="text-gray-400">dilewati</span>
@@ -151,6 +151,31 @@
             <div class="rounded-lg border border-success-300 bg-success-50 p-4 text-sm dark:border-success-500/30 dark:bg-success-500/10">
                 {{ $hasil }}
             </div>
+
+            @if ($sandiBaru !== [])
+                <div class="rounded-lg border border-warning-300 bg-warning-50 p-4 text-sm dark:border-warning-500/30 dark:bg-warning-500/10">
+                    <p class="mb-2 font-medium text-warning-800 dark:text-warning-300">
+                        Sandi awal pengguna baru — catat atau salin sekarang. Sandi ini tidak akan ditampilkan lagi.
+                    </p>
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="border-b dark:border-white/10">
+                                <th class="py-1 text-left">Surel</th>
+                                <th class="py-1 text-left">Sandi awal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($sandiBaru as $baris)
+                                <tr>
+                                    <td class="py-1">{{ $baris['email'] }}</td>
+                                    <td class="py-1 font-mono select-all">{{ $baris['sandi'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
             <div class="flex gap-2">
                 <x-filament::button color="danger" wire:click="batalkanImpor">Batalkan impor ini</x-filament::button>
                 <x-filament::button color="gray" wire:click="ulangi">Tempel lagi</x-filament::button>

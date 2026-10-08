@@ -133,7 +133,7 @@ class ImporBukti implements ProfilImpor
         return $lama;
     }
 
-    public function cariYangAda(string $kunci, string $periodeId): ?Model
+    public function cariYangAda(string $kunci, ?string $periodeId): ?Model
     {
         return Bukti::where('periode_id', $periodeId)->where('kunci_normal', $kunci)->first();
     }

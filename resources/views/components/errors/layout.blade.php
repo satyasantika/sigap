@@ -91,6 +91,7 @@
 
     <div>
       {{ $tombol }}
+      <a class="tombol sekunder" href="javascript:history.back()">Kembali</a>
       <a class="tombol sekunder" href="{{ url('/panel') }}">Kembali ke SIGAP</a>
     </div>
   </div>

@@ -21,10 +21,13 @@ class PratinjauImpor
     public const GALAT = 'galat';
 
     /**
+     * $periodeId null untuk profil yang tidak terikat periode (mis.
+     * pengguna) -- lihat ImporPengguna.
+     *
      * @param  array<int, array<string, mixed>>  $barisTerpetakan
      * @return array<int, array{no: int, data: array<string, mixed>, status: string, galat: array<int, string>, id_lama: ?string}>
      */
-    public static function susun(array $barisTerpetakan, ProfilImpor $profil, string $periodeId): array
+    public static function susun(array $barisTerpetakan, ProfilImpor $profil, ?string $periodeId): array
     {
         $hasil = [];
         $kunciTerlihat = [];
