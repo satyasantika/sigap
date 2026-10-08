@@ -14,21 +14,21 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         /*
-         * SIGAP dipasang di belakang server balik fakultas
-         * (https://supportfkip.unsil.ac.id/sigap). Tanpa ini Laravel membaca
-         * skema dari sambungan ke PHP — yang HTTP polos — lalu membangun
-         * tautan http:// di halaman https://, dan peramban memblokirnya.
+         * Closure ini dibiarkan tanpa konfigurasi proksi dengan sengaja.
          *
-         * Daftar proksinya diambil dari TRUSTED_PROXIES. Isi '*' berarti
-         * mempercayai header X-Forwarded-* dari siapa pun yang bisa menjangkau
-         * PHP; itu aman HANYA bila PHP tidak terbuka langsung ke jaringan.
-         * Bila ragu, tulis alamat IP proksinya.
+         * Laravel menjalankannya saat HttpKernel pertama kali dibuat — titik
+         * yang terjadi SEBELUM bootstrapper LoadEnvironmentVariables memuat
+         * .env untuk permintaan itu. env('TRUSTED_PROXIES') di titik ini
+         * kembali NULL pada sebagian permintaan (tergantung proses PHP-FPM
+         * mana yang menanganinya), sehingga server balik kadang dipercaya
+         * kadang tidak, dan setiap tautan yang bergantung pada header
+         * X-Forwarded-* — termasuk endpoint update Livewire — kadang benar
+         * kadang rusak tanpa pola yang kelihatan dari luar.
+         *
+         * Pengaturan proksi yang sesungguhnya ada di
+         * App\Providers\AppServiceProvider::percayaiProksi(), yang berjalan
+         * di boot() setelah .env dan config penuh dimuat.
          */
-        $proksi = env('TRUSTED_PROXIES');
-
-        if (filled($proksi)) {
-            $middleware->trustProxies(at: $proksi === '*' ? '*' : explode(',', $proksi));
-        }
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
