@@ -23,6 +23,9 @@ use Illuminate\Validation\ValidationException;
  */
 class Masuk extends Login
 {
+    /** Tata letak dua panel, bukan kartu tunggal bawaan Filament. */
+    protected static string $layout = 'sigap.layout.masuk';
+
     protected function isUserAllowedToAccessPanel(Authenticatable $user): bool
     {
         if ($user instanceof User && ! $user->aktif) {

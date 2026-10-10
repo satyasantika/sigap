@@ -83,6 +83,15 @@ class AdminPanelProvider extends PanelProvider
                 fn (): string => view('sigap.spanduk-impersonasi')->render()
                     .view('sigap.spanduk-demo')->render(),
             )
+            // Halaman masuk berbahasa visual sama dengan landing page.
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => view('sigap.font')->render(),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                fn (): string => view('sigap.kembali-ke-beranda')->render(),
+            )
             ->renderHook(
                 PanelsRenderHook::FOOTER,
                 fn (): string => view('sigap.footer')->render(),

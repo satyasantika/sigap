@@ -1,22 +1,26 @@
 :root {
-    --tinta: #18181b;
-    --tinta-lembut: #52525b;
-    --garis: #e4e4e7;
-    --latar: #ffffff;
-    --latar-lembut: #fafafa;
-    --sorot: #047857;
-    --sorot-lembut: #ecfdf5;
-    --peringatan: #b45309;
-    --peringatan-lembut: #fffbeb;
+    --tinta: #1d2a24;
+    --tinta-lembut: #55625b;
+    --garis: #e4ddcf;
+    --latar: #fbf8f2;
+    --latar-lembut: #f3eee4;
+    --sorot: #0a5c44;
+    --sorot-lembut: #e3f2ec;
+    --zamrud: #0f7a5a;
+    --peringatan: #b7791f;
+    --peringatan-lembut: #fbf0d9;
+    --font-judul: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
-    font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     color: var(--tinta);
-    background: var(--latar);
+    background-color: var(--latar);
+    background-image: radial-gradient(circle at 1px 1px, rgb(29 42 36 / 0.07) 1px, transparent 0);
+    background-size: 22px 22px;
     line-height: 1.65;
 }
 
@@ -24,28 +28,56 @@ body {
 
 header.utama {
     border-bottom: 1px solid var(--garis);
-    background: var(--latar-lembut);
+    background-color: var(--latar-lembut);
+    background-image: radial-gradient(50rem 20rem at 100% -20%, rgb(15 122 90 / 0.12), transparent 60%);
     padding: 2.5rem 0 2rem;
     margin-bottom: 2.5rem;
 }
 
 header.utama .bungkus { padding-bottom: 0; }
 
+/* Bilah atas menempel, sama dengan landing page dan tur. Tautan ke beranda,
+   tur, dan halaman masuk RELATIF (`../`), bukan absolut (`/`): aplikasi juga
+   dipasang di bawah subfolder — https://…/sigap — dan di sana `/panel` akan
+   menunjuk ke luar aplikasi. Dari /manual/ maupun /sigap/manual/, `../panel`
+   selalu benar. */
+.bilah {
+    position: sticky; top: 0; z-index: 20;
+    border-bottom: 1px solid var(--garis);
+    background: rgb(251 248 242 / 0.88);
+    backdrop-filter: blur(8px);
+}
+.bilah .bungkus {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem;
+}
 .jenama {
-    display: flex; align-items: baseline; gap: 1.25rem;
-    font-weight: 700; letter-spacing: -0.02em; font-size: 1.1rem;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-judul); font-weight: 700; font-size: 1.25rem;
+    letter-spacing: -0.015em; color: var(--tinta); text-decoration: none;
 }
-.jenama a { color: var(--tinta); text-decoration: none; }
-/* Tautan ke beranda dan halaman masuk RELATIF (`../`), bukan absolut (`/`).
-   Aplikasi ini juga dipasang di bawah subfolder — https://…/sigap — dan di
-   sana `/panel` akan menunjuk ke luar aplikasi. Dari /manual/ maupun
-   /sigap/manual/, `../panel` selalu benar. */
-.jenama .ke-beranda {
-    font-size: 0.85rem; font-weight: 500; color: var(--sorot);
+.jenama::before {
+    content: "S"; display: inline-flex; align-items: center; justify-content: center;
+    width: 2.25rem; height: 2.25rem; border-radius: 9999px;
+    background: var(--zamrud); color: #fff; font-size: 1.1rem;
 }
-.jenama .ke-beranda:hover { text-decoration: underline; }
+.bilah nav { display: flex; align-items: center; gap: 0.25rem; font-size: 0.875rem; }
+.bilah nav a {
+    padding: 0.5rem 0.75rem; border-radius: 9999px;
+    color: var(--tinta-lembut); text-decoration: none;
+}
+.bilah nav a:hover { background: var(--latar-lembut); }
+.bilah nav a.aktif { color: var(--sorot); font-weight: 500; }
+.bilah nav a.aktif:hover { background: var(--sorot-lembut); }
+.bilah nav a.masuk {
+    margin-left: 0.25rem; padding: 0.5rem 1.25rem;
+    background: var(--zamrud); color: #fff; font-weight: 600;
+}
+.bilah nav a.masuk:hover { background: var(--sorot); }
+@media (max-width: 40rem) { .bilah nav a.sekunder { display: none; } }
 
-h1 { font-size: 2.1rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0.75rem 0 0.35rem; }
+h1, h2, h3 { font-family: var(--font-judul); }
+h1 { font-size: 2.3rem; line-height: 1.15; letter-spacing: -0.015em; margin: 0.75rem 0 0.35rem; }
 h2 {
     font-size: 1.35rem; letter-spacing: -0.01em; margin: 3rem 0 0.75rem;
     padding-top: 2rem; border-top: 1px solid var(--garis);
@@ -72,8 +104,8 @@ figure { margin: 1.25rem 0 2rem; }
 
 figure img {
     display: block; width: 100%; height: auto;
-    border: 1px solid var(--garis); border-radius: 0.6rem;
-    background: var(--latar-lembut);
+    border: 1px solid var(--garis); border-radius: 1rem;
+    background: #fff; box-shadow: 0 12px 28px -18px rgb(10 92 68 / 0.3);
 }
 
 figcaption {
@@ -91,18 +123,19 @@ nav.daftar a { color: var(--sorot); }
 }
 
 .kartu {
-    border: 1px solid var(--garis); border-radius: 0.75rem;
+    border: 1px solid var(--garis); border-left: 4px solid var(--zamrud);
+    border-radius: 1rem;
     padding: 1.1rem 1.25rem; text-decoration: none; color: inherit;
-    background: var(--latar); transition: border-color .15s, background .15s;
+    background: #fff; transition: border-color .15s, background .15s;
 }
-.kartu:hover { border-color: var(--sorot); background: var(--sorot-lembut); }
-.kartu strong { display: block; font-size: 1.05rem; margin-bottom: 0.2rem; }
+.kartu:hover { border-color: var(--zamrud); background: var(--sorot-lembut); }
+.kartu strong { display: block; font-family: var(--font-judul); font-size: 1.1rem; margin-bottom: 0.2rem; }
 .kartu span { color: var(--tinta-lembut); font-size: 0.9rem; }
 
 .catatan {
     border-left: 3px solid var(--peringatan);
     background: var(--peringatan-lembut);
-    padding: 0.9rem 1.1rem; border-radius: 0 0.5rem 0.5rem 0;
+    padding: 0.9rem 1.1rem; border-radius: 0 0.75rem 0.75rem 0;
     margin: 1.5rem 0;
 }
 .catatan p:last-child { margin-bottom: 0; }
@@ -114,13 +147,3 @@ footer.utama {
 
 a.kembali { color: var(--sorot); text-decoration: none; font-size: 0.9rem; }
 a.kembali:hover { text-decoration: underline; }
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --tinta: #f4f4f5; --tinta-lembut: #a1a1aa; --garis: #27272a;
-        --latar: #09090b; --latar-lembut: #18181b;
-        --sorot: #34d399; --sorot-lembut: #052e22;
-        --peringatan: #fbbf24; --peringatan-lembut: #2a1f05;
-    }
-    .jenama a { color: var(--tinta); }
-}
