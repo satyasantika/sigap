@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\Masuk;
+use App\Filament\Auth\UbahProfil;
 use App\Filament\Sistem\MenuPengguna;
 use App\Http\Middleware\PaksaGantiSandi;
 use Filament\Enums\ThemeMode;
@@ -34,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             // profil sendiri. Tanpa ->registration(), tanpa
             // ->passwordReset(), tanpa ->emailVerification().
             // Lihat vibecoding/docs/08-auth-dan-izin.md bagian 1.
-            ->profile(isSimple: false)
+            ->profile(UbahProfil::class, isSimple: false)
             ->brandName('SIGAP')
             // Tema terang adalah bawaan (keputusan rilis). Penukar
             // tema tetap ada — yang ditetapkan di sini adalah tampilan pertama

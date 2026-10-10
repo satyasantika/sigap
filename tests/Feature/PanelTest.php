@@ -183,6 +183,31 @@ class PanelTest extends TestCase
     }
 
     #[Test]
+    public function mengganti_sandi_di_profil_mencabut_kewajiban_ganti_sandi(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $u = $this->pengguna(PeranPengguna::Ketua);
+        $u->update(['wajib_ganti_sandi' => true]);
+
+        $this->actingAs($u);
+
+        Livewire::test(\App\Filament\Auth\UbahProfil::class)
+            ->fillForm([
+                'name' => $u->name,
+                'email' => $u->email,
+                'password' => 'sandi-baru-123',
+                'passwordConfirmation' => 'sandi-baru-123',
+                'currentPassword' => 'rahasia123',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertFalse($u->fresh()->wajib_ganti_sandi);
+        $this->get('/panel/periodes')->assertOk();
+    }
+
+    #[Test]
     public function nonaktif_mendapat_pesan_yang_jelas_saat_sandi_benar(): void
     {
         $this->seed(DatabaseSeeder::class);
