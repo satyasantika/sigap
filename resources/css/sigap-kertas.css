@@ -1,0 +1,33 @@
+/*
+ * Bahasa visual bersama landing page dan halaman masuk ("kertas hangat").
+ * Tema terang saja — tidak ada varian gelap. Diimpor oleh app.css dan
+ * tema panel, jadi warna dan huruf tidak perlu ditulis dua kali.
+ */
+:root {
+    --kertas: #fbf8f2;
+    --kertas-dalam: #f3eee4;
+    --tinta: #1d2a24;
+    --tinta-pudar: #55625b;
+    --garis: #e4ddcf;
+    --zamrud: #0f7a5a;
+    --zamrud-tua: #0a5c44;
+    --zamrud-muda: #e3f2ec;
+    --emas: #b7791f;
+    --emas-muda: #fbf0d9;
+    --font-judul: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+}
+
+.font-judul {
+    font-family: var(--font-judul);
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+}
+
+/* Latar berpola titik halus + bercak zamrud di sudut, dipakai bersama. */
+.latar-kertas {
+    background-color: var(--kertas);
+    background-image:
+        radial-gradient(60rem 28rem at 100% -10%, rgb(15 122 90 / 0.10), transparent 60%),
+        radial-gradient(circle at 1px 1px, rgb(29 42 36 / 0.07) 1px, transparent 0);
+    background-size: auto, 22px 22px;
+}

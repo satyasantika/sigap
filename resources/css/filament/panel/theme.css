@@ -18,3 +18,201 @@
 @source '../../../../resources/views/filament/**/*';
 @source '../../../../resources/views/sigap/**/*';
 @source '../../../../resources/views/livewire/**/*';
+
+/*
+ * Halaman masuk: dua panel (merek | formulir), bahasa visual sama dengan
+ * landing page. Tata letaknya di resources/views/sigap/layout/masuk.blade.php.
+ * Dasbor panel tidak tersentuh.
+ */
+@import '../../sigap-kertas.css';
+
+.sigap-masuk {
+    display: grid;
+    min-height: 100vh;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    background-color: var(--kertas);
+    color: var(--tinta);
+}
+
+@media (min-width: 1024px) {
+    .sigap-masuk {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    }
+}
+
+/* ---- panel merek (kiri) ---- */
+.sigap-masuk-merek {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 3rem;
+    border-right: 1px solid var(--garis);
+    background-color: var(--zamrud-muda);
+    background-image:
+        radial-gradient(34rem 22rem at 0% 0%, rgb(255 255 255 / 0.7), transparent 65%),
+        radial-gradient(30rem 20rem at 100% 100%, rgb(183 121 31 / 0.14), transparent 65%),
+        radial-gradient(circle at 1px 1px, rgb(15 122 90 / 0.14) 1px, transparent 0);
+    background-size: auto, auto, 22px 22px;
+}
+
+@media (min-width: 1024px) {
+    .sigap-masuk-merek {
+        display: flex;
+    }
+}
+
+.sigap-masuk-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    align-self: flex-start;
+}
+
+.sigap-masuk-logo .lambang {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--zamrud);
+    color: #fff;
+    font-family: var(--font-judul);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.sigap-masuk-logo .nama {
+    font-family: var(--font-judul);
+    font-size: 1.375rem;
+    font-weight: 700;
+}
+
+.sigap-masuk-logo-kecil {
+    align-self: center;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .sigap-masuk-logo-kecil {
+        display: none;
+    }
+}
+
+.sigap-masuk-isi h2 {
+    max-width: 30rem;
+    font-family: var(--font-judul);
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+}
+
+.sigap-masuk-isi h2 em {
+    font-style: normal;
+    color: var(--zamrud);
+}
+
+.sigap-masuk-isi > p {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--tinta-pudar);
+}
+
+.sigap-masuk-isi ul {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    max-width: 28rem;
+    list-style: none;
+    padding: 0;
+}
+
+.sigap-masuk-isi li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--tinta);
+}
+
+.sigap-masuk-isi li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--zamrud);
+}
+
+.sigap-masuk-catatan {
+    font-size: 0.8125rem;
+    color: var(--tinta-pudar);
+}
+
+/* ---- sisi formulir (kanan) ---- */
+.sigap-masuk-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    background-color: var(--kertas);
+    background-image:
+        radial-gradient(40rem 22rem at 100% -10%, rgb(15 122 90 / 0.10), transparent 60%),
+        radial-gradient(circle at 1px 1px, rgb(29 42 36 / 0.07) 1px, transparent 0);
+    background-size: auto, 22px 22px;
+}
+
+.sigap-masuk-form .fi-simple-main {
+    width: 100%;
+    max-width: 26rem;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid var(--garis);
+    border-radius: 1.25rem;
+    background-color: #fff;
+    box-shadow: 0 20px 40px -24px rgb(10 92 68 / 0.25);
+}
+
+.sigap-masuk-form .fi-sigap-footer {
+    margin-top: 2rem;
+}
+
+.fi-simple-header .fi-logo {
+    display: none;
+}
+
+.fi-simple-header-heading {
+    font-family: var(--font-judul);
+    letter-spacing: -0.015em;
+    color: var(--tinta);
+}
+
+.sigap-masuk .fi-btn.fi-color-primary {
+    border-radius: 9999px;
+    background-color: var(--zamrud);
+    color: #fff;
+}
+
+.sigap-masuk .fi-btn.fi-color-primary:hover {
+    background-color: var(--zamrud-tua);
+}
+
+.sigap-kembali {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--tinta-pudar);
+}
+
+.sigap-kembali a {
+    font-weight: 500;
+    color: var(--zamrud-tua);
+}
+
+.sigap-kembali a:hover {
+    text-decoration: underline;
+}
