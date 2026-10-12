@@ -60,8 +60,8 @@ chk("6 status tagihan", len(st) == 6)
 peran = iz["peran"]
 aksi = iz["aksi"]
 chk("6 peran di izin.json", peran == ["admin", "ketua", "pimpinan", "koordinator", "anggota", "auditor"])
-chk("24 aksi izin", len(aksi) == 24, len(aksi))
-chk("144 sel izin (24 x 6)", len(aksi) * len(peran) == 144)
+chk("25 aksi izin", len(aksi) == 25, len(aksi))
+chk("150 sel izin (25 x 6)", len(aksi) * len(peran) == 150)
 chk("kode aksi unik", len({a["kode"] for a in aksi}) == len(aksi))
 sah = set(iz["lingkup"])
 chk("semua nilai sel memakai kosakata yang sah",

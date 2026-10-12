@@ -78,7 +78,7 @@ python3 data/verifikasi.py                 # 33 pemeriksaan, harus keluar 0
 ```
 
 `verifikasi.py` memeriksa data instrumen LAMDIK di `data/*.json` — 59 elemen
-berbobot total tepat 100,00, enam pokja yang membagi habis elemen 1–59, dan 144
+berbobot total tepat 100,00, enam pokja yang membagi habis elemen 1–59, dan 150
 sel matriks izin. Jika ada yang `GAGAL`, jangan lanjutkan: seluruh aritmetika
 Nilai Akreditasi bergantung pada angka-angka itu.
 

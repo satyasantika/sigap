@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Pokjas;
 use App\Filament\Resources\Pokjas\Pages\CreatePokja;
 use App\Filament\Resources\Pokjas\Pages\EditPokja;
 use App\Filament\Resources\Pokjas\Pages\ListPokjas;
+use App\Filament\Resources\Pokjas\RelationManagers\AnggotaRelationManager;
 use App\Filament\Resources\Pokjas\Schemas\PokjaForm;
 use App\Filament\Resources\Pokjas\Tables\PokjasTable;
 use App\Models\Pokja;
@@ -14,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class PokjaResource extends Resource
@@ -51,6 +53,32 @@ class PokjaResource extends Resource
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->check() && Izin::bolehMenu(auth()->user(), 'pokja');
+    }
+
+    /**
+     * Pengguna yang hanya boleh mengelola anggota pokjanya sendiri tidak
+     * melihat pokja lain. Policy menjaga barisnya; kueri ini menjaga daftarnya.
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        $q = parent::getEloquentQuery();
+        $u = auth()->user();
+
+        if ($u === null) {
+            return $q->whereRaw('1 = 0');
+        }
+
+        if (in_array('ya', Izin::lingkup($u, 'pokja.anggota'), true)
+            || in_array('ya', Izin::lingkup($u, 'pokja.kelola'), true)) {
+            return $q;
+        }
+
+        return $q->whereIn($q->getModel()->getQualifiedKeyName(), $u->idPokjanya());
+    }
+
+    public static function getRelations(): array
+    {
+        return [AnggotaRelationManager::class];
     }
 
     public static function getPages(): array

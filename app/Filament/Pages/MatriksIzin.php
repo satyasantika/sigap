@@ -11,7 +11,7 @@ use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
 /**
- * Halaman HANYA-BACA yang menampilkan 144 sel apa adanya.
+ * Halaman HANYA-BACA yang menampilkan 150 sel apa adanya.
  *
  * vibecoding/docs/08-auth-dan-izin.md aturan 5: siapa pun yang bertanya
  * "kenapa saya tidak bisa menekan tombol itu" harus bisa melihat jawabannya

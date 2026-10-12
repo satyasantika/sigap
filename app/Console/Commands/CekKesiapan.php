@@ -163,7 +163,7 @@ class CekKesiapan extends Command
             'Yang ada: '.Elemen::count().'. Jalankan: php artisan db:seed --force');
         $this->periksa('Total bobot elemen 100,00', $bobot === 100.0,
             "Yang ada: {$bobot}. Seluruh aritmetika Nilai Akreditasi bergantung pada angka ini.");
-        $this->periksa('144 sel izin tersemai', ModelIzin::count() === 144,
+        $this->periksa('150 sel izin tersemai', ModelIzin::count() === 150,
             'Yang ada: '.ModelIzin::count().'. Tanpa ini setiap peran ditolak tanpa alasan yang jelas.');
         $this->periksa('5 syarat perlu', SyaratPerlu::count() === 5, 'Yang ada: '.SyaratPerlu::count());
         $this->periksa('15 rumus', Rumus::count() === 15, 'Yang ada: '.Rumus::count());

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Matriks izin: 24 aksi x 6 peran = 144 baris, disemai dari data/izin.json.
+ * Matriks izin: 25 aksi x 6 peran = 150 baris, disemai dari data/izin.json.
  *
  * Ini satu-satunya sumber kebenaran otorisasi. Yang membacanya hanya
  * app/Support/Izin.php. Tidak ada perbandingan peran di controller, Resource,

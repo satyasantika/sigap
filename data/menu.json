@@ -27,7 +27,7 @@
   {"kode": "rumus",        "label": "Rumus",           "grup": "Referensi",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
   {"kode": "dkps_butir",   "label": "Butir DKPS",      "grup": "Referensi",   "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},
   {"kode": "periode",      "label": "Periode",         "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "tidak", "koordinator": "tidak",      "anggota": "tidak",      "auditor": "tidak"},
-  {"kode": "pokja",        "label": "Pokja",           "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "tidak", "koordinator": "tidak",      "anggota": "tidak",      "auditor": "tidak"},
+  {"kode": "pokja",        "label": "Pokja",           "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "tidak", "koordinator": "ya",      "anggota": "tidak",      "auditor": "tidak"},
   {"kode": "pengguna",     "label": "Pengguna",        "grup": "Pengaturan",  "admin": "ya",    "ketua": "tidak", "pimpinan": "tidak", "koordinator": "tidak",   "anggota": "tidak",      "auditor": "tidak"},
   {"kode": "prodi",        "label": "Prodi",           "grup": "Pengaturan",  "admin": "ya",    "ketua": "tidak", "pimpinan": "tidak", "koordinator": "tidak",   "anggota": "tidak",      "auditor": "tidak"},
   {"kode": "matriks_izin", "label": "Matriks Izin",    "grup": "Pengaturan",  "admin": "ya",    "ketua": "ya", "pimpinan": "ya",    "koordinator": "ya",         "anggota": "ya",         "auditor": "ya"},

@@ -74,7 +74,7 @@ class BerandaController extends Controller
                 'izin' => [
                     'nilai' => (string) (count($this->baca('izin.json')['aksi']) * count($this->baca('peran.json'))),
                     'label' => 'sel matriks izin',
-                    'catatan' => '24 aksi × 6 peran, semuanya bisa diperiksa dari dalam sistem.',
+                    'catatan' => '25 aksi × 6 peran, semuanya bisa diperiksa dari dalam sistem.',
                 ],
             ];
         });

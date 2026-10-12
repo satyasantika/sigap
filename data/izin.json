@@ -215,11 +215,21 @@
   },
   {
    "kode": "pokja.kelola",
-   "label": "Mengelola pokja dan keanggotaan",
+   "label": "Membuat dan menyunting pokja",
    "admin": "ya",
    "ketua": "ya",
    "pimpinan": "tidak",
    "koordinator": "tidak",
+   "anggota": "tidak",
+   "auditor": "tidak"
+  },
+  {
+   "kode": "pokja.anggota",
+   "label": "Menambah dan melepas anggota pokja",
+   "admin": "ya",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokjanya",
    "anggota": "tidak",
    "auditor": "tidak"
   },

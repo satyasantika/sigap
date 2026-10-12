@@ -99,7 +99,7 @@ class ImpersonasiTest extends TestCase
         $this->assertCount(count($berkas['aksi']) * count($berkas['peran']), self::selSistem());
 
         // Yang dijaga di sini: aksi sistem TIDAK bocor ke tabel izin, karena
-        // angka 144 dipatok seeder, uji MatriksIzinTest, dan data/verifikasi.py.
+        // angka 150 dipatok seeder, uji MatriksIzinTest, dan data/verifikasi.py.
         foreach (array_keys($matriks) as $aksi) {
             $this->assertArrayNotHasKey(
                 $aksi,

@@ -29,7 +29,7 @@
     {
      "gambar": "admin/05-matriks-izin.png",
      "judul": "Matriks izin",
-     "isi": "<p>Halaman hanya-baca berisi 144 sel: 24 aksi &times; 6 peran. Inilah jawaban atas pertanyaan \"kenapa tombol itu tidak muncul di layar saya\". Siapa pun boleh membukanya sendiri tanpa bertanya.</p> <p>Matriks tidak bisa disunting dari layar. Mengubahnya berarti menyunting <code>data/izin.json</code> lalu menjalankan seeder, dan perubahan itu tercatat di riwayat git.</p>"
+     "isi": "<p>Halaman hanya-baca berisi 150 sel: 25 aksi &times; 6 peran. Inilah jawaban atas pertanyaan \"kenapa tombol itu tidak muncul di layar saya\". Siapa pun boleh membukanya sendiri tanpa bertanya.</p> <p>Matriks tidak bisa disunting dari layar. Mengubahnya berarti menyunting <code>data/izin.json</code> lalu menjalankan seeder, dan perubahan itu tercatat di riwayat git.</p>"
     },
     {
      "gambar": "admin/06-log-aktivitas.png",

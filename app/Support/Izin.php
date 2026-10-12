@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Enums\PeranPengguna;
 use App\Models\Izin as ModelIzin;
 use App\Models\Periode;
+use App\Models\Pokja;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -13,7 +14,7 @@ use RuntimeException;
 /**
  * SATU-SATUNYA tempat keputusan otorisasi diambil.
  *
- * Membaca tabel `izin` (144 baris, disemai dari data/izin.json). Policy
+ * Membaca tabel `izin` (150 baris, disemai dari data/izin.json). Policy
  * meneruskan ke sini; tidak ada perbandingan peran di controller, Resource,
  * atau Blade; tidak ada Gate::before; tidak ada peran super.
  *
@@ -91,7 +92,12 @@ class Izin
             'pokja_data' => $u->anggotaPokjaData(),
             'pokjanya' => $obyek === null
                 ? true
-                : in_array($obyek->getAttribute('pokja_id'), $u->idPokjanya(), true),
+                : in_array(
+                    // Pokja sendiri adalah "pokjanya": kuncinya, bukan pokja_id.
+                    $obyek instanceof Pokja ? $obyek->getKey() : $obyek->getAttribute('pokja_id'),
+                    $u->idPokjanya(),
+                    true,
+                ),
             'miliknya' => $obyek === null
                 ? true
                 : $obyek->getAttribute('penanggung_jawab_id') === $u->getKey(),
@@ -103,7 +109,7 @@ class Izin
      * Wewenang PENGELOLAAN SISTEM: impersonasi dan simulasi.
      *
      * Matriks terpisah (`data/izin-sistem.json`) karena jumlah sel di
-     * `izin.json` dipatok 24 x 6 = 144 dan dijaga `data/verifikasi.py`;
+     * `izin.json` dipatok 25 x 6 = 150 dan dijaga `data/verifikasi.py`;
      * menambah aksi di sana akan memecah angka itu. Yang penting tetap
      * terjaga: keputusannya lahir di kelas ini, bukan dari perbandingan peran
      * yang berserakan di Resource atau Blade (aturan proyek 10).
@@ -126,7 +132,7 @@ class Izin
      *
      * Dibaca langsung dari berkas, bukan dari tabel: isinya hanya menyangkut
      * wewenang admin atas sistem, tidak pernah disunting lewat antarmuka, dan
-     * menyemainya ke tabel `izin` akan merusak hitungan 144 baris.
+     * menyemainya ke tabel `izin` akan merusak hitungan 150 baris.
      *
      * @return array<string, array<string, string>>
      */

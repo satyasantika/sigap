@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pokjas\Schemas;
 
+use App\Support\Izin;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -12,7 +13,9 @@ class PokjaForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema->components([
+        // Koordinator membuka halaman ini hanya untuk mengelola anggota; isian
+        // pokjanya sendiri tetap milik admin dan ketua.
+        return $schema->disabled(fn () => ! Izin::boleh(auth()->user(), 'pokja.kelola'))->components([
             Select::make('periode_id')
                 ->label('Periode')
                 ->relationship('periode', 'nama')

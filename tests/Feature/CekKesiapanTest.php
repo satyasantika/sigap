@@ -89,7 +89,7 @@ class CekKesiapanTest extends TestCase
 
         $this->artisan('sigap:cek-kesiapan')
             ->expectsOutputToContain('Total bobot elemen 100,00')
-            ->expectsOutputToContain('144 sel izin tersemai')
+            ->expectsOutputToContain('150 sel izin tersemai')
             ->assertSuccessful();
     }
 }

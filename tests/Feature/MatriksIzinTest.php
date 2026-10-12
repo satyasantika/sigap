@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Menelusuri SELURUH 144 sel matriks izin (24 aksi x 6 peran).
+ * Menelusuri SELURUH 150 sel matriks izin (25 aksi x 6 peran).
  *
  * Data provider DIBANGKITKAN dari data/izin.json, bukan ditulis satu per satu.
  * Akibatnya: menambah aksi baru di JSON otomatis menambah kasus uji di sini,
@@ -73,7 +73,7 @@ class MatriksIzinTest extends TestCase
     }
 
     /**
-     * Baris berisi (kode aksi, kode peran, nilai lingkup) untuk 144 sel.
+     * Baris berisi (kode aksi, kode peran, nilai lingkup) untuk 150 sel.
      *
      * @return array<string, array{string, string, string}>
      */
@@ -211,12 +211,12 @@ class MatriksIzinTest extends TestCase
     }
 
     #[Test]
-    public function matriks_berisi_tepat_144_sel(): void
+    public function matriks_berisi_tepat_150_sel(): void
     {
         $this->seed(IzinSeeder::class);
 
-        $this->assertSame(144, \App\Models\Izin::count(), 'Tabel izin harus berisi 144 baris.');
-        $this->assertCount(144, self::selMatriks(), 'Data provider harus membangkitkan 144 kasus.');
+        $this->assertSame(150, \App\Models\Izin::count(), 'Tabel izin harus berisi 150 baris.');
+        $this->assertCount(150, self::selMatriks(), 'Data provider harus membangkitkan 150 kasus.');
     }
 
     #[Test]

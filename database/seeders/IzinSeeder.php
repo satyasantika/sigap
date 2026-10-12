@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use RuntimeException;
 
 /**
- * Menyemai 144 sel izin dari data/izin.json.
+ * Menyemai 150 sel izin dari data/izin.json.
  *
  * aturan proyek 1: tidak boleh menyalin isinya ke larik PHP. Bila berkasnya
  * hilang atau rusak, seeder GAGAL DENGAN KERAS — diam-diam menyemai matriks
@@ -55,8 +55,8 @@ class IzinSeeder extends Seeder
             }
         }
 
-        if ($jumlah !== 144) {
-            throw new RuntimeException("Seharusnya 144 sel izin, yang tersemai {$jumlah}.");
+        if ($jumlah !== 150) {
+            throw new RuntimeException("Seharusnya 150 sel izin, yang tersemai {$jumlah}.");
         }
 
         Izin::lupakan();

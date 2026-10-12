@@ -24,7 +24,7 @@
     </p>
 
     <p class="lembut">
-        SIGAP membagi wewenang lewat satu matriks 24 aksi &times; 6 peran. Tidak ada
+        SIGAP membagi wewenang lewat satu matriks 25 aksi &times; 6 peran. Tidak ada
         peran yang bisa semuanya — termasuk administrator sistem, yang justru tidak
         boleh menyetujui tagihan atau menulis narasi. Penolakan ini kemungkinan besar
         bekerja sebagaimana mestinya, bukan salah pasang.
