@@ -51,7 +51,10 @@ class BuktiForm
                 Select::make('jenis')
                     ->label('Jenis bukti')
                     ->options(JenisBukti::pilihan())
-                    ->default(JenisBukti::Berkas->value)
+                    ->default(JenisBukti::Tautan->value)
+                    // Unggah berkas dinonaktifkan sementara; bukti lama berjenis
+                    // berkas tetap tampil dan bisa disunting.
+                    ->disableOptionWhen(fn (string $value) => $value === JenisBukti::Berkas->value)
                     ->live()
                     ->required()
                     ->native(false),
