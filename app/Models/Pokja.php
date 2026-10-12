@@ -20,6 +20,20 @@ class Pokja extends Model
         'periode_id', 'kode', 'nama', 'koordinator_id', 'catatan',
     ];
 
+    protected static function booted(): void
+    {
+        // Menunjuk koordinator sekaligus mendaftarkannya sebagai anggota,
+        // supaya ia tampil di tab Anggota dan lingkup `pokjanya` tak bergantung
+        // pada langkah kedua yang mudah terlupa.
+        static::saved(function (self $pokja) {
+            if ($pokja->koordinator_id !== null) {
+                $pokja->anggota()->syncWithoutDetaching([
+                    $pokja->koordinator_id => ['peran_dalam_pokja' => 'koordinator'],
+                ]);
+            }
+        });
+    }
+
     public function periode(): BelongsTo
     {
         return $this->belongsTo(Periode::class);

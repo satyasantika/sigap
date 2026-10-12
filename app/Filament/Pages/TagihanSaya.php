@@ -8,6 +8,7 @@ use App\Filament\Resources\Tagihans\TagihanResource;
 use App\Models\Tagihan;
 use App\Support\Izin;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -70,6 +71,9 @@ class TagihanSaya extends Page implements HasTable
         return static::kueriDasar()->terlambat()->exists() ? 'danger' : 'primary';
     }
 
+    /** `milik` = tagihan saya; `perlu_ditugaskan` = tagihan pokja saya yang belum punya penanggung jawab. */
+    public string $tampilan = 'milik';
+
     private static function kueriDasar(): Builder
     {
         $u = auth()->user();
@@ -81,10 +85,57 @@ class TagihanSaya extends Page implements HasTable
         return Tagihan::query()->milik($u)->belumSelesai();
     }
 
+    /**
+     * Pengguna yang boleh menugaskan melihat tagihan di pokjanya yang belum
+     * ada pemiliknya. Diturunkan dari izin `tagihan.tugaskan`, bukan dari
+     * peran, dan disaring ke pokja pengguna sendiri.
+     */
+    private static function bolehMenugaskan(): bool
+    {
+        $u = auth()->user();
+
+        return $u !== null && Izin::boleh($u, 'tagihan.tugaskan');
+    }
+
+    private static function kueriPerluDitugaskan(): Builder
+    {
+        $u = auth()->user();
+
+        if ($u === null || ! static::bolehMenugaskan()) {
+            return Tagihan::query()->whereRaw('1 = 0');
+        }
+
+        $q = Tagihan::query()->whereNull('penanggung_jawab_id')->belumSelesai();
+
+        return in_array('ya', Izin::lingkup($u, 'tagihan.tugaskan'), true)
+            ? $q
+            : $q->whereIn('pokja_id', $u->idPokjanya());
+    }
+
+    protected function getHeaderActions(): array
+    {
+        if (! static::bolehMenugaskan()) {
+            return [];
+        }
+
+        return [
+            Action::make('milik')
+                ->label('Tagihan saya')
+                ->color($this->tampilan === 'milik' ? 'primary' : 'gray')
+                ->action(fn () => $this->tampilan = 'milik'),
+            Action::make('perlu_ditugaskan')
+                ->label('Perlu ditugaskan ('.static::kueriPerluDitugaskan()->count().')')
+                ->color($this->tampilan === 'perlu_ditugaskan' ? 'primary' : 'gray')
+                ->action(fn () => $this->tampilan = 'perlu_ditugaskan'),
+        ];
+    }
+
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn () => static::kueriDasar())
+            ->query(fn () => $this->tampilan === 'perlu_ditugaskan'
+                ? static::kueriPerluDitugaskan()
+                : static::kueriDasar())
             ->columns([
                 TextColumn::make('judul')->label('Tagihan')->searchable()->wrap()
                     ->description(fn (Tagihan $r) => $r->elemen
@@ -110,7 +161,11 @@ class TagihanSaya extends Page implements HasTable
             // Tenggat terdekat lebih dulu; yang belum bertenggat di belakang,
             // bukan di depan seperti yang dilakukan NULL secara bawaan.
             ->defaultSort('tenggat')
-            ->emptyStateHeading('Tidak ada tagihan untuk Anda')
-            ->emptyStateDescription('Semua tagihan Anda sudah disetujui, atau belum ada yang ditugaskan.');
+            ->emptyStateHeading($this->tampilan === 'perlu_ditugaskan'
+                ? 'Semua tagihan pokja sudah ada penanggung jawabnya'
+                : 'Tidak ada tagihan untuk Anda')
+            ->emptyStateDescription($this->tampilan === 'perlu_ditugaskan'
+                ? 'Tidak ada tagihan tanpa penanggung jawab di pokja Anda.'
+                : 'Semua tagihan Anda sudah disetujui, atau belum ada yang ditugaskan.');
     }
 }

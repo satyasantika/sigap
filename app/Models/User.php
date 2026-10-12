@@ -158,12 +158,20 @@ class User extends Authenticatable implements FilamentUser
     /** Id pokja yang diikuti, dipakai lingkup `pokjanya` pada kelas Izin. */
     public function idPokjanya(): array
     {
-        return $this->pokja()->pluck('pokja.id')->all();
+        // Koordinator yang ditunjuk di form Pokja otomatis termasuk pokjanya,
+        // walau baris `pokja_user`-nya belum ada. Tanpa ini, koordinator hasil
+        // penunjukan tidak melihat satu pun tagihan pokjanya.
+        return $this->pokja()->pluck('pokja.id')
+            ->merge($this->pokjaDikoordinasi()->pluck('id'))
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /** Lingkup `pokja_data` bergantung keanggotaan, bukan peran. */
     public function anggotaPokjaData(): bool
     {
-        return $this->pokja()->where('pokja.kode', 'POKJA-DATA')->exists();
+        return $this->pokja()->where('pokja.kode', 'POKJA-DATA')->exists()
+            || $this->pokjaDikoordinasi()->where('kode', 'POKJA-DATA')->exists();
     }
 }
