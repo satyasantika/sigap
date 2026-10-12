@@ -81,7 +81,17 @@ class Dasbor extends Page
      */
     public function ubinTerlihat(): array
     {
-        return auth()->user()?->peran->ubinDasbor() ?? [];
+        $u = auth()->user();
+
+        if ($u === null) {
+            return [];
+        }
+
+        // Berperan ganda: gabungan ubin tiap peran, dalam urutan K1..K9.
+        $ubin = collect($u->semuaPeran())->flatMap->ubinDasbor()->unique()->all();
+        sort($ubin, SORT_NATURAL);
+
+        return $ubin;
     }
 
     public function lihat(string $ubin): bool
@@ -207,7 +217,7 @@ class Dasbor extends Page
         // yang lingkup `tagihan.lihat`-nya `miliknya` memang hanya boleh
         // melihat tagihannya sendiri, dan daftar di sini harus tunduk pada
         // pagar yang sama dengan daftar di Resource.
-        $hanyaMilikku = Izin::nilai('tagihan.lihat', $u->peran->value) === 'miliknya';
+        $hanyaMilikku = Izin::lingkup($u, 'tagihan.lihat') === ['miliknya'];
 
         $terlambat = $r->tagihanTerlambat($p);
         $tanpaPj = $r->tagihanTanpaPj($p);

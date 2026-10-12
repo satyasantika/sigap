@@ -75,12 +75,23 @@ class TagihanResource extends Resource
             return $q->whereRaw('1 = 0');
         }
 
-        return match (Izin::nilai('tagihan.lihat', $u->peran->value)) {
-            'pokjanya' => $q->whereIn('pokja_id', $u->idPokjanya()),
-            'miliknya' => $q->where('penanggung_jawab_id', $u->getKey()),
-            'ya' => $q,
-            default => $q->whereRaw('1 = 0'),
-        };
+        // Pengguna berperan ganda melihat gabungan lingkup tiap perannya.
+        $lingkup = Izin::lingkup($u, 'tagihan.lihat');
+
+        if (in_array('ya', $lingkup, true)) {
+            return $q;
+        }
+
+        $pokjanya = in_array('pokjanya', $lingkup, true);
+        $miliknya = in_array('miliknya', $lingkup, true);
+
+        if (! $pokjanya && ! $miliknya) {
+            return $q->whereRaw('1 = 0');
+        }
+
+        return $q->where(fn (Builder $w) => $w
+            ->when($pokjanya, fn ($x) => $x->orWhereIn('pokja_id', $u->idPokjanya()))
+            ->when($miliknya, fn ($x) => $x->orWhere('penanggung_jawab_id', $u->getKey())));
     }
 
     /**

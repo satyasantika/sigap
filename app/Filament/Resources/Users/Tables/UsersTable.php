@@ -22,6 +22,10 @@ class UsersTable
                 TextColumn::make('peran')->label('Peran')->badge()
                     ->formatStateUsing(fn (PeranPengguna $state) => $state->label())
                     ->color(fn (PeranPengguna $state) => $state->warna()),
+                TextColumn::make('peran_tambahan')->label('Peran tambahan')->badge()
+                    ->formatStateUsing(fn (string $state) => PeranPengguna::tryFrom($state)?->label() ?? $state)
+                    ->color(fn (string $state) => PeranPengguna::tryFrom($state)?->warna() ?? 'gray')
+                    ->placeholder('—')->toggleable(),
                 TextColumn::make('jabatan')->label('Jabatan')->placeholder('—')->toggleable(),
                 TextColumn::make('nidn')->label('NIDN')->placeholder('—')->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('aktif')->label('Aktif')->boolean(),
@@ -29,7 +33,10 @@ class UsersTable
                     ->dateTime('d F Y, H:i')->placeholder('belum pernah')->toggleable(),
             ])
             ->filters([
-                SelectFilter::make('peran')->label('Peran')->options(PeranPengguna::pilihan()),
+                SelectFilter::make('peran')->label('Peran')->options(PeranPengguna::pilihan())
+                    ->query(fn ($query, array $data) => filled($data['value'] ?? null)
+                        ? $query->berperan($data['value'])
+                        : $query),
                 TernaryFilter::make('aktif')->label('Aktif')
                     ->trueLabel('Hanya yang aktif')
                     ->falseLabel('Hanya yang nonaktif')

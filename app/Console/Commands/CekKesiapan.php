@@ -248,7 +248,7 @@ class CekKesiapan extends Command
             'Akun berikut masih memakai sandi "password": '.$lemah->implode(', ')
             .'. Setel ulang lewat layar Pengguna sebelum sistem dipakai.');
 
-        $adminAktif = User::where('peran', 'admin')->where('aktif', true)->count();
+        $adminAktif = User::berperan('admin')->where('aktif', true)->count();
 
         $this->periksa('Ada administrator sistem yang aktif',
             $adminAktif > 0,

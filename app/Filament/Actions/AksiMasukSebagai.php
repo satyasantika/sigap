@@ -39,7 +39,7 @@ class AksiMasukSebagai
             ->requiresConfirmation()
             ->modalHeading(fn (User $record) => 'Masuk sebagai '.$record->nama_lengkap.'?')
             ->modalDescription(fn (User $record) => 'Anda akan melihat dan mengerjakan SIGAP persis '
-                .'seperti '.$record->nama_lengkap.' ('.$record->peran->label().'), dengan seluruh '
+                .'seperti '.$record->nama_lengkap.' ('.$record->labelPeran().'), dengan seluruh '
                 .'wewenang peran itu. Setiap tindakan yang Anda lakukan tercatat sebagai '
                 .'tindakan lewat penyamaran, lengkap dengan nama Anda.')
             ->modalSubmitActionLabel('Mulai menyamar')

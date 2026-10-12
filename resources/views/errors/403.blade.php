@@ -16,7 +16,7 @@
     <p>
         @if ($u)
             Anda masuk sebagai <strong>{{ $u->nama_lengkap }}</strong>
-            dengan peran <strong>{{ $u->peran->label() }}</strong>.
+            dengan peran <strong>{{ $u->labelPeran() }}</strong>.
             Peran itu tidak memegang wewenang atas halaman yang Anda buka.
         @else
             Permintaan ini ditolak karena tidak ada sesi yang sah.

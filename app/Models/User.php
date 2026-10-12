@@ -32,6 +32,7 @@ class User extends Authenticatable implements FilamentUser
         'jabatan',
         'prodi_id',
         'peran',
+        'peran_tambahan',
         'aktif',
         'demo',
         'periode_demo_id',
@@ -49,6 +50,7 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'peran' => PeranPengguna::class,
+            'peran_tambahan' => 'array',
             'aktif' => 'boolean',
             'demo' => 'boolean',
             'wajib_ganti_sandi' => 'boolean',
@@ -71,6 +73,44 @@ class User extends Authenticatable implements FilamentUser
     public function scopeBisaDitugaskan(Builder $q): Builder
     {
         return $q->where('aktif', true)->where('demo', false);
+    }
+
+    /** Pengguna yang memegang peran ini, sebagai peran utama maupun tambahan. */
+    public function scopeBerperan(Builder $q, PeranPengguna|string $peran): Builder
+    {
+        $nilai = $peran instanceof PeranPengguna ? $peran->value : $peran;
+
+        return $q->where(fn (Builder $w) => $w
+            ->where('peran', $nilai)
+            ->orWhereJsonContains('peran_tambahan', $nilai));
+    }
+
+    /**
+     * Seluruh peran pengguna: yang utama lebih dulu, lalu tambahan tanpa
+     * duplikat. Nilai tambahan yang tak dikenal dibuang, bukan dilempar —
+     * data lama tak boleh menjatuhkan halaman.
+     *
+     * @return array<int, PeranPengguna>
+     */
+    public function semuaPeran(): array
+    {
+        $daftar = [$this->peran];
+
+        foreach ((array) $this->peran_tambahan as $nilai) {
+            $p = PeranPengguna::tryFrom((string) $nilai);
+
+            if ($p !== null && ! in_array($p, $daftar, true)) {
+                $daftar[] = $p;
+            }
+        }
+
+        return $daftar;
+    }
+
+    /** Label seluruh peran, mis. "Ketua Task Force, Auditor Mutu Internal". */
+    public function labelPeran(): string
+    {
+        return collect($this->semuaPeran())->map->label()->join(', ');
     }
 
     public function scopeBukanDemo(Builder $q): Builder

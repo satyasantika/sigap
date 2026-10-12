@@ -28,7 +28,7 @@
             <span>
                 Anda sedang <strong>menyamar</strong> sebagai
                 <strong>{{ $target?->nama_lengkap }}</strong>
-                ({{ $target?->peran?->label() }}).
+                ({{ $target?->labelPeran() }}).
                 Semua tindakan tercatat atas nama {{ $admin?->nama_lengkap ?? 'admin' }}.
             </span>
         </div>

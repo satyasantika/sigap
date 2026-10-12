@@ -70,7 +70,7 @@ class SiapkanManual extends Command
 
         $this->info("{$jumlah} pengguna contoh disiapkan (sandi: password).");
 
-        $admin = User::where('peran', PeranPengguna::Admin)->first();
+        $admin = User::berperan(PeranPengguna::Admin)->first();
         $periode = Periode::aktif()->first();
 
         if ($admin !== null && $periode !== null && Simulasi::count() === 0) {

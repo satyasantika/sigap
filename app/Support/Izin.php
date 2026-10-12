@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Enums\PeranPengguna;
 use App\Models\Izin as ModelIzin;
 use App\Models\Periode;
 use App\Models\User;
@@ -42,7 +43,36 @@ class Izin
             return false;
         }
 
-        $nilai = self::nilai($aksi, $u->peran->value);
+        // Pengguna berperan ganda: cukup satu peran yang mengizinkan.
+        foreach ($u->semuaPeran() as $peran) {
+            if (self::bolehSebagai($u, $peran, $aksi, $obyek)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Nilai lingkup yang berlaku bagi pengguna pada satu aksi, gabungan
+     * seluruh perannya, tanpa `tidak` dan tanpa duplikat. Kosong = ditolak.
+     * Dipakai penyaring kueri daftar, yang harus menyatukan lingkup tiap peran.
+     *
+     * @return array<int, string>
+     */
+    public static function lingkup(User $u, string $aksi): array
+    {
+        return collect($u->semuaPeran())
+            ->map(fn ($p) => self::nilai($aksi, $p->value))
+            ->filter(fn ($n) => $n !== null && $n !== 'tidak')
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    private static function bolehSebagai(User $u, PeranPengguna $peran, string $aksi, ?Model $obyek): bool
+    {
+        $nilai = self::nilai($aksi, $peran->value);
 
         if ($nilai === null || $nilai === 'tidak') {
             return false;
@@ -52,7 +82,7 @@ class Izin
         // Satu-satunya jalan keluar: admin lewat periode.kunci / periode.kelola,
         // supaya periode yang keliru dikunci masih bisa dibuka.
         if (self::periodeTerkunci($obyek) && ! in_array($aksi, self::AKSI_BACA, true)) {
-            return $u->peran->value === 'admin'
+            return $peran === PeranPengguna::Admin
                 && in_array($aksi, self::AKSI_SAAT_TERKUNCI, true);
         }
 
@@ -87,7 +117,8 @@ class Izin
             return false;
         }
 
-        return (self::matriksSistem()[$aksi][$u->peran->value] ?? 'tidak') === 'ya';
+        return collect($u->semuaPeran())
+            ->contains(fn ($p) => (self::matriksSistem()[$aksi][$p->value] ?? 'tidak') === 'ya');
     }
 
     /**
@@ -148,11 +179,13 @@ class Izin
             return false;
         }
 
-        return match (self::matriksMenu()[$menu][$u->peran->value] ?? 'tidak') {
-            'ya' => true,
-            'pokja_data' => $u->anggotaPokjaData(),
-            default => false,
-        };
+        return collect($u->semuaPeran())->contains(
+            fn ($p) => match (self::matriksMenu()[$menu][$p->value] ?? 'tidak') {
+                'ya' => true,
+                'pokja_data' => $u->anggotaPokjaData(),
+                default => false,
+            }
+        );
     }
 
     /**

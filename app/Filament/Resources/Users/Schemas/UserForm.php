@@ -6,6 +6,7 @@ use App\Enums\PeranPengguna;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -47,10 +48,19 @@ class UserForm
                 ->dehydrated(fn (?string $state) => filled($state))
                 ->required(fn (string $operation) => $operation === 'create'),
             Select::make('peran')
-                ->label('Peran')
+                ->label('Peran utama')
                 ->options(PeranPengguna::pilihan())
                 ->helperText('Peran menentukan wewenang lewat matriks izin, bukan lewat menyembunyikan tombol.')
                 ->required()
+                ->live()
+                ->native(false),
+            Select::make('peran_tambahan')
+                ->label('Peran tambahan')
+                ->multiple()
+                ->options(fn (Get $get) => collect(PeranPengguna::pilihan())
+                    ->except($get('peran'))
+                    ->all())
+                ->helperText('Opsional. Wewenang pengguna adalah gabungan peran utama dan seluruh peran tambahan.')
                 ->native(false),
             Select::make('prodi_id')
                 ->label('Prodi')
