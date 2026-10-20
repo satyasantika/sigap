@@ -15,6 +15,10 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'version' => env('APP_VERSION', '0.1.0'),
+
+    'kode' => env('APP_KODE', 'sigap'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

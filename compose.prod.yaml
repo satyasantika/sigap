@@ -1,0 +1,78 @@
+# SIGAP — produksi (Profil Ringan: STANDAR-TEKNIS §1b dan §7).
+# MariaDB berjalan NATIVE di host (DB_HOST=host.docker.internal). Compose ini TIDAK memuat container database,
+# Redis, maupun Horizon; antrean, cache, dan sesi memakai database, worker dinyalakan penjadwal.
+# Jalankan: docker compose -f compose.prod.yaml --env-file .env.production up -d --build
+name: sigap
+
+# Log Docker dirotasi (STANDAR-TEKNIS §7.1).
+x-log: &log
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-app: &app
+  build:
+    context: .
+    target: runtime
+  image: sigap-fkip:${APP_VERSION:-latest}
+  env_file: .env.production
+  extra_hosts: ["host.docker.internal:host-gateway"]
+  volumes:
+    - storage:/var/www/html/storage
+  logging: *log
+  restart: unless-stopped
+
+services:
+  php:
+    <<: *app
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"127.0.0.1\", 9000) ? 0 : 1);'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  web:
+    build:
+      context: .
+      target: web
+    image: sigap-fkip-web:${APP_VERSION:-latest}
+    # Hanya loopback: reverse proxy fakultas (nginx host) yang membuka ke publik, TLS di sana.
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:80"
+    depends_on:
+      - php
+    mem_limit: 64m
+    logging: *log
+    restart: unless-stopped
+
+  # Penjadwal: bukti:periksa-tautan jam 02:00 (routes/console.php). Tidak ada worker antrean berat di SIGAP
+  # saat ini -- batas memori tetap didudukkan konservatif sampai dibuktikan dengan docker stats.
+  scheduler:
+    <<: *app
+    command: php artisan schedule:work
+    mem_limit: 512m
+    stop_grace_period: 60s
+    depends_on:
+      php:
+        condition: service_healthy
+
+  # Hanya KLIEN dump (mariadb-dump) ke basis data host, bukan server basis data.
+  cadangan:
+    <<: *app
+    user: root
+    entrypoint: ["/bin/sh", "/cadangan.sh"]
+    command: []
+    environment:
+      CADANGAN_DIR: /cadangan
+      CADANGAN_HARI: ${CADANGAN_HARI:-30}
+      CADANGAN_JAM: ${CADANGAN_JAM:-02:00}
+      TZ: Asia/Jakarta
+    volumes:
+      - ./cadangan:/cadangan
+      - ./docker/scripts/cadangan.sh:/cadangan.sh:ro
+    mem_limit: 128m
+
+volumes:
+  storage:

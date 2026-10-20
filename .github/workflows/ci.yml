@@ -30,10 +30,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Siapkan PHP 8.3
+      - name: Siapkan PHP 8.5
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.5'
           extensions: pdo_mysql, mbstring, bcmath, intl, zip, gd
           coverage: none
 
@@ -75,5 +75,6 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
           script: |
-            ~/docker-apps/deploy.sh sigap
+            cd ~/docker-apps/sigap && git fetch --prune origin main && git reset --hard origin/main && bash scripts/deploy.sh

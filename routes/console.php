@@ -12,3 +12,8 @@ Artisan::command('inspire', function () {
 // folder induknya. Karena itu diperiksa ulang setiap hari, bukan sekali saja
 // saat diunggah.
 Schedule::command('bukti:periksa-tautan')->dailyAt('02:00');
+
+// Detak penjadwal: dibaca /api/health (peringatan bila > 5 menit). Cap waktu (int), bukan objek Carbon:
+// cache database tidak mengembalikan objek (cache.serializable_classes = false).
+Schedule::call(fn () => cache()->put(config('app.kode').':detak-penjadwal', now()->getTimestamp(), 600))
+    ->everyMinute()->name('detak-penjadwal');
