@@ -3,12 +3,14 @@
 namespace Tests\Feature\Auth;
 
 use App\Enums\PeranPengguna;
+use App\Filament\Auth\Masuk;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\User as PenggunaGoogle;
+use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -218,5 +220,21 @@ class MasukGoogleTest extends TestCase
             ->assertRedirect()->headers->get('Location');
 
         $this->assertStringStartsWith('https://accounts.google.com/', $lokasi);
+    }
+
+    #[Test]
+    public function tombol_memakai_url_asal_livewire_setelah_render_ulang(): void
+    {
+        $komponen = Livewire::test(Masuk::class)
+            ->fillForm(['email' => 'salah@unsil.ac.id', 'password' => 'salah'])
+            ->call('authenticate');
+
+        // Pada permintaan Livewire, url()->current() adalah endpoint update
+        // (POST-only); tombol harus memakai URL halaman asli.
+        $this->assertNotSame(url()->current(), Livewire::originalUrl());
+
+        $komponen
+            ->assertSeeHtml(e(route('auth.google.redirect', ['asal' => Livewire::originalUrl()])))
+            ->assertDontSeeHtml(e(route('auth.google.redirect', ['asal' => url()->current()])));
     }
 }
