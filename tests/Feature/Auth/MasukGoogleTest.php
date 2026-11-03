@@ -168,6 +168,10 @@ class MasukGoogleTest extends TestCase
             ->get(route('auth.google.callback', ['error' => 'access_denied']))
             ->assertRedirect(url('/halaman-x'));
 
+        $this->withSession(['google_asal' => rtrim(url('/'), '/').'.evil.example/'])
+            ->get(route('auth.google.callback', ['error' => 'access_denied']))
+            ->assertRedirect($this->urlMasuk());
+
         $this->withSession(['google_asal' => 'https://evil.example/'])
             ->get(route('auth.google.callback', ['error' => 'access_denied']))
             ->assertRedirect($this->urlMasuk());
@@ -205,5 +209,14 @@ class MasukGoogleTest extends TestCase
             ->assertSessionHas('galat_google', 'Akun Anda dinonaktifkan. Hubungi admin.');
 
         $this->assertGuest();
+    }
+
+    #[Test]
+    public function asal_bukan_string_tidak_menyebabkan_galat(): void
+    {
+        $lokasi = $this->get(route('auth.google.redirect', ['asal' => ['x']]))
+            ->assertRedirect()->headers->get('Location');
+
+        $this->assertStringStartsWith('https://accounts.google.com/', $lokasi);
     }
 }
