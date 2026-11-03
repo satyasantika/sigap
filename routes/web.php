@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\ImpersonasiController;
@@ -67,3 +68,13 @@ Route::post('/demo/keluar', [DemoController::class, 'keluar'])->name('demo.kelua
  */
 Route::post('/impersonasi/akhiri', [ImpersonasiController::class, 'akhiri'])
     ->name('sigap.impersonasi.akhiri');
+
+/**
+ * Masuk dengan Google. Di balik `services.google.aktif` (404 bila nonaktif).
+ * Tanpa middleware `guest`: SIGAP tidak punya rute `login`, jadi pengguna yang
+ * sudah masuk ditangani pengendali.
+ */
+Route::prefix('auth/google')->middleware('throttle:google-login')->group(function () {
+    Route::get('redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
+    Route::get('callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+});
