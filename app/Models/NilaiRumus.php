@@ -26,7 +26,7 @@ class NilaiRumus extends Model
     protected $fillable = [
         'periode_id', 'rumus_kode', 'nilai', 'skor',
         'memenuhi_syarat_3_tahun', 'memenuhi_syarat_5_tahun',
-        'komponen', 'catatan', 'dihitung_oleh',
+        'komponen', 'catatan', 'dihitung_oleh', 'skor_tepat',
     ];
 
     protected function casts(): array
@@ -34,6 +34,7 @@ class NilaiRumus extends Model
         return [
             'nilai' => 'decimal:4',
             'skor' => 'integer',
+            'skor_tepat' => 'decimal:2',
             'memenuhi_syarat_3_tahun' => 'boolean',
             'memenuhi_syarat_5_tahun' => 'boolean',
             'komponen' => 'array',

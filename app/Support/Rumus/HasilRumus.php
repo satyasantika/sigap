@@ -11,6 +11,9 @@ namespace App\Support\Rumus;
  * syarat perlunya menuntut 50%. Menyimpulkan "skor 4, berarti aman" adalah
  * kesalahan yang paling mahal di seluruh instrumen ini, dan struktur data
  * inilah yang mencegahnya.
+ *
+ * `skorTepat` adalah Skor A pecahan (3,4; 2,75) yang dipakai asesor dalam
+ * (3A + B)/4; `skor` adalah bulatannya ke bawah, untuk lencana dan uji lama.
  */
 readonly class HasilRumus
 {
@@ -22,6 +25,7 @@ readonly class HasilRumus
         public ?bool $memenuhiSyarat5Tahun = null,
         public array $komponen = [],
         public ?string $catatan = null,
+        public ?float $skorTepat = null,
     ) {}
 
     public function terkaitSyaratPerlu(): bool
@@ -40,6 +44,7 @@ readonly class HasilRumus
             'memenuhi_syarat_5_tahun' => $this->memenuhiSyarat5Tahun,
             'komponen' => $this->komponen,
             'catatan' => $this->catatan,
+            'skor_tepat' => $this->skorTepat,
         ];
     }
 }

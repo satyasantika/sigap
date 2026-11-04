@@ -10,16 +10,17 @@ use App\Support\Rumus\HasilRumus;
 use InvalidArgumentException;
 
 /**
- * Perhitungan lima belas rumus instrumen.
+ * Perhitungan rumus instrumen: dua puluh tujuh metode untuk dua puluh delapan
+ * rumus (NA dihitung KalkulatorNa).
  *
  * Satu metode per rumus, ditulis tangan. Ekspresi di `data/rumus.json` sengaja
  * TIDAK diurai mesin: notasinya bercampur matematika, kalimat Indonesia, dan
  * koma desimal gaya Indonesia, dan salah satunya bahkan belum punya rumus.
  * Membangun pengurai untuk itu akan menghasilkan penerjemah yang salah
- * diam-diam — jauh lebih berbahaya daripada lima belas metode yang jelas.
+ * diam-diam — jauh lebih berbahaya daripada metode-metode yang jelas.
  *
- * Yang DIBACA dari tabel adalah AMBANGNYA, bukan rumusnya, supaya perubahan
- * instrumen kelak menjadi perubahan data. Lihat ambang() di bawah.
+ * Ambang **ditampilkan** dari tabel `rumus` (`aturanSkor()`), **dihitung** di
+ * metode dan dikunci uji.
  */
 class KalkulatorRumus
 {
@@ -64,6 +65,7 @@ class KalkulatorRumus
             kode: 'PDS3',
             nilai: $nilai,
             skor: (int) floor($skorA),
+            skorTepat: round($skorA, 2),
             memenuhiSyarat3Tahun: $nilai >= 20.0 && $lektorKeAtas >= 3,
             memenuhiSyarat5Tahun: $nilai >= 50.0 && $lektorKeAtas >= 4,
             komponen: compact('nds3', 'ndtps', 'ndlk', 'ndgb') + [
@@ -90,6 +92,7 @@ class KalkulatorRumus
             kode: 'PGBLKL',
             nilai: $nilai,
             skor: (int) floor($skorB),
+            skorTepat: round($skorB, 2),
             komponen: compact('ndgb', 'ndlk', 'ndl', 'ndtps') + ['skor_b_tepat' => round($skorB, 4)],
         );
     }
@@ -146,6 +149,7 @@ class KalkulatorRumus
             kode: 'PPDTPS',
             nilai: $nilai,
             skor: $skor,
+            skorTepat: (float) $skor,
             // Ambang syarat perlu lima tahun DUA KALI LIPAT ambang skor 4.
             memenuhiSyarat3Tahun: $nilai >= 20.0,
             memenuhiSyarat5Tahun: $nilai >= 40.0,
@@ -164,18 +168,45 @@ class KalkulatorRumus
 
     // ---- Rumus lain ------------------------------------------------------
 
-    /** Rasio kerja sama tridharma per DTPS, tertimbang menurut tingkatnya. */
-    public function rk(int $n1, int $n2, int $n3, int $ndtps): HasilRumus
+    /**
+     * Kerja sama tridharma (elemen 7), dua bagian.
+     *
+     * A.1 = rasio tertimbang RK = (3·N1 + 2·N2 + N3)/NDTPS: RK ≥ 4 → 4,
+     * selain itu max(1, RK). Buku 4 menulis "RK < 4 → A = RK" tanpa lantai;
+     * kertas kerja memberi 1 bila RK ≤ 1 (spec §2.1).
+     *
+     * A.2 = pola RI/RN/RW atas CACAH MENTAH kerja sama internasional,
+     * nasional, dan wilayah (a = 2, b = 6, c = 9) — bukan rasio per DTPS.
+     * Membaginya dengan NDTPS lebih dulu adalah perangkap bagian ini.
+     *
+     * Skor A = (2·A.1 + A.2)/3. A.1 diturunkan dari `nilai` yang sudah
+     * dibulatkan, supaya angka yang terlihat di layar bisa dihitung ulang
+     * dengan tangan.
+     *
+     * @param  int  $n1  kerja sama tingkat 1 (bobot 3)
+     * @param  int  $n2  kerja sama tingkat 2 (bobot 2)
+     * @param  int  $n3  kerja sama tingkat 3 (bobot 1)
+     * @param  int  $ni  kerja sama tingkat internasional
+     * @param  int  $nn  kerja sama tingkat nasional
+     * @param  int  $nw  kerja sama tingkat wilayah/lokal
+     * @param  int  $ndtps  seluruh DTPS
+     */
+    public function rk(int $n1, int $n2, int $n3, int $ni, int $nn, int $nw, int $ndtps): HasilRumus
     {
         $this->pastikanPembagiSah($ndtps, 'NDTPS');
 
         $nilai = round(((3 * $n1) + (2 * $n2) + (1 * $n3)) / $ndtps, 2);
 
+        $a1 = $nilai >= 4.0 ? 4.0 : max(1.0, $nilai);
+        $a2 = round($this->skorTigaTingkat($ni, $nn, $nw, a: 2, b: 6, c: 9), 2);
+        $skorTepat = round(((2 * $a1) + $a2) / 3, 2);
+
         return new HasilRumus(
             kode: 'RK',
             nilai: $nilai,
-            skor: $nilai >= 4.0 ? 4 : (int) max(1, floor($nilai)),
-            komponen: compact('n1', 'n2', 'n3', 'ndtps'),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: compact('a1', 'a2', 'n1', 'n2', 'n3', 'ni', 'nn', 'nw', 'ndtps'),
         );
     }
 
@@ -197,6 +228,7 @@ class KalkulatorRumus
             kode: 'RSA',
             nilai: $nilai,
             skor: $skor,
+            skorTepat: (float) $skor,
             komponen: compact('nas', 'ndtps'),
         );
     }
@@ -244,6 +276,7 @@ class KalkulatorRumus
             kode: 'TKM',
             nilai: $nilai,
             skor: $skor,
+            skorTepat: (float) $skor,
             komponen: [
                 'dimensi' => $dimensi,
                 'tkm_mentah_per_dimensi' => $mentah->map(fn ($n) => round($n, 2))->all(),
@@ -254,22 +287,76 @@ class KalkulatorRumus
         );
     }
 
-    /** Rata-rata IPK lulusan. */
+    /**
+     * Rata-rata IPK lulusan.
+     *
+     * Mengikuti Buku 4, kertas kerja (sel E569), dan `data/rumus.json`:
+     * RIPK ≥ 3,25 → 4; 2,00 ≤ RIPK < 3,25 → (8·RIPK − 6)/5 dengan lantai 1;
+     * di bawah 2,00 → 1. Tangga 3,25 / 3,00 / 2,75 yang dulu dipakai di sini
+     * (dari dokumen 03, bukan Buku 4) membuang pecahannya: IPK 3,0 memberi 3,
+     * padahal Buku 4 memberi 3,6, dan IPK 2,5 memberi 1, padahal 2,8.
+     */
     public function ripk(float $rataIpk): HasilRumus
     {
-        $skor = match (true) {
-            $rataIpk >= 3.25 => 4,
-            $rataIpk >= 3.00 => 3,
-            $rataIpk >= 2.75 => 2,
-            default => 1,
+        $skorTepat = match (true) {
+            $rataIpk >= 3.25 => 4.0,
+            $rataIpk >= 2.00 => max(1.0, ((8 * $rataIpk) - 6) / 5),
+            default => 1.0,
         };
+        $skorTepat = round($skorTepat, 2);
 
         return new HasilRumus(
             kode: 'RIPK',
             nilai: round($rataIpk, 2),
-            skor: $skor,
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
             komponen: ['rata_ipk' => $rataIpk],
         );
+    }
+
+    // ---- Pola tiga tingkat RI/RN/RW --------------------------------------
+
+    /**
+     * Skor pola RI/RN/RW (internasional, nasional, wilayah) yang dipakai lima
+     * elemen: E7 bagian A.2, E12, E49, E50, E54. Urutan pemeriksaan mengikuti
+     * kertas kerja (sel E834–E839):
+     *
+     *   1. RI ≥ a                         → 4
+     *   2. RI < a dan RN ≥ b              → 3 + RI/a
+     *   3. 0 < RI < a atau 0 < RN < b     → 2 + RI/a + RN/b − (RI·RN)/(a·b)
+     *   4. RI = 0, RN = 0, RW ≥ c         → 2
+     *   5. selain itu                     → max(1, 2·RW/c)
+     *
+     * Dua perbedaan dengan Buku 4 (spec §2.1), keduanya dicatat sebagai
+     * pertanyaan ke LAMDIK:
+     *
+     * - Pita 3 memakai koefisien 1 pada RI/a, seperti kertas kerja. Buku 4
+     *   menulis 2, yang membuat pita "2–3" bisa mencapai 3,89 (RI = 0,9a,
+     *   RN = 0,9b) — tidak lagi di antara 2 dan 3.
+     * - Pita 5 diinterpolasi, seperti kertas kerja. Buku 4 menulis "skor 1",
+     *   tetapi menamai pita itu "1–2", yang menyiratkan rentang.
+     *
+     * Hasilnya TIDAK dibulatkan; pemanggil yang membulatkan.
+     */
+    private function skorTigaTingkat(float $ri, float $rn, float $rw, float $a, float $b, float $c): float
+    {
+        if ($ri >= $a) {
+            return 4.0;
+        }
+
+        if ($rn >= $b) {
+            return 3 + ($ri / $a);
+        }
+
+        if ($ri > 0 || $rn > 0) {
+            return 2 + ($ri / $a) + ($rn / $b) - (($ri * $rn) / ($a * $b));
+        }
+
+        if ($rw >= $c) {
+            return 2.0;
+        }
+
+        return max(1.0, 2 * $rw / $c);
     }
 
     // ---- Penyimpanan -----------------------------------------------------

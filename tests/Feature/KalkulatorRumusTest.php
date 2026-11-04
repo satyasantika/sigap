@@ -146,10 +146,28 @@ class KalkulatorRumusTest extends TestCase
     #[Test]
     public function rk_sesuai_patokan(): void
     {
-        // (3×2 + 2×3 + 1×4) / 12 = 16/12 = 1,33
-        $h = $this->kalkulator()->rk(n1: 2, n2: 3, n3: 4, ndtps: 12);
+        // RK = (3×2 + 2×3 + 1×4) / 12 = 16/12 = 1,33 → A.1 = 1,33.
+        // A.2 dari NI/NN/NW mentah (a=2, b=6, c=9): pita 2–3,
+        // 2 + 1/2 + 3/6 − (1×3)/(2×6) = 2,75.
+        // Skor A = (2 × 1,33 + 2,75) / 3 = 1,80.
+        $h = $this->kalkulator()->rk(n1: 2, n2: 3, n3: 4, ni: 1, nn: 3, nw: 5, ndtps: 12);
 
         $this->assertSame(1.33, $h->nilai);
+        $this->assertSame(1.33, $h->komponen['a1']);
+        $this->assertSame(2.75, $h->komponen['a2']);
+        $this->assertSame(1.80, $h->skorTepat);
+        $this->assertSame(1, $h->skor);
+    }
+
+    #[Test]
+    public function rk_kertas_kerja_memberi_empat(): void
+    {
+        // Contoh kertas kerja: (3×71 + 2×24 + 46) / 28 = 307/28 = 10,96,
+        // NI = 19 ≥ 2. Kedua bagian penuh.
+        $h = $this->kalkulator()->rk(71, 24, 46, 19, 24, 98, 28);
+
+        $this->assertSame(10.96, $h->nilai);
+        $this->assertSame(4.0, $h->skorTepat);
     }
 
     #[Test]
@@ -225,13 +243,32 @@ class KalkulatorRumusTest extends TestCase
         $this->assertSame(4, $h->komponen['pembagi_normalisasi']);
     }
 
+    /**
+     * Buku 4, kertas kerja (sel E569), dan rumus.json: RIPK ≥ 3,25 → 4;
+     * 2,00 ≤ RIPK < 3,25 → (8·RIPK − 6)/5; di bawah 2,00 → 1. Tangga
+     * 3,25 / 3,00 / 2,75 dari dokumen 03 tidak dipakai lagi.
+     */
     #[Test]
-    public function ripk_sesuai_ambang(): void
+    public function ripk_mengikuti_buku_4(): void
     {
-        $this->assertSame(4, $this->kalkulator()->ripk(3.25)->skor);
-        $this->assertSame(3, $this->kalkulator()->ripk(3.24)->skor);
-        $this->assertSame(2, $this->kalkulator()->ripk(2.75)->skor);
-        $this->assertSame(1, $this->kalkulator()->ripk(2.74)->skor);
+        $k = $this->kalkulator();
+
+        $this->assertSame(4.0, $k->ripk(3.31)->skorTepat);
+        $this->assertSame(4, $k->ripk(3.31)->skor);
+        $this->assertSame(3.6, $k->ripk(3.0)->skorTepat);
+        $this->assertSame(3, $k->ripk(3.0)->skor);
+        $this->assertSame(2.8, $k->ripk(2.5)->skorTepat);
+        $this->assertSame(2, $k->ripk(2.5)->skor);
+        $this->assertSame(2.0, $k->ripk(2.0)->skorTepat);
+        $this->assertSame(1.0, $k->ripk(1.9)->skorTepat);
+        $this->assertSame(1, $k->ripk(1.9)->skor);
+    }
+
+    #[Test]
+    public function pds3_mengisi_skor_tepat(): void
+    {
+        // PDS3 41,67 ≥ 40 → skor(a) penuh.
+        $this->assertSame(4.0, $this->kalkulator()->pds3(5, 12, 3, 1)->skorTepat);
     }
 
     // ---- Penyimpanan -----------------------------------------------------
@@ -255,6 +292,19 @@ class KalkulatorRumusTest extends TestCase
         // pasti. UUIDv7 terurut waktu — justru itu alasan ia dipilih.
         $terakhir = NilaiRumus::where('rumus_kode', 'PDS3')->orderByDesc('id')->first();
         $this->assertSame('50.0000', $terakhir->nilai);
+    }
+
+    #[Test]
+    public function hasil_disimpan_memuat_skor_tepat(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        $k = $this->kalkulator();
+        $hasil = $k->pds3(5, 12, 3, 1);
+
+        $baris = $k->simpan($hasil, Periode::firstOrFail());
+
+        $this->assertSame('4.00', $baris->fresh()->skor_tepat);
+        $this->assertSame($hasil->skorTepat, (float) $baris->fresh()->skor_tepat);
     }
 
     #[Test]
