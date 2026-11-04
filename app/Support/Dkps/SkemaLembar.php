@@ -184,6 +184,7 @@ final class SkemaLembar
      */
     public function normalkan(array $data, ?string $kunciBaris = null): array
     {
+        $kunciBaris = $this->barisDari($data, $kunciBaris);
         $nonaktif = $kunciBaris === null ? [] : $this->kolomNonaktif($kunciBaris);
         $hasil = [];
 
@@ -199,7 +200,7 @@ final class SkemaLembar
                 : $this->normalkanNilai($kolom, $data[$kunci]);
         }
 
-        if ($this->adaBarisTetap() && $kunciBaris !== null) {
+        if ($kunciBaris !== null) {
             $hasil['_baris'] = $kunciBaris;
         }
 
@@ -299,7 +300,7 @@ final class SkemaLembar
     /** @return array<string, string> kunci kolom (atau `_baris`) ⇒ pesan */
     public function validasi(array $dataNormal, ?string $kunciBaris = null): array
     {
-        $kunciBaris ??= $dataNormal['_baris'] ?? null;
+        $kunciBaris = $this->barisDari($dataNormal, $kunciBaris);
         $nonaktif = $kunciBaris === null ? [] : $this->kolomNonaktif($kunciBaris);
         $galat = [];
 
@@ -315,6 +316,10 @@ final class SkemaLembar
             }
         }
 
+        foreach ($this->galatUrutanTanggal($dataNormal) as $kunci => $pesan) {
+            $galat[$kunci] ??= $pesan;
+        }
+
         $galatBaris = array_filter(array_map(
             fn (array $aturan) => $this->galatAturan($aturan, $dataNormal),
             $this->lembar['aturan'] ?? [],
@@ -322,6 +327,34 @@ final class SkemaLembar
 
         if ($galatBaris !== []) {
             $galat['_baris'] = implode(' ', $galatBaris);
+        }
+
+        return $galat;
+    }
+
+    /**
+     * Kolom `sampai` pada rumus `selisih_tahun` (mis. tanggal akhir kerja
+     * sama) tidak boleh lebih awal dari kolom `dari`-nya.
+     *
+     * @return array<string, string>
+     */
+    private function galatUrutanTanggal(array $data): array
+    {
+        $galat = [];
+
+        foreach ($this->kolomHitung() as $kolom) {
+            $rumus = $kolom['rumus'];
+
+            if ($rumus['jenis'] !== 'selisih_tahun') {
+                continue;
+            }
+
+            $dari = self::tanggal($data[$rumus['dari']] ?? '');
+            $sampai = self::tanggal($data[$rumus['sampai']] ?? '');
+
+            if ($dari !== null && $sampai !== null && $sampai < $dari) {
+                $galat[$rumus['sampai']] = "{$this->kolomBerkunci($rumus['sampai'])['label']} tidak boleh mendahului {$this->kolomBerkunci($rumus['dari'])['label']}.";
+            }
         }
 
         return $galat;
@@ -343,9 +376,17 @@ final class SkemaLembar
             TipeKolom::Pilihan => in_array($nilai, $kolom['pilihan'] ?? [], true)
                 ? null
                 : "{$label} harus salah satu dari: ".implode(', ', $kolom['pilihan'] ?? []).'.',
-            TipeKolom::Tautan => filter_var($nilai, FILTER_VALIDATE_URL) !== false ? null : "{$label} harus URL yang sah.",
+            TipeKolom::Tautan => self::tautanSah($nilai) ? null : "{$label} harus URL yang sah.",
             default => null,
         };
+    }
+
+    /** Hanya http(s): tautan dirender sebagai `href`, jadi `javascript:` harus ditolak. */
+    private static function tautanSah(mixed $nilai): bool
+    {
+        return is_string($nilai)
+            && filter_var($nilai, FILTER_VALIDATE_URL) !== false
+            && in_array(strtolower((string) parse_url($nilai, PHP_URL_SCHEME)), ['http', 'https'], true);
     }
 
     private function galatAturan(array $aturan, array $data): ?string
@@ -436,7 +477,7 @@ final class SkemaLembar
      */
     public function hitung(array $dataNormal, ?string $kunciBaris = null): array
     {
-        $kunciBaris ??= $dataNormal['_baris'] ?? null;
+        $kunciBaris = $this->barisDari($dataNormal, $kunciBaris);
         $data = $dataNormal;
         $hasil = [];
 
@@ -464,11 +505,12 @@ final class SkemaLembar
         $dari = self::tanggal($dari ?? '');
         $sampai = self::tanggal($sampai ?? '');
 
-        if ($dari === null || $sampai === null) {
+        // Urutan terbalik dilaporkan validasi(); di sini cukup tidak negatif.
+        if ($dari === null || $sampai === null || $sampai < $dari) {
             return 0;
         }
 
-        return (int) floor(CarbonImmutable::parse($dari)->diffInYears($sampai));
+        return (int) floor(CarbonImmutable::parse($dari)->diffInYears($sampai, absolute: true));
     }
 
     private static function rata(array $nilai): int|float|null
@@ -537,7 +579,7 @@ final class SkemaLembar
     /** Baris tetap dianggap lengkap hanya bila semua sel yang tidak diarsir terisi. */
     public function lengkap(array $dataNormal, ?string $kunciBaris = null): bool
     {
-        $kunciBaris ??= $dataNormal['_baris'] ?? null;
+        $kunciBaris = $this->barisDari($dataNormal, $kunciBaris);
 
         if ($this->validasi($dataNormal, $kunciBaris) !== []) {
             return false;
@@ -545,7 +587,7 @@ final class SkemaLembar
 
         $harusTerisi = $this->kunciWajib();
 
-        if ($this->adaBarisTetap() && $kunciBaris !== null) {
+        if ($kunciBaris !== null) {
             $harusTerisi = array_diff(array_column($this->kolomInput(), 'kunci'), $this->kolomNonaktif($kunciBaris));
         }
 
@@ -560,7 +602,7 @@ final class SkemaLembar
 
     public function kunciBaris(array $dataNormal, ?string $kunciBaris = null): string
     {
-        $kunciBaris ??= $dataNormal['_baris'] ?? null;
+        $kunciBaris = $this->barisDari($dataNormal, $kunciBaris);
 
         if ($this->adaBarisTetap()) {
             return NormalisasiKunci::dari($this->butir->kode, $this->kode(), (string) $kunciBaris);
@@ -579,7 +621,7 @@ final class SkemaLembar
      */
     public function tahunAcuan(Periode $periode, array $dataNormal, ?string $kunciBaris = null): string
     {
-        $kunciBaris ??= $dataNormal['_baris'] ?? null;
+        $kunciBaris = $this->barisDari($dataNormal, $kunciBaris);
         $sumber = $this->tahunDari();
 
         if ($sumber === 'TS') {
@@ -587,7 +629,7 @@ final class SkemaLembar
         }
 
         if ($sumber === 'baris_tetap') {
-            return $kunciBaris ?? throw new InvalidArgumentException("Lembar {$this->kode()} butuh kunci baris tetap.");
+            return $kunciBaris;
         }
 
         $kunci = substr($sumber, strlen('kolom:'));
@@ -616,6 +658,27 @@ final class SkemaLembar
     }
 
     // ── Pembantu ────────────────────────────────────────────────────────
+
+    /**
+     * Kunci baris tetap yang berlaku: parameter, kalau tidak `_baris` di data.
+     * Pada lembar berbaris tetap kunci yang kosong atau asing ditolak — kalau
+     * tidak, ia menjadi baris liar yang tak pernah tampil di layar tetapi
+     * ikut terhitung. Lembar berbaris bebas selalu `null`.
+     */
+    private function barisDari(array $data, ?string $kunciBaris): ?string
+    {
+        if (! $this->adaBarisTetap()) {
+            return null;
+        }
+
+        $kunciBaris ??= $data['_baris'] ?? null;
+
+        if ($kunciBaris === null || ! in_array($kunciBaris, array_column($this->barisTetap(), 'kunci'), true)) {
+            throw new InvalidArgumentException("Kunci baris `{$kunciBaris}` tidak ada pada lembar {$this->kode()}.");
+        }
+
+        return $kunciBaris;
+    }
 
     private static function tipe(array $kolom): TipeKolom
     {

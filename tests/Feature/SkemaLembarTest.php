@@ -8,6 +8,7 @@ use App\Models\Periode;
 use App\Support\Impor\NormalisasiKunci;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -95,5 +96,47 @@ class SkemaLembarTest extends TestCase
         $this->assertSame(NormalisasiKunci::dari('28', '28', 'Prof. Firmansyah', 'Judul'), $s->kunciBaris($d));
         $this->assertTrue($s->lengkap($d));
         $this->assertFalse($s->lengkap($s->normalkan(['nama_dtps' => 'X'])));
+    }
+
+    #[Test]
+    public function tanggal_akhir_tidak_boleh_mendahului_tanggal_awal(): void
+    {
+        $s = DkpsButir::dariKode('1')->skema('1.2');
+        $d = $s->normalkan(['lembaga_mitra' => 'UiTM', 'judul_kegiatan' => 'Riset', 'nasional' => 'V', 'tanggal_awal' => '2028-03-19', 'tanggal_akhir' => '19/09/2023']);
+        $this->assertSame('Tanggal Akhir Kerjasama (dd/mm/yyyy) tidak boleh mendahului Tanggal Awal Kerjasama (dd/mm/yyyy).', $s->validasi($d)['tanggal_akhir']);
+        $this->assertSame(0, $s->hitung($d)['durasi_tahun']);
+        $this->assertSame(4, $s->hitung(['tanggal_awal' => '2023-09-19', 'tanggal_akhir' => '2028-03-19'])['durasi_tahun']);
+    }
+
+    #[Test]
+    public function kunci_baris_tetap_kosong_atau_asing_ditolak(): void
+    {
+        $s = DkpsButir::dariKode('22')->skema('22');
+        $this->assertSame('TS-1', $s->normalkan(['_baris' => 'TS-1'])['_baris']);
+        $panggilan = [
+            ['TS-9', fn () => $s->normalkan(['diterima' => 1], 'TS-9')],
+            ['', fn () => $s->validasi(['diterima' => 1])],
+            ['', fn () => $s->hitung(['diterima' => 1])],
+            ['', fn () => $s->lengkap(['diterima' => 1])],
+            ['', fn () => $s->kunciBaris(['diterima' => 1])],
+            ['TS-9', fn () => $s->tahunAcuan(Periode::firstOrFail(), ['_baris' => 'TS-9'])],
+        ];
+        foreach ($panggilan as [$kunci, $f]) {
+            try {
+                $f();
+                $this->fail("Kunci baris `{$kunci}` seharusnya ditolak.");
+            } catch (InvalidArgumentException $e) {
+                $this->assertSame("Kunci baris `{$kunci}` tidak ada pada lembar 22.", $e->getMessage());
+            }
+        }
+    }
+
+    #[Test]
+    public function tautan_hanya_http_atau_https(): void
+    {
+        $s = DkpsButir::dariKode('18')->skema('18');
+        $label = collect($s->kolom())->firstWhere('kunci', 'tautan_rps')['label'];
+        $this->assertSame("{$label} harus URL yang sah.", $s->validasi($s->normalkan(['tautan_rps' => 'javascript://x%0Aalert(1)']))['tautan_rps']);
+        $this->assertArrayNotHasKey('tautan_rps', $s->validasi($s->normalkan(['tautan_rps' => 'HTTPS://drive.google.com/file/d/abc'])));
     }
 }
