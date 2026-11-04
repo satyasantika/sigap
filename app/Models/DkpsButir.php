@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Dkps\SkemaLembar;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
@@ -44,5 +45,10 @@ class DkpsButir extends Model
         }
 
         throw new InvalidArgumentException("Tabel {$this->kode} tidak punya lembar {$kodeLembar}.");
+    }
+
+    public function skema(string $kodeLembar): SkemaLembar
+    {
+        return SkemaLembar::dari($this, $kodeLembar);
     }
 }
