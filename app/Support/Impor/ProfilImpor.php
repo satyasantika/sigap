@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * Satu profil impor per sasaran. Komponen ImporTempel dipakai ulang apa
  * adanya; yang berbeda hanya profilnya.
  *
- * Profil lain (ImporBarisDkps, ImporPublikasiDtps, dan seterusnya) menyusul di
+ * Profil lain (ImporLembarDkps, ImporPublikasiDtps, dan seterusnya) menyusul di
  * tahap 5 tanpa menyentuh komponennya.
  */
 interface ProfilImpor
