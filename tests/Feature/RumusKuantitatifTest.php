@@ -22,6 +22,220 @@ class RumusKuantitatifTest extends TestCase
         return app(KalkulatorRumus::class);
     }
 
+    // ---- RRD, NDTPSPK, NTENDIKPK — elemen 19, 20, 21 --------------------
+
+    #[Test]
+    public function rrd_pita(): void
+    {
+        $k = $this->kalkulator();
+
+        $penuh = $k->rrd(100, 28);
+        $this->assertSame('RRD', $penuh->kode);
+        $this->assertEqualsWithDelta(4.0, $penuh->skorTepat, 0.001);
+        $this->assertSame(4, $penuh->skor);
+
+        // RRD = 0,25 → 2 + 2 × 0,25 = 2,5.
+        $sebagian = $k->rrd(7, 28);
+        $this->assertEqualsWithDelta(0.25, $sebagian->nilai, 0.001);
+        $this->assertEqualsWithDelta(2.5, $sebagian->skorTepat, 0.001);
+        $this->assertSame(2, $sebagian->skor);
+    }
+
+    #[Test]
+    public function ndtpspk_ambang(): void
+    {
+        $k = $this->kalkulator();
+
+        $penuh = $k->ndtpspk(29, 28);
+        $this->assertEqualsWithDelta(100.0, $penuh->nilai, 0.001);
+        $this->assertSame(4, $penuh->skor);
+        $this->assertEqualsWithDelta(4.0, $penuh->skorTepat, 0.001);
+
+        $tiga = $k->ndtpspk(20, 28);
+        $this->assertEqualsWithDelta(71.43, $tiga->nilai, 0.001);
+        $this->assertSame(3, $tiga->skor);
+
+        $this->assertSame(2, $k->ndtpspk(17, 28)->skor);
+        $this->assertSame(1, $k->ndtpspk(10, 28)->skor);
+    }
+
+    #[Test]
+    public function ntendikpk_ambang(): void
+    {
+        $k = $this->kalkulator();
+
+        $this->assertSame(4, $k->ntendikpk(30, 29)->skor);
+
+        $tiga = $k->ntendikpk(8, 29);
+        $this->assertEqualsWithDelta(27.59, $tiga->nilai, 0.001);
+        $this->assertSame(3, $tiga->skor);
+        $this->assertEqualsWithDelta(3.0, $tiga->skorTepat, 0.001);
+
+        $this->assertSame(2, $k->ntendikpk(3, 29)->skor);
+        $this->assertSame(1, $k->ntendikpk(2, 29)->skor);
+    }
+
+    // ---- RMS, PKMS — elemen 39, 41 --------------------------------------
+
+    #[Test]
+    public function rms_tanpa_skor(): void
+    {
+        $hasil = $this->kalkulator()->rms(1.0);
+
+        $this->assertSame('RMS', $hasil->kode);
+        $this->assertEqualsWithDelta(1.0, $hasil->nilai, 0.001);
+        $this->assertNull($hasil->skor);
+        $this->assertNull($hasil->skorTepat);
+        $this->assertStringContainsString('LAMDIK', $hasil->catatan);
+    }
+
+    #[Test]
+    public function pkms_pita(): void
+    {
+        $k = $this->kalkulator();
+
+        $this->assertEqualsWithDelta(4.0, $k->pkms(90, 100)->skorTepat, 0.001);
+        // (80 × 0,5 − 24)/11 = 1,4545…, dipotong 1,45.
+        $this->assertEqualsWithDelta(1.45, $k->pkms(50, 100)->skorTepat, 0.001);
+        $this->assertEqualsWithDelta(1.0, $k->pkms(40, 100)->skorTepat, 0.001);
+    }
+
+    // ---- WTMP, TKi — elemen 43, 44 --------------------------------------
+
+    #[Test]
+    public function wtmp_contoh_kertas_kerja(): void
+    {
+        $hasil = $this->kalkulator()->wtmp(87, 0, 0, 104, 87);
+
+        $this->assertSame('WTMP', $hasil->kode);
+        $this->assertEqualsWithDelta(3.0, $hasil->nilai, 0.001);
+        $this->assertEqualsWithDelta(4.0, $hasil->skorTepat, 0.001);
+        $this->assertEqualsWithDelta(1.0, $hasil->komponen['faktor'], 0.0001);
+        // Prmin = 0,5 − (104/150) × 0,2 = 0,3613.
+        $this->assertEqualsWithDelta(0.3613, $hasil->komponen['prmin'], 0.0001);
+        $this->assertNull($hasil->catatan);
+    }
+
+    #[Test]
+    public function wtmp_titik_tengah(): void
+    {
+        // (3·10 + 9·20 + 15·10)/40 = 9 bulan → skor awal (18 − 9)/3 = 3.
+        // NL = 200 ≥ 150 → Prmin 0,3; PJ = 40/200 = 0,2; faktor 0,6667;
+        // skor 3 × 0,6667 = 2,00. (Brief menulis Prmin 0,2333 dan 2,57,
+        // yang bertentangan dengan aturan Prmin = 0,3 untuk NL ≥ 150.)
+        $hasil = $this->kalkulator()->wtmp(10, 20, 10, 200, 40);
+
+        $this->assertEqualsWithDelta(9.0, $hasil->nilai, 0.001);
+        $this->assertEqualsWithDelta(3.0, $hasil->komponen['skor_awal'], 0.001);
+        $this->assertEqualsWithDelta(0.3, $hasil->komponen['prmin'], 0.0001);
+        $this->assertEqualsWithDelta(0.2, $hasil->komponen['pj'], 0.0001);
+        $this->assertEqualsWithDelta(0.6667, $hasil->komponen['faktor'], 0.0001);
+        $this->assertEqualsWithDelta(2.0, $hasil->skorTepat, 0.001);
+    }
+
+    #[Test]
+    public function wtmp_responden_kurang_mengalikan_skor(): void
+    {
+        // Prmin = 0,5 − (100/150) × 0,2 = 0,3667; PJ = 0,2; faktor 0,5454…
+        // (komponen 0,5455, dibulatkan empat desimal);
+        // 4 × 0,5454… = 2,1818…, dipotong 2,18.
+        $hasil = $this->kalkulator()->wtmp(20, 0, 0, 100, 20);
+
+        $this->assertEqualsWithDelta(0.5455, $hasil->komponen['faktor'], 0.00001);
+        $this->assertEqualsWithDelta(4.0, $hasil->komponen['skor_awal'], 0.001);
+        $this->assertEqualsWithDelta(2.18, $hasil->skorTepat, 0.001);
+        $this->assertSame(2, $hasil->skor);
+        $this->assertStringContainsString('di bawah minimum', $hasil->catatan);
+    }
+
+    #[Test]
+    public function wtmp_lulusan_besar_prmin_tiga_puluh_persen(): void
+    {
+        $hasil = $this->kalkulator()->wtmp(50, 0, 0, 200, 50);
+
+        $this->assertEqualsWithDelta(0.3, $hasil->komponen['prmin'], 0.0001);
+        $this->assertEqualsWithDelta(0.25, $hasil->komponen['pj'], 0.0001);
+        $this->assertEqualsWithDelta(0.8333, $hasil->komponen['faktor'], 0.0001);
+        // 4 × 0,8333… = 3,333…, dipotong 3,33.
+        $this->assertEqualsWithDelta(3.33, $hasil->skorTepat, 0.001);
+    }
+
+    #[Test]
+    public function wtmp_pita_bulan(): void
+    {
+        $k = $this->kalkulator();
+
+        // Seluruhnya > 12 bulan → 15 bulan → 1.
+        $this->assertEqualsWithDelta(1.0, $k->wtmp(0, 0, 10, 10, 10)->skorTepat, 0.001);
+        // (3·1 + 15·1)/2 = 9 → 3; (3·1 + 9·1)/2 = 6 → (18 − 6)/3 = 4.
+        $this->assertEqualsWithDelta(3.0, $k->wtmp(1, 0, 1, 2, 2)->skorTepat, 0.001);
+        $this->assertEqualsWithDelta(4.0, $k->wtmp(1, 1, 0, 2, 2)->skorTepat, 0.001);
+    }
+
+    private function aspekSangatBaik(): array
+    {
+        return array_fill(0, 9, ['a' => 100, 'b' => 0, 'c' => 0, 'd' => 0]);
+    }
+
+    #[Test]
+    public function tki_semua_sangat_baik(): void
+    {
+        $hasil = $this->kalkulator()->tki($this->aspekSangatBaik(), 104, 87);
+
+        $this->assertSame('TKi', $hasil->kode);
+        $this->assertEqualsWithDelta(4.0, $hasil->nilai, 0.0001);
+        $this->assertEqualsWithDelta(4.0, $hasil->skorTepat, 0.001);
+        $this->assertEqualsWithDelta(1.0, $hasil->komponen['faktor'], 0.0001);
+    }
+
+    #[Test]
+    public function tki_contoh_etika(): void
+    {
+        // TKi etika = 4 × 0,9885 + 3 × 0,0115 = 3,9885; skala 1–4, TIDAK
+        // dibagi 4 seperti TKM. (3,9885 + 8 × 4)/9 = 3,9987.
+        $aspek = $this->aspekSangatBaik();
+        $aspek[0] = ['a' => 98.85, 'b' => 1.15, 'c' => 0, 'd' => 0];
+
+        $hasil = $this->kalkulator()->tki($aspek, 104, 87);
+
+        $this->assertEqualsWithDelta(3.9987, $hasil->nilai, 0.0001);
+        $this->assertEqualsWithDelta(3.99, $hasil->skorTepat, 0.001);
+        $this->assertSame(3, $hasil->skor);
+    }
+
+    #[Test]
+    public function tki_responden_kurang_mengalikan_skor(): void
+    {
+        $hasil = $this->kalkulator()->tki($this->aspekSangatBaik(), 100, 20);
+
+        // 4 × 0,5454… = 2,1818…, dipotong 2,18.
+        $this->assertEqualsWithDelta(2.18, $hasil->skorTepat, 0.001);
+        $this->assertStringContainsString('di bawah minimum', $hasil->catatan);
+    }
+
+    #[Test]
+    public function tki_bukan_sembilan_aspek_ditolak(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->kalkulator()->tki(array_slice($this->aspekSangatBaik(), 0, 8), 104, 87);
+    }
+
+    #[Test]
+    public function lulusan_nol_ditolak(): void
+    {
+        $k = $this->kalkulator();
+
+        foreach ([fn () => $k->wtmp(1, 0, 0, 0, 0), fn () => $k->tki($this->aspekSangatBaik(), 0, 0)] as $panggil) {
+            try {
+                $panggil();
+                $this->fail('Lulusan nol seharusnya ditolak.');
+            } catch (InvalidArgumentException $e) {
+                $this->assertStringContainsString('Jumlah lulusan tiga tahun nol', $e->getMessage());
+            }
+        }
+    }
+
     // ---- PRESMA — elemen 12 ---------------------------------------------
 
     #[Test]
@@ -309,6 +523,11 @@ class RumusKuantitatifTest extends TestCase
         $k = $this->kalkulator();
 
         $pemanggil = [
+            fn () => $k->rrd(1, 0),
+            fn () => $k->ndtpspk(1, 0),
+            fn () => $k->ntendikpk(1, 0),
+            fn () => $k->pkms(1, 0),
+            fn () => $k->wtmp(0, 0, 0, 10, 10),
             fn () => $k->presma(1, 1, 1, 0),
             fn () => $k->rgp(1, 0, 0, 0, 0),
             fn () => $k->pdippkm(1, 0),

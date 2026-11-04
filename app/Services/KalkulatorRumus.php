@@ -536,6 +536,79 @@ class KalkulatorRumus
         );
     }
 
+    // ---- RRD, NDTPSPK, NTENDIKPK — elemen 19, 20, 21 --------------------
+
+    /**
+     * Rasio pengakuan (rekognisi) kepakaran per DTPS.
+     *
+     * RRD ≥ 1 → 4; selain itu 2 + 2·RRD. Rasio TIDAK dibatasi 1 (lebih dari
+     * satu rekognisi per dosen tetap 4) dan tidak punya lantai di bawah 2:
+     * tanpa rekognisi sama sekali skornya 2, bukan 1.
+     *
+     * @param  int  $rekognisi  cacah pengakuan kepakaran DTPS
+     * @param  int  $ndtps  seluruh DTPS
+     */
+    public function rrd(int $rekognisi, int $ndtps): HasilRumus
+    {
+        $this->pastikanPembagiSah($ndtps, 'NDTPS');
+
+        $rasio = $rekognisi / $ndtps;
+        $skorTepat = self::potong2($rasio >= 1.0 ? 4.0 : 2 + (2 * $rasio));
+
+        return new HasilRumus(
+            kode: 'RRD',
+            nilai: round($rasio, 2),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: compact('rekognisi', 'ndtps'),
+        );
+    }
+
+    /**
+     * Persentase DTPS yang mengikuti pengembangan kompetensi, dibatasi 100.
+     *
+     * Pembilang bisa melebihi NDTPS bila pemanggil menyerahkan cacah
+     * KEGIATAN, bukan cacah dosen; batas 100 mencegah persen yang mustahil.
+     * Ambang 80 / 70 / 60 dibandingkan pada persen mentah.
+     */
+    public function ndtpspk(int $dtpsPk, int $ndtps): HasilRumus
+    {
+        $this->pastikanPembagiSah($ndtps, 'NDTPS');
+
+        $persen = min(100.0, ($dtpsPk * 100) / $ndtps);
+        $skor = self::tangga($persen, 80.0, 70.0, 60.0);
+
+        return new HasilRumus(
+            kode: 'NDTPSPK',
+            nilai: round($persen, 2),
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: compact('dtpsPk', 'ndtps'),
+        );
+    }
+
+    /**
+     * Persentase tendik yang mengikuti pengembangan kompetensi, dibatasi 100.
+     *
+     * Ambangnya JAUH lebih rendah daripada NDTPSPK (40 / 25 / 10, bukan
+     * 80 / 70 / 60); menyalin tangga dosen ke tendik adalah perangkapnya.
+     */
+    public function ntendikpk(int $tendikPk, int $tendik): HasilRumus
+    {
+        $this->pastikanPembagiSah($tendik, 'Jumlah tendik');
+
+        $persen = min(100.0, ($tendikPk * 100) / $tendik);
+        $skor = self::tangga($persen, 40.0, 25.0, 10.0);
+
+        return new HasilRumus(
+            kode: 'NTENDIKPK',
+            nilai: round($persen, 2),
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: compact('tendikPk', 'tendik'),
+        );
+    }
+
     // ---- PDIPPKM, PMKI — elemen 32 --------------------------------------
 
     /**
@@ -642,6 +715,191 @@ class KalkulatorRumus
             skor: (int) floor($skorTepat),
             skorTepat: $skorTepat,
             komponen: compact('diterimaTs1', 'diterimaTs', 'lulusTs1', 'lulusTs'),
+        );
+    }
+
+    // ---- RMS, PKMS — elemen 39, 41 --------------------------------------
+
+    /**
+     * Rata-rata masa studi lulusan, dalam tahun — TANPA skor.
+     *
+     * Rumus resmi (Buku 4, kertas kerja sel E586) memberi 4 hanya untuk
+     * 3,5 < RMS ≤ 4 dan 1 di luar 3,5–5 tahun: rentang program sarjana empat
+     * tahun. PPG yang masa studinya satu tahun akan selalu mendapat 1, justru
+     * ketika lulusannya tepat waktu. docs/KEPUTUSAN.md §2 melarang meniru
+     * cacat itu; maka `skor` dan `skorTepat` null sampai LAMDIK menjawab,
+     * dan asesor melihat angka masa studinya, bukan skor 1 yang menyesatkan.
+     */
+    public function rms(float $rataTahun): HasilRumus
+    {
+        return new HasilRumus(
+            kode: 'RMS',
+            nilai: round($rataTahun, 2),
+            skor: null,
+            skorTepat: null,
+            komponen: ['rata_tahun' => $rataTahun],
+            catatan: 'Skor menunggu jawaban LAMDIK: rumus resmi (Buku 4, kertas kerja E586) memberi skor 1 untuk masa studi satu tahun; lihat docs/KEPUTUSAN.md §2.',
+        );
+    }
+
+    /**
+     * Persentase keberhasilan studi: pecahan lulusan terhadap mahasiswa yang
+     * diterima pada angkatan yang sama, dibatasi 1.
+     *
+     * ≥ 0,85 → 4; 0,45 ≤ PKMS < 0,85 → (80·PKMS − 24)/11; di bawah → 1.
+     * Rumus pita tengah memakai PKMS sebagai PECAHAN, bukan persen —
+     * memasukkan 50 alih-alih 0,5 memberi ratusan.
+     */
+    public function pkms(int $lulusan, int $diterima): HasilRumus
+    {
+        $this->pastikanPembagiSah($diterima, 'Mahasiswa diterima');
+
+        $rasio = min(1.0, $lulusan / $diterima);
+        $skorTepat = self::potong2(match (true) {
+            $rasio >= 0.85 => 4.0,
+            $rasio >= 0.45 => ((80 * $rasio) - 24) / 11,
+            default => 1.0,
+        });
+
+        return new HasilRumus(
+            kode: 'PKMS',
+            nilai: round($rasio, 4),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: compact('lulusan', 'diterima'),
+        );
+    }
+
+    // ---- WTMP, TKi — elemen 43, 44 --------------------------------------
+
+    /**
+     * Waktu tunggu mendapatkan pekerjaan pertama, dalam bulan.
+     *
+     * Cacah per kelompok diubah ke bulan dengan TITIK TENGAH 3 (< 6 bulan),
+     * 9 (6–12 bulan), dan 15 (> 12 bulan), lalu dirata-rata atas lulusan
+     * TERLACAK (jumlah ketiga kelompok), bukan atas seluruh lulusan.
+     * Skor awal: < 6 → 4; 6–12 → (18 − WTMP)/3; > 12 → 1.
+     *
+     * Aturan responden: bila lulusan terlacak (PJ = NJ/NL) di bawah
+     * minimum Prmin, skor awal DIKALI PJ/Prmin — lihat penyesuaianResponden().
+     * Tanpa aturan ini, melacak tiga lulusan yang kebetulan cepat bekerja
+     * sudah memberi skor 4.
+     *
+     * @param  int  $lulusan  lulusan tiga tahun (NL)
+     * @param  int  $terlacak  lulusan tiga tahun yang terlacak (NJ)
+     */
+    public function wtmp(int $kurang6Bulan, int $antara6Dan12Bulan, int $lebih12Bulan, int $lulusan, int $terlacak): HasilRumus
+    {
+        $responden = $this->penyesuaianResponden($lulusan, $terlacak);
+
+        $jumlah = $kurang6Bulan + $antara6Dan12Bulan + $lebih12Bulan;
+        $this->pastikanPembagiSah($jumlah, 'Σ lulusan per kelompok waktu tunggu');
+
+        $bulan = ((3 * $kurang6Bulan) + (9 * $antara6Dan12Bulan) + (15 * $lebih12Bulan)) / $jumlah;
+        $skorAwal = match (true) {
+            $bulan < 6.0 => 4.0,
+            $bulan <= 12.0 => (18 - $bulan) / 3,
+            default => 1.0,
+        };
+
+        return $this->hasilBerResponden('WTMP', round($bulan, 2), $skorAwal, $responden, [
+            'kurang_6_bulan' => $kurang6Bulan,
+            'antara_6_dan_12_bulan' => $antara6Dan12Bulan,
+            'lebih_12_bulan' => $lebih12Bulan,
+        ]);
+    }
+
+    /**
+     * Tingkat kepuasan pengguna lulusan atas sembilan aspek.
+     *
+     * TKi = 4a + 3b + 2c + d dengan a..d PECAHAN (persen/100), sehingga
+     * skalanya 1–4 dan rata kesembilan aspek LANGSUNG menjadi skor awal.
+     * Berbeda dengan TKM: di sana jumlah tertimbang dibagi 4 menjadi persen
+     * lalu ditangga; membagi 4 di sini akan menjatuhkan skor penuh ke 1.
+     *
+     * Aturan responden sama dengan WTMP, dengan NJ = cacah tanggapan
+     * pengguna lulusan.
+     *
+     * @param  array<int, array{a: float, b: float, c: float, d: float}>  $aspek  sembilan aspek, dalam persen
+     * @param  int  $lulusan  lulusan tiga tahun (NL)
+     * @param  int  $tanggapan  tanggapan pengguna lulusan (NJ)
+     */
+    public function tki(array $aspek, int $lulusan, int $tanggapan): HasilRumus
+    {
+        if (count($aspek) !== 9) {
+            throw new InvalidArgumentException('TKi butuh tepat sembilan aspek; diterima '.count($aspek).'.');
+        }
+
+        foreach ($aspek as $i => $baris) {
+            foreach (['a', 'b', 'c', 'd'] as $kunci) {
+                if (! array_key_exists($kunci, $baris)) {
+                    throw new InvalidArgumentException("TKi butuh kunci `{$kunci}` pada aspek ke-{$i}.");
+                }
+            }
+        }
+
+        $responden = $this->penyesuaianResponden($lulusan, $tanggapan);
+
+        $perAspek = array_map(
+            fn (array $x): float => ((4 * $x['a']) + (3 * $x['b']) + (2 * $x['c']) + $x['d']) / 100,
+            array_values($aspek),
+        );
+        $rata = array_sum($perAspek) / 9;
+
+        return $this->hasilBerResponden('TKi', round($rata, 4), $rata, $responden, [
+            'tki_per_aspek' => array_map(fn (float $t): float => round($t, 4), $perAspek),
+        ]);
+    }
+
+    /**
+     * Aturan responden E43/E44: Prmin = 0,3 bila NL ≥ 150, selain itu
+     * 0,5 − (NL/150)·0,2 (program kecil harus melacak porsi lebih besar);
+     * PJ = min(1, NJ/NL); faktor = min(1, PJ/Prmin).
+     *
+     * @return array{prmin: float, pj: float, faktor: float}
+     */
+    private function penyesuaianResponden(int $lulusan, int $terlacak): array
+    {
+        if ($lulusan <= 0) {
+            throw new InvalidArgumentException(
+                'Jumlah lulusan tiga tahun nol; aturan responden tidak bisa diterapkan.'
+            );
+        }
+
+        $prmin = $lulusan >= 150 ? 0.3 : 0.5 - (($lulusan / 150) * 0.2);
+        $pj = min(1.0, $terlacak / $lulusan);
+
+        return ['prmin' => $prmin, 'pj' => $pj, 'faktor' => min(1.0, $pj / $prmin)];
+    }
+
+    /**
+     * Hasil WTMP/TKi: skorTepat = potong2(skor awal × faktor responden),
+     * dengan rasio responden di komponen (4 desimal) dan catatan bila
+     * faktornya memotong skor.
+     *
+     * @param  array{prmin: float, pj: float, faktor: float}  $responden
+     */
+    private function hasilBerResponden(string $kode, float $nilai, float $skorAwal, array $responden, array $komponen): HasilRumus
+    {
+        ['prmin' => $prmin, 'pj' => $pj, 'faktor' => $faktor] = $responden;
+        $skorTepat = self::potong2($skorAwal * $faktor);
+
+        $persen = fn (float $x): string => number_format($x * 100, 2, ',', '.');
+
+        return new HasilRumus(
+            kode: $kode,
+            nilai: $nilai,
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: $komponen + [
+                'skor_awal' => self::potong2($skorAwal),
+                'prmin' => round($prmin, 4),
+                'pj' => round($pj, 4),
+                'faktor' => round($faktor, 4),
+            ],
+            catatan: $faktor < 1.0
+                ? "Responden {$persen($pj)} % di bawah minimum {$persen($prmin)} %; skor dikali ".number_format($faktor, 4, ',', '.')
+                : null,
         );
     }
 
