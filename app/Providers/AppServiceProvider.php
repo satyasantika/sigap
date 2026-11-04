@@ -4,9 +4,14 @@ namespace App\Providers;
 
 use App\Listeners\CatatWaktuMasuk;
 use App\Support\Pemasangan;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Middleware\TrustProxies;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
         $this->percayaiProksi();
 
         Event::listen(Login::class, CatatWaktuMasuk::class);
+
+        RateLimiter::for('google-login', fn (Request $r) => Limit::perMinute(60)->by($r->ip()));
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+            fn () => view('auth.tombol-google'),
+        );
 
         // Terjemahan pesan validasi ada di lang/id/validation.php, bukan
         // ditambal satu per satu di sini. Laravel 11 ke atas tidak menyertakan
