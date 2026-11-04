@@ -149,7 +149,7 @@ class DasborTest extends TestCase
         $isi = $this->buka()->assertSuccessful()->getContent();
 
         $this->assertStringContainsString('Kesiapan DKPS', $isi);
-        $this->assertStringContainsString('0 / 28', $isi);
+        $this->assertStringContainsString('0 / 29', $isi);
         // Butir DKPS tidak berbobot; mencampurnya menggeser angka yang
         // seharusnya berjumlah 100.
         $this->assertStringContainsString('tidak berbobot', $isi);
@@ -196,7 +196,7 @@ class DasborTest extends TestCase
             ->assertSuccessful()
             ->assertSee('POKJA-DATA')
             // Tanpa keterangan, POKJA-DATA dibaca sebagai belum mengerjakan
-            // apa pun padahal ia memegang 28 butir DKPS.
+            // apa pun padahal ia memegang 29 tabel DKPS.
             ->assertSee('Diukur dengan DKPS, bukan bobot', escape: false);
     }
 
