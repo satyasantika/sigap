@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Tagihans\Pages;
 
 use App\Enums\JenisTagihan;
 use App\Enums\StatusTagihan;
+use App\Filament\Pages\TabelDkpsLayar;
 use App\Filament\Resources\Tagihans\TagihanResource;
 use App\Models\Bukti;
 use App\Models\Komentar;
@@ -28,6 +29,13 @@ class ViewTagihan extends ViewRecord
     protected function getHeaderActions(): array
     {
         $aksi = [];
+
+        if ($this->record->jenis === JenisTagihan::DataDkps && $this->record->dkps_butir_id !== null) {
+            $aksi[] = Action::make('buka_tabel_dkps')
+                ->label('Buka tabel DKPS')
+                ->icon('heroicon-o-table-cells')
+                ->url(TabelDkpsLayar::urlUntuk($this->record->dkpsButir->kode));
+        }
 
         if ($this->record->jenis === JenisTagihan::Narasi && $this->record->elemen_id !== null) {
             $aksi[] = $this->aksiTulisNarasi();

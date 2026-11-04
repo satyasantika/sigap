@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\JenisTagihan;
 use App\Enums\PeranPengguna;
 use App\Filament\Resources\Buktis\Pages\CreateBukti;
+use App\Filament\Resources\Tagihans\TagihanResource;
 use App\Models\Periode;
 use App\Models\Prodi;
 use App\Models\Tagihan;
@@ -203,5 +204,16 @@ class LayarPengerjaanTest extends TestCase
         $this->actingAs($this->pengguna(PeranPengguna::Ketua))
             ->get('/panel/narasis')
             ->assertSuccessful();
+    }
+
+    #[Test]
+    public function tagihan_dkps_punya_tombol_buka_tabel(): void
+    {
+        $t = Tagihan::where('jenis', JenisTagihan::DataDkps)
+            ->whereHas('dkpsButir', fn ($query) => $query->where('kode', '7'))->firstOrFail();
+
+        $this->actingAs($this->pengguna(PeranPengguna::Ketua))
+            ->get(TagihanResource::getUrl('view', ['record' => $t]))
+            ->assertOk()->assertSee('Buka tabel DKPS')->assertSee('/panel/dkps/tabel/7');
     }
 }

@@ -140,7 +140,7 @@ class TagihanSaya extends Page implements HasTable
                 TextColumn::make('judul')->label('Tagihan')->searchable()->wrap()
                     ->description(fn (Tagihan $r) => $r->elemen
                         ? 'E'.$r->elemen->no.($r->elemen->syarat_perlu ? ' · ⚠ SYARAT PERLU' : '')
-                        : $r->dkpsButir?->label_tabel)
+                        : ($r->dkpsButir ? $r->dkpsButir->label_tabel.' · '.$r->pokja?->kode : null))
                     ->color(fn (Tagihan $r) => $r->elemen?->syarat_perlu ? 'danger' : null),
                 TextColumn::make('jenis')->label('Jenis')->badge()
                     ->formatStateUsing(fn (JenisTagihan $state) => $state->label())
