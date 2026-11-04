@@ -325,4 +325,22 @@ class LembarDkpsTest extends TestCase
 
         $this->assertSame(1, $baris->bukti()->count());
     }
+
+    #[Test]
+    public function grid_memuat_ulang_setelah_impor_tempel(): void
+    {
+        $this->actingAs($u = $this->anggota('POKJA-SDM'));
+
+        $lembar = Livewire::test(LembarDkps::class, $this->lembar('28'));
+        $this->assertSame([], $lembar->get('baris'));
+
+        // Baris masuk lewat jalur lain (impor tempel di modal halaman ini).
+        $baris = app(PengisiDkps::class)->simpan(DkpsButir::dariKode('28'), '28', $this->periode,
+            ['nama_dtps' => 'Dr. Impor', 'judul_artikel' => 'Judul', 'jumlah_sitasi' => 3], SumberData::Manual, $u);
+
+        // Isian grid terikat wire:model, jadi nilainya diperiksa di state,
+        // bukan di HTML.
+        $lembar->dispatch('dkps-diimpor')
+            ->assertSet("baris.{$baris->id}.nama_dtps", 'Dr. Impor');
+    }
 }

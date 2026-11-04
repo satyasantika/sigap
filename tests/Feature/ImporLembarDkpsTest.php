@@ -233,4 +233,22 @@ class ImporLembarDkpsTest extends TestCase
             $this->assertSame(0, DkpsBaris::where('lembar_kode', '28')->count());
         }
     }
+
+    #[Test]
+    public function impor_tempel_mengabari_grid_setelah_berhasil(): void
+    {
+        $koordinator = $this->koordinator('POKJA-DIK');
+        $this->actingAs($koordinator);
+
+        Livewire::test(ImporTempel::class, $this->argumenKomponen($koordinator->id))
+            ->set('tempelan', "Sumber data\tJenis Kemampuan\tSangat Baik\tBaik\tCukup\tKurang\nmanual\tEtika\t40\t40\t15\t5")
+            ->call('uraikan')
+            ->call('pratinjaukan')
+            ->call('jalankan')
+            ->assertSet('galat', null)
+            ->assertSet('langkah', 4)
+            ->assertDispatched('dkps-diimpor');
+
+        $this->assertSame(1, DkpsBaris::where('lembar_kode', '24.1')->count());
+    }
 }

@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use RuntimeException;
 
@@ -179,7 +180,11 @@ class LembarDkps extends Component
     /**
      * Mengisi `$baris` dari basis data. `$baru` sengaja tidak disentuh:
      * baris yang sedang diketik tidak boleh hilang karena baris lain tersimpan.
+     *
+     * Juga dipanggil setelah impor tempel di modal halaman yang sama selesai
+     * atau dibatalkan (event `dkps-diimpor` dari ImporTempel).
      */
+    #[On('dkps-diimpor')]
     public function muat(): void
     {
         unset($this->semua, $this->barisLama);

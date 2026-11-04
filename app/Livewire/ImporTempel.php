@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\ImporBatch;
 use App\Models\Periode;
 use App\Services\PelaksanaImpor;
+use App\Support\Impor\ImporLembarDkps;
 use App\Support\Impor\MemilikiSandiBaru;
 use App\Support\Impor\PenguraiTempelan;
 use App\Support\Impor\PratinjauImpor;
@@ -205,6 +206,7 @@ class ImporTempel extends Component
                 ."{$batch->jumlah_perbarui} diperbarui, {$batch->jumlah_lewati} dilewati.";
             $this->sandiBaru = $profil instanceof MemilikiSandiBaru ? $profil->sandiBaruDibuat() : [];
             $this->langkah = 4;
+            $this->kabariGrid($profil);
         } catch (Throwable $e) {
             // Satu baris gagal berarti tidak ada yang tersimpan, dan pesannya
             // menyebut apa yang salah -- impor separuh jalan jauh lebih buruk.
@@ -220,8 +222,22 @@ class ImporTempel extends Component
             return;
         }
 
-        app(PelaksanaImpor::class)->batalkan($batch, $this->profil(), auth()->user());
+        $profil = $this->profil();
+        app(PelaksanaImpor::class)->batalkan($batch, $profil, auth()->user());
         $this->hasil = 'Impor dibatalkan. Baris yang dibuat dihapus, baris yang diperbarui dikembalikan.';
+        $this->kabariGrid($profil);
+    }
+
+    /**
+     * Grid LembarDkps di halaman yang sama memuat ulang barisnya; tanpa ini
+     * hasil impor baru terlihat setelah halaman disegarkan, dan orang
+     * mengira impornya gagal lalu mengulanginya.
+     */
+    private function kabariGrid(ProfilImpor $profil): void
+    {
+        if ($profil instanceof ImporLembarDkps) {
+            $this->dispatch('dkps-diimpor');
+        }
     }
 
     public function ulangi(): void
