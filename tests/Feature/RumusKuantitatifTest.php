@@ -138,6 +138,169 @@ class RumusKuantitatifTest extends TestCase
         $this->assertEqualsWithDelta(3.0, $k->dana(10e6, 7e6, 3e6, 1, 1)->skorTepat, 0.01);
     }
 
+    // ---- PDIPPKM, PMKI — elemen 32 -------------------------------------
+
+    #[Test]
+    public function pdippkm_ambang(): void
+    {
+        $k = $this->kalkulator();
+
+        $penuh = $k->pdippkm(28, 28);
+        $this->assertEqualsWithDelta(100.0, $penuh->nilai, 0.001);
+        $this->assertSame(4, $penuh->skor);
+
+        $tiga = $k->pdippkm(10, 28);
+        $this->assertEqualsWithDelta(35.71, $tiga->nilai, 0.001);
+        $this->assertSame(3, $tiga->skor);
+
+        $dua = $k->pdippkm(3, 28);
+        $this->assertEqualsWithDelta(10.71, $dua->nilai, 0.001);
+        $this->assertSame(2, $dua->skor);
+
+        $this->assertSame(1, $k->pdippkm(2, 28)->skor);
+    }
+
+    #[Test]
+    public function pmki_tangga_kertas_kerja(): void
+    {
+        $k = $this->kalkulator();
+
+        $penuh = $k->pmki(14, 13);
+        $this->assertEqualsWithDelta(1.0, $penuh->nilai, 0.0001);
+        $this->assertSame(4, $penuh->skor);
+        $this->assertNotNull($penuh->catatan);
+
+        $this->assertSame(3, $k->pmki(2, 13)->skor);
+        $this->assertSame(2, $k->pmki(1, 13)->skor);
+        $this->assertSame(2, $k->pmki(0, 13)->skor);
+    }
+
+    // ---- RPPL — elemen 36 -----------------------------------------------
+
+    #[Test]
+    public function rppl_ambang(): void
+    {
+        $k = $this->kalkulator();
+
+        foreach ([[5, 4], [3.5, 3], [2, 2], [1.9, 1]] as [$x, $harapan]) {
+            $hasil = $k->rppl($x);
+            $this->assertSame($harapan, $hasil->skor, "RPPL {$x}");
+            $this->assertEqualsWithDelta((float) $harapan, $hasil->skorTepat, 0.001, "RPPL {$x}");
+        }
+    }
+
+    // ---- PMTK — elemen 40 -----------------------------------------------
+
+    #[Test]
+    public function pmtk_contoh_kertas_kerja(): void
+    {
+        $k = $this->kalkulator();
+
+        $contoh = $k->pmtk(104, 173, 102, 169);
+        $this->assertEqualsWithDelta(0.9783, $contoh->nilai, 0.0001);
+        $this->assertSame(4, $contoh->skor);
+
+        // PMTK 0,3 → 1 + 6 × 0,3 = 2,8.
+        $rendah = $k->pmtk(100, 100, 30, 30);
+        $this->assertEqualsWithDelta(2.8, $rendah->skorTepat, 0.001);
+        $this->assertSame(2, $rendah->skor);
+    }
+
+    // ---- RMKCPL — elemen 45 ---------------------------------------------
+
+    #[Test]
+    public function rmkcpl_ambang(): void
+    {
+        $k = $this->kalkulator();
+
+        foreach ([[13, 4], [2, 3], [1, 2], [0, 1]] as [$mk, $harapan]) {
+            $this->assertSame($harapan, $k->rmkcpl($mk, 13)->skor, "RMKCPL {$mk}/13");
+        }
+    }
+
+    // ---- RPEN, RPKM — elemen 49, 54 -------------------------------------
+
+    #[Test]
+    public function rpen_contoh_kertas_kerja(): void
+    {
+        $hasil = $this->kalkulator()->rpen(42, 14, 28, 28);
+
+        $this->assertSame('RPEN', $hasil->kode);
+        $this->assertEqualsWithDelta(4.0, $hasil->skorTepat, 0.001);
+        $this->assertEqualsWithDelta(0.5, $hasil->nilai, 0.0001);
+    }
+
+    #[Test]
+    public function rpen_hanya_dana_pt(): void
+    {
+        $k = $this->kalkulator();
+
+        // RL = 60/3/28 = 0,7142…; 2·RL/c = 1,4285…, DIPOTONG menjadi 1,42
+        // (brief menulis 1,43 hasil pembulatan).
+        $this->assertEqualsWithDelta(1.42, $k->rpen(0, 0, 60, 28)->skorTepat, 0.001);
+        $this->assertEqualsWithDelta(1.0, $k->rpen(0, 0, 28, 28)->skorTepat, 0.001);
+    }
+
+    #[Test]
+    public function rpen_campuran(): void
+    {
+        // RI = 0,0238…, RN = 0,1190… → 2,6841…, dipotong 2,68.
+        $this->assertEqualsWithDelta(2.68, $this->kalkulator()->rpen(2, 10, 28, 28)->skorTepat, 0.001);
+    }
+
+    #[Test]
+    public function rpkm_memakai_kode_sendiri(): void
+    {
+        $hasil = $this->kalkulator()->rpkm(17, 3, 64, 28);
+
+        $this->assertSame('RPKM', $hasil->kode);
+        $this->assertEqualsWithDelta(4.0, $hasil->skorTepat, 0.001);
+    }
+
+    // ---- RPUB — elemen 50 -----------------------------------------------
+
+    private function publikasiNol(): array
+    {
+        return array_fill_keys(['na1', 'na2', 'na3', 'na4', 'nb1', 'nb2', 'nb3', 'nc1', 'nc2', 'nc3', 'nd1', 'nd2'], 0);
+    }
+
+    #[Test]
+    public function rpub_contoh_kertas_kerja(): void
+    {
+        $hasil = $this->kalkulator()->rpub([
+            'na1' => 11, 'na2' => 70, 'na3' => 16, 'na4' => 35,
+            'nb1' => 3, 'nb2' => 15, 'nb3' => 12,
+            'nc1' => 15, 'nc2' => 3, 'nc3' => 4,
+            'nd1' => 74, 'nd2' => 4,
+        ], 28);
+
+        $this->assertSame('RPUB', $hasil->kode);
+        $this->assertEqualsWithDelta(4.0, $hasil->skorTepat, 0.001);
+    }
+
+    #[Test]
+    public function rpub_nd_ikut_dihitung(): void
+    {
+        // Hanya ND1: RN = 28/28 = 1 = b → 3 + RI/a = 3. Tanpa ND, skornya 1.
+        $hasil = $this->kalkulator()->rpub(['nd1' => 28] + $this->publikasiNol(), 28);
+
+        $this->assertEqualsWithDelta(1.0, $hasil->komponen['rn'], 0.0001);
+        $this->assertEqualsWithDelta(3.0, $hasil->skorTepat, 0.001);
+        $this->assertSame(3, $hasil->skor);
+    }
+
+    #[Test]
+    public function rpub_kunci_hilang_ditolak(): void
+    {
+        $publikasi = $this->publikasiNol();
+        unset($publikasi['nc2']);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('nc2');
+
+        $this->kalkulator()->rpub($publikasi, 28);
+    }
+
     // ---- Pembagi nol ----------------------------------------------------
 
     #[Test]
@@ -145,7 +308,19 @@ class RumusKuantitatifTest extends TestCase
     {
         $k = $this->kalkulator();
 
-        foreach ([fn () => $k->presma(1, 1, 1, 0), fn () => $k->rgp(1, 0, 0, 0, 0)] as $panggil) {
+        $pemanggil = [
+            fn () => $k->presma(1, 1, 1, 0),
+            fn () => $k->rgp(1, 0, 0, 0, 0),
+            fn () => $k->pdippkm(1, 0),
+            fn () => $k->pmki(1, 0),
+            fn () => $k->pmtk(0, 0, 0, 0),
+            fn () => $k->rmkcpl(1, 0),
+            fn () => $k->rpen(1, 1, 1, 0),
+            fn () => $k->rpkm(1, 1, 1, 0),
+            fn () => $k->rpub($this->publikasiNol(), 0),
+        ];
+
+        foreach ($pemanggil as $panggil) {
             try {
                 $panggil();
                 $this->fail('Pembagi nol seharusnya ditolak.');

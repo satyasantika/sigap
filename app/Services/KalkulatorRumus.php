@@ -536,6 +536,234 @@ class KalkulatorRumus
         );
     }
 
+    // ---- PDIPPKM, PMKI — elemen 32 --------------------------------------
+
+    /**
+     * Persentase DTPS yang mengintegrasikan penelitian/PkM ke pembelajaran.
+     *
+     * Yang dihitung adalah cacah DOSEN unik (tabel DKPS 19, kolom nama DTPS),
+     * bukan cacah baris integrasi; persentasenya dibatasi 100. Ambang
+     * dibandingkan pada rasio mentah.
+     *
+     * @param  int  $dosenIntegrasi  DTPS unik yang mengintegrasikan
+     * @param  int  $ndtps  seluruh DTPS
+     */
+    public function pdippkm(int $dosenIntegrasi, int $ndtps): HasilRumus
+    {
+        $this->pastikanPembagiSah($ndtps, 'NDTPS');
+
+        // Kalikan 100 sebelum membagi: 0,29 × 100 di titik mengambang menjadi
+        // 28,999…, dan perbandingan ambang memakai angka mentah.
+        $persen = min(100.0, ($dosenIntegrasi * 100) / $ndtps);
+        $skor = self::tangga($persen, 50.0, 30.0, 10.0);
+
+        return new HasilRumus(
+            kode: 'PDIPPKM',
+            nilai: round($persen, 2),
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: compact('dosenIntegrasi', 'ndtps'),
+        );
+    }
+
+    /**
+     * Pecahan mata kuliah yang memuat integrasi penelitian/PkM, dibatasi 1.
+     *
+     * Tangga 4/3/2 TANPA skor 1: di bawah 0,15 skornya tetap 2. Buku 4
+     * menulis pita 3 sebagai 3 + (x − 0,25)/0,10, yang untuk 0,15 ≤ x < 0,25
+     * memberi 2–3 — jatuh di bawah 3 meski pitanya bernama "3". SIGAP
+     * mengikuti kertas kerja (sel E496): ≥ 0,15 → 3 bulat (spec §2.1).
+     *
+     * @param  int  $mkIntegrasi  mata kuliah unik yang memuat integrasi
+     * @param  int  $nmk  mata kuliah inti (kurikulum)
+     */
+    public function pmki(int $mkIntegrasi, int $nmk): HasilRumus
+    {
+        $this->pastikanPembagiSah($nmk, 'NMK');
+
+        $rasio = min(1.0, $mkIntegrasi / $nmk);
+        $skor = match (true) {
+            $rasio >= 0.25 => 4,
+            $rasio >= 0.15 => 3,
+            default => 2,
+        };
+
+        return new HasilRumus(
+            kode: 'PMKI',
+            nilai: round($rasio, 4),
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: compact('mkIntegrasi', 'nmk'),
+            catatan: 'Tangga 4/3/2 mengikuti kertas kerja E496; rumus Buku 4 untuk pita 3 jatuh di bawah 3 (pertanyaan ke LAMDIK)',
+        );
+    }
+
+    // ---- RPPL — elemen 36 -----------------------------------------------
+
+    /**
+     * Rata-rata pertemuan pembimbingan PPL per dosen per tahun.
+     *
+     * Rerata dihitung pemanggil dari sel pertemuan yang TERISI saja (tabel
+     * DKPS 20); sel kosong bukan nol. Metode ini hanya menerapkan tangga.
+     */
+    public function rppl(float $rataPertemuan): HasilRumus
+    {
+        $skor = self::tangga($rataPertemuan, 4.0, 3.0, 2.0);
+
+        return new HasilRumus(
+            kode: 'RPPL',
+            nilai: round($rataPertemuan, 2),
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: ['rata_pertemuan' => $rataPertemuan],
+        );
+    }
+
+    // ---- PMTK — elemen 40 -----------------------------------------------
+
+    /**
+     * Pecahan mahasiswa yang lulus tepat waktu.
+     *
+     * Pembilang dan pembagi masing-masing DIJUMLAHKAN atas TS-1 dan TS lebih
+     * dulu — bukan rata-rata dua pecahan per angkatan. Di bawah 0,5 skornya
+     * diinterpolasi 1 + 6·PMTK (dari rasio mentah, lalu dipotong).
+     */
+    public function pmtk(int $diterimaTs1, int $diterimaTs, int $lulusTs1, int $lulusTs): HasilRumus
+    {
+        $diterima = $diterimaTs1 + $diterimaTs;
+        $this->pastikanPembagiSah($diterima, 'Σ mahasiswa diterima');
+
+        $rasio = ($lulusTs1 + $lulusTs) / $diterima;
+        $skorTepat = self::potong2($rasio >= 0.5 ? 4.0 : 1 + (6 * $rasio));
+
+        return new HasilRumus(
+            kode: 'PMTK',
+            nilai: round($rasio, 4),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: compact('diterimaTs1', 'diterimaTs', 'lulusTs1', 'lulusTs'),
+        );
+    }
+
+    // ---- RMKCPL — elemen 45 ---------------------------------------------
+
+    /**
+     * Pecahan mata kuliah inti yang asesmennya tertaut ke CPL, dibatasi 1.
+     *
+     * Pita 2 bukan ambang biasa: SATU mata kuliah saja (> 0) sudah memberi 2;
+     * skor 1 hanya bila tidak ada sama sekali. Karena itu tidak memakai
+     * `tangga()`.
+     */
+    public function rmkcpl(int $mkCpl, int $nmk): HasilRumus
+    {
+        $this->pastikanPembagiSah($nmk, 'NMK');
+
+        $rasio = min(1.0, $mkCpl / $nmk);
+        $skor = match (true) {
+            $rasio >= 0.2 => 4,
+            $rasio >= 0.15 => 3,
+            $rasio > 0 => 2,
+            default => 1,
+        };
+
+        return new HasilRumus(
+            kode: 'RMKCPL',
+            nilai: round($rasio, 4),
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: compact('mkCpl', 'nmk'),
+        );
+    }
+
+    // ---- RPEN, RPUB, RPKM — elemen 49, 50, 54 ----------------------------
+
+    /** Penelitian DTPS (elemen 49) per sumber pembiayaan. */
+    public function rpen(int $luarNegeri, int $dalamNegeri, int $ptMandiri, int $ndtps): HasilRumus
+    {
+        return $this->produktivitasTridharma('RPEN', $luarNegeri, $dalamNegeri, $ptMandiri, $ndtps);
+    }
+
+    /** PkM DTPS (elemen 54) per sumber pembiayaan; rumusnya sama dengan RPEN. */
+    public function rpkm(int $luarNegeri, int $dalamNegeri, int $ptMandiri, int $ndtps): HasilRumus
+    {
+        return $this->produktivitasTridharma('RPKM', $luarNegeri, $dalamNegeri, $ptMandiri, $ndtps);
+    }
+
+    /**
+     * Publikasi DTPS (elemen 50), pola RI/RN/RW dengan a = 0,1, b = 1, c = 2.
+     *
+     * Tingkatnya TIDAK mengikuti huruf kode: RW = NA1 + NB1 + NC1,
+     * RN = NA2 + NA3 + NB2 + NC2 + ND1 + ND2, RI = NA4 + NB3 + NC3, masing-
+     * masing dibagi NDTPS (tanpa pembagi 3 tahun, berbeda dengan RPEN).
+     * ND1 + ND2 masuk RN mengikuti kertas kerja (sel E815–E839); Buku 4
+     * tidak menyebutnya (spec §9 jawaban 1).
+     *
+     * @param  array<string, int>  $publikasi  berkunci na1..na4, nb1..nb3, nc1..nc3, nd1, nd2
+     */
+    public function rpub(array $publikasi, int $ndtps): HasilRumus
+    {
+        foreach (['na1', 'na2', 'na3', 'na4', 'nb1', 'nb2', 'nb3', 'nc1', 'nc2', 'nc3', 'nd1', 'nd2'] as $kunci) {
+            if (! array_key_exists($kunci, $publikasi)) {
+                throw new InvalidArgumentException("RPUB butuh kunci `{$kunci}` pada data publikasi.");
+            }
+        }
+
+        $this->pastikanPembagiSah($ndtps, 'NDTPS');
+
+        $p = $publikasi;
+        $rw = ($p['na1'] + $p['nb1'] + $p['nc1']) / $ndtps;
+        $rn = ($p['na2'] + $p['na3'] + $p['nb2'] + $p['nc2'] + $p['nd1'] + $p['nd2']) / $ndtps;
+        $ri = ($p['na4'] + $p['nb3'] + $p['nc3']) / $ndtps;
+
+        $skorTepat = self::potong2($this->skorTigaTingkat($ri, $rn, $rw, a: 0.1, b: 1, c: 2));
+
+        return new HasilRumus(
+            kode: 'RPUB',
+            nilai: round($ri, 4),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: [
+                'ri' => round($ri, 4),
+                'rn' => round($rn, 4),
+                'rw' => round($rw, 4),
+                'ndtps' => $ndtps,
+            ] + $publikasi,
+            catatan: 'RN menyertakan ND1 + ND2 sesuai kertas kerja (Buku 4 tidak menyebutnya)',
+        );
+    }
+
+    /**
+     * Rumus bersama RPEN dan RPKM: pola RI/RN/RW (a = 0,05, b = 0,3, c = 1)
+     * atas cacah kegiatan per sumber dana.
+     *
+     * Perangkapnya pembagi 3: cacah adalah jumlah TIGA tahun, sedangkan
+     * ambangnya per DTPS per TAHUN, jadi RI = NI/3/NDTPS (begitu pula RN dan
+     * RL). Lupa membagi 3 melipatgandakan rasio dan mudah memberi skor 4.
+     * "RL" (PT/mandiri) mengisi posisi RW pada pola.
+     */
+    private function produktivitasTridharma(string $kode, int $ni, int $nn, int $nl, int $ndtps): HasilRumus
+    {
+        $this->pastikanPembagiSah($ndtps, 'NDTPS');
+
+        $ri = $ni / 3 / $ndtps;
+        $rn = $nn / 3 / $ndtps;
+        $rl = $nl / 3 / $ndtps;
+
+        $skorTepat = self::potong2($this->skorTigaTingkat($ri, $rn, $rl, a: 0.05, b: 0.3, c: 1));
+
+        return new HasilRumus(
+            kode: $kode,
+            nilai: round($ri, 4),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: [
+                'ri' => round($ri, 4),
+                'rn' => round($rn, 4),
+                'rl' => round($rl, 4),
+            ] + compact('ni', 'nn', 'nl', 'ndtps'),
+        );
+    }
+
     // ---- Pola tiga tingkat RI/RN/RW --------------------------------------
 
     /**
