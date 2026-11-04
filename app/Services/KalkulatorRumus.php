@@ -214,9 +214,9 @@ class KalkulatorRumus
      * dimensi. Tafsir ini tidak lagi menunggu konfirmasi LAMDIK — lihat
      * docs/KEPUTUSAN.md bagian 1.
      *
-     * Catatan: ambang skor kertas kerja (sel D229–D231, E232) adalah
-     * 0,25 / 0,5 / 0,75 untuk skor 2 / 3 / 4; ambang di metode ini belum
-     * diselaraskan dan menunggu rencana "Rumus kuantitatif AK 3.0".
+     * Ambang skor juga mengikuti kertas kerja (sel D229–D231, E232) dan
+     * `data/rumus.json`: TKM ≥ 0,75 → 4; ≥ 0,5 → 3; ≥ 0,25 → 2; selain itu 1,
+     * di sini dalam persen (75 / 50 / 25).
      *
      * @param  array<int, array{a: float, b: float, c: float, d: float}>  $dimensi  persentase per dimensi
      */
@@ -234,9 +234,9 @@ class KalkulatorRumus
         $nilai = round($rataMentah / 4, 2);
 
         $skor = match (true) {
-            $nilai >= 90.0 => 4,
-            $nilai >= 75.0 => 3,
-            $nilai >= 60.0 => 2,
+            $nilai >= 75.0 => 4,
+            $nilai >= 50.0 => 3,
+            $nilai >= 25.0 => 2,
             default => 1,
         };
 

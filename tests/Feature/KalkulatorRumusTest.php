@@ -9,6 +9,7 @@ use App\Support\Rumus\HasilRumus;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -186,6 +187,32 @@ class KalkulatorRumusTest extends TestCase
         $this->assertSame(100.0, $h->nilai);
         $this->assertSame(400.0, $h->komponen['rata_mentah']);
         $this->assertSame(4, $h->skor);
+    }
+
+    /**
+     * Ambang kertas kerja AK (sel E232) dan rumus.json: 75 / 50 / 25 %.
+     * Setiap batas diuji tepat di batasnya dan sedikit di bawahnya.
+     */
+    public static function batasTkm(): array
+    {
+        return [
+            'tepat 75% → 4' => [['a' => 0, 'b' => 100, 'c' => 0, 'd' => 0], 75.0, 4],
+            'di bawah 75% → 3' => [['a' => 0, 'b' => 99, 'c' => 1, 'd' => 0], 74.75, 3],
+            'tepat 50% → 3' => [['a' => 0, 'b' => 0, 'c' => 100, 'd' => 0], 50.0, 3],
+            'di bawah 50% → 2' => [['a' => 0, 'b' => 0, 'c' => 99, 'd' => 1], 49.75, 2],
+            'tepat 25% → 2' => [['a' => 0, 'b' => 0, 'c' => 0, 'd' => 100], 25.0, 2],
+            'di bawah 25% → 1' => [['a' => 0, 'b' => 0, 'c' => 0, 'd' => 99], 24.75, 1],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('batasTkm')]
+    public function tkm_memakai_ambang_kertas_kerja(array $dimensi, float $nilai, int $skor): void
+    {
+        $h = $this->kalkulator()->tkm([$dimensi]);
+
+        $this->assertSame($nilai, $h->nilai);
+        $this->assertSame($skor, $h->skor);
     }
 
     #[Test]

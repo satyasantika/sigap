@@ -37,10 +37,10 @@ tempat sudah diganti menjadi rujukan ke sel itu: komentar
 ("Normalisasi /4 sesuai kertas kerja AK IAPSK 3.0 (sel E207)"), dan catatan
 informatif di layar Nilai Rumus.
 
-Yang belum ikut: **ambang skor** di `tkm()` (90 / 75 / 60 %) belum disamakan
-dengan ambang kertas kerja (75 / 50 / 25 %, sama dengan `data/rumus.json`), dan
-kertas kerja menggabungkan skor elemen E14 sebagai `(A + B) / 2`. Keduanya
-masuk rencana "Rumus kuantitatif AK 3.0" — lihat bagian 2.
+Ambang skornya pun mengikuti kertas kerja dan `data/rumus.json`: TKM ≥ 75 % → 4,
+≥ 50 % → 3, ≥ 25 % → 2, selain itu 1. Sebelumnya `tkm()` memakai 90 / 75 / 60 %,
+tafsir lama yang tidak bersumber; kini diselaraskan, dan `KalkulatorRumusTest`
+mengunci setiap batasnya.
 
 ### Yang diputuskan sendiri, tanpa bertanya
 
