@@ -182,6 +182,16 @@ class CekKesiapan extends Command
         $this->periksa('Tidak ada baris DKPS tanpa pokja', $tanpaPokja === 0,
             "Ada {$tanpaPokja} baris DKPS lama tanpa pokja; baris itu tidak tampil di layar Tabel DKPS. "
             .'Jalankan: php artisan dkps:selaraskan');
+
+        // Semua layar menyaring lembar_kode persis; baris berlembar yang tak
+        // dikenal tabelnya tidak tampil dan tidak terhitung di mana pun.
+        $lembarAsing = DkpsBaris::withoutGlobalScopes()->with('butir')->get(['id', 'dkps_butir_id', 'lembar_kode'])
+            ->filter(fn (DkpsBaris $b) => $b->butir !== null && filled($b->lembar_kode)
+                && ! in_array($b->lembar_kode, $b->butir->kodeLembar(), true))
+            ->count();
+        $this->periksa('Tidak ada baris DKPS dengan lembar_kode asing', $lembarAsing === 0,
+            "Ada {$lembarAsing} baris DKPS yang lembarnya tidak dikenal tabelnya; baris itu tidak tampil "
+            .'di layar Tabel DKPS dan tidak terhitung. Jalankan: php artisan dkps:selaraskan');
         $this->periksa('6 pokja', Pokja::count() >= 6, 'Yang ada: '.Pokja::count());
     }
 

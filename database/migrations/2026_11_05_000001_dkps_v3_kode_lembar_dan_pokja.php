@@ -46,6 +46,10 @@ return new class extends Migration
         );
         // Tabel 1 kini berlembar 1.1, 1.2, 1.3; baris lama jatuh ke lembar pertama.
         DB::statement("UPDATE dkps_baris SET lembar_kode = '1.1' WHERE lembar_kode = '1'");
+        // Tabel 24 (no lama 23) kini berlembar 24.1, 24.2; baris lama ke 24.1.
+        // Satu-satunya tabel berlembar banyak lainnya, Tabel 4, baru di 3.0
+        // sehingga tak punya baris lama. dkps:selaraskan menangkap sisanya.
+        DB::statement("UPDATE dkps_baris SET lembar_kode = '24.1' WHERE lembar_kode = '24'");
     }
 
     public function down(): void
