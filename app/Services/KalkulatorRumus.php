@@ -64,8 +64,8 @@ class KalkulatorRumus
         return new HasilRumus(
             kode: 'PDS3',
             nilai: $nilai,
-            skor: (int) floor($skorA),
-            skorTepat: round($skorA, 2),
+            skor: (int) floor(self::potong2($skorA)),
+            skorTepat: self::potong2($skorA),
             memenuhiSyarat3Tahun: $nilai >= 20.0 && $lektorKeAtas >= 3,
             memenuhiSyarat5Tahun: $nilai >= 50.0 && $lektorKeAtas >= 4,
             komponen: compact('nds3', 'ndtps', 'ndlk', 'ndgb') + [
@@ -91,8 +91,8 @@ class KalkulatorRumus
         return new HasilRumus(
             kode: 'PGBLKL',
             nilai: $nilai,
-            skor: (int) floor($skorB),
-            skorTepat: round($skorB, 2),
+            skor: (int) floor(self::potong2($skorB)),
+            skorTepat: self::potong2($skorB),
             komponen: compact('ndgb', 'ndlk', 'ndl', 'ndtps') + ['skor_b_tepat' => round($skorB, 4)],
         );
     }
@@ -180,8 +180,8 @@ class KalkulatorRumus
      * Membaginya dengan NDTPS lebih dulu adalah perangkap bagian ini.
      *
      * Skor A = (2·A.1 + A.2)/3. A.1 diturunkan dari `nilai` yang sudah
-     * dibulatkan, supaya angka yang terlihat di layar bisa dihitung ulang
-     * dengan tangan.
+     * dibulatkan, dan A.1, A.2, serta Skor A dipotong dua desimal (potong2),
+     * supaya angka yang terlihat di layar bisa dihitung ulang dengan tangan.
      *
      * @param  int  $n1  kerja sama tingkat 1 (bobot 3)
      * @param  int  $n2  kerja sama tingkat 2 (bobot 2)
@@ -197,9 +197,9 @@ class KalkulatorRumus
 
         $nilai = round(((3 * $n1) + (2 * $n2) + (1 * $n3)) / $ndtps, 2);
 
-        $a1 = $nilai >= 4.0 ? 4.0 : max(1.0, $nilai);
-        $a2 = round($this->skorTigaTingkat($ni, $nn, $nw, a: 2, b: 6, c: 9), 2);
-        $skorTepat = round(((2 * $a1) + $a2) / 3, 2);
+        $a1 = self::potong2($nilai >= 4.0 ? 4.0 : max(1.0, $nilai));
+        $a2 = self::potong2($this->skorTigaTingkat($ni, $nn, $nw, a: 2, b: 6, c: 9));
+        $skorTepat = self::potong2(((2 * $a1) + $a2) / 3);
 
         return new HasilRumus(
             kode: 'RK',
@@ -303,7 +303,7 @@ class KalkulatorRumus
             $rataIpk >= 2.00 => max(1.0, ((8 * $rataIpk) - 6) / 5),
             default => 1.0,
         };
-        $skorTepat = round($skorTepat, 2);
+        $skorTepat = self::potong2($skorTepat);
 
         return new HasilRumus(
             kode: 'RIPK',
@@ -396,6 +396,22 @@ class KalkulatorRumus
                 "Rumus `{$kode}` tidak ada di tabel rumus. Jalankan RumusSeeder lebih dulu."
             );
         }
+    }
+
+    /**
+     * Memotong skor ke dua desimal, ke arah nol — TIDAK membulatkan.
+     *
+     * Skor tepat dibulatkan bisa melompati ambang: PGBLKL 69,84 (< 70)
+     * memberi skor(b) 3,9954, yang dibulatkan menjadi 4,00 padahal ambang
+     * skor 4 belum tercapai. Dipotong, ia tetap 3,99. Aturan ini berlaku
+     * untuk setiap `skorTepat`; `nilai` tetap dibulatkan seperti biasa.
+     *
+     * `round(…, 8)` sebelum `floor` hanya meredam derau titik mengambang
+     * (2,8 × 100 bisa menjadi 279,9999…), bukan membulatkan skornya.
+     */
+    private static function potong2(float $x): float
+    {
+        return floor(round($x * 100, 8)) / 100;
     }
 
     private function pastikanPembagiSah(int $pembagi, string $nama): void

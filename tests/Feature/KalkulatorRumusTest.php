@@ -265,6 +265,29 @@ class KalkulatorRumusTest extends TestCase
     }
 
     #[Test]
+    public function pgblkl_di_bawah_ambang_tidak_dibulatkan_ke_empat(): void
+    {
+        // 44/63 = 69,84 < 70 → skor(b) = 2 + (20 × 0,6984)/7 = 3,9954.
+        // Dibulatkan akan menjadi 4,00 padahal ambang skor 4 belum
+        // tercapai; skor tepat dipotong, bukan dibulatkan.
+        $h = $this->kalkulator()->pgblkl(ndgb: 1, ndlk: 3, ndl: 40, ndtps: 63);
+
+        $this->assertSame(69.84, $h->nilai);
+        $this->assertSame(3, $h->skor);
+        $this->assertSame(3.99, $h->skorTepat);
+    }
+
+    #[Test]
+    public function ripk_tepat_di_bawah_ambang_tetap_di_bawah_empat(): void
+    {
+        // (8 × 3,249 − 6)/5 = 3,9984 → dipotong 3,99, bukan dibulatkan 4,00.
+        $h = $this->kalkulator()->ripk(3.249);
+
+        $this->assertSame(3.99, $h->skorTepat);
+        $this->assertSame(3, $h->skor);
+    }
+
+    #[Test]
     public function pds3_mengisi_skor_tepat(): void
     {
         // PDS3 41,67 ≥ 40 → skor(a) penuh.
