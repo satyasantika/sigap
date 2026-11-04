@@ -64,10 +64,10 @@ class PembangkitTagihan
 
             foreach (DkpsButir::orderBy('no')->get() as $butir) {
                 $dibuat = $this->buat($periode, [
-                    'pokja_id' => $pokjaData,
+                    'pokja_id' => $pokja[$butir->pokja_kode] ?? $pokjaData,
                     'dkps_butir_id' => $butir->id,
                     'jenis' => JenisTagihan::DataDkps,
-                    'judul' => "DKPS {$butir->label_tabel}: {$butir->nama}",
+                    'judul' => "Isi {$butir->label_tabel} — {$butir->nama}",
                     'deskripsi' => $butir->keterangan,
                     // Berbobot nol: pekerjaannya nyata, tetapi bobotnya sudah
                     // terhitung lewat elemen yang dilayaninya.

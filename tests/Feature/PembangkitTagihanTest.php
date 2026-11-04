@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Enums\JenisTagihan;
-use App\Models\DkpsButir;
 use App\Models\Elemen;
 use App\Models\Periode;
 use App\Models\Tagihan;
@@ -80,15 +79,16 @@ class PembangkitTagihanTest extends TestCase
     }
 
     #[Test]
-    public function setiap_butir_dkps_punya_satu_tagihan_di_pokja_data(): void
+    public function setiap_tabel_dkps_punya_satu_tagihan_di_pokja_pemiliknya(): void
     {
         $this->assertSame(29, Tagihan::where('jenis', JenisTagihan::DataDkps)->count());
-        $this->assertSame(29, DkpsButir::count());
 
-        $pokja = Tagihan::where('jenis', JenisTagihan::DataDkps)
-            ->with('pokja')->get()->pluck('pokja.kode')->unique();
-
-        $this->assertSame(['POKJA-DATA'], $pokja->values()->all());
+        $t7 = Tagihan::where('jenis', JenisTagihan::DataDkps)
+            ->whereHas('dkpsButir', fn ($q) => $q->where('kode', '7'))->firstOrFail();
+        $this->assertSame('POKJA-SDM', $t7->pokja->kode);
+        $this->assertSame('Isi Tabel 7 — Dosen Bidang Studi dan Dosen Pengampu', $t7->judul);
+        $this->assertSame(0, Tagihan::where('jenis', JenisTagihan::DataDkps)
+            ->whereHas('pokja', fn ($q) => $q->where('kode', 'POKJA-DATA'))->count());
     }
 
     #[Test]

@@ -7,7 +7,7 @@ namespace App\Enums;
  *
  *   narasi             satu per elemen (59) — naskah LED 200-600 kata
  *   bukti              satu per elemen yang meminta bukti pendukung
- *   data_dkps          satu per butir DKPS (28), dipegang POKJA-DATA
+ *   data_dkps          satu per tabel DKPS (29), dipegang pokja pemilik tabel
  *   perbaikan_praktik  dibuat manual oleh ketua; perubahan nyata di dunia
  *                      nyata, bukan dokumen
  *

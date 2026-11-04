@@ -84,36 +84,37 @@ class DkpsTest extends TestCase
         return $b->refresh();
     }
 
-    // ---- Wewenang: pokja_data bergantung keanggotaan --------------------
+    // ---- Wewenang: lingkup pokja pemilik tabel --------------------
 
     #[Test]
-    public function anggota_pokja_data_boleh_mengisi_dkps(): void
+    public function anggota_pokja_pemilik_boleh_mengisi_tabelnya_dan_bukan_tabel_pokja_lain(): void
     {
-        $u = $this->pengguna(PeranPengguna::Anggota, 'POKJA-DATA');
+        $sdm = $this->pengguna(PeranPengguna::Anggota, 'POKJA-SDM');
+        $barisSdm = $this->baris(7);     // Tabel 7 milik POKJA-SDM
+        $barisDik = $this->baris(18);    // Tabel 18 milik POKJA-DIK
 
-        $this->assertTrue(Izin::boleh($u, 'dkps.isi'));
+        $this->assertTrue(Izin::boleh($sdm, 'dkps.isi', $barisSdm));
+        $this->assertFalse(Izin::boleh($sdm, 'dkps.isi', $barisDik));
+        $this->assertTrue(Izin::boleh($sdm, 'dkps.isi'), 'Tanpa obyek: boleh membuka halaman daftar.');
     }
 
     #[Test]
-    public function koordinator_di_luar_pokja_data_tidak_boleh_mengisi_dkps(): void
+    public function anggota_pokja_data_tidak_lagi_otomatis_boleh_mengisi_semua_tabel(): void
     {
-        // Lingkup `pokja_data` bergantung keanggotaan, BUKAN peran. Seorang
-        // koordinator POKJA-DIK ditolak; anggota biasa POKJA-DATA justru boleh.
-        $u = $this->pengguna(PeranPengguna::Koordinator, 'POKJA-DIK');
+        $data = $this->pengguna(PeranPengguna::Anggota, 'POKJA-DATA');
 
-        $this->assertFalse(Izin::boleh($u, 'dkps.isi'));
+        $this->assertFalse(Izin::boleh($data, 'dkps.isi', $this->baris(7)));
     }
 
     #[Test]
-    public function anggota_pokja_data_tidak_boleh_memverifikasi(): void
+    public function verifikasi_milik_koordinator_pokja_pemilik_dan_ketua(): void
     {
-        // Mengisi dan memverifikasi dipisah: yang mengisi tidak boleh
-        // menyatakan isiannya sendiri sudah benar.
-        $anggota = $this->pengguna(PeranPengguna::Anggota, 'POKJA-DATA');
-        $koordinator = $this->pengguna(PeranPengguna::Koordinator, 'POKJA-DATA');
+        $baris = $this->baris(7);
 
-        $this->assertFalse(Izin::boleh($anggota, 'dkps.verifikasi'));
-        $this->assertTrue(Izin::boleh($koordinator, 'dkps.verifikasi'));
+        $this->assertTrue(Izin::boleh($this->pengguna(PeranPengguna::Koordinator, 'POKJA-SDM'), 'dkps.verifikasi', $baris));
+        $this->assertFalse(Izin::boleh($this->pengguna(PeranPengguna::Koordinator, 'POKJA-DIK'), 'dkps.verifikasi', $baris));
+        $this->assertFalse(Izin::boleh($this->pengguna(PeranPengguna::Anggota, 'POKJA-SDM'), 'dkps.verifikasi', $baris));
+        $this->assertTrue(Izin::boleh($this->pengguna(PeranPengguna::Ketua), 'dkps.verifikasi', $baris));
     }
 
     // ---- Verifikasi menuntut bukti terbuka DAN sah ----------------------
