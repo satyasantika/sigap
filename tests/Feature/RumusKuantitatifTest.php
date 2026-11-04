@@ -214,6 +214,25 @@ class RumusKuantitatifTest extends TestCase
     }
 
     #[Test]
+    public function skor_setelah_faktor_responden_tidak_di_bawah_satu(): void
+    {
+        // PJ = 2/100 = 0,02; Prmin = 0,3667; faktor 0,0545; skor awal 4 →
+        // 4 × 0,0545… = 0,218, diberi lantai 1 (Buku 4 hanya mengenal 1–4).
+        $k = $this->kalkulator();
+
+        $wtmp = $k->wtmp(10, 0, 0, 100, 2);
+        $this->assertEqualsWithDelta(0.0545, $wtmp->komponen['faktor'], 0.0001);
+        $this->assertEqualsWithDelta(4.0, $wtmp->komponen['skor_awal'], 0.001);
+        $this->assertEqualsWithDelta(1.0, $wtmp->skorTepat, 0.001);
+        $this->assertSame(1, $wtmp->skor);
+
+        $tki = $k->tki($this->aspekSangatBaik(), 100, 2);
+        $this->assertEqualsWithDelta(0.0545, $tki->komponen['faktor'], 0.0001);
+        $this->assertEqualsWithDelta(1.0, $tki->skorTepat, 0.001);
+        $this->assertSame(1, $tki->skor);
+    }
+
+    #[Test]
     public function tki_bukan_sembilan_aspek_ditolak(): void
     {
         $this->expectException(InvalidArgumentException::class);

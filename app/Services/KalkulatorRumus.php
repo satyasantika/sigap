@@ -877,12 +877,18 @@ class KalkulatorRumus
      * dengan rasio responden di komponen (4 desimal) dan catatan bila
      * faktornya memotong skor.
      *
+     * Lantai 1 SETELAH faktor: kertas kerja menulis "PJ/Prmin × Skor"
+     * apa adanya, yang bisa mencapai 0 (mis. tidak ada lulusan terlacak),
+     * padahal Buku 4 hanya mengenal skor 1–4. SIGAP memberi lantai 1, seperti
+     * BKD dan RIPK; `faktor` dan `skor_awal` di komponen tetap mentah supaya
+     * efek faktornya terlihat. Dicatat sebagai pertanyaan ke LAMDIK.
+     *
      * @param  array{prmin: float, pj: float, faktor: float}  $responden
      */
     private function hasilBerResponden(string $kode, float $nilai, float $skorAwal, array $responden, array $komponen): HasilRumus
     {
         ['prmin' => $prmin, 'pj' => $pj, 'faktor' => $faktor] = $responden;
-        $skorTepat = self::potong2($skorAwal * $faktor);
+        $skorTepat = self::potong2(max(1.0, $skorAwal * $faktor));
 
         $persen = fn (float $x): string => number_format($x * 100, 2, ',', '.');
 
