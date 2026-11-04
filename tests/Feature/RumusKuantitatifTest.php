@@ -66,6 +66,17 @@ class RumusKuantitatifTest extends TestCase
         $this->assertSame(2, $k->pkim(10, 0, 0, 0, 100)->skor);
     }
 
+    #[Test]
+    public function pkim_ambang_dibandingkan_pada_rasio_mentah(): void
+    {
+        // 1504/7521 = 0,19997…: tampil 0,2 setelah dibulatkan, tetapi rasio
+        // mentahnya di bawah 0,2, jadi skornya 3, bukan 4.
+        $hasil = $this->kalkulator()->pkim(1504, 0, 0, 0, 7521);
+
+        $this->assertEqualsWithDelta(0.2, $hasil->nilai, 0.0001);
+        $this->assertSame(3, $hasil->skor);
+    }
+
     // ---- BKD — elemen 18 ------------------------------------------------
 
     #[Test]

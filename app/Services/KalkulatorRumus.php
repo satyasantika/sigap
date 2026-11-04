@@ -359,24 +359,22 @@ class KalkulatorRumus
      * Keempat jenis karya DIJUMLAHKAN lebih dulu, baru dibagi NM; masing-masing
      * cacah sudah berupa mahasiswa unik per tabel DKPS (4.1–4.4). Rasionya
      * dibatasi 1. Batas setengah terbuka: 0,2 masuk skor 4.
+     *
+     * Ambang dibandingkan pada rasio MENTAH, bukan pada `nilai` yang sudah
+     * dibulatkan: 1504/7521 = 0,19997 tampil 0,2, tetapi belum mencapai 0,2
+     * sehingga skornya 3.
      */
     public function pkim(int $paten, int $bukuIsbn, int $karyaSeni, int $publikasi, int $nm): HasilRumus
     {
         $this->pastikanPembagiSah($nm, 'NM');
 
         $jumlah = $paten + $bukuIsbn + $karyaSeni + $publikasi;
-        $nilai = round(min(1.0, $jumlah / $nm), 4);
-
-        $skor = match (true) {
-            $nilai >= 0.2 => 4,
-            $nilai >= 0.15 => 3,
-            $nilai >= 0.1 => 2,
-            default => 1,
-        };
+        $rasio = min(1.0, $jumlah / $nm);
+        $skor = self::tangga($rasio, 0.2, 0.15, 0.1);
 
         return new HasilRumus(
             kode: 'PKIM',
-            nilai: $nilai,
+            nilai: round($rasio, 4),
             skor: $skor,
             skorTepat: (float) $skor,
             komponen: compact('paten', 'bukuIsbn', 'karyaSeni', 'publikasi', 'nm', 'jumlah'),
@@ -492,6 +490,9 @@ class KalkulatorRumus
      *   RPD   ≥ 10 jt → 4; ≥  7 jt → 3; ≥ 4 jt → 2; selain itu 1
      *   RPkMD ≥  5 jt → 4; ≥  3 jt → 3; ≥ 1 jt → 2; selain itu 1
      *
+     * Tangga dibandingkan pada rasio mentah; pembulatan ke rupiah hanya untuk
+     * tampilan, supaya 4.999.999,996 tidak terbaca sebagai 5 jt.
+     *
      * @param  float  $biayaOperasionalPendidikan  rupiah per tahun
      * @param  float  $danaPenelitian  rupiah per tahun
      * @param  float  $danaPkm  rupiah per tahun
@@ -503,20 +504,17 @@ class KalkulatorRumus
         $this->pastikanPembagiSah($nm, 'NM');
         $this->pastikanPembagiSah($ndtps, 'NDTPS');
 
-        $rop = round($biayaOperasionalPendidikan / $nm, 2);
-        $rpd = round($danaPenelitian / $ndtps, 2);
-        $rpkmd = round($danaPkm / $ndtps, 2);
+        $ropMentah = $biayaOperasionalPendidikan / $nm;
+        $rpdMentah = $danaPenelitian / $ndtps;
+        $rpkmdMentah = $danaPkm / $ndtps;
 
-        $tangga = fn (float $x, float $empat, float $tiga, float $dua): int => match (true) {
-            $x >= $empat => 4,
-            $x >= $tiga => 3,
-            $x >= $dua => 2,
-            default => 1,
-        };
+        $skorOp = self::tangga($ropMentah, 18e6, 10e6, 5e6);
+        $skorPd = self::tangga($rpdMentah, 10e6, 7e6, 4e6);
+        $skorPkm = self::tangga($rpkmdMentah, 5e6, 3e6, 1e6);
 
-        $skorOp = $tangga($rop, 18e6, 10e6, 5e6);
-        $skorPd = $tangga($rpd, 10e6, 7e6, 4e6);
-        $skorPkm = $tangga($rpkmd, 5e6, 3e6, 1e6);
+        $rop = round($ropMentah, 2);
+        $rpd = round($rpdMentah, 2);
+        $rpkmd = round($rpkmdMentah, 2);
 
         $skorTepat = self::potong2(($skorOp + $skorPd + $skorPkm) / 3);
 
@@ -620,6 +618,23 @@ class KalkulatorRumus
                 "Rumus `{$kode}` tidak ada di tabel rumus. Jalankan RumusSeeder lebih dulu."
             );
         }
+    }
+
+    /**
+     * Tangga 4/3/2/1 yang dipakai banyak rumus bertangga.
+     *
+     * `$x` harus rasio MENTAH, bukan `nilai` yang sudah dibulatkan untuk
+     * tampilan: pembulatan bisa mengangkat nilai yang masih di bawah ambang
+     * ke tepat di ambang (PKIM 0,19997 → 0,2).
+     */
+    private static function tangga(float $x, float $empat, float $tiga, float $dua): int
+    {
+        return match (true) {
+            $x >= $empat => 4,
+            $x >= $tiga => 3,
+            $x >= $dua => 2,
+            default => 1,
+        };
     }
 
     /**
