@@ -117,6 +117,6 @@
   "elemen": [],
   "bobot": 0.0,
   "syarat_perlu": [],
-  "catatan": "Tidak memiliki elemen. Memegang 28 butir DKPS, penetapan TS, dan seluruh perhitungan rumus. Melayani kelima pokja lain."
+  "catatan": "Tidak memiliki elemen maupun tabel DKPS. Memegang penetapan TS, seluruh perhitungan rumus, dan verifikasi DKPS lintas pokja. Sejak DKPS 3.0, tiap tabel DKPS dimiliki pokja yang elemennya membaca tabel itu (lihat data/dkps-tabel.json)."
  }
 ]

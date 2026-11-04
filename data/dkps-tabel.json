@@ -1,198 +1,3168 @@
 [
  {
   "no": 1,
-  "nama": "Kerjasama Tridharma Perguruan Tinggi",
+  "kode": "1",
   "label_tabel": "Tabel 1",
+  "nama": "Kerjasama Tridharma Perguruan Tinggi",
+  "pokja": "POKJA-MUTU",
+  "elemen": [
+   7
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan kerjasama tridharma perguruan tinggi di Unit Pengelola Program Studi (UPPS) dalam 3 tahun terakhir dengan mengikuti format Tabel 1 berikut ini. Tabel 1 Kerjasama Tridharma Perguruan Tinggi Tingkat 1) Judul Manfaat bagi Waktu Bukti Lembaga No. Interna- Nasional Wilayah/ Kegiatan PS yang dan Kerjasama Mitra sional Lokal Kerjasama 2) diakreditasi Durasi 3)"
+  "lembar": [
+   {
+    "kode": "1.1",
+    "judul": "Tabel 1 Bagian 1 - Kerjasama Bidang Pendidikan",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "lembaga_mitra",
+      "label": "Lembaga Mitra",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "wilayah_lokal",
+      "label": "Wilayah/Lokal",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nasional",
+      "label": "Nasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "internasional",
+      "label": "Internasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "judul_kegiatan",
+      "label": "Judul Kegiatan Kerjasama",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "manfaat",
+      "label": "Manfaat bagi PS yang Diakreditasi",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "tanggal_awal",
+      "label": "Tanggal Awal Kerjasama (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "tanggal_akhir",
+      "label": "Tanggal Akhir Kerjasama (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "durasi_tahun",
+      "label": "Durasi (Tahun)",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "selisih_tahun",
+       "dari": "tanggal_awal",
+       "sampai": "tanggal_akhir"
+      },
+      "nomor_excel": "10"
+     },
+     {
+      "kunci": "bukti_kerjasama",
+      "label": "Bukti Kerjasama",
+      "tipe": "teks",
+      "nomor_excel": "11"
+     }
+    ],
+    "kunci": [
+     "lembaga_mitra",
+     "judul_kegiatan"
+    ],
+    "aturan": [
+     {
+      "jenis": "tepat_satu",
+      "kolom": [
+       "wilayah_lokal",
+       "nasional",
+       "internasional"
+      ]
+     }
+    ]
+   },
+   {
+    "kode": "1.2",
+    "judul": "Tabel 1 Bagian 2 - Kerjasama Bidang Penelitian",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "lembaga_mitra",
+      "label": "Lembaga Mitra",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "wilayah_lokal",
+      "label": "Wilayah/Lokal",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nasional",
+      "label": "Nasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "internasional",
+      "label": "Internasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "judul_kegiatan",
+      "label": "Judul Kegiatan Kerjasama",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "manfaat",
+      "label": "Manfaat bagi PS yang Diakreditasi",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "tanggal_awal",
+      "label": "Tanggal Awal Kerjasama (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "tanggal_akhir",
+      "label": "Tanggal Akhir Kerjasama (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "durasi_tahun",
+      "label": "Durasi (Tahun)",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "selisih_tahun",
+       "dari": "tanggal_awal",
+       "sampai": "tanggal_akhir"
+      },
+      "nomor_excel": "10"
+     },
+     {
+      "kunci": "bukti_kerjasama",
+      "label": "Bukti Kerjasama",
+      "tipe": "teks",
+      "nomor_excel": "11"
+     }
+    ],
+    "kunci": [
+     "lembaga_mitra",
+     "judul_kegiatan"
+    ],
+    "aturan": [
+     {
+      "jenis": "tepat_satu",
+      "kolom": [
+       "wilayah_lokal",
+       "nasional",
+       "internasional"
+      ]
+     }
+    ]
+   },
+   {
+    "kode": "1.3",
+    "judul": "Tabel 1 Bagian 3 - Kerjasama Bidang PkM",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "lembaga_mitra",
+      "label": "Lembaga Mitra",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "wilayah_lokal",
+      "label": "Wilayah/Lokal",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nasional",
+      "label": "Nasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "internasional",
+      "label": "Internasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "judul_kegiatan",
+      "label": "Judul Kegiatan Kerjasama",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "manfaat",
+      "label": "Manfaat bagi PS yang Diakreditasi",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "tanggal_awal",
+      "label": "Tanggal Awal Kerjasama (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "tanggal_akhir",
+      "label": "Tanggal Akhir Kerjasama (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "durasi_tahun",
+      "label": "Durasi (Tahun)",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "selisih_tahun",
+       "dari": "tanggal_awal",
+       "sampai": "tanggal_akhir"
+      },
+      "nomor_excel": "10"
+     },
+     {
+      "kunci": "bukti_kerjasama",
+      "label": "Bukti Kerjasama",
+      "tipe": "teks",
+      "nomor_excel": "11"
+     }
+    ],
+    "kunci": [
+     "lembaga_mitra",
+     "judul_kegiatan"
+    ],
+    "aturan": [
+     {
+      "jenis": "tepat_satu",
+      "kolom": [
+       "wilayah_lokal",
+       "nasional",
+       "internasional"
+      ]
+     }
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 1 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 2,
-  "nama": "Mahasiswa",
+  "kode": "2",
   "label_tabel": "Tabel 2",
+  "nama": "Mahasiswa PPG",
+  "pokja": "POKJA-MAWA",
+  "elemen": [
+   9,
+   12,
+   13,
+   25
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data Mahasiswa/peserta PPG (calon guru dan guru tertentu) berdasarkan hasil seleksi nasional dan data lapor diri dalam 3 tahun terakhir dengan mengikuti format Tabel 2 berikut ini. Tabel 2 Mahasiswa PPG Lulus Seleksi Lapor Diri Jumlah Mahasiswa Aktif Tahun Kuota Guru Guru Calon Guru Akademik Calon Guru Calon Guru"
+  "lembar": [
+   {
+    "kode": "2",
+    "judul": "Tabel 2 Mahasiswa PPG",
+    "tahun_dari": "baris_tetap",
+    "kolom": [
+     {
+      "kunci": "kuota",
+      "label": "Kuota",
+      "tipe": "angka",
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "lulus_seleksi_calon_guru",
+      "label": "Calon Guru",
+      "tipe": "angka",
+      "kelompok": [
+       "Lulus Seleksi"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "lulus_seleksi_guru_tertentu",
+      "label": "Guru Tertentu",
+      "tipe": "angka",
+      "kelompok": [
+       "Lulus Seleksi"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "lapor_diri_calon_guru",
+      "label": "Calon Guru",
+      "tipe": "angka",
+      "kelompok": [
+       "Lapor Diri"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "lapor_diri_guru_tertentu",
+      "label": "Guru Tertentu",
+      "tipe": "angka",
+      "kelompok": [
+       "Lapor Diri"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "aktif_calon_guru",
+      "label": "Calon Guru",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Mahasiswa Aktif"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "aktif_guru_tertentu",
+      "label": "Guru Tertentu",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Mahasiswa Aktif"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "jumlah_pddikti_ts",
+      "label": "Jumlah Mahasiswa di PD Dikti pada saat TS",
+      "tipe": "angka",
+      "nomor_excel": "9"
+     }
+    ],
+    "footer": "jumlah",
+    "baris_tetap": {
+     "label_kolom": "Tahun Akademik",
+     "baris": [
+      {
+       "kunci": "TS-2",
+       "label": "TS-2"
+      },
+      {
+       "kunci": "TS-1",
+       "label": "TS-1"
+      },
+      {
+       "kunci": "TS",
+       "label": "TS"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 2 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 3,
-  "nama": "Prestasi Mahasiswa",
+  "kode": "3",
   "label_tabel": "Tabel 3",
+  "nama": "Prestasi Akademik dan Non-akademik Mahasiswa",
+  "pokja": "POKJA-MAWA",
+  "elemen": [
+   12
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Prestasi yang dicapai antara lain: menjadi juara juara 1,2,3 dalam lomba akademik dan sejenisnya), prestasi dalam bidang olahraga, seni dan budaya, dan kepemimpinan/ organisasi. Tuliskan prestasi akademik dan non-akademik yang dicapai mahasiswa program studi yang diakreditasi dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 3 berikut ini. Tabel 3 Prestasi Mahasiswa Tahun Tingkat 1) Prestasi yang No. Nama Kegiatan"
+  "lembar": [
+   {
+    "kode": "3",
+    "judul": "Tabel 3 Prestasi Akademik dan Non-akademik Mahasiswa",
+    "tahun_dari": "kolom:tanggal_perolehan",
+    "kolom": [
+     {
+      "kunci": "nama_kegiatan",
+      "label": "Nama Kegiatan",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "jenis_prestasi",
+      "label": "Jenis Prestasi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Akademik",
+       "Non-akademik"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "tanggal_perolehan",
+      "label": "Tanggal Perolehan (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "wilayah_lokal",
+      "label": "Wilayah/Lokal",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "nasional",
+      "label": "Nasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "internasional",
+      "label": "Internasional",
+      "tipe": "centang",
+      "kelompok": [
+       "Tingkat"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "prestasi_dicapai",
+      "label": "Prestasi yang Dicapai",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "8"
+     }
+    ],
+    "kunci": [
+     "nama_kegiatan",
+     "prestasi_dicapai"
+    ],
+    "aturan": [
+     {
+      "jenis": "tepat_satu",
+      "kolom": [
+       "wilayah_lokal",
+       "nasional",
+       "internasional"
+      ]
+     }
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 3 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 4,
-  "nama": "Kepuasan Mahasiswa",
+  "kode": "4",
   "label_tabel": "Tabel 4",
-  "jendela_data": "saat TS",
-  "keterangan": "Tuliskan hasil pengukuran kepuasan mahasiswa terhadap proses pendidikan, performa mengajar dosen, dan sarana dan prasarana dengan mengikuti format Tabel 4 berikut ini. Data diambil dari hasil penelusuran yang dilakukan pada saat TS. Tabel 4 Kepuasan Mahasiswa"
+  "nama": "Karya Inovatif Mahasiswa dan/atau Publikasi Ilmiah",
+  "pokja": "POKJA-MAWA",
+  "elemen": [
+   13
+  ],
+  "jendela_data": "5 tahun terakhir",
+  "lembar": [
+   {
+    "kode": "4.1",
+    "judul": "Tabel 4 Bagian 1 - Paten dan Paten Sederhana",
+    "tahun_dari": "kolom:tahun",
+    "kolom": [
+     {
+      "kunci": "nim",
+      "label": "NIM",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_mahasiswa",
+      "label": "Nama Mahasiswa",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "judul_karya",
+      "label": "Judul Karya Inovatif/Luaran Penelitian dan PkM Mahasiswa",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "tahun",
+      "label": "Tahun (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "no_paten",
+      "label": "No. Paten (Granted)",
+      "tipe": "teks",
+      "nomor_excel": "6"
+     }
+    ],
+    "kunci": [
+     "nim",
+     "judul_karya"
+    ]
+   },
+   {
+    "kode": "4.2",
+    "judul": "Tabel 4 Bagian 2 - Buku ber-ISBN, Book Chapter",
+    "tahun_dari": "kolom:tahun",
+    "kolom": [
+     {
+      "kunci": "nim",
+      "label": "NIM",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_mahasiswa",
+      "label": "Nama Mahasiswa",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "judul_karya",
+      "label": "Judul Karya Inovatif/Luaran Penelitian dan PkM Mahasiswa",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "tahun",
+      "label": "Tahun (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "keterangan_isbn",
+      "label": "Keterangan (No. ISBN)",
+      "tipe": "teks",
+      "nomor_excel": "6"
+     }
+    ],
+    "kunci": [
+     "nim",
+     "judul_karya"
+    ]
+   },
+   {
+    "kode": "4.3",
+    "judul": "Tabel 4 Bagian 3 - Karya seni yang dipamerkan/dipagelarkan",
+    "tahun_dari": "kolom:tahun",
+    "kolom": [
+     {
+      "kunci": "nim",
+      "label": "NIM",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_mahasiswa",
+      "label": "Nama Mahasiswa",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "judul_karya",
+      "label": "Judul Karya Seni yang Dipamerkan/Dipagelarkan",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "tahun",
+      "label": "Tahun (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "bukti",
+      "label": "Bukti",
+      "tipe": "teks",
+      "nomor_excel": "6"
+     }
+    ],
+    "kunci": [
+     "nim",
+     "judul_karya"
+    ]
+   },
+   {
+    "kode": "4.4",
+    "judul": "Tabel 4 Bagian 4 - Publikasi Ilmiah pada Jurnal Nasional Terakreditasi Minimal Sinta 5",
+    "tahun_dari": "kolom:tahun_terbit",
+    "kolom": [
+     {
+      "kunci": "nim",
+      "label": "NIM",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_mahasiswa",
+      "label": "Nama Mahasiswa",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "judul_artikel",
+      "label": "Judul Artikel/Publikasi Ilmiah",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "keterangan_jurnal",
+      "label": "Keterangan (Jurnal, Volume, Tahun, Nomor, Halaman",
+      "tipe": "teks",
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "peringkat_jurnal",
+      "label": "Peringkat Akreditasi Jurnal",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Jurnal Nasional (SINTA 1)",
+       "Jurnal Nasional (SINTA 2)",
+       "Jurnal Nasional (SINTA 3)",
+       "Jurnal Nasional (SINTA 4)",
+       "Jurnal Nasional (SINTA 5)",
+       "Jurnal Internasional",
+       "Junal Internasional Bereputasi (Scopus atau WoS)"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "tahun_terbit",
+      "label": "Tahun Terbit (dd/mm/yyyy)",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "tautan_artikel",
+      "label": "Tautan Artikel",
+      "tipe": "tautan",
+      "nomor_excel": "8"
+     }
+    ],
+    "kunci": [
+     "nim",
+     "judul_artikel"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 4 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data 5 tahun terakhir."
  },
  {
   "no": 5,
-  "nama": "Dosen Pengelola Program Studi PPG",
+  "kode": "5",
   "label_tabel": "Tabel 5",
+  "nama": "Kepuasan Mahasiswa",
+  "pokja": "POKJA-MAWA",
+  "elemen": [
+   14
+  ],
   "jendela_data": "saat TS",
-  "keterangan": "Tuliskan data Dosen Pengelola Program Studi (DPP) pada saat TS dengan mengikuti format Tabel 5 berikut ini. DPP adalah dosen PS yang diberi tugas oleh Perguruan Tinggi untuk mengelola Program Studi PPG. Tabel 5 Dosen Pengelola Program Studi Pendidikan Pasca Kesesuaian Mata Sarjana 1) Kesesuaian Sertifikat Mata kuliah Bidang kuliah Jabatan Nama NIDN/ Bidang dengan Pendidik yang diampu Keahlian yang No NUPTK Akademik"
+  "lembar": [
+   {
+    "kode": "5",
+    "judul": "Tabel 5 Kepuasan Mahasiswa",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "sangat_baik",
+      "label": "Sangat Baik",
+      "tipe": "desimal",
+      "kelompok": [
+       "Persentase Tingkat Kepuasan Mahasiswa"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "baik",
+      "label": "Baik",
+      "tipe": "desimal",
+      "kelompok": [
+       "Persentase Tingkat Kepuasan Mahasiswa"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "cukup",
+      "label": "Cukup",
+      "tipe": "desimal",
+      "kelompok": [
+       "Persentase Tingkat Kepuasan Mahasiswa"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "kurang_baik",
+      "label": "Kurang Baik",
+      "tipe": "desimal",
+      "kelompok": [
+       "Persentase Tingkat Kepuasan Mahasiswa"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "rencana_tindak_lanjut",
+      "label": "Rencana Tindak Lanjut oleh UPPS/PS",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     }
+    ],
+    "aturan": [
+     {
+      "jenis": "jumlah_persen_100",
+      "kolom": [
+       "sangat_baik",
+       "baik",
+       "cukup",
+       "kurang_baik"
+      ]
+     }
+    ],
+    "footer": "rata",
+    "baris_tetap": {
+     "label_kolom": "Aspek yang Diukur",
+     "baris": [
+      {
+       "kunci": "reliability",
+       "label": "Keandalan (reliability): kemampuan dosen, tenaga kependidikan, dan pengelola dalam memberikan pelayanan."
+      },
+      {
+       "kunci": "responsiveness",
+       "label": "Daya tanggap (responsiveness): kemauan dari dosen, tenaga kependidikan, dan pengelola dalam membantu mahasiswa dan memberikan jasa dengan cepat."
+      },
+      {
+       "kunci": "assurance",
+       "label": "Kepastian (assurance): kemampuan dosen, tenaga kependidikan, dan pengelola untuk memberi keyakinan kepada mahasiswa bahwa pelayanan yang diberikan telah sesuai dengan ketentuan."
+      },
+      {
+       "kunci": "empathy",
+       "label": "Empati (empathy): kesediaan/kepedulian dosen, tenaga kependidikan, dan pengelola untuk memberi perhatian kepada mahasiswa."
+      },
+      {
+       "kunci": "tangible",
+       "label": "Tangible: penilaian mahasiswa terhadap kecukupan, aksesibitas, kualitas sarana dan prasarana."
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 5 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data saat TS."
  },
  {
   "no": 6,
-  "nama": "Dosen Bidang Studi (DBS) dan Dosen Pengampu",
+  "kode": "6",
   "label_tabel": "Tabel 6",
+  "nama": "Dosen Pengelola Program Studi PPG",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   17
+  ],
   "jendela_data": "saat TS",
-  "keterangan": "Tuliskan data dosen bidang studi dan dosen pengampu pada setiap bidang studi pada saat TS dengan mengikuti format Tabel 6 berikut ini. DBSP adalah dosen PS yang diberi tugas oleh Perguruan Tinggi untuk mengelola bidang studi di PS PPG. Tabel 6 Dosen Bidang Studi dan Dosen Pengampu Pendidikan Pasca Mata kuliah Kesesuaian Mata Sarjana 2) yang Bidang Kesesuaian Sertifikat kuliah Nama Bidang Jabatan diampu Keahlian"
+  "lembar": [
+   {
+    "kode": "6",
+    "judul": "Tabel 6 Dosen Pengelola Program Studi PPG",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nidn_nidk",
+      "label": "NIDN/NIDK",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nuptk",
+      "label": "NUPTK",
+      "tipe": "teks",
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "magister",
+      "label": "Magister",
+      "tipe": "teks",
+      "kelompok": [
+       "Pendidikan Pasca Sarjana"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "doktor",
+      "label": "Doktor",
+      "tipe": "teks",
+      "kelompok": [
+       "Pendidikan Pasca Sarjana"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "bidang_keahlian",
+      "label": "Bidang Keahlian",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "jabatan_akademik",
+      "label": "Jabatan Akademik",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Tenaga Pengajar",
+       "Asisten Ahli",
+       "Lektor",
+       "Lektor Kepala",
+       "Guru Besar"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "sertifikat_pendidik",
+      "label": "Sertifikat Pendidik Profesional",
+      "tipe": "teks",
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "mk_diampu_ps",
+      "label": "MK yang diampu pada PS yang Diakreditasi",
+      "tipe": "teks",
+      "nomor_excel": "10"
+     },
+     {
+      "kunci": "mk_diampu_ps_lain",
+      "label": "MK yang diampu pada PS Lain",
+      "tipe": "teks",
+      "nomor_excel": "11"
+     }
+    ],
+    "kunci": [
+     "nidn_nidk"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 6 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data saat TS."
  },
  {
   "no": 7,
-  "nama": "Beban Kerja DTPS",
+  "kode": "7",
   "label_tabel": "Tabel 7",
+  "nama": "Dosen Bidang Studi dan Dosen Pengampu",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   17,
+   19,
+   20
+  ],
   "jendela_data": "saat TS",
-  "keterangan": "Tuliskan data Beban Kerja Dosen Tetap yang ditugaskan di program studi yang diakreditasi pada saat TS, dengan mengikuti format Tabel 7 berikut ini. Tabel 7 Beban Kerja DTPS Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks) Pendidikan: Pembelajaran dan Tugas Rata-rata persemester (sks) Jumlah No. Nama Dosen Tetap Pembimbingan Tambahan Penelitian PkM (sks)"
+  "lembar": [
+   {
+    "kode": "7",
+    "judul": "Tabel 7 Dosen Bidang Studi dan Dosen Pengampu",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_bidang_studi",
+      "label": "Nama Bidang Studi",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_dosen",
+      "label": "Nama Dosen",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nidn_nidk",
+      "label": "NIDN/NIDK",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "nuptk",
+      "label": "NUPTK",
+      "tipe": "teks",
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "magister",
+      "label": "Magister",
+      "tipe": "teks",
+      "kelompok": [
+       "Pendidikan Pasca Sarjana"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "doktor",
+      "label": "Doktor",
+      "tipe": "teks",
+      "kelompok": [
+       "Pendidikan Pasca Sarjana"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "bidang_keahlian",
+      "label": "Bidang Keahlian",
+      "tipe": "teks",
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "jabatan_akademik",
+      "label": "Jabatan Akademik",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Tenaga Pengajar",
+       "Asisten Ahli",
+       "Lektor",
+       "Lektor Kepala",
+       "Guru Besar"
+      ],
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "sertifikat_pendidik",
+      "label": "Sertifikat Pendidik Profesional",
+      "tipe": "teks",
+      "nomor_excel": "10"
+     },
+     {
+      "kunci": "mk_diampu_ps",
+      "label": "MK yang diampu pada PS yang Diakreditasi",
+      "tipe": "teks",
+      "nomor_excel": "11"
+     },
+     {
+      "kunci": "kesesuaian_bidang",
+      "label": "Kesesuaian Bidang Keahlian dengan MK yang Diampu",
+      "tipe": "centang",
+      "nomor_excel": "12"
+     },
+     {
+      "kunci": "mk_diampu_ps_lain",
+      "label": "MK yang diampu pada PS Lain",
+      "tipe": "teks",
+      "nomor_excel": "13"
+     },
+     {
+      "kunci": "prodi_homebase",
+      "label": "Prodi Homebase",
+      "tipe": "teks",
+      "nomor_excel": "14"
+     }
+    ],
+    "kunci": [
+     "nama_bidang_studi",
+     "nidn_nidk"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 7 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data saat TS."
  },
  {
   "no": 8,
-  "nama": "Prestasi/Kepakaran/Rekognisi Dosen",
+  "kode": "8",
   "label_tabel": "Tabel 8",
-  "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan pengakuan/rekognisi atas kepakaran/prestasi/kinerja DTPS yang diterima dalam 3 tahun terakhir dengan mengikuti format Tabel 8. Tabel 8 Rekognisi Kepakaran/Prestasi DTPS Tingkat 2) Nama Bidang Bukti No Rekognisi 1) Tahun Interna- Dosen Keahlian Wilayah Nasional Pendukung sional"
+  "nama": "Beban Kerja DTPS",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   18
+  ],
+  "jendela_data": "saat TS",
+  "lembar": [
+   {
+    "kode": "8",
+    "judul": "Tabel 8 Beban Kerja DTPS",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "sks_ps_diakreditasi",
+      "label": "PS yang Diakreditasi",
+      "tipe": "desimal",
+      "kelompok": [
+       "Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks), termasuk beban lebih",
+       "Pendidikan: Pembelajaran dan Pembimbingan"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "sks_ps_lain_dalam_pt",
+      "label": "PS Lain di dalam PT",
+      "tipe": "desimal",
+      "kelompok": [
+       "Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks), termasuk beban lebih",
+       "Pendidikan: Pembelajaran dan Pembimbingan"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "sks_ps_lain_luar_pt",
+      "label": "PS Lain di Luar PT",
+      "tipe": "desimal",
+      "kelompok": [
+       "Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks), termasuk beban lebih",
+       "Pendidikan: Pembelajaran dan Pembimbingan"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "sks_penelitian",
+      "label": "Penelitian",
+      "tipe": "desimal",
+      "kelompok": [
+       "Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks), termasuk beban lebih"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "sks_pkm",
+      "label": "PkM",
+      "tipe": "desimal",
+      "kelompok": [
+       "Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks), termasuk beban lebih"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "sks_tugas_tambahan",
+      "label": "Tugas Tambahan dan/atau Penunjang",
+      "tipe": "desimal",
+      "kelompok": [
+       "Beban Kerja Mengajar pada saat TS dalam satuan kredit semester (sks), termasuk beban lebih"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "jumlah_sks",
+      "label": "Jumlah (sks)",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "jumlah",
+       "kolom": [
+        "sks_ps_diakreditasi",
+        "sks_ps_lain_dalam_pt",
+        "sks_ps_lain_luar_pt",
+        "sks_penelitian",
+        "sks_pkm",
+        "sks_tugas_tambahan"
+       ]
+      },
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "rata_per_semester",
+      "label": "Rata-rata Per-Semester (sks)",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "bagi",
+       "kolom": "jumlah_sks",
+       "pembagi": 2
+      },
+      "nomor_excel": "10"
+     },
+     {
+      "kunci": "bukti",
+      "label": "Bukti",
+      "tipe": "teks",
+      "nomor_excel": "11"
+     }
+    ],
+    "kunci": [
+     "nama_dtps"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 8 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data saat TS."
  },
  {
   "no": 9,
-  "nama": "Pengembangan Kompetensi DTPS",
+  "kode": "9",
   "label_tabel": "Tabel 9",
+  "nama": "Pengakuan/Rekognisi Kepakaran/Prestasi DTPS",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   19
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data pengembangan kompetensi yang diikuti oleh DTPS dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 9 berikut ini. Pengembangan kompetensi yang diikuti harus relevan dengan bidang ilmu program studi dan mendukung kompetensi DTPS. Tabel 9 Pengembangan Kompetensi DTPS Waktu Manfaat No. Nama DTPS1) Jenis Kegiatan2) Tempat3) Pelaksanaan Kegiatan"
+  "lembar": [
+   {
+    "kode": "9",
+    "judul": "Tabel 9 Pengakuan/Rekognisi Kepakaran/Prestasi DTPS",
+    "tahun_dari": "kolom:tahun",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "bidang_keahlian",
+      "label": "Bidang Keahlian",
+      "tipe": "teks",
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "deskripsi_rekognisi",
+      "label": "Deskripsi Rekognisi",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "jenis_rekognisi",
+      "label": "Jenis Rekognisi",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Visiting lecturer atau visiting scholar",
+       "Keynote speaker/invited speaker",
+       "Editor atau mitra bestari",
+       "Staf ahli/narasumber",
+       "Penghargaan atas prestasi dan kinerja"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "tahun",
+      "label": "Tahun (YYYY)",
+      "tipe": "tahun",
+      "wajib": true,
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "tingkat",
+      "label": "Tingkat",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Lokal/Wilayah",
+       "Nasional",
+       "Internasional"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "bukti_pendukung",
+      "label": "Bukti Pendukung",
+      "tipe": "teks",
+      "nomor_excel": "10"
+     }
+    ],
+    "kunci": [
+     "nama_dtps",
+     "deskripsi_rekognisi"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 9 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 10,
-  "nama": "Tenaga Kependidikan",
+  "kode": "10",
   "label_tabel": "Tabel 10",
+  "nama": "Pengembangan Kompetensi DTPS",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   20
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data Tenaga pada tingkat Perguruan Tinggi/UPPS/PS yang melayani mahasiswa. Program Studi yang diakreditasi dengan mengikuti format Tabel 10 berikut ini. Tabel 10 Tenaga Kependidikan Jumlah Tenaga Kependidikan dengan No. Jenis Tenaga Kependidikan Pendidikan Terakhir 2) Unit Kerja 3) S3 S2 S1 D4 D3 SMA/SMK (1) (2) (3) (4) (5) (6) (7) (8) (9)"
+  "lembar": [
+   {
+    "kode": "10",
+    "judul": "Tabel 10 Pengembangan Kompetensi DTPS",
+    "tahun_dari": "kolom:waktu_pelaksanaan",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "deskripsi_kegiatan",
+      "label": "Deskripsi Kegiatan",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "tempat",
+      "label": "Tempat",
+      "tipe": "teks",
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "waktu_pelaksanaan",
+      "label": "Waktu Pelaksanaan",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "manfaat_kegiatan",
+      "label": "Manfaat Kegiatan",
+      "tipe": "teks",
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "bukti_kegiatan",
+      "label": "Bukti Kegiatan",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     }
+    ],
+    "kunci": [
+     "nama_dtps",
+     "deskripsi_kegiatan"
+    ],
+    "catatan": "CATATAN: Pengembangan kompetensi yang diakui minimal 32 JP"
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 10 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 11,
-  "nama": "Pengembangan Kompetensi Tenaga Kependidikan",
+  "kode": "11",
   "label_tabel": "Tabel 11",
+  "nama": "Tenaga Kependidikan",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   21
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data pengembangan kompetensi yang diikuti oleh tenaga kependidikan dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 11 berikut ini. Pengembangan kompetensi yang diikuti harus relevan mendukung peningkatakan kompetensi keahlian tenaga kependidikan. Tabel 11 Pengembangan Kompetensi Tenaga Kependidikan Nama Tenaga Jenis Pengembangan Waktu Manfaat No. Tempat2) Kependidikan Kompetensi1) Pelaksanaan Kegiatan"
+  "lembar": [
+   {
+    "kode": "11",
+    "judul": "Tabel 11 Tenaga Kependidikan",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "s3",
+      "label": "S3",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Tenaga Kependidikan dengan Pendidikan Terakhir"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "s2",
+      "label": "S2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Tenaga Kependidikan dengan Pendidikan Terakhir"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "s1",
+      "label": "S1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Tenaga Kependidikan dengan Pendidikan Terakhir"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "d4",
+      "label": "D4",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Tenaga Kependidikan dengan Pendidikan Terakhir"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "d3",
+      "label": "D3",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Tenaga Kependidikan dengan Pendidikan Terakhir"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "sma_smk",
+      "label": "SMA/SMK",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Tenaga Kependidikan dengan Pendidikan Terakhir"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "jumlah",
+      "label": "Jumlah",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "jumlah",
+       "kolom": [
+        "s3",
+        "s2",
+        "s1",
+        "d4",
+        "d3",
+        "sma_smk"
+       ]
+      },
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "unit_kerja",
+      "label": "Unit Kerja",
+      "tipe": "teks",
+      "nomor_excel": "10"
+     }
+    ],
+    "footer": "jumlah",
+    "baris_tetap": {
+     "label_kolom": "Jenis Tenaga Kependidikan",
+     "baris": [
+      {
+       "kunci": "pustakawan",
+       "label": "Pustakawan"
+      },
+      {
+       "kunci": "laboran_teknisi",
+       "label": "Laboran/Teknisi/Analis/Operator/ Programer/pranata komputer"
+      },
+      {
+       "kunci": "administrasi",
+       "label": "Administrasi"
+      },
+      {
+       "kunci": "lainnya",
+       "label": "Lainnya"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 11 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 12,
-  "nama": "Guru Pamong",
+  "kode": "12",
   "label_tabel": "Tabel 12",
+  "nama": "Pengembangan Kompetensi Tenaga Kependidikan",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   21
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data guru pamong untuk pada setiap bidang studi yang berasal dari sekolah mitra dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 12 berikut ini. Tabel 12 Guru Pamong Asal Sekolah Mitra Jabatan Pendidikan ST Gurung No. Bidang Studi1) Nama Guru Pamong No.Serdik3) Nama Bukti Fungsional2) Tertinggi Akreditasi4) Pamong6) Sekolah MoU/PKS5)"
+  "lembar": [
+   {
+    "kode": "12",
+    "judul": "Tabel 12 Pengembangan Kompetensi Tenaga Kependidikan (Tendik)",
+    "tahun_dari": "kolom:waktu_pelaksanaan",
+    "kolom": [
+     {
+      "kunci": "nama_tendik",
+      "label": "Nama Tendik",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "deskripsi_kegiatan",
+      "label": "Deskripsi Pengembangan Kompetensi",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "tempat",
+      "label": "Tempat",
+      "tipe": "teks",
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "waktu_pelaksanaan",
+      "label": "Waktu Pelaksanaan",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "manfaat_kegiatan",
+      "label": "Manfaat Kegiatan",
+      "tipe": "teks",
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "bukti_kegiatan",
+      "label": "Bukti Kegiatan",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     }
+    ],
+    "kunci": [
+     "nama_tendik",
+     "deskripsi_kegiatan"
+    ],
+    "catatan": "CATATAN: Pengembangan kompetensi yang diakui minimal 16 JP"
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 12 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 13,
-  "nama": "Penggunaan Dana",
-  "label_tabel": "Tabel 14",
+  "kode": "13",
+  "label_tabel": "Tabel 13",
+  "nama": "Guru Pamong",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   22
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data penggunaan dana yang dikelola oleh UPPS dan data penggunaan dana yang dialokasikan ke program studi yang diakreditasi dalam 3 tahun terakhir dengan mengikuti format Tabel 14. Tabel 14 Penggunaan Dana Unit Pengelola Program Studi (Rupiah) Program Studi (Rupiah) No Jenis Penggunaan TS-2 TS-1 TS Rata-rata TS-2 TS-1 TS Rata-rata (1) (2) (3) (4) (5) (6) (7) (8) (9) (10) 1 Biaya Operasional Pendidikan"
+  "lembar": [
+   {
+    "kode": "13",
+    "judul": "Tabel 13 Guru Pamong",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "bidang_studi",
+      "label": "Bidang Studi",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_guru_pamong",
+      "label": "Nama Guru Pamong",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "jabatan_fungsional",
+      "label": "Jabatan Fungsional",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Guru Pertama",
+       "Guru Muda",
+       "Guru Madya",
+       "Guru Utama"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "pendidikan_tertinggi",
+      "label": "Pendidikan Tertinggi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Sarjana/Sarjana Terapan",
+       "Magister/Magister Terapan",
+       "Doktor/Doktor Terapan"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "no_serdik",
+      "label": "No. Sertifikasi Pendidik",
+      "tipe": "teks",
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "nama_sekolah",
+      "label": "Nama Sekolah",
+      "tipe": "teks",
+      "kelompok": [
+       "Asal Sekolah Mitra"
+      ],
+      "wajib": true,
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "akreditasi_sekolah",
+      "label": "Akreditasi",
+      "tipe": "pilihan",
+      "kelompok": [
+       "Asal Sekolah Mitra"
+      ],
+      "pilihan": [
+       "A (Unggul)",
+       "B (Baik)",
+       "C (Cukup Baik)",
+       "Tidak Terakreditasi"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "bukti_kerjasama",
+      "label": "Bukti Kerjasama",
+      "tipe": "teks",
+      "kelompok": [
+       "Asal Sekolah Mitra"
+      ],
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "st_guru_pamong",
+      "label": "ST Guru Pamong",
+      "tipe": "teks",
+      "nomor_excel": "10"
+     }
+    ],
+    "kunci": [
+     "bidang_studi",
+     "nama_guru_pamong"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 13 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 14,
-  "nama": "Sarana Laboratorium dan Pembelajaran",
-  "label_tabel": "Tabel 15",
+  "kode": "14",
+  "label_tabel": "Tabel 14",
+  "nama": "Penggunaan Dana",
+  "pokja": "POKJA-SARPRAS",
+  "elemen": [
+   25
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan prasarana dan peralatan utama di laboratorium, ruang kelas, dan ruang lainnya yang dipergunakan dalam proses pembelajaran (perkuliahan, pembimbingan, ujian, seminar, dan lain-lain) oleh program studi yang diakreditasi dengan mengikuti format Tabel 15 berikut ini. Tabel 15 Sarana Laboratorium dan Pembelajaran Jumlah Alat 4) Kepemilikan 5) Kondisi 6) Rata-rata Nama Kualitas Waktu No. Laboratorium/ Nama Alat/ Peraga 2) 3"
+  "lembar": [
+   {
+    "kode": "14",
+    "judul": "Tabel 14 Penggunaan Dana",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "upps_ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Unit Pengelola Program Studi (Rupiah)"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "upps_ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Unit Pengelola Program Studi (Rupiah)"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "upps_ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Unit Pengelola Program Studi (Rupiah)"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "upps_rata",
+      "label": "Rata-Rata",
+      "tipe": "hitung",
+      "kelompok": [
+       "Unit Pengelola Program Studi (Rupiah)"
+      ],
+      "rumus": {
+       "jenis": "rata",
+       "kolom": [
+        "upps_ts2",
+        "upps_ts1",
+        "upps_ts"
+       ]
+      },
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "ps_ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Program Studi (Rupiah)"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "ps_ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Program Studi (Rupiah)"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "ps_ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Program Studi (Rupiah)"
+      ],
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "ps_rata",
+      "label": "Rata-Rata",
+      "tipe": "hitung",
+      "kelompok": [
+       "Program Studi (Rupiah)"
+      ],
+      "rumus": {
+       "jenis": "rata",
+       "kolom": [
+        "ps_ts2",
+        "ps_ts1",
+        "ps_ts"
+       ]
+      },
+      "nomor_excel": "10"
+     }
+    ],
+    "catatan": "CATATAN: Biaya-biaya ditulis dalam rupiah lengkap, tidak disingkat dalam jutaan atau ribuan, misal: 1.500.000",
+    "baris_tetap": {
+     "label_kolom": "Jenis Penggunaan",
+     "baris": [
+      {
+       "kunci": "biaya_dosen",
+       "label": "a. Biaya Dosen (Gaji, Honor)",
+       "kelompok": "1. Biaya Operasional Pendidikan"
+      },
+      {
+       "kunci": "biaya_tendik",
+       "label": "b. Biaya Tenaga Kependidikan (Gaji, Honor)",
+       "kelompok": "1. Biaya Operasional Pendidikan"
+      },
+      {
+       "kunci": "biaya_operasional_pembelajaran",
+       "label": "c. Biaya Operasional Pembelajaran (Bahan dan Peralatan Habis Pakai)",
+       "kelompok": "1. Biaya Operasional Pendidikan"
+      },
+      {
+       "kunci": "biaya_operasional_tidak_langsung",
+       "label": "d. Biaya Operasional Tidak Langsung (Listrik, Gas, Air, Pemeliharaan Gedung, Pemeliharaan Sarana, Uang Lembur, Telekomunikasi, Konsumsi, Transport Lokal, Pajak, Asuransi, dll.)",
+       "kelompok": "1. Biaya Operasional Pendidikan"
+      },
+      {
+       "kunci": "biaya_kemahasiswaan",
+       "label": "e. Biaya operasional kemahasiswaan (penalaran, minat, bakat, dan kesejahteraan).",
+       "kelompok": "1. Biaya Operasional Pendidikan"
+      },
+      {
+       "kunci": "biaya_penelitian",
+       "label": "2. Biaya Operasional Penelitian"
+      },
+      {
+       "kunci": "biaya_pkm",
+       "label": "3. Biaya Operasional PkM"
+      },
+      {
+       "kunci": "investasi_sdm",
+       "label": "4. Biaya Investasi SDM"
+      },
+      {
+       "kunci": "investasi_sarana",
+       "label": "5. Biaya Investasi Sarana"
+      },
+      {
+       "kunci": "investasi_prasarana",
+       "label": "6. Biaya Investasi Prasarana"
+      }
+     ],
+     "subtotal": [
+      {
+       "label": "Jumlah 1. Biaya Operasional Pendidikan",
+       "dari": [
+        "biaya_dosen",
+        "biaya_tendik",
+        "biaya_operasional_pembelajaran",
+        "biaya_operasional_tidak_langsung",
+        "biaya_kemahasiswaan"
+       ]
+      },
+      {
+       "label": "Jumlah",
+       "dari": [
+        "biaya_penelitian",
+        "biaya_pkm"
+       ]
+      },
+      {
+       "label": "Jumlah",
+       "dari": [
+        "investasi_sdm",
+        "investasi_sarana",
+        "investasi_prasarana"
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 14 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 15,
-  "nama": "Prasarana Pendidikan",
-  "label_tabel": "Tabel 16",
+  "kode": "15",
+  "label_tabel": "Tabel 15",
+  "nama": "Sarana Laboratorium dan Pembelajaran",
+  "pokja": "POKJA-SARPRAS",
+  "elemen": [
+   26
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data prasarana tanah dan gedung (rektorat, fakultas, biro, sarana ibadah, pusat komputer, perpustakaan, pusat kesehatan, lembaga penelitian dan PkM, dan lain-lain) di PT/UPPS dengan mengikuti format Tabel 16 berikut ini. Tabel 16 Prasarana Pendidikan Kepemilikan3) Kondisi4) No. Nama Sarana1) Fungsi Jumlat Unit Total Luas (m2) Kualitas2) Milik Sendiri Sewa Terawat Tidak Terawat (1) (2) (3) (4) (5) (6) (7) (8) (9) (10) "
+  "lembar": [
+   {
+    "kode": "15",
+    "judul": "Tabel 15 Sarana Laboratorium dan Pembelajaran",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_ruang",
+      "label": "Nama Laboratorium/Ruang Kelas/Ruang Lainnya",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "nama_alat",
+      "label": "Nama Alat/ Peraga",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "kualitas",
+      "label": "Kualitas",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Sangat Baik",
+       "Baik",
+       "Kurang Baik",
+       "Tidak Baik"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "jumlah",
+      "label": "Jumlah",
+      "tipe": "angka",
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "kepemilikan",
+      "label": "Kepemilikan",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Milik Sendiri",
+       "Sewa"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "kondisi",
+      "label": "Kondisi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Terawat",
+       "Tidak Terawat"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "jam_per_minggu",
+      "label": "Rata-rata Waktu Penggunaan (Jam/Minggu)",
+      "tipe": "desimal",
+      "nomor_excel": "8"
+     }
+    ],
+    "kunci": [
+     "nama_ruang",
+     "nama_alat"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 15 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 16,
-  "nama": "Teknologi Informasi dan Komunikasi",
-  "label_tabel": "Tabel 17",
+  "kode": "16",
+  "label_tabel": "Tabel 16",
+  "nama": "Prasarana Pendidikan",
+  "pokja": "POKJA-SARPRAS",
+  "elemen": [
+   26
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data infrastruktur teknologi informasi dan sistem informasi di PT/UPPS yang digunakan oleh PS dalam mendukung proses pembelajaran dengan mengikuti format Tabel 17 berikut ini. Tabel 17 Teknologi Informasi dan Komunikasi Kepemilikan2) Kemudahan Akses3) Nama Deskripsi Infrastruktur/Sistem Ketersediaan No. Jumlah Milik Terintegrasi4) Kemutahiran5) Infrastruktur/ Informasi Sewa Mudah Sulit Panduan6) Sendiri"
+  "lembar": [
+   {
+    "kode": "16",
+    "judul": "Tabel 16 Prasarana Pendidikan",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_prasarana",
+      "label": "Nama Prasarana Pendidikan",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "fungsi",
+      "label": "Fungsi",
+      "tipe": "teks",
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "jumlah_unit",
+      "label": "Jumlah Unit",
+      "tipe": "angka",
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "total_luas_m2",
+      "label": "Total Luas (m2)",
+      "tipe": "desimal",
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "kualitas",
+      "label": "Kualitas",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Sangat Baik",
+       "Baik",
+       "Kurang Baik",
+       "Tidak Baik"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "kepemilikan",
+      "label": "Kepemilikan",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Milik Sendiri",
+       "Sewa"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "kondisi",
+      "label": "Kondisi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Terawat",
+       "Tidak Terawat"
+      ],
+      "nomor_excel": "8"
+     }
+    ],
+    "kunci": [
+     "nama_prasarana"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 16 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 17,
-  "nama": "Kurikulum",
-  "label_tabel": "Tabel 18",
-  "jendela_data": "saat TS",
-  "keterangan": "Tuliskan struktur dan kelengkapan data mata kuliah sesuai dokumen kurikulum program studi yang berlaku pada saat TS dengan mengikuti format Tabel 18 berikut ini. Tabel 18 Kurikulum Bobot Kredit (sks) Capaian Pembelajaran 3)"
+  "kode": "17",
+  "label_tabel": "Tabel 17",
+  "nama": "Teknologi Informasi dan Komunikasi",
+  "pokja": "POKJA-SARPRAS",
+  "elemen": [
+   27
+  ],
+  "jendela_data": "TS-2 s.d. TS",
+  "lembar": [
+   {
+    "kode": "17",
+    "judul": "Tabel 17 Teknologi Informasi dan Komunikasi",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_sistem",
+      "label": "Nama Infrastruktur/ Sistem Informasi",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "deskripsi",
+      "label": "Deskripsi Infrastruktur/ Sistem Informasi",
+      "tipe": "teks",
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "jumlah",
+      "label": "Jumlah",
+      "tipe": "angka",
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "terintegrasi",
+      "label": "Terintegrasi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Terintegrasi Penuh",
+       "Terintegrasi Sebagian",
+       "Tidak Terintegrasi"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "mutakhir",
+      "label": "Mutahir",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Mutahir",
+       "Tidak Mutahir"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "ketersediaan_panduan",
+      "label": "Ketersediaan Panduan",
+      "tipe": "centang",
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "kepemilikan",
+      "label": "Kepemilikan",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Milik Sendiri",
+       "Sewa"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "kondisi",
+      "label": "Kondisi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Terawat",
+       "Tidak Terawat"
+      ],
+      "nomor_excel": "9"
+     }
+    ],
+    "kunci": [
+     "nama_sistem"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 17 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 18,
-  "nama": "Integrasi Penelitian dan PkM dalam Pembelajaran",
-  "label_tabel": "Tabel 19",
-  "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan judul penelitian/PkM DTPS yang terintegrasi ke dalam pembelajaran/ pengembangan matakuliah dalam 3 tahun terakhir dengan mengikuti format Tabel 19 berikut ini. Tabel 19 Integrasi Penelitian/PkM dalam Pembelajaran Tahun No. Judul Nama Mata Bentuk Integrasi 2) Penelitian/PkM Tahun Penelitian/PkM 1) Dosen Kuliah TS-3 TS-2 TS (YYYY) (1) (2) (3) (4) (5) (6) (7) (7) (9)"
+  "kode": "18",
+  "label_tabel": "Tabel 18",
+  "nama": "Kurikulum",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   30,
+   45
+  ],
+  "jendela_data": "saat TS",
+  "lembar": [
+   {
+    "kode": "18",
+    "judul": "Tabel 18 Kurikulum",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "semester",
+      "label": "Semester",
+      "tipe": "angka",
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "kode_mk",
+      "label": "Kode Mata Kuliah",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nama_mk",
+      "label": "Nama Mata Kuliah",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "mk_inti",
+      "label": "Mata Kuliah Kompetensi Inti/Penciri PS",
+      "tipe": "centang",
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "sks_kuliah",
+      "label": "Kuliah/ Responsi/ Tutorial",
+      "tipe": "desimal",
+      "kelompok": [
+       "Bobot Kredit (sks)"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "sks_seminar",
+      "label": "Seminar",
+      "tipe": "desimal",
+      "kelompok": [
+       "Bobot Kredit (sks)"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "sks_praktikum",
+      "label": "Praktikum/Praktik/Praktik Lapangan",
+      "tipe": "desimal",
+      "kelompok": [
+       "Bobot Kredit (sks)"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "tautan_rps",
+      "label": "Tautan Dokumen Rencana Pembelajaran",
+      "tipe": "tautan",
+      "nomor_excel": "9"
+     },
+     {
+      "kunci": "tautan_asesmen_cpl",
+      "label": "Tautan Dokumen Asesmen CPL",
+      "tipe": "tautan",
+      "nomor_excel": "10"
+     }
+    ],
+    "kunci": [
+     "kode_mk"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 18 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data saat TS."
  },
  {
   "no": 19,
-  "nama": "Praktik Pengalaman Lapangan (PPL)",
-  "label_tabel": "Tabel 20",
+  "kode": "19",
+  "label_tabel": "Tabel 19",
+  "nama": "Integrasi Penelitian dan PkM dalam Pembelajaran",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   32
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data pelaksanaan PPL, DTPS yang menjadi PPL 1), jumlah mahasiswa yang dibimbing, dan rata-rata jumlah pertemuan pembimbingan PPL dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 20 berikut ini. Tabel 20 Praktik Pengalaman Lapangan Rata-rata lama `Jumlah Mahasiswa 2) Jumlah pertemuan dengan pelaksanaan No. Nama Dosen mahasiswa 3) PPL4)"
+  "lembar": [
+   {
+    "kode": "19",
+    "judul": "Tabel 19 Integrasi Penelitian dan PkM dalam Pembelajaran",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "judul_penelitian_pkm",
+      "label": "Judul Penelitian/PkM",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "mata_kuliah",
+      "label": "Mata Kuliah Inti PS hasil integrasi",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "bentuk_integrasi",
+      "label": "Bentuk Integrasi",
+      "tipe": "pilihan",
+      "pilihan": [
+       "Tambahan Materi Perkuliahan",
+       "Studi Kasus",
+       "Bab/Subab dalam Buku Ajar",
+       "Bahan Ajar",
+       "Bentuk Lain yang Relevan"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "ts2",
+      "label": "TS-2",
+      "tipe": "centang",
+      "kelompok": [
+       "Tahun Integrasi Penelitian/PkM"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "ts1",
+      "label": "TS-1",
+      "tipe": "centang",
+      "kelompok": [
+       "Tahun Integrasi Penelitian/PkM"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "ts",
+      "label": "TS",
+      "tipe": "centang",
+      "kelompok": [
+       "Tahun Integrasi Penelitian/PkM"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "bukti",
+      "label": "Bukti",
+      "tipe": "teks",
+      "nomor_excel": "9"
+     }
+    ],
+    "kunci": [
+     "nama_dtps",
+     "judul_penelitian_pkm"
+    ],
+    "aturan": [
+     {
+      "jenis": "minimal_satu",
+      "kolom": [
+       "ts2",
+       "ts1",
+       "ts"
+      ]
+     }
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 19 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 20,
-  "nama": "IPK Lulusan",
-  "label_tabel": "Tabel 21",
+  "kode": "20",
+  "label_tabel": "Tabel 20",
+  "nama": "Pembimbingan Praktik Pengalaman Lapangan",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   36
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan data jumlah lulusan dan Indeks Prestasi Kumulatif (IPK) lulusan dalam 3 (tiga) tahun terakhir (TS-2 s.d TS) dengan mengikuti format Tabel 21 berikut ini. Peserta PPG dinyatakan lulus apabila telah menempuh seluruh beban belajar, seluruh mata kuliah dinyatakan lulus dan nilai minimal B, IPK >= 3.0, dan dinyatakan lulus dalam UKPPPG. Tabel 21 IPK Lulusan Indeks Prestasi Kumulatif (IPK) Tahun Lulus Jumlah Lulusan Min. Ra"
+  "lembar": [
+   {
+    "kode": "20",
+    "judul": "Tabel 20 Pembimbingan Praktik Pengalaman Lapangan",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_dosen_pembimbing",
+      "label": "Nama Dosen Pembimbing",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "bimbingan_ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Mahasiswa bimbingan"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "bimbingan_ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Mahasiswa bimbingan"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "bimbingan_ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Mahasiswa bimbingan"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "pertemuan_ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Pertemuan dengan Mahasiswa"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "pertemuan_ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Pertemuan dengan Mahasiswa"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "pertemuan_ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Pertemuan dengan Mahasiswa"
+      ],
+      "nomor_excel": "8"
+     },
+     {
+      "kunci": "lama_ppl_bulan",
+      "label": "Lama Pelaksanaan PPL (Bulan)",
+      "tipe": "desimal",
+      "nomor_excel": "9"
+     }
+    ],
+    "kunci": [
+     "nama_dosen_pembimbing"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 20 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 21,
-  "nama": "Masa studi lulusan",
-  "label_tabel": "Tabel 22",
+  "kode": "21",
+  "label_tabel": "Tabel 21",
+  "nama": "IPK Lulusan",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   38
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan masa studi lulusan program studi yang diakreditasi dengan mengikuti format Tabel 22 berikut ini. Tabel 22 Masa Studi Lulusan Jumlah Mahasiswa yang Lulus pada Jumlah Tahun Jumlah Mahasiswa Rata-rata Akhir TS-2 Akhir TS-1 Akhir TS Lulusan Masuk diterima 1) masa studi"
+  "lembar": [
+   {
+    "kode": "21",
+    "judul": "Tabel 21 IPK Lulusan",
+    "tahun_dari": "baris_tetap",
+    "kolom": [
+     {
+      "kunci": "jumlah_lulusan",
+      "label": "Jumlah Lulusan",
+      "tipe": "angka",
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "ipk_min",
+      "label": "Min.",
+      "tipe": "desimal",
+      "kelompok": [
+       "Indeks Prestasi Kumulatif (IPK)"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "ipk_rata",
+      "label": "Rata-rata",
+      "tipe": "desimal",
+      "kelompok": [
+       "Indeks Prestasi Kumulatif (IPK)"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "ipk_maks",
+      "label": "Maks.",
+      "tipe": "desimal",
+      "kelompok": [
+       "Indeks Prestasi Kumulatif (IPK)"
+      ],
+      "nomor_excel": "5"
+     }
+    ],
+    "baris_tetap": {
+     "label_kolom": "Tahun Lulus",
+     "baris": [
+      {
+       "kunci": "TS-2",
+       "label": "TS-2"
+      },
+      {
+       "kunci": "TS-1",
+       "label": "TS-1"
+      },
+      {
+       "kunci": "TS",
+       "label": "TS"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 21 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 22,
-  "nama": "Waktu Tunggu Mendapatkan Pekerjaan",
-  "label_tabel": "Tabel 23",
-  "jendela_data": "TS-4 s.d. TS-2",
-  "keterangan": "Tuliskan data waktu tunggu lulusan untuk mendapatkan pekerjaan pertama dalam 3 (tiga) tahun terakhir, mulai TS-4 sampai dengan TS-2, dengan mengikuti format Tabel 23 berikut ini. Data diambil dari hasil studi penelusuran lulusan (tracer study). Tabel 23 Waktu Tunggu Mendapatkan Pekerjaan Pertama Jumlah Lulusan Terlacak dengan Waktu Tunggu Jumlah Jumlah Lulusan Mendapatkan Pekerjaan Tahun Lulus Lulusan1) yang Terlacak2) 6 ≤ WT "
+  "kode": "22",
+  "label_tabel": "Tabel 22",
+  "nama": "Masa Studi Lulusan",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   39,
+   40,
+   41
+  ],
+  "jendela_data": "TS-2 s.d. TS",
+  "lembar": [
+   {
+    "kode": "22",
+    "judul": "Tabel 22 Masa Studi Lulusan",
+    "tahun_dari": "baris_tetap",
+    "kolom": [
+     {
+      "kunci": "diterima",
+      "label": "Jumlah Mahasiswa diterima",
+      "tipe": "angka",
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "lulus_akhir_ts2",
+      "label": "Akhir TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah mahasiswa yang lulus pada"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "lulus_akhir_ts1",
+      "label": "Akhir TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah mahasiswa yang lulus pada"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "lulus_akhir_ts",
+      "label": "Akhir TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah mahasiswa yang lulus pada"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "jumlah_lulusan",
+      "label": "Jumlah Lulusan s.d Akhir TS",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "jumlah",
+       "kolom": [
+        "lulus_akhir_ts2",
+        "lulus_akhir_ts1",
+        "lulus_akhir_ts"
+       ]
+      },
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "rata_masa_studi",
+      "label": "Rata-rata masa studi",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "masa_studi_rata"
+      },
+      "nomor_excel": "7"
+     }
+    ],
+    "kolom_nonaktif": {
+     "TS-1": [
+      "lulus_akhir_ts2"
+     ],
+     "TS": [
+      "lulus_akhir_ts2",
+      "lulus_akhir_ts1"
+     ]
+    },
+    "baris_tetap": {
+     "label_kolom": "Tahun Masuk",
+     "baris": [
+      {
+       "kunci": "TS-2",
+       "label": "TS-2"
+      },
+      {
+       "kunci": "TS-1",
+       "label": "TS-1"
+      },
+      {
+       "kunci": "TS",
+       "label": "TS"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 22 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 23,
-  "nama": "Kepuasan Pengguna Lulusan",
-  "label_tabel": "Tabel 24",
+  "kode": "23",
+  "label_tabel": "Tabel 23",
+  "nama": "Waktu Tunggu Mendapatkan Pekerjaan Pertama",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   43
+  ],
   "jendela_data": "TS-4 s.d. TS-2",
-  "keterangan": "Tuliskan hasil pengukuran kepuasan pengguna lulusan berdasarkan aspek (1) Etika, (2) keahlian pada bidang ilmu (kompetensi utama), (3) kemampuan berbahasa asing, (4) penggunaan teknologi informasi, (5) kemampuan berkomunikasi, (6) kerjasama, dan (7) Pengembangan diri, (8) berfikir kritis, dan (9) kreativitas mulai TS-4 s.d TS-2, dengan mengikuti format Tabel 24 berikut ini. Data diambil dari hasil studi penelusuran lulusan (tr"
+  "lembar": [
+   {
+    "kode": "23",
+    "judul": "Tabel 23 Waktu Tunggu Mendapatkan Pekerjaan Pertama",
+    "tahun_dari": "baris_tetap",
+    "kolom": [
+     {
+      "kunci": "jumlah_lulusan",
+      "label": "Jumlah Lulusan",
+      "tipe": "angka",
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "terlacak",
+      "label": "Jumlah Lulusan yang Terlacak",
+      "tipe": "angka",
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "wt_kurang_6",
+      "label": "WT < 6 Bulan",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Lulusan Terlacak dengan Waktu Tunggu Mendapatkan Pekerjaan"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "wt_6_12",
+      "label": "6 ≤ WT ≤ 12 Bulan",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Lulusan Terlacak dengan Waktu Tunggu Mendapatkan Pekerjaan"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "wt_lebih_12",
+      "label": "WT > 12 Bulan",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Lulusan Terlacak dengan Waktu Tunggu Mendapatkan Pekerjaan"
+      ],
+      "nomor_excel": "6"
+     }
+    ],
+    "aturan": [
+     {
+      "jenis": "tidak_melebihi",
+      "kolom": [
+       "wt_kurang_6",
+       "wt_6_12",
+       "wt_lebih_12"
+      ],
+      "batas": "terlacak"
+     },
+     {
+      "jenis": "tidak_melebihi",
+      "kolom": [
+       "terlacak"
+      ],
+      "batas": "jumlah_lulusan"
+     }
+    ],
+    "baris_tetap": {
+     "label_kolom": "Tahun Lulus",
+     "baris": [
+      {
+       "kunci": "TS-4",
+       "label": "TS-4"
+      },
+      {
+       "kunci": "TS-3",
+       "label": "TS-3"
+      },
+      {
+       "kunci": "TS-2",
+       "label": "TS-2"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 23 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-4 s.d. TS-2."
  },
  {
   "no": 24,
-  "nama": "Penelitian DTPS",
-  "label_tabel": "Tabel 25",
-  "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan jumlah judul penelitian 1) yang dilaksanakan DTPS berdasarkan sumber pembiayaan, yang relevan dengan bidang program studi dalam 3 (tiga) tahun terakhir (TS-2 s.d TS) dengan mengikuti format Tabel 25 berikut ini. Tabel 25 Penelitian DTPS Jumlah Judul No. Sumber Pembiayaan Jumlah TS-2 TS-1 TS (1) (2) (3) (4) (5) (6) 1 a. Perguruan Tinggi"
+  "kode": "24",
+  "label_tabel": "Tabel 24",
+  "nama": "Kepuasan Pengguna Lulusan",
+  "pokja": "POKJA-DIK",
+  "elemen": [
+   44
+  ],
+  "jendela_data": "TS-4 s.d. TS-2",
+  "lembar": [
+   {
+    "kode": "24.1",
+    "judul": "Tabel 24 Kepuasan Pengguna Lulusan",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "sangat_baik",
+      "label": "Sangat Baik",
+      "tipe": "desimal",
+      "kelompok": [
+       "Tingkat Kepuasan Pengguna (%)"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "baik",
+      "label": "Baik",
+      "tipe": "desimal",
+      "kelompok": [
+       "Tingkat Kepuasan Pengguna (%)"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "cukup",
+      "label": "Cukup",
+      "tipe": "desimal",
+      "kelompok": [
+       "Tingkat Kepuasan Pengguna (%)"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "kurang",
+      "label": "Kurang",
+      "tipe": "desimal",
+      "kelompok": [
+       "Tingkat Kepuasan Pengguna (%)"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "rencana_tindak_lanjut",
+      "label": "Rencana Tindak Lanjut oleh UPPS/PS",
+      "tipe": "teks",
+      "nomor_excel": "7"
+     }
+    ],
+    "aturan": [
+     {
+      "jenis": "jumlah_persen_100",
+      "kolom": [
+       "sangat_baik",
+       "baik",
+       "cukup",
+       "kurang"
+      ]
+     }
+    ],
+    "baris_tetap": {
+     "label_kolom": "Jenis Kemampuan",
+     "baris": [
+      {
+       "kunci": "etika",
+       "label": "Etika"
+      },
+      {
+       "kunci": "keahlian_bidang_ilmu",
+       "label": "Keahlian pada bidang ilmu (kompetensi utama)"
+      },
+      {
+       "kunci": "bahasa_asing",
+       "label": "Kemampuan berbahasa asing"
+      },
+      {
+       "kunci": "teknologi_informasi",
+       "label": "Penggunaan teknologi informasi"
+      },
+      {
+       "kunci": "komunikasi",
+       "label": "Kemampuan berkomunikasi"
+      },
+      {
+       "kunci": "kerjasama_tim",
+       "label": "Kerjasama tim"
+      },
+      {
+       "kunci": "pengembangan_diri",
+       "label": "Pengembangan diri"
+      },
+      {
+       "kunci": "berpikir_kritis",
+       "label": "Berfikir Kritis"
+      },
+      {
+       "kunci": "kreativitas",
+       "label": "Kreatifitas"
+      }
+     ]
+    }
+   },
+   {
+    "kode": "24.2",
+    "judul": "Tabel 24 Referensi - Jumlah Tanggapan Pengguna Lulusan",
+    "tahun_dari": "baris_tetap",
+    "kolom": [
+     {
+      "kunci": "jumlah_lulusan",
+      "label": "Jumlah Lulusan",
+      "tipe": "angka"
+     },
+     {
+      "kunci": "jumlah_tanggapan",
+      "label": "Jumlah Tanggapan Pengguna Lulusan yang Terlacak",
+      "tipe": "angka"
+     }
+    ],
+    "baris_tetap": {
+     "label_kolom": "Tahun Lulus",
+     "baris": [
+      {
+       "kunci": "TS-4",
+       "label": "TS-4"
+      },
+      {
+       "kunci": "TS-3",
+       "label": "TS-3"
+      },
+      {
+       "kunci": "TS-2",
+       "label": "TS-2"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 24 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-4 s.d. TS-2."
  },
  {
   "no": 25,
-  "nama": "Publikasi Ilmiah DTPS",
-  "label_tabel": "Tabel 26",
+  "kode": "25",
+  "label_tabel": "Tabel 25",
+  "nama": "Penelitian DTPS",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   49
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan jumlah publikasi ilmiah DTPS yang relevan dengan bidang program studi, yang dihasilkan dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 26 berikut ini. Tabel 26 Publikasi Ilmiah DTPS Jumlah Judul No. Media Publikasi Jumlah TS-2 TS-1 TS (1) (2) (3) (4) (5) (6) 1 Jurnal nasional tidak terakreditasi NA1 ="
+  "lembar": [
+   {
+    "kode": "25",
+    "judul": "Tabel 25 Penelitian DTPS",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "jumlah",
+      "label": "Jumlah",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "jumlah",
+       "kolom": [
+        "ts2",
+        "ts1",
+        "ts"
+       ]
+      },
+      "nomor_excel": "6"
+     }
+    ],
+    "footer": "jumlah",
+    "baris_tetap": {
+     "label_kolom": "Sumber Pembiayaan",
+     "baris": [
+      {
+       "kunci": "pt_mandiri",
+       "label": "a. Perguruan Tinggi b. Mandiri 2)"
+      },
+      {
+       "kunci": "dalam_negeri",
+       "label": "Lembaga Dalam Negeri (di luar PT)"
+      },
+      {
+       "kunci": "luar_negeri",
+       "label": "Lembaga Luar Negeri"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 25 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 26,
-  "nama": "Publikasi Ilmiah DTPS pada Jurnal Nasional Terakreditasi/Internasional Bereputasi",
-  "label_tabel": "Tabel 27",
+  "kode": "26",
+  "label_tabel": "Tabel 26",
+  "nama": "Publikasi Ilmiah DTPS",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   50
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan judul artikel karya ilmiah DTPS yang dipublikasikan pada pada jurnal nasional terakreditasi minimal Sinta 2 dan/atau internasional bereputasi (terindeks scopus atau WoS) sebagai penulis pertama atau corresponding authors dalam 3 tahun terakhir dengan mengikuti format Tabel 27 berikut ini. Tabel 27 Publikasi Ilmiah DTPS pada Jurnal Nasional Terakreditasi/Internasional bereputasi Judul Artikel yang Penulis"
+  "lembar": [
+   {
+    "kode": "26",
+    "judul": "Tabel 26 Publikasi Ilmiah DTPS",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "jumlah",
+      "label": "Jumlah",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "jumlah",
+       "kolom": [
+        "ts2",
+        "ts1",
+        "ts"
+       ]
+      },
+      "nomor_excel": ""
+     }
+    ],
+    "footer": "jumlah",
+    "baris_tetap": {
+     "label_kolom": "Media Publikasi",
+     "baris": [
+      {
+       "kunci": "na1",
+       "label": "Jurnal nasional tidak terakreditasi"
+      },
+      {
+       "kunci": "na2",
+       "label": "Jurnal nasional terakreditasi"
+      },
+      {
+       "kunci": "na3",
+       "label": "Jurnal Internasional/karya monumental tingkat nasional"
+      },
+      {
+       "kunci": "na4",
+       "label": "Jurnal internasional bereputasi/ karya monumental tingkat internasional"
+      },
+      {
+       "kunci": "nb1",
+       "label": "Seminar wilayah/lokal/perguruan tinggi"
+      },
+      {
+       "kunci": "nb2",
+       "label": "Seminar nasional"
+      },
+      {
+       "kunci": "nb3",
+       "label": "Seminar internasional"
+      },
+      {
+       "kunci": "nc1",
+       "label": "Tulisan di media massa wilayah"
+      },
+      {
+       "kunci": "nc2",
+       "label": "Tulisan di media massa nasional"
+      },
+      {
+       "kunci": "nc3",
+       "label": "Tulisan di media massa internasional"
+      },
+      {
+       "kunci": "nd1",
+       "label": "Buku Ber-ISBN/Book Chapter"
+      },
+      {
+       "kunci": "nd2",
+       "label": "Paten/Paten Sederhana"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 26 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 27,
-  "nama": "Karya Ilmiah yang Disitasi",
-  "label_tabel": "Tabel 28",
+  "kode": "27",
+  "label_tabel": "Tabel 27",
+  "nama": "Publikasi DTPS pada Jurnal Nasional Minimal Sinta 2 dan/atau Internasional Bereputasi",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   51
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan judul artikel karya ilmiah DTPS yang disitasi dalam 3 (tiga) tahun terakhir dengan mengikuti format Tabel 28. Judul artikel yang disitasi harus relevan dengan bidang ilmu program studi."
+  "lembar": [
+   {
+    "kode": "27",
+    "judul": "Tabel 27 Publikasi DTPS pada Jurnal Nasional Minimal Sinta 2 dan/atau Internasional Bereputasi",
+    "tahun_dari": "kolom:tanggal_terbit",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "judul_artikel",
+      "label": "Judul Artikel (Jurnal, Volume, Tahun, Nomor, Halaman)",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "nama_penulis",
+      "label": "Nama Penulis",
+      "tipe": "teks",
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "peran_penulis",
+      "label": "Penulis Pertama/ Korespondensi",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Penulis Pertama",
+       "Corresponding author"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "jenis_jurnal",
+      "label": "Jenis Jurnal",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Jurnal Nasional",
+       "Jurnal Internasional"
+      ],
+      "nomor_excel": "6"
+     },
+     {
+      "kunci": "terindeks",
+      "label": "Terindeks",
+      "tipe": "pilihan",
+      "wajib": true,
+      "pilihan": [
+       "Scopus Q1",
+       "Scopus Q2",
+       "Scopus Q3",
+       "Scopus Q4",
+       "WoS (Web of Science)",
+       "SINTA 1",
+       "SINTA 2"
+      ],
+      "nomor_excel": "7"
+     },
+     {
+      "kunci": "tanggal_terbit",
+      "label": "Tanggal Terbit",
+      "tipe": "tanggal",
+      "wajib": true,
+      "nomor_excel": "8"
+     }
+    ],
+    "kunci": [
+     "nama_dtps",
+     "judul_artikel"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 27 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  },
  {
   "no": 28,
-  "nama": "Pengabdian kepada Masyarakat (PkM)",
-  "label_tabel": "Tabel 29",
+  "kode": "28",
+  "label_tabel": "Tabel 28",
+  "nama": "Karya Ilmiah DTPS yang Disitasi",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   52
+  ],
   "jendela_data": "TS-2 s.d. TS",
-  "keterangan": "Tuliskan jumlah judul PkM 1) yang dilaksanakan DTPS berdasarkan sumber pembiayaan, yang relevan dengan bidang program studi dalam 3 (tiga) tahun terakhir (TS-2 s.d TS) dengan mengikuti format Tabel 29 berikut ini. Tabel 29 PkM DTPS Jumlah Judul No. Sumber Pembiayaan Jumlah TS-2 TS-1 TS (1) (2) (3) (4) (5) (6)"
+  "lembar": [
+   {
+    "kode": "28",
+    "judul": "Tabel 28 Karya Ilmiah DTPS yang Disitasi",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "nama_dtps",
+      "label": "Nama DTPS",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "2"
+     },
+     {
+      "kunci": "judul_artikel",
+      "label": "Judul Artikel yang disitasi (Jurnal/Buku, Volume, Tahun, Nomor, Halaman)",
+      "tipe": "teks",
+      "wajib": true,
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "jumlah_sitasi",
+      "label": "Jumlah Sitasi",
+      "tipe": "angka",
+      "wajib": true,
+      "nomor_excel": "4"
+     }
+    ],
+    "kunci": [
+     "nama_dtps",
+     "judul_artikel"
+    ]
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 28 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
+ },
+ {
+  "no": 29,
+  "kode": "29",
+  "label_tabel": "Tabel 29",
+  "nama": "PkM DTPS",
+  "pokja": "POKJA-SDM",
+  "elemen": [
+   54
+  ],
+  "jendela_data": "TS-2 s.d. TS",
+  "lembar": [
+   {
+    "kode": "29",
+    "judul": "Tabel 29 PkM DTPS",
+    "tahun_dari": "TS",
+    "kolom": [
+     {
+      "kunci": "ts2",
+      "label": "TS-2",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "3"
+     },
+     {
+      "kunci": "ts1",
+      "label": "TS-1",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "4"
+     },
+     {
+      "kunci": "ts",
+      "label": "TS",
+      "tipe": "angka",
+      "kelompok": [
+       "Jumlah Judul"
+      ],
+      "nomor_excel": "5"
+     },
+     {
+      "kunci": "jumlah",
+      "label": "Jumlah",
+      "tipe": "hitung",
+      "rumus": {
+       "jenis": "jumlah",
+       "kolom": [
+        "ts2",
+        "ts1",
+        "ts"
+       ]
+      },
+      "nomor_excel": "6"
+     }
+    ],
+    "footer": "jumlah",
+    "baris_tetap": {
+     "label_kolom": "Sumber Pembiayaan",
+     "baris": [
+      {
+       "kunci": "pt_mandiri",
+       "label": "a. Perguruan Tinggi b. Mandiri 2)"
+      },
+      {
+       "kunci": "dalam_negeri",
+       "label": "Lembaga Dalam Negeri (di luar PT)"
+      },
+      {
+       "kunci": "luar_negeri",
+       "label": "Lembaga Luar Negeri"
+      }
+     ]
+    }
+   }
+  ],
+  "keterangan": "Isi mengikuti format Tabel 29 pada DKPS-3.1-TU-PPG (versi 3.0, 15 April 2026); jendela data TS-2 s.d. TS."
  }
 ]
