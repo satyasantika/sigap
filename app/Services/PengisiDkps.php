@@ -15,6 +15,7 @@ use App\Support\Izin;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -72,15 +73,26 @@ class PengisiDkps
             throw new IsianDkpsTidakSah(['_baris' => 'Kunci baris wajib untuk lembar berbaris tetap.']);
         }
 
-        $normal = $skema->normalkan($data, $kunciBaris);
-        $galat = $skema->validasi($normal, $kunciBaris);
+        // Kunci baris tetap yang asing (dan tahun yang tak terbaca) dilempar
+        // SkemaLembar sebagai InvalidArgumentException; dijadikan galat isian
+        // supaya pemanggil — grid dan impor — hanya menangani tiga jenis
+        // penolakan. TahunDiLuarJendela juga turunan InvalidArgumentException,
+        // tetapi dibiarkan lewat karena pemanggil menampilkannya tersendiri.
+        try {
+            $normal = $skema->normalkan($data, $kunciBaris);
+            $galat = $skema->validasi($normal, $kunciBaris);
 
-        if ($galat !== []) {
-            throw new IsianDkpsTidakSah($galat);
+            if ($galat !== []) {
+                throw new IsianDkpsTidakSah($galat);
+            }
+
+            $tahunAcuan = $skema->tahunAcuan($periode, $normal, $kunciBaris);
+            $kunciNormal = $skema->kunciBaris($normal, $kunciBaris);
+        } catch (TahunDiLuarJendela $e) {
+            throw $e;
+        } catch (InvalidArgumentException $e) {
+            throw new IsianDkpsTidakSah(['_baris' => $e->getMessage()]);
         }
-
-        $tahunAcuan = $skema->tahunAcuan($periode, $normal, $kunciBaris);
-        $kunciNormal = $skema->kunciBaris($normal, $kunciBaris);
 
         if ($baris === null && $skema->adaBarisTetap()) {
             $baris = DkpsBaris::query()
@@ -159,8 +171,9 @@ class PengisiDkps
     /**
      * Membuat bukti tautan lalu menautkannya ke baris.
      *
-     * Prodi dan periode bukti dilengkapi dari baris, supaya pemanggil
-     * formulir tidak perlu mengulang data yang sudah melekat pada baris.
+     * Prodi dan periode bukti SELALU diambil dari baris, menimpa isian
+     * pemanggil: bukti yang menopang sebuah baris tidak boleh tersasar ke
+     * periode lain dari baris itu.
      *
      * @param  array<string, mixed>  $atribut  judul, tanggal_kejadian, sumber, dst.
      *
@@ -173,10 +186,10 @@ class PengisiDkps
         }
 
         return DB::transaction(function () use ($baris, $url, $atribut, $oleh) {
-            $bukti = $this->pengelolaBukti->simpanTautan($url, $atribut + [
+            $bukti = $this->pengelolaBukti->simpanTautan($url, [
                 'prodi_id' => $baris->prodi_id,
                 'periode_id' => $baris->periode_id,
-            ], $oleh);
+            ] + $atribut, $oleh);
 
             $baris->bukti()->syncWithoutDetaching([$bukti->id]);
 

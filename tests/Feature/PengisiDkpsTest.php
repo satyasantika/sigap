@@ -151,6 +151,14 @@ class PengisiDkpsTest extends TestCase
         $this->assertSame(1, DkpsBaris::where('lembar_kode', '21')->count());
         $this->assertSame(104, DkpsBaris::where('lembar_kode', '21')->first()->nilai('jumlah_lulusan'));
         $this->assertSame('TS-2', DkpsBaris::where('lembar_kode', '21')->first()->tahun_acuan);
+
+        // Kunci baris tetap yang asing menjadi galat isian, bukan InvalidArgumentException.
+        try {
+            $this->pengisi->simpan($butir, '21', $this->periode, ['jumlah_lulusan' => 1, 'ipk_rata' => '3'], SumberData::Siakad, $ketua, null, 'TS-9');
+            $this->fail('Kunci baris asing harus ditolak.');
+        } catch (IsianDkpsTidakSah $e) {
+            $this->assertSame(['_baris'], array_keys($e->galat));
+        }
     }
 
     #[Test]
@@ -200,6 +208,11 @@ class PengisiDkpsTest extends TestCase
         $bukti = $this->pengisi->tautkanBuktiTautan($lain, 'https://drive.google.com/file/d/XYZ/view', [
             'judul' => 'Tangkapan Google Scholar', 'tanggal_kejadian' => now()->subMonth()->toDateString(),
             'sumber' => SumberData::Manual,
+            // Periode asing dari pemanggil tidak boleh menang atas periode baris.
+            'periode_id' => Periode::create([
+                'prodi_id' => $this->prodi->id, 'nama' => 'Periode lain', 'ts_tahun' => 2027,
+                'versi_instrumen' => 'IAPSK 3.0',
+            ])->id,
         ], $this->pengguna(PeranPengguna::Anggota, 'POKJA-SDM'));
 
         $this->assertSame(1, $lain->bukti()->count());
