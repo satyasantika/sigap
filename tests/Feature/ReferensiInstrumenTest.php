@@ -8,12 +8,14 @@ use App\Models\Elemen;
 use App\Models\Kriteria;
 use App\Models\Rumus;
 use App\Models\SyaratPerlu;
+use App\Models\VariabelDkps;
 use Database\Seeders\Concerns\MembacaBerkasData;
 use Database\Seeders\DkpsButirSeeder;
 use Database\Seeders\ElemenSeeder;
 use Database\Seeders\KriteriaSeeder;
 use Database\Seeders\RumusSeeder;
 use Database\Seeders\SyaratPerluSeeder;
+use Database\Seeders\VariabelDkpsSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -169,18 +171,36 @@ class ReferensiInstrumenTest extends TestCase
     }
 
     #[Test]
-    public function rumus_berjumlah_15_dan_memuat_rumus_inti(): void
+    public function rumus_berjumlah_28_dan_memuat_rumus_inti(): void
     {
         $this->semaiReferensi();
 
-        $this->assertSame(15, Rumus::count());
+        $this->assertSame(28, Rumus::count());
 
-        foreach (['PDS3', 'PGBLKL', 'PPDTPS', 'RSA', 'RK', 'NA'] as $kode) {
+        foreach (['PDS3', 'PGBLKL', 'PPDTPS', 'RSA', 'RK', 'NA', 'PRESMA', 'RPUB', 'TKi'] as $kode) {
             $this->assertTrue(Rumus::where('kode', $kode)->exists(), "Rumus {$kode} tidak tersemai.");
         }
 
         // NA adalah penjumlah global, tidak terikat elemen mana pun.
         $this->assertNull(Rumus::where('kode', 'NA')->value('elemen_id'));
+    }
+
+    #[Test]
+    public function setiap_variabel_dkps_rumus_ada_di_katalog(): void
+    {
+        $this->semaiReferensi();
+        $this->seed(VariabelDkpsSeeder::class);
+
+        $katalog = VariabelDkps::pluck('kode')->all();
+
+        foreach (Rumus::all() as $rumus) {
+            foreach ($rumus->variabel_dkps ?? [] as $kode) {
+                $this->assertContains($kode, $katalog, "Rumus {$rumus->kode} merujuk variabel {$kode} yang tidak ada di katalog.");
+            }
+        }
+
+        // NA dihitung KalkulatorNa dari skor elemen, bukan dari isian DKPS.
+        $this->assertSame([], Rumus::where('kode', 'NA')->firstOrFail()->variabel_dkps);
     }
 
     #[Test]

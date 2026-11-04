@@ -13,13 +13,13 @@ class Rumus extends Model
     protected $table = 'rumus';
 
     protected $fillable = [
-        'kode', 'nama', 'elemen_id', 'ekspresi', 'variabel',
+        'kode', 'nama', 'elemen_id', 'ekspresi', 'variabel', 'variabel_dkps',
         'aturan_skor', 'jendela', 'catatan',
     ];
 
     protected function casts(): array
     {
-        return ['variabel' => 'array'];
+        return ['variabel' => 'array', 'variabel_dkps' => 'array'];
     }
 
     public function elemen(): BelongsTo

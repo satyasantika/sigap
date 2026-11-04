@@ -1,0 +1,2115 @@
+[
+ {
+  "kode": "N_KERJASAMA_PENDIDIKAN",
+  "label": "Jumlah kerja sama bidang pendidikan (N1)",
+  "lembar": [
+   "1.1"
+  ],
+  "cara": "cacah_baris",
+  "rumus": [
+   "RK"
+  ]
+ },
+ {
+  "kode": "N_KERJASAMA_PENELITIAN",
+  "label": "Jumlah kerja sama bidang penelitian (N2)",
+  "lembar": [
+   "1.2"
+  ],
+  "cara": "cacah_baris",
+  "rumus": [
+   "RK"
+  ]
+ },
+ {
+  "kode": "N_KERJASAMA_PKM",
+  "label": "Jumlah kerja sama bidang PkM (N3)",
+  "lembar": [
+   "1.3"
+  ],
+  "cara": "cacah_baris",
+  "rumus": [
+   "RK"
+  ]
+ },
+ {
+  "kode": "N_KERJASAMA_INTERNASIONAL",
+  "label": "Jumlah kerja sama tingkat internasional (NI)",
+  "lembar": [
+   "1.1",
+   "1.2",
+   "1.3"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "internasional",
+  "rumus": [
+   "RK"
+  ]
+ },
+ {
+  "kode": "N_KERJASAMA_NASIONAL",
+  "label": "Jumlah kerja sama tingkat nasional (NN)",
+  "lembar": [
+   "1.1",
+   "1.2",
+   "1.3"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "nasional",
+  "rumus": [
+   "RK"
+  ]
+ },
+ {
+  "kode": "N_KERJASAMA_WILAYAH",
+  "label": "Jumlah kerja sama tingkat wilayah/lokal (NW)",
+  "lembar": [
+   "1.1",
+   "1.2",
+   "1.3"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "wilayah_lokal",
+  "rumus": [
+   "RK"
+  ]
+ },
+ {
+  "kode": "N_MHS_PPG",
+  "label": "Jumlah mahasiswa aktif PPG saat TS (NM)",
+  "lembar": [
+   "2"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS",
+     "aktif_calon_guru"
+    ],
+    [
+     "TS",
+     "aktif_guru_tertentu"
+    ]
+   ]
+  },
+  "rumus": [
+   "PRESMA",
+   "PKIM",
+   "DANA"
+  ]
+ },
+ {
+  "kode": "N_PRESTASI_INTERNASIONAL",
+  "label": "Jumlah prestasi mahasiswa tingkat internasional (NI)",
+  "lembar": [
+   "3"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "internasional",
+  "rumus": [
+   "PRESMA"
+  ]
+ },
+ {
+  "kode": "N_PRESTASI_NASIONAL",
+  "label": "Jumlah prestasi mahasiswa tingkat nasional (NN)",
+  "lembar": [
+   "3"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "nasional",
+  "rumus": [
+   "PRESMA"
+  ]
+ },
+ {
+  "kode": "N_PRESTASI_LOKAL",
+  "label": "Jumlah prestasi mahasiswa tingkat wilayah/lokal (NW)",
+  "lembar": [
+   "3"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "wilayah_lokal",
+  "rumus": [
+   "PRESMA"
+  ]
+ },
+ {
+  "kode": "N_MHS_PATEN",
+  "label": "Mahasiswa berkarya paten/paten sederhana",
+  "lembar": [
+   "4.1"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nim",
+  "rumus": [
+   "PKIM"
+  ]
+ },
+ {
+  "kode": "N_MHS_BUKU_ISBN",
+  "label": "Mahasiswa berkarya buku ber-ISBN/book chapter",
+  "lembar": [
+   "4.2"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nim",
+  "rumus": [
+   "PKIM"
+  ]
+ },
+ {
+  "kode": "N_MHS_SENI",
+  "label": "Mahasiswa berkarya seni yang dipamerkan/dipagelarkan",
+  "lembar": [
+   "4.3"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nim",
+  "rumus": [
+   "PKIM"
+  ]
+ },
+ {
+  "kode": "N_MHS_PUBLIKASI_MIN_SINTA5",
+  "label": "Mahasiswa berpublikasi pada jurnal minimal SINTA 5 atau internasional",
+  "lembar": [
+   "4.4"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nim",
+  "parameter": {
+   "filter": {
+    "kolom": "peringkat_jurnal",
+    "nilai": [
+     "Jurnal Nasional (SINTA 1)",
+     "Jurnal Nasional (SINTA 2)",
+     "Jurnal Nasional (SINTA 3)",
+     "Jurnal Nasional (SINTA 4)",
+     "Jurnal Nasional (SINTA 5)",
+     "Jurnal Internasional",
+     "Junal Internasional Bereputasi (Scopus atau WoS)"
+    ]
+   }
+  },
+  "rumus": [
+   "PKIM"
+  ]
+ },
+ {
+  "kode": "RELIABILITY_SB",
+  "label": "Kepuasan mahasiswa, Keandalan: sangat baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "reliability",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RELIABILITY_B",
+  "label": "Kepuasan mahasiswa, Keandalan: baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "reliability",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RELIABILITY_C",
+  "label": "Kepuasan mahasiswa, Keandalan: cukup (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "reliability",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RELIABILITY_KB",
+  "label": "Kepuasan mahasiswa, Keandalan: kurang baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "reliability",
+   "kolom": "kurang_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RESPONSIVENESS_SB",
+  "label": "Kepuasan mahasiswa, Daya tanggap: sangat baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "responsiveness",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RESPONSIVENESS_B",
+  "label": "Kepuasan mahasiswa, Daya tanggap: baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "responsiveness",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RESPONSIVENESS_C",
+  "label": "Kepuasan mahasiswa, Daya tanggap: cukup (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "responsiveness",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "RESPONSIVENESS_KB",
+  "label": "Kepuasan mahasiswa, Daya tanggap: kurang baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "responsiveness",
+   "kolom": "kurang_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "ASSURANCE_SB",
+  "label": "Kepuasan mahasiswa, Kepastian: sangat baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "assurance",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "ASSURANCE_B",
+  "label": "Kepuasan mahasiswa, Kepastian: baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "assurance",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "ASSURANCE_C",
+  "label": "Kepuasan mahasiswa, Kepastian: cukup (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "assurance",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "ASSURANCE_KB",
+  "label": "Kepuasan mahasiswa, Kepastian: kurang baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "assurance",
+   "kolom": "kurang_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "EMPATHY_SB",
+  "label": "Kepuasan mahasiswa, Empati: sangat baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "empathy",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "EMPATHY_B",
+  "label": "Kepuasan mahasiswa, Empati: baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "empathy",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "EMPATHY_C",
+  "label": "Kepuasan mahasiswa, Empati: cukup (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "empathy",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "EMPATHY_KB",
+  "label": "Kepuasan mahasiswa, Empati: kurang baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "empathy",
+   "kolom": "kurang_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "TANGIBLE_SB",
+  "label": "Kepuasan mahasiswa, Tangible: sangat baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "tangible",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "TANGIBLE_B",
+  "label": "Kepuasan mahasiswa, Tangible: baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "tangible",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "TANGIBLE_C",
+  "label": "Kepuasan mahasiswa, Tangible: cukup (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "tangible",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "TANGIBLE_KB",
+  "label": "Kepuasan mahasiswa, Tangible: kurang baik (%)",
+  "lembar": [
+   "5"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "tangible",
+   "kolom": "kurang_baik"
+  },
+  "rumus": [
+   "TKM"
+  ]
+ },
+ {
+  "kode": "N_DPP",
+  "label": "Jumlah dosen pengelola program studi (Tabel 6)",
+  "lembar": [
+   "6"
+  ],
+  "cara": "cacah_baris",
+  "rumus": []
+ },
+ {
+  "kode": "N_DBS",
+  "label": "Jumlah dosen bidang studi dan dosen pengampu (Tabel 7)",
+  "lembar": [
+   "7"
+  ],
+  "cara": "cacah_baris",
+  "rumus": []
+ },
+ {
+  "kode": "N_DTPS",
+  "label": "Jumlah DTPS: NIDN/NIDK unik gabungan Tabel 6 dan 7 (NDTPS)",
+  "lembar": [
+   "6",
+   "7"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "PDS3",
+   "PGBLKL",
+   "RK",
+   "PPDTPS",
+   "RSA",
+   "NDTPSPK",
+   "RRD",
+   "DANA",
+   "PDIPPKM",
+   "RPEN",
+   "RPUB",
+   "RPKM"
+  ]
+ },
+ {
+  "kode": "N_DTPS_DOKTOR",
+  "label": "DTPS berpendidikan doktor (NDS3)",
+  "lembar": [
+   "6",
+   "7"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "PDS3"
+  ]
+ },
+ {
+  "kode": "N_DTPS_GB",
+  "label": "DTPS berjabatan Guru Besar (NDGB)",
+  "lembar": [
+   "6",
+   "7"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "PGBLKL"
+  ]
+ },
+ {
+  "kode": "N_DTPS_LK",
+  "label": "DTPS berjabatan Lektor Kepala (NDLK)",
+  "lembar": [
+   "6",
+   "7"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "PGBLKL"
+  ]
+ },
+ {
+  "kode": "N_DTPS_LEKTOR",
+  "label": "DTPS berjabatan Lektor (NDL)",
+  "lembar": [
+   "6",
+   "7"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "PGBLKL"
+  ]
+ },
+ {
+  "kode": "N_BIDANG_STUDI",
+  "label": "Jumlah bidang studi (NBS)",
+  "lembar": [
+   "7"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nama_bidang_studi",
+  "rumus": [
+   "RGP"
+  ]
+ },
+ {
+  "kode": "RBK_DTPS",
+  "label": "Rata-rata beban kerja DTPS (sks per semester)",
+  "lembar": [
+   "8"
+  ],
+  "cara": "rata_kolom",
+  "kolom": "rata_per_semester",
+  "rumus": [
+   "BKD"
+  ]
+ },
+ {
+  "kode": "N_REKOGNISI_DTPS",
+  "label": "Jumlah pengakuan/rekognisi kepakaran DTPS (NRD)",
+  "lembar": [
+   "9"
+  ],
+  "cara": "cacah_baris",
+  "rumus": [
+   "RRD"
+  ]
+ },
+ {
+  "kode": "N_DTPS_PK",
+  "label": "DTPS yang mengikuti pengembangan kompetensi",
+  "lembar": [
+   "10"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nama_dtps",
+  "rumus": [
+   "NDTPSPK"
+  ]
+ },
+ {
+  "kode": "N_TENDIK",
+  "label": "Jumlah tenaga kependidikan",
+  "lembar": [
+   "11"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "pustakawan",
+     "jumlah"
+    ],
+    [
+     "laboran_teknisi",
+     "jumlah"
+    ],
+    [
+     "administrasi",
+     "jumlah"
+    ],
+    [
+     "lainnya",
+     "jumlah"
+    ]
+   ]
+  },
+  "rumus": [
+   "NTENDIKPK"
+  ]
+ },
+ {
+  "kode": "N_TENDIK_PK",
+  "label": "Tendik yang mengikuti pengembangan kompetensi",
+  "lembar": [
+   "12"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nama_tendik",
+  "rumus": [
+   "NTENDIKPK"
+  ]
+ },
+ {
+  "kode": "N_GP",
+  "label": "Jumlah guru pamong (NGP)",
+  "lembar": [
+   "13"
+  ],
+  "cara": "cacah_baris",
+  "rumus": [
+   "RGP"
+  ]
+ },
+ {
+  "kode": "N_GP_MAGISTER_DOKTOR",
+  "label": "Guru pamong berkualifikasi magister/doktor (NGPMD)",
+  "lembar": [
+   "13"
+  ],
+  "cara": "cacah_pilihan",
+  "kolom": "pendidikan_tertinggi",
+  "parameter": {
+   "nilai": [
+    "Magister/Magister Terapan",
+    "Doktor/Doktor Terapan"
+   ]
+  },
+  "rumus": [
+   "RGP"
+  ]
+ },
+ {
+  "kode": "N_GP_MADYA_UTAMA",
+  "label": "Guru pamong berjabatan Guru Madya/Guru Utama (NGPMU)",
+  "lembar": [
+   "13"
+  ],
+  "cara": "cacah_pilihan",
+  "kolom": "jabatan_fungsional",
+  "parameter": {
+   "nilai": [
+    "Guru Madya",
+    "Guru Utama"
+   ]
+  },
+  "rumus": [
+   "RGP"
+  ]
+ },
+ {
+  "kode": "N_GP_SERDIK",
+  "label": "Guru pamong bersertifikat pendidik (NGPGP)",
+  "lembar": [
+   "13"
+  ],
+  "cara": "cacah_terisi",
+  "kolom": "no_serdik",
+  "rumus": [
+   "RGP"
+  ]
+ },
+ {
+  "kode": "B_OP",
+  "label": "Rata-rata biaya operasional pendidikan program studi per tahun",
+  "lembar": [
+   "14"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "biaya_dosen",
+     "ps_rata"
+    ],
+    [
+     "biaya_tendik",
+     "ps_rata"
+    ],
+    [
+     "biaya_operasional_pembelajaran",
+     "ps_rata"
+    ],
+    [
+     "biaya_operasional_tidak_langsung",
+     "ps_rata"
+    ],
+    [
+     "biaya_kemahasiswaan",
+     "ps_rata"
+    ]
+   ]
+  },
+  "rumus": [
+   "DANA"
+  ]
+ },
+ {
+  "kode": "B_PENELITIAN",
+  "label": "Rata-rata biaya operasional penelitian program studi per tahun",
+  "lembar": [
+   "14"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "biaya_penelitian",
+   "kolom": "ps_rata"
+  },
+  "rumus": [
+   "DANA"
+  ]
+ },
+ {
+  "kode": "B_PKM",
+  "label": "Rata-rata biaya operasional PkM program studi per tahun",
+  "lembar": [
+   "14"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "biaya_pkm",
+   "kolom": "ps_rata"
+  },
+  "rumus": [
+   "DANA"
+  ]
+ },
+ {
+  "kode": "N_MK_KU",
+  "label": "Jumlah mata kuliah inti (kompetensi utama)",
+  "lembar": [
+   "18"
+  ],
+  "cara": "cacah_centang",
+  "kolom": "mk_inti",
+  "rumus": [
+   "PMKI",
+   "RMKCPL"
+  ]
+ },
+ {
+  "kode": "N_MK_CPL",
+  "label": "Mata kuliah inti dengan tautan asesmen CPL",
+  "lembar": [
+   "18"
+  ],
+  "cara": "cacah_terisi",
+  "kolom": "tautan_asesmen_cpl",
+  "parameter": {
+   "filter": {
+    "kolom": "mk_inti",
+    "centang": true
+   }
+  },
+  "rumus": [
+   "RMKCPL"
+  ]
+ },
+ {
+  "kode": "N_INTEGRASI",
+  "label": "DTPS yang mengintegrasikan penelitian/PkM dalam pembelajaran",
+  "lembar": [
+   "19"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "nama_dtps",
+  "rumus": [
+   "PDIPPKM"
+  ]
+ },
+ {
+  "kode": "N_INTEGRASI_MK",
+  "label": "Mata kuliah yang memuat integrasi penelitian/PkM",
+  "lembar": [
+   "19"
+  ],
+  "cara": "cacah_unik",
+  "kolom": "mata_kuliah",
+  "rumus": [
+   "PMKI"
+  ]
+ },
+ {
+  "kode": "RT_PEMBIMBINGAN_PPL",
+  "label": "Rata-rata pertemuan pembimbingan PPL per dosen per tahun",
+  "lembar": [
+   "20"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "RPPL"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_TS2",
+  "label": "Jumlah lulusan TS-2 (Tabel 21)",
+  "lembar": [
+   "21"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS-2",
+   "kolom": "jumlah_lulusan"
+  },
+  "rumus": [
+   "RIPK"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_TS1",
+  "label": "Jumlah lulusan TS-1 (Tabel 21)",
+  "lembar": [
+   "21"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS-1",
+   "kolom": "jumlah_lulusan"
+  },
+  "rumus": [
+   "RIPK"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_TS",
+  "label": "Jumlah lulusan TS (Tabel 21)",
+  "lembar": [
+   "21"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS",
+   "kolom": "jumlah_lulusan"
+  },
+  "rumus": [
+   "RIPK"
+  ]
+ },
+ {
+  "kode": "RT_IPK_TS2",
+  "label": "Rata-rata IPK lulusan TS-2",
+  "lembar": [
+   "21"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS-2",
+   "kolom": "ipk_rata"
+  },
+  "rumus": [
+   "RIPK"
+  ]
+ },
+ {
+  "kode": "RT_IPK_TS1",
+  "label": "Rata-rata IPK lulusan TS-1",
+  "lembar": [
+   "21"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS-1",
+   "kolom": "ipk_rata"
+  },
+  "rumus": [
+   "RIPK"
+  ]
+ },
+ {
+  "kode": "RT_IPK_TS",
+  "label": "Rata-rata IPK lulusan TS",
+  "lembar": [
+   "21"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS",
+   "kolom": "ipk_rata"
+  },
+  "rumus": [
+   "RIPK"
+  ]
+ },
+ {
+  "kode": "N_MHS_DITERIMA_TS1",
+  "label": "Mahasiswa diterima angkatan TS-1",
+  "lembar": [
+   "22"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS-1",
+   "kolom": "diterima"
+  },
+  "rumus": [
+   "PMTK"
+  ]
+ },
+ {
+  "kode": "N_MHS_DITERIMA_TS",
+  "label": "Mahasiswa diterima angkatan TS",
+  "lembar": [
+   "22"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS",
+   "kolom": "diterima"
+  },
+  "rumus": [
+   "PMTK"
+  ]
+ },
+ {
+  "kode": "N_LULUS_PADA_TS1",
+  "label": "Angkatan TS-1 yang lulus pada akhir TS-1",
+  "lembar": [
+   "22"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS-1",
+   "kolom": "lulus_akhir_ts1"
+  },
+  "rumus": [
+   "PMTK"
+  ]
+ },
+ {
+  "kode": "N_LULUS_PADA_TS",
+  "label": "Angkatan TS yang lulus pada akhir TS",
+  "lembar": [
+   "22"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "TS",
+   "kolom": "lulus_akhir_ts"
+  },
+  "rumus": [
+   "PMTK"
+  ]
+ },
+ {
+  "kode": "N_DITERIMA_ANGKATAN",
+  "label": "Mahasiswa diterima angkatan TS-2 s.d. TS",
+  "lembar": [
+   "22"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-2",
+     "diterima"
+    ],
+    [
+     "TS-1",
+     "diterima"
+    ],
+    [
+     "TS",
+     "diterima"
+    ]
+   ]
+  },
+  "rumus": [
+   "PKMS"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_ANGKATAN",
+  "label": "Lulusan angkatan TS-2 s.d. TS",
+  "lembar": [
+   "22"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-2",
+     "jumlah_lulusan"
+    ],
+    [
+     "TS-1",
+     "jumlah_lulusan"
+    ],
+    [
+     "TS",
+     "jumlah_lulusan"
+    ]
+   ]
+  },
+  "rumus": [
+   "PKMS"
+  ]
+ },
+ {
+  "kode": "RT_MS_LULUSAN",
+  "label": "Rata-rata masa studi lulusan (tahun), tertimbang jumlah lulusan",
+  "lembar": [
+   "22"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "RMS"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_3TH",
+  "label": "Jumlah lulusan TS-4 s.d. TS-2 (NL, Tabel 23)",
+  "lembar": [
+   "23"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "jumlah_lulusan"
+    ],
+    [
+     "TS-3",
+     "jumlah_lulusan"
+    ],
+    [
+     "TS-2",
+     "jumlah_lulusan"
+    ]
+   ]
+  },
+  "rumus": [
+   "WTMP"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_TERLACAK_3TH",
+  "label": "Lulusan terlacak TS-4 s.d. TS-2 (NJ)",
+  "lembar": [
+   "23"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "terlacak"
+    ],
+    [
+     "TS-3",
+     "terlacak"
+    ],
+    [
+     "TS-2",
+     "terlacak"
+    ]
+   ]
+  },
+  "rumus": [
+   "WTMP"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_WT_6BLN",
+  "label": "Lulusan terlacak dengan waktu tunggu kurang dari 6 bulan",
+  "lembar": [
+   "23"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "wt_kurang_6"
+    ],
+    [
+     "TS-3",
+     "wt_kurang_6"
+    ],
+    [
+     "TS-2",
+     "wt_kurang_6"
+    ]
+   ]
+  },
+  "rumus": [
+   "WTMP"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_WT_612BLN",
+  "label": "Lulusan terlacak dengan waktu tunggu 6 s.d. 12 bulan",
+  "lembar": [
+   "23"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "wt_6_12"
+    ],
+    [
+     "TS-3",
+     "wt_6_12"
+    ],
+    [
+     "TS-2",
+     "wt_6_12"
+    ]
+   ]
+  },
+  "rumus": [
+   "WTMP"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_WT_12BLN",
+  "label": "Lulusan terlacak dengan waktu tunggu lebih dari 12 bulan",
+  "lembar": [
+   "23"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "wt_lebih_12"
+    ],
+    [
+     "TS-3",
+     "wt_lebih_12"
+    ],
+    [
+     "TS-2",
+     "wt_lebih_12"
+    ]
+   ]
+  },
+  "rumus": [
+   "WTMP"
+  ]
+ },
+ {
+  "kode": "ETIKA_SB",
+  "label": "Kepuasan pengguna lulusan, Etika: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "etika",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "ETIKA_B",
+  "label": "Kepuasan pengguna lulusan, Etika: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "etika",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "ETIKA_C",
+  "label": "Kepuasan pengguna lulusan, Etika: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "etika",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "ETIKA_K",
+  "label": "Kepuasan pengguna lulusan, Etika: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "etika",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KU_SB",
+  "label": "Kepuasan pengguna lulusan, Keahlian pada bidang ilmu: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "keahlian_bidang_ilmu",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KU_B",
+  "label": "Kepuasan pengguna lulusan, Keahlian pada bidang ilmu: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "keahlian_bidang_ilmu",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KU_C",
+  "label": "Kepuasan pengguna lulusan, Keahlian pada bidang ilmu: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "keahlian_bidang_ilmu",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KU_K",
+  "label": "Kepuasan pengguna lulusan, Keahlian pada bidang ilmu: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "keahlian_bidang_ilmu",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BHS_SB",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berbahasa asing: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "bahasa_asing",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BHS_B",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berbahasa asing: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "bahasa_asing",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BHS_C",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berbahasa asing: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "bahasa_asing",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BHS_K",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berbahasa asing: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "bahasa_asing",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TI_SB",
+  "label": "Kepuasan pengguna lulusan, Penggunaan teknologi informasi: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "teknologi_informasi",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TI_B",
+  "label": "Kepuasan pengguna lulusan, Penggunaan teknologi informasi: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "teknologi_informasi",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TI_C",
+  "label": "Kepuasan pengguna lulusan, Penggunaan teknologi informasi: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "teknologi_informasi",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TI_K",
+  "label": "Kepuasan pengguna lulusan, Penggunaan teknologi informasi: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "teknologi_informasi",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KOM_SB",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berkomunikasi: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "komunikasi",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KOM_B",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berkomunikasi: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "komunikasi",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KOM_C",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berkomunikasi: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "komunikasi",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KOM_K",
+  "label": "Kepuasan pengguna lulusan, Kemampuan berkomunikasi: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "komunikasi",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TIM_SB",
+  "label": "Kepuasan pengguna lulusan, Kerja sama tim: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kerjasama_tim",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TIM_B",
+  "label": "Kepuasan pengguna lulusan, Kerja sama tim: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kerjasama_tim",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TIM_C",
+  "label": "Kepuasan pengguna lulusan, Kerja sama tim: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kerjasama_tim",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "TIM_K",
+  "label": "Kepuasan pengguna lulusan, Kerja sama tim: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kerjasama_tim",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "PD_SB",
+  "label": "Kepuasan pengguna lulusan, Pengembangan diri: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "pengembangan_diri",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "PD_B",
+  "label": "Kepuasan pengguna lulusan, Pengembangan diri: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "pengembangan_diri",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "PD_C",
+  "label": "Kepuasan pengguna lulusan, Pengembangan diri: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "pengembangan_diri",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "PD_K",
+  "label": "Kepuasan pengguna lulusan, Pengembangan diri: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "pengembangan_diri",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BKRITIS_SB",
+  "label": "Kepuasan pengguna lulusan, Berpikir kritis: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "berpikir_kritis",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BKRITIS_B",
+  "label": "Kepuasan pengguna lulusan, Berpikir kritis: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "berpikir_kritis",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BKRITIS_C",
+  "label": "Kepuasan pengguna lulusan, Berpikir kritis: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "berpikir_kritis",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "BKRITIS_K",
+  "label": "Kepuasan pengguna lulusan, Berpikir kritis: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "berpikir_kritis",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KREATIVITAS_SB",
+  "label": "Kepuasan pengguna lulusan, Kreativitas: sangat baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kreativitas",
+   "kolom": "sangat_baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KREATIVITAS_B",
+  "label": "Kepuasan pengguna lulusan, Kreativitas: baik (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kreativitas",
+   "kolom": "baik"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KREATIVITAS_C",
+  "label": "Kepuasan pengguna lulusan, Kreativitas: cukup (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kreativitas",
+   "kolom": "cukup"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "KREATIVITAS_K",
+  "label": "Kepuasan pengguna lulusan, Kreativitas: kurang (%)",
+  "lembar": [
+   "24.1"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "kreativitas",
+   "kolom": "kurang"
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "N_LULUSAN_TKP_3TH",
+  "label": "Jumlah lulusan TS-4 s.d. TS-2 (NL, Tabel 24)",
+  "lembar": [
+   "24.2"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "jumlah_lulusan"
+    ],
+    [
+     "TS-3",
+     "jumlah_lulusan"
+    ],
+    [
+     "TS-2",
+     "jumlah_lulusan"
+    ]
+   ]
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "N_TKP_TERLACAK_3TH",
+  "label": "Jumlah tanggapan pengguna lulusan TS-4 s.d. TS-2 (NJ)",
+  "lembar": [
+   "24.2"
+  ],
+  "cara": "jumlah_sel",
+  "parameter": {
+   "sel": [
+    [
+     "TS-4",
+     "jumlah_tanggapan"
+    ],
+    [
+     "TS-3",
+     "jumlah_tanggapan"
+    ],
+    [
+     "TS-2",
+     "jumlah_tanggapan"
+    ]
+   ]
+  },
+  "rumus": [
+   "TKi"
+  ]
+ },
+ {
+  "kode": "N_PENELITIAN_SB_LN",
+  "label": "Penelitian DTPS bersumber dana lembaga luar negeri, TS-2 s.d. TS",
+  "lembar": [
+   "25"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "luar_negeri",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPEN"
+  ]
+ },
+ {
+  "kode": "N_PENELITIAN_SB_DN",
+  "label": "Penelitian DTPS bersumber dana lembaga dalam negeri, TS-2 s.d. TS",
+  "lembar": [
+   "25"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "dalam_negeri",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPEN"
+  ]
+ },
+ {
+  "kode": "N_PENELITIAN_SB_PT",
+  "label": "Penelitian DTPS bersumber dana perguruan tinggi/mandiri, TS-2 s.d. TS",
+  "lembar": [
+   "25"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "pt_mandiri",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPEN"
+  ]
+ },
+ {
+  "kode": "NA1",
+  "label": "Publikasi DTPS pada jurnal nasional tidak terakreditasi, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "na1",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NA2",
+  "label": "Publikasi DTPS pada jurnal nasional terakreditasi, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "na2",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NA3",
+  "label": "Publikasi DTPS pada jurnal internasional/karya monumental nasional, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "na3",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NA4",
+  "label": "Publikasi DTPS pada jurnal internasional bereputasi/karya monumental internasional, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "na4",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NB1",
+  "label": "Publikasi DTPS pada seminar wilayah/lokal/perguruan tinggi, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nb1",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NB2",
+  "label": "Publikasi DTPS pada seminar nasional, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nb2",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NB3",
+  "label": "Publikasi DTPS pada seminar internasional, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nb3",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NC1",
+  "label": "Publikasi DTPS pada media massa wilayah, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nc1",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NC2",
+  "label": "Publikasi DTPS pada media massa nasional, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nc2",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "NC3",
+  "label": "Publikasi DTPS pada media massa internasional, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nc3",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "ND1",
+  "label": "Publikasi DTPS pada buku ber-ISBN/book chapter, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nd1",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "ND2",
+  "label": "Publikasi DTPS pada paten/paten sederhana, TS-2 s.d. TS",
+  "lembar": [
+   "26"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "nd2",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPUB"
+  ]
+ },
+ {
+  "kode": "N_DTPS_PUBLIKASI",
+  "label": "DTPS dengan publikasi memenuhi syarat (Tabel 27)",
+  "lembar": [
+   "27"
+  ],
+  "cara": "khusus",
+  "rumus": [
+   "PPDTPS"
+  ]
+ },
+ {
+  "kode": "N_ARTIKEL_PUBLIKASI",
+  "label": "Jumlah artikel pada Tabel 27",
+  "lembar": [
+   "27"
+  ],
+  "cara": "cacah_baris",
+  "rumus": []
+ },
+ {
+  "kode": "NAS",
+  "label": "Jumlah sitasi karya ilmiah DTPS (NAS)",
+  "lembar": [
+   "28"
+  ],
+  "cara": "jumlah_kolom",
+  "kolom": "jumlah_sitasi",
+  "rumus": [
+   "RSA"
+  ]
+ },
+ {
+  "kode": "N_PKM_SB_LN",
+  "label": "PkM DTPS bersumber dana lembaga luar negeri, TS-2 s.d. TS",
+  "lembar": [
+   "29"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "luar_negeri",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPKM"
+  ]
+ },
+ {
+  "kode": "N_PKM_SB_DN",
+  "label": "PkM DTPS bersumber dana lembaga dalam negeri, TS-2 s.d. TS",
+  "lembar": [
+   "29"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "dalam_negeri",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPKM"
+  ]
+ },
+ {
+  "kode": "N_PKM_SB_PT",
+  "label": "PkM DTPS bersumber dana perguruan tinggi/mandiri, TS-2 s.d. TS",
+  "lembar": [
+   "29"
+  ],
+  "cara": "nilai_sel",
+  "parameter": {
+   "baris": "pt_mandiri",
+   "kolom": "jumlah"
+  },
+  "rumus": [
+   "RPKM"
+  ]
+ }
+]

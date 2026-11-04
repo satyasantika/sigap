@@ -50,7 +50,7 @@ elpok = {e["no"]: e["pokja"] for e in el}
 chk("pokja di elemen.json konsisten dengan pokja.json",
     not [n for p in pk for n in p["elemen"] if elpok[n] != p["kode"]])
 
-chk("15 rumus", len(rm) == 15, len(rm))
+chk("28 rumus", len(rm) == 28, len(rm))
 chk("rumus inti ada", {"PDS3", "PGBLKL", "PPDTPS", "RSA", "RK", "NA"} <= {r["kode"] for r in rm})
 chk("29 tabel DKPS bernomor 1..29", [d["no"] for d in dk] == list(range(1, 30)))
 chk("kode tabel DKPS unik dan sama dengan nomornya", [d["kode"] for d in dk] == [str(i) for i in range(1, 30)])
@@ -78,6 +78,28 @@ chk("lembar berbaris bebas punya kunci duplikasi",
     all(l.get("kunci") or l.get("baris_tetap") for l in lembar))
 chk("tahun_dari baris_tetap hanya pada lembar berbaris tetap",
     all(l.get("baris_tetap") for l in lembar if l["tahun_dari"] == "baris_tetap"))
+
+# --- katalog variabel DKPS ---
+vd = L("variabel-dkps.json")
+kodevd = [v["kode"] for v in vd]
+kodelembar = {l["kode"] for l in lembar}
+CARA = {"cacah_baris", "cacah_centang", "cacah_pilihan", "cacah_terisi", "cacah_unik",
+        "jumlah_kolom", "rata_kolom", "nilai_sel", "jumlah_sel", "khusus"}
+chk("kode variabel DKPS unik", len(set(kodevd)) == len(kodevd))
+chk("setiap rumus punya variabel_dkps", all("variabel_dkps" in r for r in rm))
+chk("NA tidak membaca DKPS", [r["variabel_dkps"] for r in rm if r["kode"] == "NA"] == [[]])
+chk("variabel_dkps rumus ada di katalog",
+    not [(r["kode"], k) for r in rm for k in r["variabel_dkps"] if k not in kodevd],
+    [(r["kode"], k) for r in rm for k in r["variabel_dkps"] if k not in kodevd])
+kodermm = {r["kode"] for r in rm}
+chk("rumus di katalog ada di rumus.json",
+    not [(v["kode"], k) for v in vd for k in v["rumus"] if k not in kodermm])
+chk("tautan rumus <-> variabel searah bolak-balik",
+    sorted((r["kode"], k) for r in rm for k in r["variabel_dkps"])
+    == sorted((k, v["kode"]) for v in vd for k in v["rumus"]))
+chk("lembar variabel ada di DKPS", not [(v["kode"], l) for v in vd for l in v["lembar"] if l not in kodelembar])
+chk("cara variabel dikenal", not [v["kode"] for v in vd if v["cara"] not in CARA])
+
 chk("6 peran", len(pr) == 6)
 chk("6 status tagihan", len(st) == 6)
 
