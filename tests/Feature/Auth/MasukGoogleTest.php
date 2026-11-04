@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Enums\PeranPengguna;
 use App\Filament\Auth\Masuk;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -101,20 +100,21 @@ class MasukGoogleTest extends TestCase
     }
 
     #[Test]
-    public function membuat_akun_baru_untuk_surel_yang_belum_terdaftar(): void
+    public function membuat_akun_baru_nonaktif_tanpa_masuk(): void
     {
         $this->googleSebagai('baru@gmail.com');
 
-        $this->get(route('auth.google.callback'))->assertRedirect($this->urlPanel());
+        $this->get(route('auth.google.callback'))
+            ->assertRedirect($this->urlMasuk())
+            ->assertSessionHas('galat_google', 'Akun Google Anda sudah tercatat, tetapi belum diberi peran. Hubungi admin.');
 
+        $this->assertGuest();
         $u = User::firstWhere('email', 'baru@gmail.com');
         $this->assertNotNull($u);
         $this->assertSame('Nama Google', $u->name);
         $this->assertNotNull($u->email_verified_at);
         $this->assertSame('g-'.md5('baru@gmail.com'), $u->google_id);
-        $this->assertTrue($u->aktif);
-        $this->assertSame(PeranPengguna::Anggota, $u->peran);
-        $this->assertAuthenticatedAs($u);
+        $this->assertFalse($u->aktif);
     }
 
     #[Test]
@@ -190,11 +190,11 @@ class MasukGoogleTest extends TestCase
     }
 
     #[Test]
-    public function membatasi_10_permintaan_per_menit_per_ip(): void
+    public function membatasi_60_permintaan_per_menit_per_ip(): void
     {
         $this->googleSebagai('x@gmail.com', ['email_verified' => false]);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 60; $i++) {
             $this->get(route('auth.google.callback'));
         }
 
@@ -236,5 +236,32 @@ class MasukGoogleTest extends TestCase
         $komponen
             ->assertSeeHtml(e(route('auth.google.redirect', ['asal' => Livewire::originalUrl()])))
             ->assertDontSeeHtml(e(route('auth.google.redirect', ['asal' => url()->current()])));
+    }
+
+    #[Test]
+    public function redirect_uri_kosong_di_env_memakai_bawaan(): void
+    {
+        // GOOGLE_REDIRECT_URI= kosong di .env: env() mengembalikan '' dan
+        // config/services.php harus tetap jatuh ke bawaan.
+        putenv('GOOGLE_REDIRECT_URI=');
+        $_ENV['GOOGLE_REDIRECT_URI'] = $_SERVER['GOOGLE_REDIRECT_URI'] = '';
+        config(['services.google.redirect' => (require config_path('services.php'))['google']['redirect']]);
+        putenv('GOOGLE_REDIRECT_URI');
+        unset($_ENV['GOOGLE_REDIRECT_URI'], $_SERVER['GOOGLE_REDIRECT_URI']);
+
+        $this->assertSame('/auth/google/callback', config('services.google.redirect'));
+
+        $lokasi = $this->get(route('auth.google.redirect'))->assertRedirect()->headers->get('Location');
+        parse_str(parse_url($lokasi, PHP_URL_QUERY), $q);
+
+        $this->assertSame(route('auth.google.callback'), $q['redirect_uri']);
+    }
+
+    #[Test]
+    public function asal_sesi_bukan_string_diabaikan(): void
+    {
+        $this->withSession(['google_asal' => ['x']])
+            ->get(route('auth.google.callback', ['error' => 'access_denied']))
+            ->assertRedirect($this->urlMasuk());
     }
 }

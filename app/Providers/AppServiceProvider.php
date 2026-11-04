@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(Login::class, CatatWaktuMasuk::class);
 
-        RateLimiter::for('google-login', fn (Request $r) => Limit::perMinute(10)->by($r->ip()));
+        RateLimiter::for('google-login', fn (Request $r) => Limit::perMinute(60)->by($r->ip()));
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,

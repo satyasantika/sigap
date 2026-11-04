@@ -36,6 +36,7 @@ class GoogleAuthController extends Controller
         abort_unless(config('services.google.aktif'), 404);
 
         $asal = $request->session()->pull('google_asal');
+        $asal = is_string($asal) ? $asal : null;
 
         if ($request->filled('error')) {
             return $this->gagal('Masuk dengan Google dibatalkan.', $asal);
@@ -66,7 +67,7 @@ class GoogleAuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->to($tujuan);
+        return redirect()->intended($tujuan);
     }
 
     private function tujuan(User $user): ?string

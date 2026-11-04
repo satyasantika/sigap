@@ -11,7 +11,7 @@ use Laravel\Socialite\Contracts\User as PenggunaGoogle;
 
 /**
  * Semua akun Google boleh masuk. Dicocokkan lewat google_id lalu surel; bila
- * belum ada, dibuat akun baru dengan peran paling sempit (Anggota).
+ * belum ada, dibuat akun baru yang nonaktif (menunggu peran dari administrator).
  */
 class MasukDenganGoogle
 {
@@ -31,16 +31,17 @@ class MasukDenganGoogle
         if ($user === null) {
             $nama = $google->getName() ?: Str::before($email, '@');
 
-            // `peran` wajib diisi (kolom enum tanpa bawaan; MySQL non-strict
-            // akan diam-diam memakai nilai pertama, "admin"). Akun baru
-            // mendapat peran paling sempit, sama seperti UserFactory.
+            // Akun baru TIDAK boleh langsung bisa memakai panel: `aktif` false
+            // sampai administrator memberinya peran. `peran` Anggota hanyalah
+            // pengisi kolom enum NOT NULL tanpa bawaan (MySQL non-strict akan
+            // memakai nilai pertama, "admin"), bukan pemberian peran.
             $user = User::create([
                 'name' => $nama,
                 'nama_lengkap' => $nama,
                 'email' => $email,
                 'password' => Str::random(40),
                 'peran' => PeranPengguna::Anggota,
-                'aktif' => true,
+                'aktif' => false,
             ]);
             $user->forceFill(['email_verified_at' => now()])->save();
         }
@@ -49,7 +50,7 @@ class MasukDenganGoogle
             throw new MasukGoogleDitolak('Akun ini sudah ditautkan ke akun Google lain.');
         }
 
-        if (! $user->aktif) {
+        if (! $user->aktif && ! $user->wasRecentlyCreated) {
             throw new MasukGoogleDitolak('Akun Anda dinonaktifkan. Hubungi admin.');
         }
 
