@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Enums\PeranPengguna;
+use App\Livewire\ImporTempel;
 use App\Models\DkpsBaris;
 use App\Models\ImporBatch;
 use App\Models\Periode;
+use App\Models\Pokja;
 use App\Models\Prodi;
 use App\Models\User;
 use App\Services\PelaksanaImpor;
@@ -16,7 +18,10 @@ use App\Support\Impor\PenguraiTempelan;
 use App\Support\Impor\PratinjauImpor;
 use App\Support\Impor\ProfilImpor;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
+use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -160,5 +165,72 @@ class ImporLembarDkpsTest extends TestCase
 
         $this->assertSame(PratinjauImpor::GALAT, $pratinjau[0]['status']);
         $this->assertContains('Bidang harus pendidikan, penelitian, atau pkm.', $pratinjau[0]['galat']);
+    }
+
+    private function koordinator(string $kodePokja): User
+    {
+        $u = User::create([
+            'name' => 'k', 'nama_lengkap' => 'Koordinator '.$kodePokja,
+            'email' => 'koord-'.uniqid().'@dkps.test', 'password' => 'rahasia123',
+            'peran' => PeranPengguna::Koordinator, 'prodi_id' => $this->prodi->id, 'aktif' => true,
+            'wajib_ganti_sandi' => false,
+        ]);
+        $u->pokja()->attach(Pokja::where('kode', $kodePokja)->firstOrFail()->id);
+
+        return $u;
+    }
+
+    /** @return array<string, mixed> */
+    private function argumenKomponen(string $penggunaId): array
+    {
+        return [
+            'profilKelas' => ImporLembarDkps::class,
+            'profilArgs' => [
+                'periodeId' => $this->periode->id, 'prodiId' => $this->prodi->id,
+                'penggunaId' => $penggunaId, 'kodeTabel' => '24', 'kodeLembar' => '24.1',
+            ],
+            'periodeId' => $this->periode->id,
+        ];
+    }
+
+    #[Test]
+    public function argumen_profil_impor_tempel_terkunci_dari_klien(): void
+    {
+        // Tanpa #[Locked], koordinator Tabel 24 bisa menukar id pengguna
+        // dan kode tabel lewat $wire.set lalu mengimpor ke tabel pokja lain.
+        $koordinator = $this->koordinator('POKJA-DIK');
+        $this->actingAs($koordinator);
+
+        foreach ([
+            'profilArgs.penggunaId' => $this->ketua->id,
+            'profilArgs.kodeTabel' => '28',
+            'profilArgs' => [],
+            'profilKelas' => ImporKerjaSama::class,
+            'periodeId' => null,
+        ] as $properti => $nilai) {
+            try {
+                Livewire::test(ImporTempel::class, $this->argumenKomponen($koordinator->id))
+                    ->set($properti, $nilai);
+                $this->fail("{$properti} seharusnya terkunci.");
+            } catch (CannotUpdateLockedPropertyException) {
+                $this->addToAssertionCount(1);
+            }
+        }
+    }
+
+    #[Test]
+    public function impor_mengotorisasi_pengguna_sesi_bukan_argumen_profil(): void
+    {
+        // Profil membawa id ketua, tetapi yang sedang masuk koordinator
+        // POKJA-DIK; Tabel 28 milik POKJA-SDM, jadi impor harus ditolak.
+        $this->actingAs($this->koordinator('POKJA-DIK'));
+
+        try {
+            $this->tempel($this->profil('28', '28'),
+                "Nama DTPS\tJudul Artikel\tJumlah Sitasi\nDr. Ani\tJurnal X\t5", ['judul_artikel' => 1]);
+            $this->fail('Impor ke tabel pokja lain seharusnya ditolak.');
+        } catch (AuthorizationException) {
+            $this->assertSame(0, DkpsBaris::where('lembar_kode', '28')->count());
+        }
     }
 }

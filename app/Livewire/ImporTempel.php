@@ -9,6 +9,7 @@ use App\Support\Impor\MemilikiSandiBaru;
 use App\Support\Impor\PenguraiTempelan;
 use App\Support\Impor\PratinjauImpor;
 use App\Support\Impor\ProfilImpor;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Throwable;
 
@@ -68,13 +69,23 @@ class ImporTempel extends Component
      */
     public array $sandiBaru = [];
 
+    /*
+     * Ketiga properti berikut ditetapkan server saat mount dan DIKUNCI:
+     * tanpa #[Locked], klien bisa $wire.set('profilArgs.penggunaId', ...)
+     * atau mengganti kode tabel/periode, lalu mengimpor atas nama orang lain
+     * ke tabel pokja lain.
+     */
+
     /** Kelas profil impor, mis. App\Support\Impor\ImporBukti::class. */
+    #[Locked]
     public string $profilKelas = '';
 
     /** Argumen konstruktor profil, dalam urutan yang diterimanya. */
+    #[Locked]
     public array $profilArgs = [];
 
     /** Periode akreditasi; null bila profilnya tidak terikat periode (mis. pengguna). */
+    #[Locked]
     public ?string $periodeId = null;
 
     public function mount(string $profilKelas, array $profilArgs = [], ?string $periodeId = null): void

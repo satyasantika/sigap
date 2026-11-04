@@ -174,7 +174,7 @@ class ImporLembarDkps implements ProfilImpor
             periode: $this->periode(),
             data: array_diff_key($baris, array_flip(['_kunci', 'sumber', '_baris'])),
             sumber: SumberData::from($baris['sumber']),
-            oleh: User::findOrFail($this->penggunaId),
+            oleh: $this->pengisi(),
             baris: $lama,
             kunciBaris: $baris['_baris'] ?? null,
         );
@@ -185,6 +185,19 @@ class ImporLembarDkps implements ProfilImpor
         $hasil->save();
 
         return $hasil;
+    }
+
+    /**
+     * Wewenang diperiksa atas pengguna SESI bila ada request: argumen profil
+     * datang dari komponen Livewire, dan id pengguna di dalamnya tidak boleh
+     * menjadi dasar otorisasi. `penggunaId` hanya cadangan untuk konsol dan
+     * uji tanpa sesi.
+     */
+    private function pengisi(): User
+    {
+        $sesi = auth()->user();
+
+        return $sesi instanceof User ? $sesi : User::findOrFail($this->penggunaId);
     }
 
     /** Kunci baris tetap yang cocok dengan kunci atau labelnya, tanpa peduli huruf dan spasi. */
