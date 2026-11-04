@@ -68,7 +68,7 @@ class RingkasanProgres
      *
      * POKJA-DATA dilaporkan dengan ukuran DKPS, bukan bobot: ia memang tidak
      * memegang elemen, dan menampilkannya nol akan dibaca sebagai "belum
-     * mengerjakan apa-apa" padahal ia memegang 28 butir DKPS.
+     * mengerjakan apa-apa" padahal ia memegang 29 tabel DKPS.
      *
      * @return array<int, array{kode: string, nama: string, selesai: float, total: float, rasio: float, pakai_dkps: bool, syarat_perlu: bool}>
      */

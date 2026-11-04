@@ -3,7 +3,8 @@
 namespace App\Support\Impor;
 
 /**
- * Publikasi ilmiah DTPS — tabel DKPS 26 dan 27; bawaannya Tabel 27.
+ * Publikasi ilmiah DTPS — bawaannya Tabel 27, karena medannya per artikel
+ * (nama dosen, judul, DOI), sedangkan Tabel 26 hanya hitungan per media.
  *
  * Kunci duplikasinya DOI lebih dulu; bila DOI kosong, nama dosen ditambah
  * judul ternormalisasi. Urutannya penting: DOI unik secara global, sementara

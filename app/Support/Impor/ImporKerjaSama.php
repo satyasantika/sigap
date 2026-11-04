@@ -24,7 +24,7 @@ class ImporKerjaSama extends ProfilDkpsDasar
         return '1';
     }
 
-    protected function kodeLembar(array $baris): string
+    public function kodeLembar(array $baris): string
     {
         // Medan `bidang` memilih lembar 1.1/1.2/1.3; menyusul di Tugas 6.
         return '1.1';

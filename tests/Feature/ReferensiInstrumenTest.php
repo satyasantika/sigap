@@ -253,7 +253,7 @@ class ReferensiInstrumenTest extends TestCase
         // diformat dua desimal agar selisih 0,01 tetap terlihat.
         $this->assertSame('100.00', number_format($perPokja->sum(), 2, '.', ''));
 
-        // POKJA-DATA sengaja tidak memegang elemen: ia memegang 28 butir DKPS
+        // POKJA-DATA sengaja tidak memegang elemen: ia memegang 29 tabel DKPS
         // dan seluruh perhitungan rumus. Uji "tiap pokja punya minimal satu
         // elemen" akan salah.
         $this->assertArrayNotHasKey('POKJA-DATA', $perPokja->all());

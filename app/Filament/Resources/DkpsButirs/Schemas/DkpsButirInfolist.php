@@ -14,7 +14,7 @@ class DkpsButirInfolist
             Section::make()->columns(3)->schema([
                 TextEntry::make('no')->label('Nomor butir'),
                 TextEntry::make('label_tabel')->label('Label di Buku 3')->badge()
-                    ->helperText('Buku 3 melompati "Tabel 13", jadi label ini bisa berbeda dari nomor butir.'),
+                    ->helperText('Label tabel menurut Buku 3; rujuk tabel lewat label ini.'),
                 TextEntry::make('jendela_data')->label('Jendela data')->badge(),
                 TextEntry::make('nama')->label('Nama butir')->columnSpanFull()->size('lg')->weight('bold'),
             ]),

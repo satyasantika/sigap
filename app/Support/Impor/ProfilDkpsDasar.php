@@ -32,7 +32,7 @@ abstract class ProfilDkpsDasar implements ProfilImpor
     abstract protected function kodeButir(): string;
 
     /** Kode lembar tujuan; bawaannya sama dengan kode tabel (tabel satu lembar). */
-    protected function kodeLembar(array $baris): string
+    public function kodeLembar(array $baris): string
     {
         return $this->kodeButir();
     }

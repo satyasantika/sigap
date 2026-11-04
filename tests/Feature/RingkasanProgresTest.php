@@ -147,9 +147,9 @@ class RingkasanProgresTest extends TestCase
         $data = $pokja->firstWhere('kode', 'POKJA-DATA');
 
         // Menampilkannya nol akan dibaca sebagai "belum mengerjakan apa-apa",
-        // padahal ia memegang 28 butir DKPS.
+        // padahal ia memegang 29 tabel DKPS.
         $this->assertTrue($data['pakai_dkps']);
-        $this->assertSame(28.0, $data['total']);
+        $this->assertSame(29.0, $data['total']);
     }
 
     #[Test]
@@ -236,7 +236,7 @@ class RingkasanProgresTest extends TestCase
     {
         $d = $this->ringkasan()->progresDkps($this->periode);
 
-        $this->assertSame(28, $d['total']);
+        $this->assertSame(29, $d['total']);
         $this->assertSame(0, $d['terverifikasi']);
         $this->assertSame(0.0, $d['rasio']);
     }
@@ -261,7 +261,7 @@ class RingkasanProgresTest extends TestCase
     {
         $daftar = $this->ringkasan()->tagihanTanpaPj($this->periode);
 
-        $this->assertSame(137, $daftar->count(), 'Seluruh tagihan belum ditugaskan.');
+        $this->assertSame(138, $daftar->count(), 'Seluruh tagihan belum ditugaskan.');
 
         $bobot = $daftar->pluck('bobot_terkait')->map(fn ($b) => (float) $b);
         $this->assertSame($bobot->sortDesc()->values()->all(), $bobot->values()->all());

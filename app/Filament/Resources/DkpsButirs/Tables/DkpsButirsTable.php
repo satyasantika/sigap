@@ -16,8 +16,8 @@ class DkpsButirsTable
             ->columns([
                 TextColumn::make('no')->label('No')->sortable()->width('1%'),
                 TextColumn::make('nama')->label('Butir')->searchable()->wrap(),
-                // Label Buku 3 melompati "Tabel 13", jadi ditampilkan terpisah
-                // dari nomor urut supaya rujukan ke buku tidak meleset.
+                // Label tabel Buku 3 ditampilkan terpisah dari nomor urut
+                // supaya rujukan ke buku tidak meleset.
                 TextColumn::make('label_tabel')->label('Label di Buku 3')->badge(),
                 TextColumn::make('jendela_data')->label('Jendela data')->badge(),
             ])
@@ -29,7 +29,7 @@ class DkpsButirsTable
             ])
             ->recordActions([ViewAction::make()->label('Lihat')])
             ->defaultSort('no')
-            ->paginated([28, 50])
-            ->defaultPaginationPageOption(28);
+            ->paginated([29, 50])
+            ->defaultPaginationPageOption(29);
     }
 }
