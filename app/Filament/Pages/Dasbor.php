@@ -169,8 +169,16 @@ class Dasbor extends Page
         $p = $this->periode();
 
         return $p === null
-            ? ['terverifikasi' => 0, 'total' => 28, 'rasio' => 0.0]
+            ? ['terverifikasi' => 0, 'total' => 35, 'rasio' => 0.0]
             : $this->ringkasan()->progresDkps($p);
+    }
+
+    /** @return array<int, array> progres DKPS per pokja pemilik tabel, untuk bilah mini K6 */
+    public function dkpsPerPokja(): array
+    {
+        $p = $this->periode();
+
+        return $p === null ? [] : $this->ringkasan()->progresDkpsPerPokja($p);
     }
 
     public function progresPokja(): array

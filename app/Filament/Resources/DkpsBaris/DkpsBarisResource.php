@@ -25,9 +25,9 @@ class DkpsBarisResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Data';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 20;
 
-    protected static ?string $navigationLabel = 'Isian DKPS';
+    protected static ?string $navigationLabel = 'Verifikasi DKPS';
 
     protected static ?string $modelLabel = 'baris DKPS';
 

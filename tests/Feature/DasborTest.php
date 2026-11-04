@@ -149,7 +149,8 @@ class DasborTest extends TestCase
         $isi = $this->buka()->assertSuccessful()->getContent();
 
         $this->assertStringContainsString('Kesiapan DKPS', $isi);
-        $this->assertStringContainsString('0 / 29', $isi);
+        $this->assertStringContainsString('/ 35 lembar', $isi);
+        $this->assertStringContainsString('Buka Tabel DKPS', $isi);
         // Butir DKPS tidak berbobot; mencampurnya menggeser angka yang
         // seharusnya berjumlah 100.
         $this->assertStringContainsString('tidak berbobot', $isi);
