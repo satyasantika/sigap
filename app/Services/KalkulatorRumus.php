@@ -314,6 +314,222 @@ class KalkulatorRumus
         );
     }
 
+    // ---- PRESMA, PKIM, BKD, RGP, DANA — elemen 12, 13, 18, 22, 25 -------
+
+    /**
+     * Prestasi mahasiswa (elemen 12), pola RI/RN/RW dengan a = 0,005,
+     * b = 0,05, c = 0,1.
+     *
+     * Berbeda dengan RK bagian A.2, di sini yang masuk pola adalah RASIO
+     * cacah prestasi terhadap jumlah mahasiswa (NM), dibatasi paling tinggi 1.
+     * Menyerahkan cacah mentah ke pola akan memberi skor 4 pada satu prestasi
+     * internasional saja.
+     *
+     * @param  int  $ni  prestasi tingkat internasional
+     * @param  int  $nn  prestasi tingkat nasional
+     * @param  int  $nw  prestasi tingkat wilayah/lokal
+     * @param  int  $nm  jumlah mahasiswa
+     */
+    public function presma(int $ni, int $nn, int $nw, int $nm): HasilRumus
+    {
+        $this->pastikanPembagiSah($nm, 'NM');
+
+        $ri = min(1.0, $ni / $nm);
+        $rn = min(1.0, $nn / $nm);
+        $rw = min(1.0, $nw / $nm);
+
+        $skorTepat = self::potong2($this->skorTigaTingkat($ri, $rn, $rw, a: 0.005, b: 0.05, c: 0.1));
+
+        return new HasilRumus(
+            kode: 'PRESMA',
+            nilai: round($ri, 4),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: [
+                'ri' => round($ri, 4),
+                'rn' => round($rn, 4),
+                'rw' => round($rw, 4),
+            ] + compact('ni', 'nn', 'nw', 'nm'),
+        );
+    }
+
+    /**
+     * Produk/karya ilmiah mahasiswa (elemen 13).
+     *
+     * Keempat jenis karya DIJUMLAHKAN lebih dulu, baru dibagi NM; masing-masing
+     * cacah sudah berupa mahasiswa unik per tabel DKPS (4.1–4.4). Rasionya
+     * dibatasi 1. Batas setengah terbuka: 0,2 masuk skor 4.
+     */
+    public function pkim(int $paten, int $bukuIsbn, int $karyaSeni, int $publikasi, int $nm): HasilRumus
+    {
+        $this->pastikanPembagiSah($nm, 'NM');
+
+        $jumlah = $paten + $bukuIsbn + $karyaSeni + $publikasi;
+        $nilai = round(min(1.0, $jumlah / $nm), 4);
+
+        $skor = match (true) {
+            $nilai >= 0.2 => 4,
+            $nilai >= 0.15 => 3,
+            $nilai >= 0.1 => 2,
+            default => 1,
+        };
+
+        return new HasilRumus(
+            kode: 'PKIM',
+            nilai: $nilai,
+            skor: $skor,
+            skorTepat: (float) $skor,
+            komponen: compact('paten', 'bukuIsbn', 'karyaSeni', 'publikasi', 'nm', 'jumlah'),
+        );
+    }
+
+    /**
+     * Beban kerja DTPS (elemen 18), rata-rata sks per semester.
+     *
+     * Mengikuti Buku 4 dengan lantai 1 (spec §5.3, catatan BKD): Buku 4
+     * menulis 36 − 2x untuk 16 < x ≤ 18, yang memberi 0 tepat di x = 18 —
+     * padahal skor 0 tidak ada. Kertas kerja (sel E283) memberi 1 untuk
+     * 6 ≤ x ≤ 7 dan x = 18; lantai 1 pada kedua pita interpolasi menyamakan
+     * keduanya. Perbedaan ini dicatat sebagai pertanyaan ke LAMDIK.
+     */
+    public function bkd(float $rataSksPerSemester): HasilRumus
+    {
+        $x = $rataSksPerSemester;
+
+        $skorTepat = self::potong2(match (true) {
+            $x >= 12.0 && $x <= 16.0 => 4.0,
+            $x >= 6.0 && $x < 12.0 => max(1.0, ((2 * $x) - 12) / 3),
+            $x > 16.0 && $x <= 18.0 => max(1.0, 36 - (2 * $x)),
+            default => 1.0,
+        });
+
+        return new HasilRumus(
+            kode: 'BKD',
+            nilai: round($x, 2),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: ['rata_sks_per_semester' => $x],
+        );
+    }
+
+    /**
+     * Rasio guru pamong (elemen 22), rumus sel E348 kertas kerja.
+     *
+     * RGPBS = NGP/NBS; RGPMD, RGPMU, RGPGP = pecahan guru pamong bergelar
+     * magister/doktor, berjabatan madya/utama, dan bersertifikat pendidik,
+     * masing-masing dibatasi 1. Dengan a..d = 0,3 / 0,4 / 0,5 / 0,6:
+     *
+     *   1. BS > 2, MD ≥ d, MU ≥ b, GP ≥ c   → 4
+     *   2. BS > 2                           → 3 + rata(⌊(MD−a)/(d−a)⌋₀¹, ⌊MU/b⌋₀¹, ⌊GP/c⌋₀¹)
+     *   3. BS = 2, MD ≥ a, MU < b, GP < c   → 3
+     *   4. BS = 2, MD < a                   → 2 + MD/a
+     *   5. selain itu                       → 2
+     *
+     * Perangkapnya: BS = 2 adalah perbandingan rasio pecahan, jadi diuji
+     * dengan toleransi, bukan `==`. Ketiga sub-skor pita 2 dipotong dua
+     * desimal sebelum dirata-rata, mengikuti pembulatan kertas kerja.
+     *
+     * @param  int  $ngp  seluruh guru pamong
+     * @param  int  $nbs  jumlah bidang studi
+     * @param  int  $magisterDoktor  guru pamong bergelar magister atau doktor
+     * @param  int  $madyaUtama  guru pamong berjabatan Guru Madya atau Guru Utama
+     * @param  int  $serdik  guru pamong bersertifikat pendidik
+     */
+    public function rgp(int $ngp, int $nbs, int $magisterDoktor, int $madyaUtama, int $serdik): HasilRumus
+    {
+        $this->pastikanPembagiSah($nbs, 'NBS');
+        $this->pastikanPembagiSah($ngp, 'NGP');
+
+        [$a, $b, $c, $d] = [0.3, 0.4, 0.5, 0.6];
+
+        $bs = $ngp / $nbs;
+        $md = min(1.0, $magisterDoktor / $ngp);
+        $mu = min(1.0, $madyaUtama / $ngp);
+        $gp = min(1.0, $serdik / $ngp);
+
+        $sepadanDua = abs($bs - 2.0) < 1e-9;
+        $jepit = fn (float $v): float => self::potong2(max(0.0, min(1.0, $v)));
+
+        $skor = match (true) {
+            $bs > 2.0 && ! $sepadanDua && $md >= $d && $mu >= $b && $gp >= $c => 4.0,
+            $bs > 2.0 && ! $sepadanDua => 3 + (($jepit(($md - $a) / ($d - $a)) + $jepit($mu / $b) + $jepit($gp / $c)) / 3),
+            $sepadanDua && $md >= $a && $mu < $b && $gp < $c => 3.0,
+            $sepadanDua && $md < $a => 2 + self::potong2($md / $a),
+            default => 2.0,
+        };
+        $skorTepat = self::potong2($skor);
+
+        return new HasilRumus(
+            kode: 'RGP',
+            nilai: round($bs, 2),
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: [
+                'rgpbs' => round($bs, 4),
+                'rgpmd' => round($md, 4),
+                'rgpmu' => round($mu, 4),
+                'rgpgp' => round($gp, 4),
+            ] + compact('ngp', 'nbs', 'magisterDoktor', 'madyaUtama', 'serdik'),
+        );
+    }
+
+    /**
+     * Pendanaan (elemen 25): Skor A = RATA-RATA tiga sub-skor bertangga.
+     *
+     * ROP dibagi jumlah MAHASISWA (NM), sedangkan RPD dan RPkMD dibagi
+     * jumlah DTPS — pembagi yang tertukar adalah perangkap rumus ini.
+     * Ambang dalam rupiah per tahun:
+     *
+     *   ROP   ≥ 18 jt → 4; ≥ 10 jt → 3; ≥ 5 jt → 2; selain itu 1
+     *   RPD   ≥ 10 jt → 4; ≥  7 jt → 3; ≥ 4 jt → 2; selain itu 1
+     *   RPkMD ≥  5 jt → 4; ≥  3 jt → 3; ≥ 1 jt → 2; selain itu 1
+     *
+     * @param  float  $biayaOperasionalPendidikan  rupiah per tahun
+     * @param  float  $danaPenelitian  rupiah per tahun
+     * @param  float  $danaPkm  rupiah per tahun
+     * @param  int  $nm  jumlah mahasiswa
+     * @param  int  $ndtps  seluruh DTPS
+     */
+    public function dana(float $biayaOperasionalPendidikan, float $danaPenelitian, float $danaPkm, int $nm, int $ndtps): HasilRumus
+    {
+        $this->pastikanPembagiSah($nm, 'NM');
+        $this->pastikanPembagiSah($ndtps, 'NDTPS');
+
+        $rop = round($biayaOperasionalPendidikan / $nm, 2);
+        $rpd = round($danaPenelitian / $ndtps, 2);
+        $rpkmd = round($danaPkm / $ndtps, 2);
+
+        $tangga = fn (float $x, float $empat, float $tiga, float $dua): int => match (true) {
+            $x >= $empat => 4,
+            $x >= $tiga => 3,
+            $x >= $dua => 2,
+            default => 1,
+        };
+
+        $skorOp = $tangga($rop, 18e6, 10e6, 5e6);
+        $skorPd = $tangga($rpd, 10e6, 7e6, 4e6);
+        $skorPkm = $tangga($rpkmd, 5e6, 3e6, 1e6);
+
+        $skorTepat = self::potong2(($skorOp + $skorPd + $skorPkm) / 3);
+
+        return new HasilRumus(
+            kode: 'DANA',
+            nilai: $rop,
+            skor: (int) floor($skorTepat),
+            skorTepat: $skorTepat,
+            komponen: compact('rop', 'rpd', 'rpkmd') + [
+                'skor_op' => $skorOp,
+                'skor_pd' => $skorPd,
+                'skor_pkm' => $skorPkm,
+                'biaya_operasional_pendidikan' => $biayaOperasionalPendidikan,
+                'dana_penelitian' => $danaPenelitian,
+                'dana_pkm' => $danaPkm,
+                'nm' => $nm,
+                'ndtps' => $ndtps,
+            ],
+        );
+    }
+
     // ---- Pola tiga tingkat RI/RN/RW --------------------------------------
 
     /**
