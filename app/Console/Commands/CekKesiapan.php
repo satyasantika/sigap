@@ -167,7 +167,7 @@ class CekKesiapan extends Command
             'Yang ada: '.ModelIzin::count().'. Tanpa ini setiap peran ditolak tanpa alasan yang jelas.');
         $this->periksa('5 syarat perlu', SyaratPerlu::count() === 5, 'Yang ada: '.SyaratPerlu::count());
         $this->periksa('15 rumus', Rumus::count() === 15, 'Yang ada: '.Rumus::count());
-        $this->periksa('28 butir DKPS', DkpsButir::count() === 28, 'Yang ada: '.DkpsButir::count());
+        $this->periksa('29 tabel DKPS', DkpsButir::count() === 29, 'Yang ada: '.DkpsButir::count());
         $this->periksa('6 pokja', Pokja::count() >= 6, 'Yang ada: '.Pokja::count());
     }
 

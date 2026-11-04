@@ -57,7 +57,7 @@ class DkpsBarisTable
                     ->query(fn (Builder $query) => $query->whereNull('diverifikasi_pada')),
                 Filter::make('calon_selisih')->label('Manual, seharusnya dari SIAKAD')
                     ->query(fn (Builder $query) => $query->where('sumber', SumberData::Manual)
-                        ->whereHas('butir', fn (Builder $b) => $b->whereIn('no', DkpsBaris::BUTIR_DARI_SIAKAD))),
+                        ->whereHas('butir', fn (Builder $b) => $b->whereIn('kode', DkpsBaris::KODE_DARI_SIAKAD))),
                 Filter::make('tanpa_bukti')->label('Belum punya bukti')
                     ->query(fn (Builder $query) => $query->whereDoesntHave('bukti')),
             ])

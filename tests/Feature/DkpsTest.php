@@ -193,13 +193,23 @@ class DkpsTest extends TestCase
     // ---- Penandaan calon selisih ----------------------------------------
 
     #[Test]
+    public function baris_baru_mewarisi_pokja_dan_lembar_dari_butirnya(): void
+    {
+        $baris = $this->baris(7);   // Tabel 7 milik POKJA-SDM
+
+        $this->assertSame('7', $baris->lembar_kode);
+        $this->assertSame(Pokja::where('kode', 'POKJA-SDM')->firstOrFail()->id, $baris->pokja_id);
+        $this->assertSame('1.1', $this->baris(1)->lembar_kode);
+    }
+
+    #[Test]
     public function baris_manual_yang_seharusnya_dari_siakad_ditandai(): void
     {
         // Butir 2 (Mahasiswa) ada di SIAKAD; baris manual di sana adalah calon
         // selisih pada asesmen lapangan.
         $manual = $this->baris(2, ['sumber' => SumberData::Manual]);
         $siakad = $this->baris(2, ['sumber' => SumberData::Siakad, 'tahun_acuan' => 'TS-1']);
-        // Butir 13 (Penggunaan Dana) memang tidak ada di SIAKAD.
+        // Butir 13 (Guru Pamong) memang tidak ada di SIAKAD.
         $wajar = $this->baris(13, ['sumber' => SumberData::Manual]);
 
         $this->assertTrue($manual->fresh()->calonSelisih());
@@ -324,9 +334,9 @@ class DkpsTest extends TestCase
 
         $baris = DkpsBaris::where('impor_batch_id', $batch->id)->firstOrFail();
 
-        // Mendarat di butir 6, bukan di tabel dosen tersendiri — keputusan yang
-        // diambil karena tabel dosen sengaja belum dibuat.
-        $this->assertSame(6, $baris->butir->no);
+        // Mendarat di Tabel 7 (DBS), bukan di tabel dosen tersendiri — keputusan
+        // yang diambil karena tabel dosen sengaja belum dibuat.
+        $this->assertSame('7', $baris->butir->kode);
         $this->assertSame('0412088001', $baris->nilai('nidn'));
         $this->assertSame('S3', $baris->nilai('pendidikan'));
 

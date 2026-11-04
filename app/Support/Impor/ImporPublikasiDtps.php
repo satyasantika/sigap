@@ -3,7 +3,7 @@
 namespace App\Support\Impor;
 
 /**
- * Publikasi ilmiah DTPS — butir DKPS 25 dan 26.
+ * Publikasi ilmiah DTPS — tabel DKPS 26 dan 27; bawaannya Tabel 27.
  *
  * Kunci duplikasinya DOI lebih dulu; bila DOI kosong, nama dosen ditambah
  * judul ternormalisasi. Urutannya penting: DOI unik secara global, sementara
@@ -21,17 +21,17 @@ class ImporPublikasiDtps extends ProfilDkpsDasar
         string $periodeId,
         string $prodiId,
         string $penggunaId,
-        private readonly int $butir = 25,
+        private readonly string $butir = '27',
     ) {
         parent::__construct($periodeId, $prodiId, $penggunaId);
     }
 
     public function nama(): string
     {
-        return "Publikasi DTPS (butir {$this->butir})";
+        return "Publikasi DTPS (tabel {$this->butir})";
     }
 
-    protected function nomorButir(): int
+    protected function kodeButir(): string
     {
         return $this->butir;
     }

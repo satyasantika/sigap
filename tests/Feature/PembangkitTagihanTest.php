@@ -82,8 +82,8 @@ class PembangkitTagihanTest extends TestCase
     #[Test]
     public function setiap_butir_dkps_punya_satu_tagihan_di_pokja_data(): void
     {
-        $this->assertSame(28, Tagihan::where('jenis', JenisTagihan::DataDkps)->count());
-        $this->assertSame(28, DkpsButir::count());
+        $this->assertSame(29, Tagihan::where('jenis', JenisTagihan::DataDkps)->count());
+        $this->assertSame(29, DkpsButir::count());
 
         $pokja = Tagihan::where('jenis', JenisTagihan::DataDkps)
             ->with('pokja')->get()->pluck('pokja.kode')->unique();
@@ -177,7 +177,7 @@ class PembangkitTagihanTest extends TestCase
         $this->artisan('tagihan:bangkitkan', ['periode' => $this->periode->nama])
             ->assertSuccessful();
 
-        $this->assertSame(137, Tagihan::count());
+        $this->assertSame(138, Tagihan::count());
         $this->assertSame('100.000', (string) Tagihan::sum('bobot_terkait'));
     }
 

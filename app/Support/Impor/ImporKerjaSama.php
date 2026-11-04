@@ -3,7 +3,7 @@
 namespace App\Support\Impor;
 
 /**
- * Kerja sama tridharma — butir DKPS 1.
+ * Kerja sama tridharma — tabel DKPS 1.
  *
  * Kunci duplikasinya lembaga mitra + judul ternormalisasi + tahun. Ketiganya
  * diperlukan: satu lembaga bisa punya beberapa kerja sama, dan judul yang sama
@@ -19,9 +19,15 @@ class ImporKerjaSama extends ProfilDkpsDasar
         return 'Kerja sama tridharma';
     }
 
-    protected function nomorButir(): int
+    protected function kodeButir(): string
     {
-        return 1;
+        return '1';
+    }
+
+    protected function kodeLembar(array $baris): string
+    {
+        // Medan `bidang` memilih lembar 1.1/1.2/1.3; menyusul di Tugas 6.
+        return '1.1';
     }
 
     public function medan(): array

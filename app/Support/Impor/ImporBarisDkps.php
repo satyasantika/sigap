@@ -8,7 +8,7 @@ namespace App\Support\Impor;
  * Kunci duplikasinya butir + tahun acuan + kunci alami barisnya, sesuai
  * dokumen 09. Kunci alaminya diserahkan pengisi lewat kolom "Penanda baris",
  * karena bentuk tabel tiap butir berbeda dan tidak ada satu kolom yang selalu
- * ada di keduapuluh delapan butir.
+ * ada di keduapuluh sembilan tabel.
  */
 class ImporBarisDkps extends ProfilDkpsDasar
 {
@@ -16,7 +16,7 @@ class ImporBarisDkps extends ProfilDkpsDasar
         string $periodeId,
         string $prodiId,
         string $penggunaId,
-        private readonly int $butir,
+        private readonly string $butir,
     ) {
         parent::__construct($periodeId, $prodiId, $penggunaId);
     }
@@ -26,7 +26,7 @@ class ImporBarisDkps extends ProfilDkpsDasar
         return "Baris DKPS butir {$this->butir}";
     }
 
-    protected function nomorButir(): int
+    protected function kodeButir(): string
     {
         return $this->butir;
     }
@@ -48,7 +48,7 @@ class ImporBarisDkps extends ProfilDkpsDasar
         $baris['tahun_acuan'] = strtoupper(trim($baris['tahun_acuan'] ?? ''));
         $baris['sumber'] = mb_strtolower(trim($baris['sumber'] ?? 'manual'));
         $baris['_kunci'] = NormalisasiKunci::dari(
-            (string) $this->butir,
+            $this->butir,
             $baris['tahun_acuan'],
             (string) ($baris['penanda'] ?? ''),
         );

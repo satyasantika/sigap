@@ -28,8 +28,14 @@ abstract class ProfilDkpsDasar implements ProfilImpor
         protected readonly string $penggunaId,
     ) {}
 
-    /** Nomor butir DKPS tempat baris ini mendarat. */
-    abstract protected function nomorButir(): int;
+    /** Kode tabel DKPS 3.0 tempat baris ini mendarat ("1".."29"). */
+    abstract protected function kodeButir(): string;
+
+    /** Kode lembar tujuan; bawaannya sama dengan kode tabel (tabel satu lembar). */
+    protected function kodeLembar(array $baris): string
+    {
+        return $this->kodeButir();
+    }
 
     /** Kolom json yang disimpan dari satu baris tempelan. */
     abstract protected function kolomData(array $baris): array;
@@ -67,6 +73,7 @@ abstract class ProfilDkpsDasar implements ProfilImpor
             'prodi_id' => $this->prodiId,
             'periode_id' => $this->periodeId,
             'dkps_butir_id' => $this->idButir(),
+            'lembar_kode' => $this->kodeLembar($baris),
             'tahun_acuan' => $baris['tahun_acuan'],
             'data' => $this->kolomData($baris),
             'sumber' => $baris['sumber'],
@@ -96,7 +103,7 @@ abstract class ProfilDkpsDasar implements ProfilImpor
 
     protected function idButir(): string
     {
-        return DkpsButir::where('no', $this->nomorButir())->value('id');
+        return DkpsButir::where('kode', $this->kodeButir())->value('id');
     }
 
     /** Medan yang dimiliki semua profil DKPS. */

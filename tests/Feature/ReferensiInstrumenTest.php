@@ -136,23 +136,36 @@ class ReferensiInstrumenTest extends TestCase
     }
 
     #[Test]
-    public function dkps_berisi_28_butir_bernomor_1_sampai_28(): void
+    public function dkps_versi_3_punya_29_tabel_berkode_dan_35_lembar(): void
     {
         $this->semaiReferensi();
 
-        $this->assertSame(28, DkpsButir::count());
-        $this->assertSame(range(1, 28), DkpsButir::orderBy('no')->pluck('no')->all());
+        $this->assertSame(29, DkpsButir::count());
+        $this->assertSame(range(1, 29), DkpsButir::orderBy('no')->pluck('no')->all());
+        $this->assertSame(array_map('strval', range(1, 29)), DkpsButir::orderBy('no')->pluck('kode')->all());
+        $this->assertSame('Guru Pamong', DkpsButir::dariKode('13')->nama);
+        $this->assertSame('Tabel 29', DkpsButir::dariKode('29')->label_tabel);
+        $this->assertSame(['1.1', '1.2', '1.3'], DkpsButir::dariKode('1')->kodeLembar());
+        $this->assertSame(['4.1', '4.2', '4.3', '4.4'], DkpsButir::dariKode('4')->kodeLembar());
+        $this->assertSame(35, DkpsButir::all()->sum(fn (DkpsButir $b) => count($b->lembar)));
+        $this->assertSame('POKJA-SDM', DkpsButir::dariKode('7')->pokja_kode);
+        $this->assertSame([39, 40, 41], DkpsButir::dariKode('22')->elemen);
     }
 
     #[Test]
-    public function label_tabel_dkps_tidak_diturunkan_dari_nomor(): void
+    public function seeder_dkps_mencocokkan_lewat_kode_bukan_nomor(): void
     {
         $this->semaiReferensi();
 
-        // Buku 3 melompati "Tabel 13". Kalau label diturunkan dari `no`,
-        // seluruh rujukan ke Buku 3 dari butir 13 ke atas meleset satu nomor.
-        $this->assertSame('Tabel 14', DkpsButir::where('no', 13)->value('label_tabel'));
-        $this->assertSame('Tabel 29', DkpsButir::where('no', 28)->value('label_tabel'));
+        // Simulasi basis data lama: butir berkode "14" sempat bernomor 13.
+        DkpsButir::dariKode('14')->forceFill(['no' => 113])->save();
+        DkpsButir::dariKode('13')->forceFill(['no' => 13])->save();
+        $idLama = DkpsButir::dariKode('14')->id;
+
+        $this->seed(DkpsButirSeeder::class);
+
+        $this->assertSame($idLama, DkpsButir::dariKode('14')->id, 'Baris lama dipakai ulang lewat kode.');
+        $this->assertSame(14, DkpsButir::dariKode('14')->no);
     }
 
     #[Test]
