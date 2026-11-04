@@ -43,6 +43,9 @@ class KalkulatorRumus
      * (ambangnya 40) tetapi TIDAK memenuhi syarat perlu lima tahun (ambangnya
      * 50). Keduanya dihitung terpisah dan dikembalikan terpisah.
      *
+     * Ambang skor dan syarat perlu dibandingkan pada persen MENTAH; `nilai`
+     * dibulatkan hanya untuk tampilan (19,997 tampil 20,0 tetapi belum 20).
+     *
      * @param  int  $nds3  DTPS berpendidikan doktor
      * @param  int  $ndtps  seluruh DTPS
      * @param  int  $ndlk  DTPS berjabatan lektor kepala
@@ -52,10 +55,11 @@ class KalkulatorRumus
     {
         $this->pastikanPembagiSah($ndtps, 'NDTPS');
 
-        $nilai = round(($nds3 / $ndtps) * 100, 2);
+        $persen = ($nds3 * 100) / $ndtps;
+        $nilai = round($persen, 2);
 
         // skor(a) = PDS3 >= 40 ? 4 : 2 + (5 * PDS3/100)
-        $skorA = $nilai >= 40.0 ? 4.0 : 2 + (5 * $nilai / 100);
+        $skorA = $persen >= 40.0 ? 4.0 : 2 + (5 * $persen / 100);
 
         // Syarat perlu 5 tahun: PDS3 >= 50 DAN NDLK + NDGB >= 4.
         // Syarat perlu 3 tahun: PDS3 >= 20 DAN NDLK + NDGB >= 3.
@@ -66,27 +70,31 @@ class KalkulatorRumus
             nilai: $nilai,
             skor: (int) floor(self::potong2($skorA)),
             skorTepat: self::potong2($skorA),
-            memenuhiSyarat3Tahun: $nilai >= 20.0 && $lektorKeAtas >= 3,
-            memenuhiSyarat5Tahun: $nilai >= 50.0 && $lektorKeAtas >= 4,
+            memenuhiSyarat3Tahun: $persen >= 20.0 && $lektorKeAtas >= 3,
+            memenuhiSyarat5Tahun: $persen >= 50.0 && $lektorKeAtas >= 4,
             komponen: compact('nds3', 'ndtps', 'ndlk', 'ndgb') + [
                 'skor_a_tepat' => round($skorA, 4),
                 'lektor_kepala_ke_atas' => $lektorKeAtas,
             ],
-            catatan: $nilai >= 40.0 && $nilai < 50.0
+            catatan: $persen >= 40.0 && $persen < 50.0
                 ? 'Skor penuh tercapai, tetapi syarat perlu lima tahun (PDS3 ≥ 50) BELUM terpenuhi.'
                 : null,
         );
     }
 
-    /** Persentase DTPS berjabatan akademik guru besar, lektor kepala, atau lektor. */
+    /**
+     * Persentase DTPS berjabatan akademik guru besar, lektor kepala, atau
+     * lektor. Ambang 70 dibandingkan pada persen mentah, seperti PDS3.
+     */
     public function pgblkl(int $ndgb, int $ndlk, int $ndl, int $ndtps): HasilRumus
     {
         $this->pastikanPembagiSah($ndtps, 'NDTPS');
 
-        $nilai = round((($ndgb + $ndlk + $ndl) / $ndtps) * 100, 2);
+        $persen = (($ndgb + $ndlk + $ndl) * 100) / $ndtps;
+        $nilai = round($persen, 2);
 
         // skor(b) = PGBLKL >= 70 ? 4 : 2 + ((20 * PGBLKL/100) / 7)
-        $skorB = $nilai >= 70.0 ? 4.0 : 2 + ((20 * $nilai / 100) / 7);
+        $skorB = $persen >= 70.0 ? 4.0 : 2 + ((20 * $persen / 100) / 7);
 
         return new HasilRumus(
             kode: 'PGBLKL',
@@ -120,6 +128,9 @@ class KalkulatorRumus
      * "jumlah dosen berpublikasi" supaya pemanggil tidak bisa keliru
      * menyerahkan cacah artikel tanpa menyadarinya.
      *
+     * Ambang dibandingkan pada persen MENTAH: 1504/7521 = 19,997 % tampil
+     * 20,0 setelah dibulatkan, tetapi belum mencapai 20, jadi skornya 3.
+     *
      * @param  int  $dosenBerpublikasi  cacah DOSEN dengan >=1 publikasi memenuhi syarat
      * @param  int  $ndtps  seluruh DTPS
      * @param  int|null  $jumlahArtikel  hanya untuk dicatat sebagai komponen
@@ -135,15 +146,12 @@ class KalkulatorRumus
             );
         }
 
-        $nilai = round(($dosenBerpublikasi / $ndtps) * 100, 2);
+        // Kalikan 100 sebelum membagi supaya 3/20 tepat 15, bukan 15,000…1.
+        $persen = ($dosenBerpublikasi * 100) / $ndtps;
+        $nilai = round($persen, 2);
 
         // Batasnya setengah terbuka: 20 masuk ke skor 4, 15 masuk ke skor 3.
-        $skor = match (true) {
-            $nilai >= 20.0 => 4,
-            $nilai >= 15.0 => 3,
-            $nilai >= 10.0 => 2,
-            default => 1,
-        };
+        $skor = self::tangga($persen, 20.0, 15.0, 10.0);
 
         return new HasilRumus(
             kode: 'PPDTPS',
@@ -151,10 +159,10 @@ class KalkulatorRumus
             skor: $skor,
             skorTepat: (float) $skor,
             // Ambang syarat perlu lima tahun DUA KALI LIPAT ambang skor 4.
-            memenuhiSyarat3Tahun: $nilai >= 20.0,
-            memenuhiSyarat5Tahun: $nilai >= 40.0,
+            memenuhiSyarat3Tahun: $persen >= 20.0,
+            memenuhiSyarat5Tahun: $persen >= 40.0,
             komponen: compact('dosenBerpublikasi', 'ndtps', 'jumlahArtikel'),
-            catatan: $nilai >= 20.0 && $nilai < 40.0
+            catatan: $persen >= 20.0 && $persen < 40.0
                 ? 'Skor penuh tercapai, tetapi syarat perlu lima tahun (PPDTPS ≥ 40) BELUM terpenuhi.'
                 : null,
         );
@@ -210,23 +218,20 @@ class KalkulatorRumus
         );
     }
 
-    /** Rata-rata jumlah mahasiswa bimbingan akhir per DTPS. */
+    /**
+     * Rata-rata jumlah mahasiswa bimbingan akhir per DTPS. Ambang dibandingkan
+     * pada rasio mentah (8,996 tampil 9,0 tetapi belum 9).
+     */
     public function rsa(int $nas, int $ndtps): HasilRumus
     {
         $this->pastikanPembagiSah($ndtps, 'NDTPS');
 
-        $nilai = round($nas / $ndtps, 2);
-
-        $skor = match (true) {
-            $nilai >= 9.0 => 4,
-            $nilai >= 6.0 => 3,
-            $nilai >= 3.0 => 2,
-            default => 1,
-        };
+        $rasio = $nas / $ndtps;
+        $skor = self::tangga($rasio, 9.0, 6.0, 3.0);
 
         return new HasilRumus(
             kode: 'RSA',
-            nilai: $nilai,
+            nilai: round($rasio, 2),
             skor: $skor,
             skorTepat: (float) $skor,
             komponen: compact('nas', 'ndtps'),
@@ -248,7 +253,8 @@ class KalkulatorRumus
      *
      * Ambang skor juga mengikuti kertas kerja (sel D229–D231, E232) dan
      * `data/rumus.json`: TKM ≥ 0,75 → 4; ≥ 0,5 → 3; ≥ 0,25 → 2; selain itu 1,
-     * di sini dalam persen (75 / 50 / 25).
+     * di sini dalam persen (75 / 50 / 25), dibandingkan pada rata MENTAH
+     * yang belum dibulatkan.
      *
      * @param  array<int, array{a: float, b: float, c: float, d: float}>  $dimensi  persentase per dimensi
      */
@@ -263,18 +269,12 @@ class KalkulatorRumus
         );
 
         $rataMentah = $mentah->avg();
-        $nilai = round($rataMentah / 4, 2);
-
-        $skor = match (true) {
-            $nilai >= 75.0 => 4,
-            $nilai >= 50.0 => 3,
-            $nilai >= 25.0 => 2,
-            default => 1,
-        };
+        $persen = $rataMentah / 4;
+        $skor = self::tangga($persen, 75.0, 50.0, 25.0);
 
         return new HasilRumus(
             kode: 'TKM',
-            nilai: $nilai,
+            nilai: round($persen, 2),
             skor: $skor,
             skorTepat: (float) $skor,
             komponen: [

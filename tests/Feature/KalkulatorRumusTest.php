@@ -133,6 +133,20 @@ class KalkulatorRumusTest extends TestCase
         $this->assertSame(1, $this->kalkulator()->ppdtps(1, 11)->skor);  //  9,09
     }
 
+    #[Test]
+    public function ppdtps_ambang_dibandingkan_pada_rasio_mentah(): void
+    {
+        // 1504/7521 = 19,997…%: tampil 20,0 setelah dibulatkan, tetapi rasio
+        // mentahnya belum mencapai 20, jadi skornya 3 dan syarat perlu tiga
+        // tahun belum terpenuhi.
+        $h = $this->kalkulator()->ppdtps(dosenBerpublikasi: 1504, ndtps: 7521);
+
+        $this->assertSame(20.0, $h->nilai);
+        $this->assertSame(3, $h->skor);
+        $this->assertSame(3.0, $h->skorTepat);
+        $this->assertFalse($h->memenuhiSyarat3Tahun);
+    }
+
     // ---- Rumus lain ------------------------------------------------------
 
     #[Test]
