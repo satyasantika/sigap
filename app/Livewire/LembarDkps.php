@@ -35,7 +35,13 @@ use RuntimeException;
  *
  * Penanda baris (`$id`) ada tiga bentuk: UUID untuk baris tersimpan,
  * `tetap:<kunci>` untuk baris tetap yang belum tersimpan, dan `baru:<n>`
- * untuk baris bebas yang belum tersimpan di `$baru[n]`.
+ * untuk baris bebas yang diketik di `$baru[n]`.
+ *
+ * Baris baru yang sudah tersimpan TETAP tinggal di `$baru[n]` (dengan `_id`
+ * = UUID-nya) sampai halaman berganti: kunci klien `_kunci` dan posisinya
+ * tidak berubah, jadi `<tr>` tidak diganti di tengah pengisian, fokus tidak
+ * lepas, sel yang diketik sesudahnya tetap masuk ke baris yang sama, dan
+ * baris itu tidak melompat ke halaman berikutnya.
  *
  * Simpan terjadi per baris setiap kali sel berubah (hook `updated`), bukan
  * lewat satu tombol besar: pengisi yang menutup tab di tengah jalan tidak
@@ -62,7 +68,7 @@ class LembarDkps extends Component
     /** @var array<string, array<string, string>> penanda baris ⇒ (kunci kolom | `_baris`) ⇒ pesan */
     public array $galat = [];
 
-    /** @var array<int, array<string, mixed>> baris bebas yang belum tersimpan */
+    /** @var array<int, array<string, mixed>> baris bebas yang diketik; `_kunci` = kunci klien, `_id` = UUID setelah tersimpan */
     public array $baru = [];
 
     public ?string $disimpanTerakhir = null;
@@ -89,7 +95,7 @@ class LembarDkps extends Component
         // Lembar bebas yang masih kosong langsung menyediakan satu baris
         // ketik, seperti lembar Excel yang dibuka pertama kali.
         if (! $this->skema()->adaBarisTetap() && $this->baris === [] && $this->bolehIsi()) {
-            $this->baru[] = $this->isianKosong();
+            $this->baru[] = $this->baruKosong();
         }
     }
 
@@ -192,7 +198,10 @@ class LembarDkps extends Component
 
         $this->halaman = min(max(1, $this->halaman), $this->jumlahHalaman());
 
-        foreach ($cocok->slice(($this->halaman - 1) * self::PER_HALAMAN, self::PER_HALAMAN) as $b) {
+        // Baris yang tersimpan dari `$baru` sudah tampil di tempatnya sendiri.
+        $diBaru = array_filter(array_column($this->baru, '_id'));
+
+        foreach ($cocok->slice(($this->halaman - 1) * self::PER_HALAMAN, self::PER_HALAMAN)->reject(fn (DkpsBaris $b) => in_array($b->id, $diBaru, true)) as $b) {
             $this->baris[$b->id] = $this->isian($b->data ?? []);
         }
     }
@@ -203,6 +212,8 @@ class LembarDkps extends Component
     public function updated(string $properti): void
     {
         if ($properti === 'halaman') {
+            // Baris baru yang sudah tersimpan kembali ke urutan aslinya.
+            $this->baru = array_filter($this->baru, fn (array $b) => ! isset($b['_id']));
             $this->muat();
 
             return;
@@ -230,11 +241,12 @@ class LembarDkps extends Component
             }
 
             $data = $this->baru[$indeks];
+            $baris = isset($data['_id']) ? ($this->semua->get($data['_id']) ?? abort(404)) : null;
 
             // Baris baru menunggu sampai kolom wajibnya terisi; menyimpan
             // lebih awal hanya menghujani pengisi dengan "wajib diisi"
             // ketika ia baru mengetik sel pertama.
-            if ($this->kolomWajibKosong($data) !== []) {
+            if ($baris === null && $this->kolomWajibKosong($data) !== []) {
                 unset($this->galat[$id]);
 
                 return;
@@ -257,12 +269,12 @@ class LembarDkps extends Component
 
             $data = $this->baris[$id];
             $kunciBaris = $skema->adaBarisTetap() ? $baris->data['_baris'] : null;
+        }
 
-            // Blur tanpa perubahan tidak menulis apa pun — terutama pada
-            // baris terverifikasi, yang verifikasinya akan tercabut.
-            if ($skema->normalkan($this->isian($data), $kunciBaris) === $skema->normalkan($this->isian($baris->data ?? []), $kunciBaris)) {
-                return;
-            }
+        // Blur tanpa perubahan tidak menulis apa pun — terutama pada baris
+        // terverifikasi, yang verifikasinya akan tercabut.
+        if ($baris !== null && $skema->normalkan($this->isian($data), $kunciBaris) === $skema->normalkan($this->isian($baris->data ?? []), $kunciBaris)) {
+            return;
         }
 
         try {
@@ -287,7 +299,7 @@ class LembarDkps extends Component
         unset($this->galat[$id]);
 
         if (isset($indeks)) {
-            unset($this->baru[$indeks]);
+            $this->baru[$indeks]['_id'] = $tersimpan->id;
         }
 
         $this->disimpanTerakhir = $tersimpan->id;
@@ -298,7 +310,7 @@ class LembarDkps extends Component
     {
         abort_unless($this->bolehIsi && ! $this->skema()->adaBarisTetap(), 403);
 
-        $this->baru[] = $this->isianKosong();
+        $this->baru[] = $this->baruKosong();
     }
 
     public function hapusBaris(string $id): void
@@ -322,6 +334,7 @@ class LembarDkps extends Component
         }
 
         unset($this->galat[$id]);
+        $this->baru = array_filter($this->baru, fn (array $b) => ($b['_id'] ?? null) !== $id);
         $this->muat();
     }
 
@@ -412,7 +425,7 @@ class LembarDkps extends Component
     /**
      * Baris grid dalam urutan tampil, lengkap dengan yang dibutuhkan Blade.
      *
-     * @return array<int, array{id: string, jalur: string, nomor: string, kelompok: ?string, kunciBaris: ?string, isian: array, hitung: array, nonaktif: array, model: ?DkpsBaris}>
+     * @return array<int, array{id: string, jalur: string, nomor: string, kelompok: ?string, kunciBaris: ?string, isian: array, hitung: array, nonaktif: array, model: ?DkpsBaris, galatId: string, kunciKlien: string}>
      */
     public function barisTampil(): array
     {
@@ -443,10 +456,11 @@ class LembarDkps extends Component
             $hasil[] = $this->barisUntuk($id, "baris.{$id}", (string) ++$nomor, $isian, null, null);
         }
 
-        $nomor = $this->totalBaris();
+        $nomor = $this->totalBaris() - count(array_filter(array_column($this->baru, '_id')));
 
         foreach ($this->baru as $n => $isian) {
-            $hasil[] = $this->barisUntuk("baru:{$n}", "baru.{$n}", (string) ++$nomor, $isian, null, null);
+            $hasil[] = ['galatId' => "baru:{$n}", 'kunciKlien' => $isian['_kunci'] ?? "baru-{$n}"]
+                + $this->barisUntuk($isian['_id'] ?? "baru:{$n}", "baru.{$n}", (string) ++$nomor, $isian, null, null);
         }
 
         return $hasil;
@@ -464,6 +478,8 @@ class LembarDkps extends Component
             'hitung' => $this->hitungan($isian, $kunciBaris),
             'nonaktif' => $kunciBaris === null ? [] : $this->skema()->kolomNonaktif($kunciBaris),
             'model' => $this->semua->get($id),
+            'galatId' => $id,
+            'kunciKlien' => $id,
         ];
     }
 
@@ -621,6 +637,12 @@ class LembarDkps extends Component
     private function isianKosong(): array
     {
         return $this->isian([]);
+    }
+
+    /** Baris ketik baru dengan kunci klien yang tetap sepanjang hidupnya di layar. */
+    private function baruKosong(): array
+    {
+        return $this->isianKosong() + ['_kunci' => (string) Str::uuid()];
     }
 
     private function kosong(array $data): bool

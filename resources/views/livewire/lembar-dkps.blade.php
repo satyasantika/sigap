@@ -66,15 +66,15 @@
                         $id = $r['id'];
                         $model = $r['model'];
                         $bisaSunting = $bolehIsi && ($model === null || ! $model->terverifikasi() || $this->bolehVerifikasi($model));
-                        $galatBaris = $galat[$id] ?? [];
+                        $galatBaris = ($galat[$r['galatId']] ?? []) + ($galat[$id] ?? []);
                     @endphp
 
                     @if ($r['kelompok'] !== null && $r['kelompok'] !== $kelompokSebelumnya)
-                        <tr wire:key="kelompok-{{ $id }}"><td colspan="{{ $lebar }}" class="sigap-baris-kelompok">{{ $r['kelompok'] }}</td></tr>
+                        <tr wire:key="kelompok-{{ $r['kunciKlien'] }}"><td colspan="{{ $lebar }}" class="sigap-baris-kelompok">{{ $r['kelompok'] }}</td></tr>
                     @endif
                     @php $kelompokSebelumnya = $r['kelompok']; @endphp
 
-                    <tr wire:key="baris-{{ $id }}">
+                    <tr wire:key="baris-{{ $r['kunciKlien'] }}">
                         <td class="sigap-sel-label">{{ $r['nomor'] }}</td>
                         @foreach ($kolom as $k)
                             @php
@@ -162,11 +162,15 @@
                             @if ($model && $this->disimpanTerakhir === $model->id)
                                 <span x-data="{ tampak: true }" x-init="setTimeout(() => tampak = false, 2000)" x-show="tampak" x-transition.opacity class="text-success-600 dark:text-success-400">Tersimpan</span>
                             @endif
-                            @if (str_starts_with($id, 'baru:') && ($wajib = $this->kolomWajibKosong($r['isian'])) !== [])
+                            @if ($model === null && str_starts_with($id, 'baru:') && ($wajib = $this->kolomWajibKosong($r['isian'])) !== [])
                                 <span class="block text-xs text-gray-500 dark:text-gray-400">Belum tersimpan — isi {{ implode(', ', $wajib) }}.</span>
                             @endif
                             @if ($bisaSunting && (str_starts_with($id, 'baru:') || ($model && ! $model->terverifikasi())))
-                                <button type="button" wire:click="hapusBaris('{{ $id }}')" wire:confirm="Hapus baris ini?" class="sigap-tombol-kecil sigap-tombol-bahaya">Hapus</button>
+                                @if ($tetap)
+                                    <button type="button" wire:click="hapusBaris('{{ $id }}')" wire:confirm="Kosongkan baris ini? Seluruh isiannya dihapus." class="sigap-tombol-kecil sigap-tombol-bahaya">Kosongkan baris</button>
+                                @else
+                                    <button type="button" wire:click="hapusBaris('{{ $id }}')" wire:confirm="Hapus baris ini?" class="sigap-tombol-kecil sigap-tombol-bahaya">Hapus</button>
+                                @endif
                             @endif
                             @if (isset($galatBaris['_baris']))
                                 <p class="sigap-pesan-galat">{{ $galatBaris['_baris'] }}</p>

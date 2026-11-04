@@ -128,6 +128,73 @@ class LembarDkpsTest extends TestCase
     }
 
     #[Test]
+    public function baris_baru_yang_tersimpan_tetap_di_tempatnya_dan_menerima_kolom_opsional(): void
+    {
+        $this->actingAs($this->anggota('POKJA-SDM'));
+
+        // Tabel 7: kolom wajib selesai di kolom 8 (jabatan akademik); 9–13 opsional.
+        $lembar = Livewire::test(LembarDkps::class, $this->lembar('7'));
+        $kunciKlien = $lembar->get('baru.0._kunci');
+        $this->assertNotEmpty($kunciKlien);
+
+        $lembar->set('baru.0.nama_bidang_studi', 'Matematika')
+            ->set('baru.0.nama_dosen', 'Dr. Ani')
+            ->set('baru.0.nidn_nidk', '0011223344')
+            ->set('baru.0.jabatan_akademik', 'Lektor');
+
+        $baris = DkpsBaris::where('lembar_kode', '7')->sole();
+
+        // Baris tetap di $baru[0] dengan kunci klien yang sama: <tr> tidak diganti.
+        $lembar->assertSet('baru.0._id', $baris->id)
+            ->assertSet('baru.0._kunci', $kunciKlien)
+            ->assertSeeHtml('wire:key="baris-'.$kunciKlien.'"')
+            ->assertNotSet("baris.{$baris->id}.nama_dosen", 'Dr. Ani');
+
+        // Sel opsional yang diketik sesudah tersimpan masuk ke baris yang sama.
+        $lembar->set('baru.0.bidang_keahlian', 'Aljabar')
+            ->set('baru.0.prodi_homebase', 'PPG');
+
+        $this->assertSame(1, DkpsBaris::where('lembar_kode', '7')->count());
+        $this->assertSame('Aljabar', $baris->refresh()->nilai('bidang_keahlian'));
+        $this->assertSame('PPG', $baris->nilai('prodi_homebase'));
+    }
+
+    #[Test]
+    public function baris_baru_yang_tersimpan_tidak_pindah_ke_halaman_berikutnya(): void
+    {
+        $this->actingAs($u = $this->anggota('POKJA-SDM'));
+        $pengisi = app(PengisiDkps::class);
+
+        for ($i = 1; $i <= LembarDkps::PER_HALAMAN; $i++) {
+            $pengisi->simpan(DkpsButir::dariKode('28'), '28', $this->periode,
+                ['nama_dtps' => "Dosen {$i}", 'judul_artikel' => "Artikel {$i}", 'jumlah_sitasi' => $i], SumberData::Manual, $u);
+        }
+
+        $lembar = Livewire::test(LembarDkps::class, $this->lembar('28'))
+            ->call('tambahBaris')
+            ->set('baru.0.nama_dtps', 'Dr. Baru Sekali')
+            ->set('baru.0.judul_artikel', 'Judul baru')
+            ->set('baru.0.jumlah_sitasi', '4');
+
+        $this->assertSame(LembarDkps::PER_HALAMAN + 1, DkpsBaris::where('lembar_kode', '28')->count());
+        $baru = DkpsBaris::where('lembar_kode', '28')->get()->sole(fn (DkpsBaris $b) => $b->nilai('nama_dtps') === 'Dr. Baru Sekali');
+
+        // Masih di halaman 1, di posisinya sendiri — bukan di $baris (yang
+        // akan melemparnya ke halaman 2) dan tidak tampil dua kali.
+        $lembar->assertSet('baru.0._id', $baru->id)
+            ->assertCount('baris', LembarDkps::PER_HALAMAN)
+            ->assertNotSet("baris.{$baru->id}.nama_dtps", 'Dr. Baru Sekali')
+            ->assertSeeHtml('aria-label="Nama DTPS"')
+            ->assertSeeHtml('>51<');
+
+        // Setelah berganti halaman, baris itu kembali ke urutan aslinya.
+        $lembar->set('halaman', 2)
+            ->assertSet('baru', [])
+            ->assertSet("baris.{$baru->id}.nama_dtps", 'Dr. Baru Sekali')
+            ->assertCount('baris', 1);
+    }
+
+    #[Test]
     public function galat_validasi_tampil_di_bawah_sel(): void
     {
         $this->actingAs($this->anggota('POKJA-SDM'));
@@ -172,6 +239,7 @@ class LembarDkpsTest extends TestCase
         $baris = DkpsBaris::where('lembar_kode', '2')->where('tahun_acuan', 'TS')->sole();
         $this->assertSame(40, $baris->nilai('kuota'));
         $lembar->assertSet("baris.{$baris->id}.kuota", 40)->assertSeeHtml('>75<');
+        $lembar->assertSee('Kosongkan baris')->assertDontSeeHtml('>Hapus</button>');
     }
 
     #[Test]
