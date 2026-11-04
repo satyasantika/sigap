@@ -368,13 +368,23 @@ internet terbuka.
 Penggelaran pertama yang membawa Tabel DKPS per pokja wajib diikuti:
 
 ```bash
-php artisan migrate && php artisan db:seed --class=DkpsButirSeeder && php artisan dkps:selaraskan
+php artisan migrate --force && php artisan db:seed --class=DkpsButirSeeder --force && php artisan dkps:selaraskan
 ```
 
-Seeder mengganti referensi ke 29 tabel / 35 lembar; `dkps:selaraskan` mengisi
-`lembar_kode` dan `pokja_id` baris DKPS lama supaya tampil di layar pokjanya.
-Perintah itu hanya mengisi yang kosong, jadi aman diulang. Tanpanya
-`sigap:cek-kesiapan` gagal pada "Tidak ada baris DKPS tanpa pokja".
+Seeder mengganti referensi ke 29 tabel / 35 lembar. `dkps:selaraskan` lalu:
+
+- mengisi `lembar_kode` dan `pokja_id` baris DKPS lama supaya tampil di layar
+  pokjanya, dan memindahkan baris yang lembarnya tidak dikenal tabelnya (mis.
+  `24`, padahal Tabel 24 kini berlembar 24.1/24.2) ke lembar pertama tabel itu;
+- memindahkan tagihan DKPS yang sudah ada ke pokja pemilik tabelnya (dulu
+  semuanya milik POKJA-DATA) dan menulis ulang judulnya, lalu menambah
+  tagihan DKPS yang kurang — misalnya Tabel 4, yang baru di DKPS 3.0. Hanya
+  periode yang **sudah** punya tagihan yang disentuh; periode tanpa tagihan
+  tetap menunggu `tagihan:bangkitkan {periode}`.
+
+Perintah itu hanya membetulkan yang belum selaras, jadi aman diulang. Tanpanya
+`sigap:cek-kesiapan` gagal pada "Tidak ada baris DKPS tanpa pokja" atau
+"Tidak ada baris DKPS dengan lembar_kode asing".
 
 ### Yang wajib disetel untuk subfolder
 
