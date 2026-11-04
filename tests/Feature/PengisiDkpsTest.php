@@ -269,4 +269,29 @@ class PengisiDkpsTest extends TestCase
 
         $this->assertSame('28', $baris->fresh()->lembar_kode);
     }
+
+    #[Test]
+    public function panel_verifikasi_tidak_punya_halaman_buat_dan_sunting(): void
+    {
+        // Halaman buat/sunting bawaan Filament dulu jalan tulis kedua yang
+        // melewati PengisiDkps: policy `create` tanpa obyek lolos bagi
+        // koordinator mana pun, lalu kait `creating` menstempel pokja
+        // pemilik tabel lain. Kini satu-satunya jalan tulis adalah grid.
+        $baris = $this->pengisi->simpan(DkpsButir::dariKode('28'), '28', $this->periode,
+            ['nama_dtps' => 'Dr. Ani', 'judul_artikel' => 'Jurnal X, 3, 2026, 1, 1-10', 'jumlah_sitasi' => 12],
+            SumberData::Manual, $this->pengguna(PeranPengguna::Ketua));
+
+        foreach ([$this->pengguna(PeranPengguna::Koordinator, 'POKJA-DIK'), $this->pengguna(PeranPengguna::Ketua)] as $u) {
+            // Sesi dikosongkan antarpengguna: AuthenticateSession Filament
+            // mengeluarkan pengguna yang hash sandinya beda dari pemilik sesi.
+            $this->flushSession();
+            $this->actingAs($u)->get('/panel/dkps-baris/create')->assertNotFound();
+            $this->actingAs($u)->get('/panel/dkps-baris/'.$baris->id.'/edit')->assertNotFound();
+        }
+
+        $this->flushSession();
+        $this->actingAs($this->pengguna(PeranPengguna::Ketua))
+            ->get('/panel/dkps-baris/'.$baris->id)->assertOk()
+            ->assertDontSee('/panel/dkps-baris/'.$baris->id.'/edit');
+    }
 }

@@ -9,7 +9,6 @@ use App\Services\VerifikatorDkps;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
@@ -63,7 +62,6 @@ class DkpsBarisTable
             ])
             ->recordActions([
                 ViewAction::make()->label('Lihat'),
-                EditAction::make()->label('Sunting'),
                 Action::make('verifikasi')
                     ->label('Verifikasi')
                     ->icon('heroicon-o-check-badge')
