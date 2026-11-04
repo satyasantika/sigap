@@ -174,13 +174,13 @@ class KalkulatorRumusTest extends TestCase
         $this->assertLessThanOrEqual(4.0, $skor);
     }
 
-    // ---- TKM: asumsi yang belum dikonfirmasi ----------------------------
+    // ---- TKM: normalisasi /4 sesuai kertas kerja AK (sel E207) ---------
 
     #[Test]
     public function tkm_seluruh_responden_sangat_baik_menjadi_seratus_persen(): void
     {
-        // Nilai mentah 400 dibagi 4 menjadi 100%. Inilah asumsi yang belum
-        // dikonfirmasi ke LAMDIK; lihat komentar di KalkulatorRumus::tkm.
+        // Nilai mentah 400 dibagi 4 menjadi 100%, seperti rumus sel E207
+        // kertas kerja AK IAPSK 3.0; lihat komentar di KalkulatorRumus::tkm.
         $h = $this->kalkulator()->tkm([['a' => 100, 'b' => 0, 'c' => 0, 'd' => 0]]);
 
         $this->assertSame(100.0, $h->nilai);
@@ -189,12 +189,12 @@ class KalkulatorRumusTest extends TestCase
     }
 
     #[Test]
-    public function tkm_selalu_menandai_asumsinya_belum_dikonfirmasi(): void
+    public function tkm_menyebut_rujukan_normalisasinya_di_kertas_kerja(): void
     {
-        // Angkanya boleh dipakai, tetapi tidak boleh dipakai diam-diam.
+        // Orang yang membaca angkanya harus bisa menelusuri dari mana /4 berasal.
         $h = $this->kalkulator()->tkm([['a' => 50, 'b' => 30, 'c' => 15, 'd' => 5]]);
 
-        $this->assertStringContainsString('BELUM DIKONFIRMASI', $h->catatan);
+        $this->assertSame('Normalisasi /4 sesuai kertas kerja AK IAPSK 3.0 (sel E207)', $h->catatan);
         $this->assertSame(4, $h->komponen['pembagi_normalisasi']);
     }
 

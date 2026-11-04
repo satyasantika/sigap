@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\DkpsBaris;
 use App\Models\DkpsButir;
 use App\Models\Elemen;
 use App\Models\Izin as ModelIzin;
@@ -42,6 +43,10 @@ class CekKesiapan extends Command
 
     public function handle(): int
     {
+        // Instans perintah dipakai ulang bila dipanggil dua kali dalam satu
+        // proses (uji, Artisan::call); tanpa ini hasil putaran lalu ikut terlapor.
+        $this->hasil = [];
+
         $this->lingkungan();
         $this->subfolder();
         $this->basisData();
@@ -168,6 +173,15 @@ class CekKesiapan extends Command
         $this->periksa('5 syarat perlu', SyaratPerlu::count() === 5, 'Yang ada: '.SyaratPerlu::count());
         $this->periksa('15 rumus', Rumus::count() === 15, 'Yang ada: '.Rumus::count());
         $this->periksa('29 tabel DKPS', DkpsButir::count() === 29, 'Yang ada: '.DkpsButir::count());
+
+        $lembar = DkpsButir::all()->sum(fn (DkpsButir $b) => count($b->kodeLembar()));
+        $this->periksa('35 lembar DKPS', $lembar === 35,
+            "Yang ada: {$lembar}. Jalankan: php artisan db:seed --class=DkpsButirSeeder --force");
+
+        $tanpaPokja = DkpsBaris::withoutGlobalScopes()->whereNull('pokja_id')->count();
+        $this->periksa('Tidak ada baris DKPS tanpa pokja', $tanpaPokja === 0,
+            "Ada {$tanpaPokja} baris DKPS lama tanpa pokja; baris itu tidak tampil di layar Tabel DKPS. "
+            .'Jalankan: php artisan dkps:selaraskan');
         $this->periksa('6 pokja', Pokja::count() >= 6, 'Yang ada: '.Pokja::count());
     }
 

@@ -19,7 +19,28 @@ secara bertentangan. Keputusannya sudah diambil dan tidak perlu diadili ulang.
 | `prodi_id` | Ada di **semua** tabel transaksional | Aturan baku proyek menang atas rancangan awal yang hanya memberikannya pada `bukti` |
 | `Izin::boleh` tanpa obyek | Mengembalikan **true** | Menolak akan menghilangkan menu dari koordinator dan anggota; konsekuensinya tiap kueri daftar wajib menyaring sendiri |
 | `ImporDtps`, `ImporKerjaSama` | Menyimpan ke `dkps_baris.data` | `docs/02` menyatakan tabel dosen sengaja belum dibuat, dan rumus DTPS memang membaca dari DKPS |
-| Normalisasi TKM | Dibagi 4 | Lihat bagian 2 — **masih menunggu konfirmasi LAMDIK** |
+| Normalisasi TKM | Dibagi 4 | **Terkonfirmasi** oleh kertas kerja resmi `AK Kosong PPG.xlsx`, sel E207 — lihat di bawah tabel |
+
+**Normalisasi TKM, dari asumsi menjadi keputusan.** `vibecoding/docs/03-perhitungan.md`
+menetapkan `TKMi = (4×ai) + (3×bi) + (2×ci) + di` dengan a..d dalam persen.
+Hasilnya berskala **100–400**, sementara ambangnya dinyatakan sebagai
+**persentase**. Sistem membaginya dengan 4 sebelum dibandingkan, sehingga 400
+menjadi 100% dan 300 menjadi 75%.
+
+Tafsir itu sempat menjadi satu-satunya asumsi yang benar-benar menggantung.
+Kertas kerja asesor AK IAPSK 3.0 (`AK Kosong PPG.xlsx`, lembar *2. Kertas
+Kerja*) menuliskannya sendiri di sel **E207**:
+`(4·E203/100 + 3·E204/100 + 2·E205/100 + E206/100) / 4`, dengan ambang skor
+**0,25 / 0,5 / 0,75** (sel D229–D231). Jadi `/4` benar. Peringatan di tiga
+tempat sudah diganti menjadi rujukan ke sel itu: komentar
+`KalkulatorRumus::tkm()`, kolom `catatan` tiap baris `nilai_rumus`
+("Normalisasi /4 sesuai kertas kerja AK IAPSK 3.0 (sel E207)"), dan catatan
+informatif di layar Nilai Rumus.
+
+Yang belum ikut: **ambang skor** di `tkm()` (90 / 75 / 60 %) belum disamakan
+dengan ambang kertas kerja (75 / 50 / 25 %, sama dengan `data/rumus.json`), dan
+kertas kerja menggabungkan skor elemen E14 sebagai `(A + B) / 2`. Keduanya
+masuk rencana "Rumus kuantitatif AK 3.0" — lihat bagian 2.
 
 ### Yang diputuskan sendiri, tanpa bertanya
 
@@ -67,28 +88,38 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
 
 ## 2. Asumsi yang perlu dikonfirmasi ke LAMDIK
 
-### Normalisasi TKM — satu-satunya yang benar-benar menggantung
+Normalisasi TKM tidak lagi di sini: kertas kerja AK IAPSK 3.0 sudah
+menjawabnya (lihat bagian 1). Kertas kerja yang sama justru memunculkan dua
+pertanyaan baru, keduanya cacat pada berkas resmi, bukan pada SIGAP.
 
-`vibecoding/docs/03-perhitungan.md` menetapkan:
+### Rujukan `F264` pada rumus PGBLKL (elemen E17)
 
-```
-TKMi = (4×ai) + (3×bi) + (2×ci) + di        dengan a..d dalam persen
-```
+Untuk PGBLKL di bawah 70 %, rumus Excel kertas kerja merujuk sel `F264` —
+sel yang **kosong**. Bila diikuti mentah-mentah, skornya bergantung pada sel
+yang tidak diisi siapa pun. SIGAP memakai `2 + (20 × PGBLKL) / 7`, tafsir yang
+masuk akal dan sambung dengan skor 4 di ambang 70 %. Tanyakan ke LAMDIK sel
+mana yang dimaksud. Elemen yang terdampak: E17, salah satu syarat perlu.
 
-Hasilnya berskala **100–400**, sementara ambangnya dinyatakan sebagai
-**persentase** (TKM ≥ 75%). Keduanya tidak sebanding.
+### Rumus RMS memberi skor 1 untuk masa studi satu tahun (elemen E39)
 
-**Tafsir yang dipakai:** bagi 4 sebelum dibandingkan, sehingga 400 menjadi 100%
-dan 300 menjadi 75%. Konsisten — "seluruh responden menjawab Sangat Baik" wajar
-bernilai 100%.
+Kertas kerja menilai rata-rata masa studi dengan
+`3,5 < RMS ≤ 4 → 4; 4 < RMS ≤ 5 → max(1; min(3,8; 5,6·RMS − 15,8)); selain itu 1`.
+Rentang itu milik program sarjana empat tahun. Untuk PPG yang masa studinya
+**satu tahun**, setiap lulusan yang tepat waktu jatuh ke "selain itu" dan
+memberi **skor 1**. Ini cacat instrumen; jangan ditiru apa adanya sebelum LAMDIK
+menjawab. `data/rumus.json` tetap menyebutnya "berskala".
 
-**Tafsir ini belum dikonfirmasi.** Penandaannya ada di tiga tempat supaya tidak
-terlewat: komentar di `KalkulatorRumus::tkm()`, kolom `catatan` pada tiap baris
-`nilai_rumus`, dan kotak peringatan di layar Nilai Rumus.
+### Rumus kuantitatif yang belum ada di SIGAP
 
-Bila LAMDIK menjawab berbeda, yang berubah hanya **satu metode dan satu
-peringatan** — bukan seluruh perhitungan. Elemen yang terdampak: E14
-(Tingkat Kepuasan Mahasiswa), bobot 1,50.
+Bukan pertanyaan ke LAMDIK, tetapi dicatat di sini karena sama-sama
+menggantung: kertas kerja punya rumus kuantitatif untuk E7 (RK dua bagian),
+E12, E13, E18, E22, E25, E32, E36, E40, E45, E49, E50, dan E54, ditambah aturan
+responden minimum E43/E44, yang belum ada di `data/rumus.json`. Ambangnya
+sudah dicatat di spesifikasi
+`docs/superpowers/specs/2026-11-04-tabel-dkps-per-pokja-design.md` bagian A.3,
+dan semuanya menunggu rencana berikutnya, "Rumus kuantitatif AK 3.0". Sampai
+itu selesai, E7 dihitung dengan tafsir N1/N2/N3 lama dan elemen lainnya hanya
+memakai skor asesor.
 
 ### Dua hal lain yang sebaiknya ditanyakan
 
@@ -494,6 +525,28 @@ Bila suatu saat ada yang ingin "sekalian demo admin juga", jawabannya bukan
 melonggarkan `demo.coba` melainkan mengikat data admin ke periode lebih dulu —
 dan itu pekerjaan yang jauh lebih besar daripada kelihatannya.
 
+
+### 4.18 Penomoran DKPS 3.0 bergeser dari Buku 3 — pencocokan butir lewat `kode`, bukan `no`
+
+`data/dkps-tabel.json` lama mengikuti Buku 3: 28 butir, melompati Tabel 13.
+DKPS 3.0 (`DKPS PPG.xlsx` v3.0) punya 29 tabel tanpa lompatan, menyisipkan
+Tabel 4 baru (Karya Inovatif Mahasiswa), dan memecah Tabel 1 serta Tabel 4
+menjadi beberapa lembar. Akibatnya Tabel 5–13 bergeser satu nomor: yang dulu
+"Tabel 4 Kepuasan" kini Tabel 5, "Tabel 6 DBS" kini Tabel 7, dan seterusnya.
+
+Yang menggigit bukan pergeseran itu sendiri, melainkan kode yang mencocokkan
+butir lewat **nomor urut**. Setiap rujukan seperti `where('no', 6)` diam-diam
+menunjuk tabel yang salah setelah referensinya diganti, tanpa satu pun galat.
+Karena itu pencocokan butir selalu lewat `kode` (`DkpsButir::dariKode('7')`),
+dan `no` hanya dipakai untuk mengurutkan tampilan. Pengimpor (`ImporDtps`,
+`ImporKerjaSama`, `ImporPublikasiDtps`) dan `DkpsBaris::KODE_DARI_SIAKAD`
+sudah dipetakan ulang ke kode DKPS 3.0.
+
+Baris `dkps_baris` dari sebelum DKPS 3.0 tidak dihapus. `php artisan
+dkps:selaraskan` mengisi `lembar_kode` dan `pokja_id`-nya, dan
+`sigap:cek-kesiapan` gagal selama masih ada baris tanpa pokja. Bila suatu saat
+LAMDIK menerbitkan DKPS 3.1 dengan nomor bergeser lagi, yang perlu diubah
+adalah `kode` di berkas json beserta pemetaan pengimpor — bukan kuerinya.
 ---
 
 ## 5. Pertentangan dalam dokumen yang ditemukan, dan cara menanganinya
