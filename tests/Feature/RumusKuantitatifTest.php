@@ -93,6 +93,18 @@ class RumusKuantitatifTest extends TestCase
         $this->assertEqualsWithDelta(2.66, $k->rgp(20, 10, 4, 2, 4)->skorTepat, 0.001);
     }
 
+    #[Test]
+    public function rgp_dua_per_bidang_studi_dengan_rasio_lebih_baik_tidak_turun_ke_dua(): void
+    {
+        // BS 2, MD 0,5, MU 0,5, GP 0,6: kertas kerja E348 jatuh ke 2 karena
+        // MU ≥ b dan GP ≥ c; keputusan SIGAP memberi 3 (rasio lebih baik
+        // tidak boleh menurunkan skor).
+        $hasil = $this->kalkulator()->rgp(20, 10, 10, 10, 12);
+
+        $this->assertEqualsWithDelta(3.0, $hasil->skorTepat, 0.001);
+        $this->assertSame(3, $hasil->skor);
+    }
+
     // ---- DANA — elemen 25 -----------------------------------------------
 
     #[Test]

@@ -421,9 +421,17 @@ class KalkulatorRumus
      *
      *   1. BS > 2, MD ≥ d, MU ≥ b, GP ≥ c   → 4
      *   2. BS > 2                           → 3 + rata(⌊(MD−a)/(d−a)⌋₀¹, ⌊MU/b⌋₀¹, ⌊GP/c⌋₀¹)
-     *   3. BS = 2, MD ≥ a, MU < b, GP < c   → 3
+     *   3. BS = 2, MD ≥ a                   → 3
      *   4. BS = 2, MD < a                   → 2 + MD/a
      *   5. selain itu                       → 2
+     *
+     * Penyimpangan dari kertas kerja pada pita 3: E348 menuntut juga
+     * MU < b dan GP < c, sehingga BS = 2 dengan MD ≥ a tetapi MU ≥ b atau
+     * GP ≥ c jatuh ke "selain itu" → 2 — rasio yang LEBIH BAIK justru
+     * menurunkan skor. Buku 4 tidak punya pita untuk keadaan itu, dan skor
+     * tidak boleh turun karena mutu guru pamong naik; maka SIGAP memberi 3
+     * untuk BS = 2 dan MD ≥ a, berapa pun MU dan GP. Cacat kertas kerja ini
+     * dicatat sebagai pertanyaan ke LAMDIK.
      *
      * Perangkapnya: BS = 2 adalah perbandingan rasio pecahan, jadi diuji
      * dengan toleransi, bukan `==`. Ketiga sub-skor pita 2 dipotong dua
@@ -453,7 +461,7 @@ class KalkulatorRumus
         $skor = match (true) {
             $bs > 2.0 && ! $sepadanDua && $md >= $d && $mu >= $b && $gp >= $c => 4.0,
             $bs > 2.0 && ! $sepadanDua => 3 + (($jepit(($md - $a) / ($d - $a)) + $jepit($mu / $b) + $jepit($gp / $c)) / 3),
-            $sepadanDua && $md >= $a && $mu < $b && $gp < $c => 3.0,
+            $sepadanDua && $md >= $a => 3.0,
             $sepadanDua && $md < $a => 2 + self::potong2($md / $a),
             default => 2.0,
         };
