@@ -65,6 +65,17 @@ class PengisiDkps
         ?DkpsBaris $baris = null,
         ?string $kunciBaris = null,
     ): DkpsBaris {
+        // Baris yang disunting harus milik lembar yang disebut pemanggil.
+        // Kalau tidak, fill() memindahkannya ke tabel/periode lain sementara
+        // pokja_id (diisi sekali saat dibuat) tetap menunjuk pemilik lama.
+        if ($baris !== null && (
+            $baris->periode_id !== $periode->id
+            || $baris->dkps_butir_id !== $butir->id
+            || $baris->lembar_kode !== $kodeLembar
+        )) {
+            throw new IsianDkpsTidakSah(['_baris' => 'Baris tidak termasuk lembar ini.']);
+        }
+
         $skema = $butir->skema($kodeLembar);
 
         // Tanpa kunci, SkemaLembar melempar InvalidArgumentException; di sini
@@ -103,7 +114,12 @@ class PengisiDkps
                 ->first();
         }
 
-        $calon = $baris ?? new DkpsBaris(['pokja_id' => $this->pokjaId($butir, $periode)]);
+        // periode_id ikut diisi supaya Izin memeriksa penguncian periode;
+        // tanpanya baris baru lolos ke periode yang sudah dikunci.
+        $calon = $baris ?? new DkpsBaris([
+            'pokja_id' => $this->pokjaId($butir, $periode),
+            'periode_id' => $periode->id,
+        ]);
 
         if (! Izin::boleh($oleh, 'dkps.isi', $calon)) {
             throw new AuthorizationException('Anda tidak berwenang mengisi tabel DKPS ini.');
@@ -181,7 +197,8 @@ class PengisiDkps
      */
     public function tautkanBuktiTautan(DkpsBaris $baris, string $url, array $atribut, User $oleh): Bukti
     {
-        if (! Izin::boleh($oleh, 'bukti.unggah')) {
+        // Baris ikut dikirim agar penguncian periodenya ikut diperiksa.
+        if (! Izin::boleh($oleh, 'bukti.unggah', $baris)) {
             throw new AuthorizationException('Anda tidak berwenang mengunggah bukti.');
         }
 

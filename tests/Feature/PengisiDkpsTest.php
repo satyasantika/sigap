@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\PeranPengguna;
+use App\Enums\StatusPeriode;
 use App\Enums\SumberData;
 use App\Enums\ValidasiBukti;
 use App\Exceptions\IsianDkpsTidakSah;
@@ -223,5 +224,49 @@ class PengisiDkpsTest extends TestCase
         $this->pengisi->hapus($lain, $koordinator);
         $this->assertNull(DkpsBaris::find($lain->id));
         $this->assertNotNull(DkpsBaris::withTrashed()->find($lain->id));
+    }
+
+    #[Test]
+    public function periode_terkunci_menolak_baris_baru_dan_tautan_bukti(): void
+    {
+        Http::fake(['*' => Http::response('ok', 200)]);
+        $ketua = $this->pengguna(PeranPengguna::Ketua);
+        $data = ['nama_dtps' => 'Dr. Ani', 'judul_artikel' => 'Jurnal X, 3, 2026, 1, 1-10', 'jumlah_sitasi' => 12];
+        $baris = $this->pengisi->simpan(DkpsButir::dariKode('28'), '28', $this->periode, $data, SumberData::Manual, $ketua);
+
+        $this->periode->forceFill(['status' => StatusPeriode::Dikunci])->save();
+
+        try {
+            $this->pengisi->simpan(DkpsButir::dariKode('28'), '28', $this->periode,
+                ['jumlah_sitasi' => 1, 'nama_dtps' => 'Dr. Budi', 'judul_artikel' => 'Jurnal Y'], SumberData::Manual, $ketua);
+            $this->fail('Baris baru di periode terkunci harus ditolak.');
+        } catch (AuthorizationException) {
+            $this->assertSame(1, DkpsBaris::where('lembar_kode', '28')->count());
+        }
+
+        $this->expectException(AuthorizationException::class);
+        $this->pengisi->tautkanBuktiTautan($baris, 'https://drive.google.com/file/d/XYZ/view', [
+            'judul' => 'Tangkapan Google Scholar', 'tanggal_kejadian' => now()->subMonth()->toDateString(),
+            'sumber' => SumberData::Manual,
+        ], $ketua);
+    }
+
+    #[Test]
+    public function baris_dari_lembar_lain_ditolak(): void
+    {
+        $ketua = $this->pengguna(PeranPengguna::Ketua);
+        $baris = $this->pengisi->simpan(DkpsButir::dariKode('28'), '28', $this->periode,
+            ['nama_dtps' => 'Dr. Ani', 'judul_artikel' => 'Jurnal X, 3, 2026, 1, 1-10', 'jumlah_sitasi' => 12], SumberData::Manual, $ketua);
+
+        try {
+            $this->pengisi->simpan(DkpsButir::dariKode('9'), '9', $this->periode,
+                ['nama_dtps' => 'Dr. Ani', 'deskripsi_rekognisi' => 'Reviewer', 'jenis_rekognisi' => 'Editor atau mitra bestari', 'tahun' => '2026', 'tingkat' => 'Nasional'],
+                SumberData::Manual, $ketua, $baris);
+            $this->fail('Baris lembar lain tidak boleh dipindahkan.');
+        } catch (IsianDkpsTidakSah $e) {
+            $this->assertSame(['_baris' => 'Baris tidak termasuk lembar ini.'], $e->galat);
+        }
+
+        $this->assertSame('28', $baris->fresh()->lembar_kode);
     }
 }
