@@ -95,7 +95,7 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
    adalah 70 %. Lihat `KalkulatorRumus::potong2()`. Pemotongan ini aturan
    SIGAP sendiri, juga ketika diterapkan pada sub-skor (misalnya tiga sub-skor
    RGP); kertas kerja hanya membulatkan skor akhir, jadi selisihnya paling
-   besar 0,01.
+   besar 0,02 (tiga pemotongan sub-skor ditambah pemotongan akhir).
 
 10. **Ambang selalu dibandingkan pada rasio mentah; pembulatan hanya untuk
     tampilan.** 1504 / 7521 = 19,997 % tampil sebagai "20,0" di layar, tetapi
@@ -114,8 +114,11 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
     tetapi semua sel yang dirata kosong, `PembacaVariabelDkps` mengembalikan
     null, sehingga rumusnya dilewati menurut butir 11. Rata 0 akan berarti
     "masa studi nol tahun" atau "IPK nol", dua hal yang tidak pernah benar.
-    Begitu pula kolom hitung yang semua kolom masukannya kosong (jumlah sks
-    Tabel 8 tanpa isian bukan 0 sks). Pada baris tetap yang sudah ada, sel
+    Begitu pula kolom hitung yang masukannya berupa ukuran dan semuanya kosong
+    (jumlah sks Tabel 8 tanpa isian bukan 0 sks); tetapi kolom hitung yang
+    semua masukannya cacahan (`jumlah_lulusan` Tabel 22 dari `lulus_akhir_*`)
+    dibaca 0 bila kosong, supaya kohort yang belum meluluskan tidak membuat
+    PKMS dilewati. Pada baris tetap yang sudah ada, sel
     kosong bertipe `angka` (cacah: lulusan, terlacak, waktu tunggu) dibaca 0
     seperti Excel, sedangkan sel kosong bertipe `desimal` (ukuran: IPK, persen
     kepuasan) membuat variabelnya null dengan catatan yang menyebut tabel,

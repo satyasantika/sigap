@@ -439,7 +439,7 @@ class KalkulatorRumus
      * desimal sebelum dirata-rata menurut aturan potong SIGAP sendiri
      * (potong2), BUKAN mengikuti kertas kerja: E348 hanya membulatkan
      * (ROUND) skor akhir. Selisihnya terhadap kertas kerja paling besar
-     * 0,01.
+     * 0,02 (tiga pemotongan sub-skor ditambah pemotongan akhir).
      *
      * @param  int  $ngp  seluruh guru pamong
      * @param  int  $nbs  jumlah bidang studi

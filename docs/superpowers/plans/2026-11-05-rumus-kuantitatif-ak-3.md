@@ -536,4 +536,4 @@ git commit -m "docs: tafsir rumus kuantitatif AK 3.0, manual Hitung dari DKPS da
 
 - `NAS` = `cacah_baris` Tabel 28 (jumlah judul artikel yang disitasi, kertas kerja C863), bukan Σ `jumlah_sitasi`.
 - PKMS memakai dua kohort terakhir: `N_DITERIMA_ANGKATAN` dan `N_LULUSAN_ANGKATAN` hanya baris TS-1 dan TS Tabel 22 (KEPUTUSAN §2 tafsir 9).
-- Sel kosong pada baris tetap yang ada → variabel null dengan catatan (baris yang tidak ada tetap 0); kolom hitung yang semua masukannya kosong dibaca null, bukan 0.
+- Sel kosong pada baris tetap yang ada: bertipe `angka` dibaca 0, bertipe `desimal` → variabel null dengan catatan; baris yang tidak ada tetap 0. Kolom hitung yang semua masukannya kosong: dibaca 0 bila semua masukannya `angka`, null bila ada masukan `desimal`.
