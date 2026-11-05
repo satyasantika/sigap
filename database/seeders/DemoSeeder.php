@@ -28,6 +28,7 @@ use App\Services\KalkulatorNa;
 use App\Services\PembangkitTagihan;
 use App\Services\PenghitungRumusDkps;
 use App\Services\PengisiDkps;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -309,7 +310,12 @@ class DemoSeeder extends Seeder
 
         foreach ($demo as $kodeLembar => $lembar) {
             $kodeLembar = (string) $kodeLembar;
-            $butir = DkpsButir::dariKode(explode('.', $kodeLembar)[0]);
+
+            try {
+                $butir = DkpsButir::dariKode(explode('.', $kodeLembar)[0]);
+            } catch (ModelNotFoundException $e) {
+                throw new RuntimeException('Demo DKPS lembar '.$kodeLembar.': butir tidak dikenal', previous: $e);
+            }
 
             foreach ($lembar['baris'] as $n => $data) {
                 $data = $this->gantiToken($data, $periode);
@@ -415,10 +421,11 @@ class DemoSeeder extends Seeder
     }
 
     /**
-     * Asesmen mandiri diisi sebagian sehingga NA proyeksi mendarat di 330-350
-     * — "Unggul 3 tahun, belum 5 tahun".
+     * Asesmen mandiri diisi sebagian sehingga NA proyeksi mendarat sekitar
+     * 333: cukup untuk "Unggul 3 tahun" menurut angka, tetapi satu syarat
+     * perlu `belum` membuat statusnya "Terakreditasi 5 tahun".
      *
-     * Kisaran itu dipilih karena inilah posisi paling mungkin di pertengahan
+     * Angka itu dipilih karena inilah posisi paling mungkin di pertengahan
      * periode: cukup baik untuk membuktikan sistemnya bekerja, cukup kurang
      * untuk memancing pertanyaan yang benar.
      */
