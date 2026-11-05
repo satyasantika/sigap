@@ -1020,17 +1020,13 @@
  },
  {
   "kode": "N_DITERIMA_ANGKATAN",
-  "label": "Mahasiswa diterima angkatan TS-2 s.d. TS",
+  "label": "Mahasiswa diterima, dua kohort terakhir (angkatan TS-1 dan TS)",
   "lembar": [
    "22"
   ],
   "cara": "jumlah_sel",
   "parameter": {
    "sel": [
-    [
-     "TS-2",
-     "diterima"
-    ],
     [
      "TS-1",
      "diterima"
@@ -1047,17 +1043,13 @@
  },
  {
   "kode": "N_LULUSAN_ANGKATAN",
-  "label": "Lulusan angkatan TS-2 s.d. TS",
+  "label": "Lulusan s.d. akhir TS, dua kohort terakhir (angkatan TS-1 dan TS)",
   "lembar": [
    "22"
   ],
   "cara": "jumlah_sel",
   "parameter": {
    "sel": [
-    [
-     "TS-2",
-     "jumlah_lulusan"
-    ],
     [
      "TS-1",
      "jumlah_lulusan"
@@ -2061,12 +2053,11 @@
  },
  {
   "kode": "NAS",
-  "label": "Jumlah sitasi karya ilmiah DTPS (NAS)",
+  "label": "Jumlah judul artikel ilmiah DTPS yang disitasi (NAS)",
   "lembar": [
    "28"
   ],
-  "cara": "jumlah_kolom",
-  "kolom": "jumlah_sitasi",
+  "cara": "cacah_baris",
   "rumus": [
    "RSA"
   ]
