@@ -446,7 +446,12 @@ final class PembacaVariabelDkps
 
         $masukan = array_unique($this->daunRumus($skema, $rumus, $kunci));
 
-        if (array_filter($masukan, fn (string $k) => filled($baris->nilai($k))) === []) {
+        // Semua daun kosong: bila semuanya kolom cacahan (angka), kosong
+        // berarti "tidak ada" dan rumusnya dihitung dari nol — sama seperti
+        // sel angka kosong pada baris yang ada (lihat jumlahDariSel). Bila ada
+        // daun ukuran (desimal), kosong berarti "belum diukur" → null.
+        if (array_filter($masukan, fn (string $k) => filled($baris->nilai($k))) === []
+            && array_filter($masukan, fn (string $k) => ! $this->kolomCacah($lembar, $k)) !== []) {
             return null;
         }
 

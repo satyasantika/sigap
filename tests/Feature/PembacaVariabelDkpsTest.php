@@ -300,6 +300,21 @@ class PembacaVariabelDkpsTest extends TestCase
     }
 
     #[Test]
+    public function kolom_hitung_berdaun_angka_kosong_pada_baris_yang_ada_dibaca_nol(): void
+    {
+        // Kohort TS belum punya lulusan: semua `lulus_akhir_*` kosong. Daunnya
+        // bertipe angka, jadi kolom hitung `jumlah_lulusan` dibaca 0 seperti
+        // sel angka kosong lainnya — bukan null yang membuat PKMS dilewati.
+        $this->isi('22', ['diterima' => 30, 'lulus_akhir_ts1' => 10, 'lulus_akhir_ts' => 10], 'TS-1');
+        $this->isi('22', ['diterima' => 25], 'TS');
+
+        $hasil = $this->pembaca->satu($this->periode, 'N_LULUSAN_ANGKATAN');
+
+        $this->assertSame(20.0, $hasil->nilai);
+        $this->assertNull($hasil->catatan);
+    }
+
+    #[Test]
     public function nas_menghitung_judul_artikel_bukan_jumlah_sitasi(): void
     {
         $this->isi('28', ['nama_dtps' => 'Dr. Ani', 'judul_artikel' => 'Artikel 1', 'jumlah_sitasi' => 5]);
