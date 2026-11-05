@@ -58,7 +58,7 @@ use RuntimeException;
  * demonstrasi yang menyembunyikannya justru memberi rasa aman palsu.
  *   sekitar 40% tagihan disetujui, TIDAK merata antarpokja
  *   beberapa tagihan terlambat, beberapa tanpa penanggung jawab
- *   seluruh 35 lembar DKPS terisi dari data/demo-dkps.json lewat PengisiDkps,
+ *   seluruh lembar DKPS (35 saat ini) terisi dari data/demo-dkps.json lewat PengisiDkps,
  *   sepertiga barisnya belum terverifikasi
  *   seluruh rumus dihitung dari DKPS lewat PenghitungRumusDkps; Skor A
  *   campuran 2 sampai 4, dan PDS3 41,67 memenuhi syarat 3 tahun tetapi
@@ -302,8 +302,12 @@ class DemoSeeder extends Seeder
 
         $demo = json_decode(file_get_contents(base_path('data/demo-dkps.json')), true, flags: JSON_THROW_ON_ERROR);
 
-        if (count($demo) !== 35) {
-            throw new RuntimeException('data/demo-dkps.json harus berisi 35 lembar, ditemukan '.count($demo).'.');
+        // Jumlah lembar mengikuti katalog butir, bukan angka tetap: bila
+        // DKPS bertambah lembar, demo yang ketinggalan harus berisik.
+        $jumlahLembar = DkpsButir::query()->get()->sum(fn (DkpsButir $b) => count($b->lembar));
+
+        if (count($demo) !== $jumlahLembar) {
+            throw new RuntimeException("data/demo-dkps.json harus berisi {$jumlahLembar} lembar, ditemukan ".count($demo).'.');
         }
 
         $i = 0;

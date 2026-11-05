@@ -65,10 +65,13 @@ class SyaratPerluLayarTest extends TestCase
     #[Test]
     public function tanpa_hasil_bersyarat_memakai_yang_terbaru(): void
     {
+        // (1 + 3 + 4) / 12 = 66,67 %. Kode rumus saja tidak cukup sebagai
+        // bukti: ia bisa muncul dari daftar rumus elemen tanpa nilai apa pun.
         $this->simpan($this->pgblkl());
         $this->actingAs($this->ketua);
 
         Livewire::test(SyaratPerluLayar::class)
-            ->assertSee('PGBLKL');
+            ->assertSee('PGBLKL')
+            ->assertSee('66,67');
     }
 }
