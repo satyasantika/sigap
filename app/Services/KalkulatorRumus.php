@@ -25,12 +25,12 @@ use InvalidArgumentException;
 class KalkulatorRumus
 {
     /**
-     * Ambang yang dipakai perhitungan, diturunkan dari kolom `aturan_skor`
-     * pada tabel `rumus`.
+     * Singgahan teks `aturan_skor` per kode rumus, hanya untuk ditampilkan
+     * lewat aturanSkor().
      *
-     * Kalau sebuah ambang tidak ditemukan di sana, perhitungannya BERHENTI —
-     * bukan memakai angka cadangan di kode. Angka cadangan yang diam-diam
-     * dipakai adalah cara paling halus untuk menghasilkan laporan yang salah.
+     * Teks ini tidak diurai dan tidak dipakai menghitung: ambang yang
+     * menentukan skor ditulis di metode masing-masing dan dikunci uji
+     * (lihat kepala kelas). Kalau keduanya berbeda, ujilah yang salah.
      */
     private array $ambangTersimpan = [];
 
@@ -187,9 +187,10 @@ class KalkulatorRumus
      * nasional, dan wilayah (a = 2, b = 6, c = 9) — bukan rasio per DTPS.
      * Membaginya dengan NDTPS lebih dulu adalah perangkap bagian ini.
      *
-     * Skor A = (2·A.1 + A.2)/3. A.1 diturunkan dari `nilai` yang sudah
-     * dibulatkan, dan A.1, A.2, serta Skor A dipotong dua desimal (potong2),
-     * supaya angka yang terlihat di layar bisa dihitung ulang dengan tangan.
+     * Skor A = (2·A.1 + A.2)/3. A.1 diturunkan dari rasio mentah — ambang
+     * ≥ 4 dibandingkan sebelum pembulatan, sama seperti rumus lain (3,996
+     * tampil 4,00 tetapi belum 4); `nilai` dibulatkan hanya untuk layar.
+     * A.1, A.2, dan Skor A dipotong dua desimal (potong2).
      *
      * @param  int  $n1  kerja sama tingkat 1 (bobot 3)
      * @param  int  $n2  kerja sama tingkat 2 (bobot 2)
@@ -203,9 +204,10 @@ class KalkulatorRumus
     {
         $this->pastikanPembagiSah($ndtps, 'NDTPS');
 
-        $nilai = round(((3 * $n1) + (2 * $n2) + (1 * $n3)) / $ndtps, 2);
+        $rasio = ((3 * $n1) + (2 * $n2) + (1 * $n3)) / $ndtps;
+        $nilai = round($rasio, 2);
 
-        $a1 = self::potong2($nilai >= 4.0 ? 4.0 : max(1.0, $nilai));
+        $a1 = self::potong2($rasio >= 4.0 ? 4.0 : max(1.0, $rasio));
         $a2 = self::potong2($this->skorTigaTingkat($ni, $nn, $nw, a: 2, b: 6, c: 9));
         $skorTepat = self::potong2(((2 * $a1) + $a2) / 3);
 
@@ -219,8 +221,9 @@ class KalkulatorRumus
     }
 
     /**
-     * Rata-rata jumlah mahasiswa bimbingan akhir per DTPS. Ambang dibandingkan
-     * pada rasio mentah (8,996 tampil 9,0 tetapi belum 9).
+     * Rasio artikel DTPS yang disitasi per DTPS: NAS (cacah judul artikel
+     * Tabel 28, bukan jumlah sitasinya) ÷ NDTPS. Ambang dibandingkan pada
+     * rasio mentah (8,996 tampil 9,0 tetapi belum 9).
      */
     public function rsa(int $nas, int $ndtps): HasilRumus
     {
@@ -433,7 +436,10 @@ class KalkulatorRumus
      *
      * Perangkapnya: BS = 2 adalah perbandingan rasio pecahan, jadi diuji
      * dengan toleransi, bukan `==`. Ketiga sub-skor pita 2 dipotong dua
-     * desimal sebelum dirata-rata, mengikuti pembulatan kertas kerja.
+     * desimal sebelum dirata-rata menurut aturan potong SIGAP sendiri
+     * (potong2), BUKAN mengikuti kertas kerja: E348 hanya membulatkan
+     * (ROUND) skor akhir. Selisihnya terhadap kertas kerja paling besar
+     * 0,01.
      *
      * @param  int  $ngp  seluruh guru pamong
      * @param  int  $nbs  jumlah bidang studi

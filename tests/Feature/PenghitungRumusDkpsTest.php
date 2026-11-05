@@ -220,10 +220,25 @@ class PenghitungRumusDkpsTest extends TestCase
 
         // Pembagi nol sungguhan: Tabel 23 terisi tetapi lulusan tiga tahun 0 —
         // InvalidArgumentException kalkulator menjadi alasan lewat.
-        $this->isi('23', ['jumlah_lulusan' => 0, 'terlacak' => 0, 'wt_kurang_6' => 0], 'TS-2');
+        $this->isi('23', ['jumlah_lulusan' => 0, 'terlacak' => 0, 'wt_kurang_6' => 0, 'wt_6_12' => 0, 'wt_lebih_12' => 0], 'TS-2');
         $laporan = $this->penghitung->hitungSemua($this->periode);
 
         $this->assertSame('Jumlah lulusan tiga tahun nol; aturan responden tidak bisa diterapkan.', $laporan->dilewati['WTMP']);
+    }
+
+    #[Test]
+    public function sel_kosong_pada_baris_yang_ada_melewatkan_rumus_dengan_alasan(): void
+    {
+        $this->isi('21', ['jumlah_lulusan' => 100, 'ipk_min' => 3.0, 'ipk_rata' => 3.4, 'ipk_maks' => 3.9], 'TS-2');
+        $this->isi('21', ['jumlah_lulusan' => 110, 'ipk_min' => 3.1, 'ipk_rata' => 3.5, 'ipk_maks' => 3.9], 'TS-1');
+        $this->isi('21', ['jumlah_lulusan' => 120, 'ipk_min' => 3.0, 'ipk_maks' => 4.0], 'TS');
+
+        $laporan = $this->penghitung->hitungSemua($this->periode);
+
+        $this->assertArrayNotHasKey('RIPK', $laporan->disimpan);
+        $this->assertStringContainsString('RT_IPK_TS', $laporan->dilewati['RIPK']);
+        $this->assertStringContainsString('Tabel 21 baris TS:', $laporan->dilewati['RIPK']);
+        $this->assertSame(0, NilaiRumus::where('rumus_kode', 'RIPK')->count());
     }
 
     #[Test]

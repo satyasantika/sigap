@@ -173,7 +173,10 @@ class PembacaVariabelDkpsTest extends TestCase
     #[Test]
     public function sel_baris_tetap_yang_hilang_dibaca_nol_bila_lembar_terisi(): void
     {
-        $this->isi('23', ['jumlah_lulusan' => 104, 'terlacak' => 87, 'wt_kurang_6' => 87], 'TS-2');
+        // Baris TS-4 dan TS-3 tidak ada → 0. Sel kosong pada baris TS-2 yang
+        // ada justru membuat variabelnya null (lihat uji sel kosong di bawah),
+        // jadi nol pada baris yang ada ditulis eksplisit.
+        $this->isi('23', ['jumlah_lulusan' => 104, 'terlacak' => 87, 'wt_kurang_6' => 87, 'wt_6_12' => 0, 'wt_lebih_12' => 0], 'TS-2');
 
         $this->assertSame(104.0, $this->nilai('N_LULUSAN_3TH'));
         $this->assertSame(87.0, $this->nilai('N_LULUSAN_WT_6BLN'));
@@ -231,6 +234,70 @@ class PembacaVariabelDkpsTest extends TestCase
         $this->isi('8', ['nama_dtps' => 'Dr. Budi', 'sks_ps_diakreditasi' => 24]);
 
         $this->assertSame(13.0, $this->nilai('RBK_DTPS'));
+    }
+
+    #[Test]
+    public function rata_kolom_tanpa_isian_memberi_null(): void
+    {
+        // Kolom hitung `jumlah` atas sel kosong memberi 0 di skema; pembaca
+        // harus membacanya kosong, bukan beban kerja 0 sks.
+        $this->isi('8', ['nama_dtps' => 'Dr. Ani']);
+
+        $kosong = $this->pembaca->satu($this->periode, 'RBK_DTPS');
+        $this->assertNull($kosong->nilai);
+        $this->assertStringContainsString('Tabel 8', $kosong->catatan);
+
+        $this->isi('8', ['nama_dtps' => 'Dr. Budi', 'sks_ps_diakreditasi' => 24]);
+
+        $hasil = $this->pembaca->satu($this->periode, 'RBK_DTPS');
+        $this->assertSame(12.0, $hasil->nilai);
+        $this->assertSame(2, $hasil->jumlahBaris);
+    }
+
+    #[Test]
+    public function sel_kosong_pada_baris_tetap_yang_ada_memberi_null(): void
+    {
+        $this->isi('21', ['jumlah_lulusan' => 100, 'ipk_min' => 3.0, 'ipk_rata' => 3.4, 'ipk_maks' => 3.9], 'TS-2');
+        $this->isi('21', ['jumlah_lulusan' => 110, 'ipk_min' => 3.1, 'ipk_rata' => 3.5, 'ipk_maks' => 3.9], 'TS-1');
+        $this->isi('21', ['jumlah_lulusan' => 120, 'ipk_min' => 3.0, 'ipk_maks' => 4.0], 'TS');
+
+        $hasil = $this->pembaca->satu($this->periode, 'RT_IPK_TS');
+        $this->assertNull($hasil->nilai);
+        $this->assertStringContainsString('Tabel 21 baris TS:', $hasil->catatan);
+        $this->assertStringContainsString('Rata-rata belum terisi', $hasil->catatan);
+        $this->assertSame(3.5, $this->nilai('RT_IPK_TS1'));
+    }
+
+    #[Test]
+    public function persen_kepuasan_kosong_pada_baris_yang_ada_memberi_null(): void
+    {
+        // Aturan `jumlah_persen_100` tidak menilai baris yang keempat
+        // persennya kosong, jadi baris ini sah tersimpan.
+        $this->isi('24.1', ['rencana_tindak_lanjut' => 'Survei ulang'], 'etika');
+
+        $hasil = $this->pembaca->satu($this->periode, 'ETIKA_SB');
+        $this->assertNull($hasil->nilai);
+        $this->assertStringContainsString('Tabel 24.1 baris Etika', $hasil->catatan);
+    }
+
+    #[Test]
+    public function pkms_memakai_dua_kohort_terakhir(): void
+    {
+        $this->isi('22', ['diterima' => 40, 'lulus_akhir_ts2' => 40], 'TS-2');
+        $this->isi('22', ['diterima' => 30, 'lulus_akhir_ts1' => 10, 'lulus_akhir_ts' => 10], 'TS-1');
+        $this->isi('22', ['diterima' => 25, 'lulus_akhir_ts' => 20], 'TS');
+
+        $this->assertSame(55.0, $this->nilai('N_DITERIMA_ANGKATAN'));
+        $this->assertSame(40.0, $this->nilai('N_LULUSAN_ANGKATAN'));
+    }
+
+    #[Test]
+    public function nas_menghitung_judul_artikel_bukan_jumlah_sitasi(): void
+    {
+        $this->isi('28', ['nama_dtps' => 'Dr. Ani', 'judul_artikel' => 'Artikel 1', 'jumlah_sitasi' => 5]);
+        $this->isi('28', ['nama_dtps' => 'Dr. Budi', 'judul_artikel' => 'Artikel 2', 'jumlah_sitasi' => 7]);
+
+        $this->assertSame(2.0, $this->nilai('NAS'));
     }
 
     #[Test]

@@ -185,6 +185,16 @@ class KalkulatorRumusTest extends TestCase
     }
 
     #[Test]
+    public function rk_ambang_empat_dibandingkan_pada_rasio_mentah(): void
+    {
+        // 999/250 = 3,996 tampil 4,00 tetapi belum 4 → A.1 = 3,99.
+        $h = $this->kalkulator()->rk(n1: 333, n2: 0, n3: 0, ni: 0, nn: 0, nw: 0, ndtps: 250);
+
+        $this->assertSame(4.0, $h->nilai);
+        $this->assertSame(3.99, $h->komponen['a1']);
+    }
+
+    #[Test]
     public function rsa_sesuai_patokan(): void
     {
         // 100/12 = 8,33 → skor 3 (ambang skor 4 adalah 9)

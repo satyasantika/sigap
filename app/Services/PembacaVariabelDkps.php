@@ -151,7 +151,11 @@ final class PembacaVariabelDkps
     private function jumlahKolom(Periode $periode, VariabelDkps $v): NilaiVariabel
     {
         $dibaca = $this->barisTersaring($periode, $v);
-        $angka = array_map(fn (array $b) => self::angka($this->sel($b[0], $b[1], $v->kolom)) ?? 0.0, $dibaca);
+        $angka = $this->angkaKolom($v, $dibaca);
+
+        if ($angka === []) {
+            return $this->hasil($v, null, $dibaca, "Kolom {$v->kolom} pada ".self::namaLembar($v->lembar).' belum terisi');
+        }
 
         return $this->hasil($v, array_sum($angka), $dibaca);
     }
@@ -159,16 +163,28 @@ final class PembacaVariabelDkps
     private function rataKolom(Periode $periode, VariabelDkps $v): NilaiVariabel
     {
         $dibaca = $this->barisTersaring($periode, $v);
-        $angka = array_values(array_filter(
-            array_map(fn (array $b) => self::angka($this->sel($b[0], $b[1], $v->kolom)), $dibaca),
-            fn (?float $n) => $n !== null,
-        ));
+        $angka = $this->angkaKolom($v, $dibaca);
 
         if ($angka === []) {
             return $this->hasil($v, null, $dibaca, "Kolom {$v->kolom} pada ".self::namaLembar($v->lembar).' belum terisi');
         }
 
         return $this->hasil($v, array_sum($angka) / count($angka), $dibaca);
+    }
+
+    /**
+     * Angka kolom variabel pada baris-baris itu; baris yang selnya kosong
+     * tidak ikut, bukan dibaca 0.
+     *
+     * @param  array<int, array{0: string, 1: DkpsBaris}>  $dibaca
+     * @return array<int, float>
+     */
+    private function angkaKolom(VariabelDkps $v, array $dibaca): array
+    {
+        return array_values(array_filter(
+            array_map(fn (array $b) => self::angka($this->sel($b[0], $b[1], $v->kolom)), $dibaca),
+            fn (?float $n) => $n !== null,
+        ));
     }
 
     private function nilaiSel(Periode $periode, VariabelDkps $v): NilaiVariabel
@@ -298,7 +314,9 @@ final class PembacaVariabelDkps
     /**
      * Jumlah sel baris tetap. Baris tetap yang belum ada dibaca 0 — lembarnya
      * sudah terisi (lembar kosong sudah menjadi null di baca()), jadi baris
-     * yang tidak ada berarti memang tidak diisi.
+     * yang tidak ada berarti memang tidak diisi. Baris yang ADA tetapi sel
+     * rujukannya kosong lain soal: pengisi membuka baris itu dan belum
+     * mengisi selnya, jadi variabelnya null dengan catatan, bukan 0.
      *
      * @param  array<int, array{0: string, 1: string}>  $sel  [kunci baris, kolom]
      */
@@ -310,16 +328,47 @@ final class PembacaVariabelDkps
             fn (array $b) => in_array($b[1]->nilai('_baris'), $kunciBaris, true),
         ));
         $jumlah = 0.0;
+        $kosong = [];
 
         foreach ($sel as [$baris, $kolom]) {
             foreach ($dibaca as [$lembar, $b]) {
-                if ($b->nilai('_baris') === $baris) {
-                    $jumlah += self::angka($this->sel($lembar, $b, $kolom)) ?? 0.0;
+                if ($b->nilai('_baris') !== $baris) {
+                    continue;
                 }
+
+                $angka = self::angka($this->sel($lembar, $b, $kolom));
+
+                if ($angka === null) {
+                    $kosong[] = $this->namaSel($lembar, $baris, $kolom);
+
+                    continue;
+                }
+
+                $jumlah += $angka;
             }
         }
 
+        if ($kosong !== []) {
+            return $this->hasil($v, null, $dibaca, implode('; ', $kosong));
+        }
+
         return $this->hasil($v, $jumlah, $dibaca);
+    }
+
+    /**
+     * "Tabel 21 baris TS: Indeks Prestasi Kumulatif (IPK) › Rata-rata belum
+     * terisi" — label baris, kelompok kepala terdekat, dan label kolom dari
+     * skema, supaya pengisi tahu sel mana yang dimaksud.
+     */
+    private function namaSel(string $lembar, string $kunciBaris, string $kunciKolom): string
+    {
+        $skema = $this->skema($lembar);
+        $baris = collect($skema->barisTetap())->firstWhere('kunci', $kunciBaris)['label'] ?? $kunciBaris;
+        $kolom = collect($skema->kolom())->firstWhere('kunci', $kunciKolom) ?? [];
+        $kelompok = $kolom['kelompok'] ?? [];
+        $label = implode(' › ', array_filter([end($kelompok) ?: null, $kolom['label'] ?? $kunciKolom]));
+
+        return "Tabel {$lembar} baris {$baris}: {$label} belum terisi";
     }
 
     /**
@@ -372,14 +421,23 @@ final class PembacaVariabelDkps
     /**
      * Nilai satu kolom satu baris: kolom `hitung` dari skema, lainnya dari
      * `data`. Baris yang belum lengkap sehingga hitung() menolak dibaca
-     * sebagai sel kosong, bukan menggagalkan seluruh variabel.
+     * sebagai sel kosong, bukan menggagalkan seluruh variabel. Kolom hitung
+     * yang semua kolom masukannya kosong juga sel kosong: rumus `jumlah`
+     * atas sel kosong memberi 0, dan 0 itu bukan isian pengguna.
      */
     private function sel(string $lembar, DkpsBaris $baris, string $kunci): mixed
     {
         $skema = $this->skema($lembar);
+        $rumus = array_column($skema->kolomHitung(), 'rumus', 'kunci');
 
-        if (! in_array($kunci, array_column($skema->kolomHitung(), 'kunci'), true)) {
+        if (! array_key_exists($kunci, $rumus)) {
             return $baris->nilai($kunci);
+        }
+
+        $masukan = array_unique($this->daunRumus($skema, $rumus, $kunci));
+
+        if (array_filter($masukan, fn (string $k) => filled($baris->nilai($k))) === []) {
+            return null;
         }
 
         if (! isset($this->hitungan[$baris->getKey()])) {
@@ -393,6 +451,37 @@ final class PembacaVariabelDkps
         }
 
         return $this->hitungan[$baris->getKey()][$kunci] ?? null;
+    }
+
+    /**
+     * Kolom isian yang menjadi masukan kolom hitung `$kunci`, menelusuri
+     * kolom hitung lain yang dirujuknya (Tabel 8: rata per semester ←
+     * jumlah sks ← enam kolom sks). Jenis rumus mengikuti
+     * SkemaLembar::hitungSatu(); jenis baru harus ditambahkan di sini juga.
+     *
+     * @param  array<string, array<string, mixed>>  $rumus  kunci kolom hitung ⇒ rumus
+     * @return array<int, string>
+     */
+    private function daunRumus(SkemaLembar $skema, array $rumus, string $kunci): array
+    {
+        if (! array_key_exists($kunci, $rumus)) {
+            return [$kunci];
+        }
+
+        $r = $rumus[$kunci];
+        $rujukan = match ($r['jenis']) {
+            'jumlah', 'rata' => $r['kolom'],
+            'bagi' => [$r['kolom']],
+            'selisih_tahun' => [$r['dari'], $r['sampai']],
+            // masaStudiRata() hanya membaca kolom `lulus_akhir_*`.
+            'masa_studi_rata' => array_values(array_filter(
+                array_column($skema->kolomInput(), 'kunci'),
+                fn (string $k) => str_starts_with($k, 'lulus_akhir_'),
+            )),
+            default => throw new InvalidArgumentException("Rumus `{$r['jenis']}` tidak dikenal pembaca."),
+        };
+
+        return array_merge(...array_map(fn (string $k) => $this->daunRumus($skema, $rumus, $k), $rujukan));
     }
 
     /** @return array<int, DkpsBaris> */
