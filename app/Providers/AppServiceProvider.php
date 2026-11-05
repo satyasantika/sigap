@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Livewire\HandleRequestsSubpath;
 use App\Listeners\CatatWaktuMasuk;
 use App\Support\Pemasangan;
 use Filament\Support\Facades\FilamentView;
@@ -13,12 +14,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Mechanisms\HandleRequests\HandleRequests;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // Lihat HandleRequestsSubpath: endpoint update Livewire dobel awalan
+        // jalur ketika SIGAP dipasang di subfolder (APP_URL berawalan jalur).
+        if (Pemasangan::diSubfolder()) {
+            $this->app->bind(HandleRequests::class, HandleRequestsSubpath::class);
+        }
     }
 
     public function boot(): void
