@@ -12,6 +12,7 @@ use RuntimeException;
  * Pemetaan kunci JSON ke kolom yang perlu diperhatikan:
  *   `skor`   -> kolom `aturan_skor`
  *   `elemen` -> kolom `elemen_id` (nomor polos di JSON, null untuk NA)
+ *   `variabel_dkps` -> kode katalog data/variabel-dkps.json yang dibaca rumus
  */
 class RumusSeeder extends Seeder
 {
@@ -22,7 +23,7 @@ class RumusSeeder extends Seeder
 
     public function run(): void
     {
-        $daftar = $this->bacaJson('rumus.json', 15);
+        $daftar = $this->bacaJson('rumus.json', 28);
 
         $idElemen = Elemen::pluck('id', 'no');
 
@@ -44,6 +45,7 @@ class RumusSeeder extends Seeder
                     'elemen_id' => $elemenId,
                     'ekspresi' => $r['ekspresi'],
                     'variabel' => $r['variabel'],
+                    'variabel_dkps' => $r['variabel_dkps'],
                     'aturan_skor' => $r['skor'],
                     'jendela' => $r['jendela'],
                     'catatan' => $r['catatan'] ?? null,
@@ -57,6 +59,6 @@ class RumusSeeder extends Seeder
             throw new RuntimeException('Rumus inti hilang: '.implode(', ', $hilang).'.');
         }
 
-        $this->command?->info('Rumus: 15 baris, rumus inti lengkap');
+        $this->command?->info('Rumus: 28 baris, rumus inti lengkap');
     }
 }

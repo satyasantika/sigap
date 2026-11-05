@@ -386,6 +386,20 @@ Perintah itu hanya membetulkan yang belum selaras, jadi aman diulang. Tanpanya
 `sigap:cek-kesiapan` gagal pada "Tidak ada baris DKPS tanpa pokja" atau
 "Tidak ada baris DKPS dengan lembar_kode asing".
 
+### Pasca-penggelaran rumus kuantitatif AK 3.0
+
+Penggelaran yang membawa 28 rumus AK 3.0 dan katalog variabel DKPS wajib diikuti:
+
+```bash
+php artisan migrate --force && php artisan db:seed --class=RumusSeeder --force && php artisan db:seed --class=VariabelDkpsSeeder --force && php artisan db:seed --class=IzinSeeder --force
+php artisan rumus:hitung    # hitung semua rumus dari DKPS periode aktif (--periode=ID untuk satu periode)
+```
+
+`rumus:hitung` mencetak tiga blok — disimpan, tidak berubah, dilewati beserta
+alasannya — dan hanya menambah baris `nilai_rumus` bila hasilnya berubah, jadi
+aman diulang. Tombol **Hitung dari DKPS** di layar Nilai Rumus menjalankan hal
+yang sama untuk ketua dan koordinator POKJA-DATA.
+
 ### Yang wajib disetel untuk subfolder
 
 Salin blok penggelaran di akhir `.env.example`. Tiga yang paling menentukan:

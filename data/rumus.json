@@ -9,7 +9,13 @@
    "NDTPS": "Jumlah dosen tetap pengampu MK dengan keahlian sesuai kompetensi inti PS"
   },
   "skor": "PDS3 >= 40 -> skor(a)=4; PDS3 < 40 -> skor(a) = 2 + (5 * PDS3/100)",
-  "jendela": "saat TS"
+  "jendela": "saat TS",
+  "variabel_dkps": [
+   "N_DTPS_DOKTOR",
+   "N_DTPS",
+   "N_DTPS_LK",
+   "N_DTPS_GB"
+  ]
  },
  {
   "kode": "PGBLKL",
@@ -24,21 +30,39 @@
   },
   "skor": "PGBLKL >= 70 -> skor(b)=4; < 70 -> skor(b) = 2 + ((20 * PGBLKL/100) / 7)",
   "jendela": "saat TS",
-  "catatan": "Skor elemen 17 = (3*(a+b) + c) / 7, dengan c = skor analisis keterpenuhan."
+  "catatan": "Skor elemen 17 = (3*(a+b) + c) / 7, dengan c = skor analisis keterpenuhan.",
+  "variabel_dkps": [
+   "N_DTPS_GB",
+   "N_DTPS_LK",
+   "N_DTPS_LEKTOR",
+   "N_DTPS"
+  ]
  },
  {
   "kode": "RK",
   "nama": "Rasio kerja sama tridharma",
   "elemen": 7,
-  "ekspresi": "((3*N1) + (2*N2) + (1*N3)) / NDTPS",
+  "ekspresi": "RK = ((3*N1) + (2*N2) + (1*N3)) / NDTPS; bagian A.2 memakai NI, NN, NW",
   "variabel": {
-   "N1": "Jumlah kerja sama tingkat internasional",
-   "N2": "Jumlah kerja sama tingkat nasional",
-   "N3": "Jumlah kerja sama tingkat wilayah/lokal",
+   "N1": "Jumlah kerja sama bidang pendidikan",
+   "N2": "Jumlah kerja sama bidang penelitian",
+   "N3": "Jumlah kerja sama bidang PkM",
+   "NI": "Jumlah kerja sama tingkat internasional",
+   "NN": "Jumlah kerja sama tingkat nasional",
+   "NW": "Jumlah kerja sama tingkat wilayah/lokal",
    "NDTPS": "Jumlah DTPS"
   },
-  "skor": "RK >= 4 -> A = 4; RK < 4 -> A = RK",
-  "jendela": "TS-2 s.d. TS"
+  "skor": "A.1: RK >= 4 -> 4; RK < 4 -> max(1, RK). A.2: pola RI/RN/RW atas NI, NN, NW dengan a = 2, b = 6, c = 9. Skor A = ((2 * A.1) + A.2) / 3",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_KERJASAMA_PENDIDIKAN",
+   "N_KERJASAMA_PENELITIAN",
+   "N_KERJASAMA_PKM",
+   "N_KERJASAMA_INTERNASIONAL",
+   "N_KERJASAMA_NASIONAL",
+   "N_KERJASAMA_WILAYAH",
+   "N_DTPS"
+  ]
  },
  {
   "kode": "PPDTPS",
@@ -50,7 +74,12 @@
   },
   "skor": "PPDTPS >= 20 -> 4; 15 <= PPDTPS < 20 -> 3; 10 <= PPDTPS < 15 -> 2; < 10 -> 1",
   "jendela": "TS-2 s.d. TS",
-  "catatan": "Skor(a) di atas digabung skor(b) analisis tren: Skor = (3*a + b)/4. Syarat perlu unggul 5 tahun menuntut PPDTPS >= 40, jauh di atas ambang skor 4."
+  "catatan": "Skor(a) di atas digabung skor(b) analisis tren: Skor = (3*a + b)/4. Syarat perlu unggul 5 tahun menuntut PPDTPS >= 40, jauh di atas ambang skor 4.",
+  "variabel_dkps": [
+   "N_DTPS_PUBLIKASI",
+   "N_DTPS",
+   "N_ARTIKEL_PUBLIKASI"
+  ]
  },
  {
   "kode": "RSA",
@@ -62,7 +91,11 @@
    "NDTPS": "Jumlah DTPS"
   },
   "skor": "RSA >= 9 -> 4; 6 <= RSA < 9 -> 3; 3 <= RSA < 6 -> 2; < 3 -> 1",
-  "jendela": "TS-2 s.d. TS"
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "NAS",
+   "N_DTPS"
+  ]
  },
  {
   "kode": "RIPK",
@@ -70,8 +103,16 @@
   "elemen": 38,
   "ekspresi": "rata-rata IPK lulusan",
   "variabel": {},
-  "skor": "RIPK >= 3,25 -> 4; 2,00 <= RIPK < 3,25 -> ((8 * RIPK) - 6) / 5",
-  "jendela": "TS-2 s.d. TS"
+  "skor": "RIPK >= 3,25 -> 4; 2,00 <= RIPK < 3,25 -> max(1, ((8 * RIPK) - 6) / 5); RIPK < 2,00 -> 1",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_LULUSAN_TS2",
+   "N_LULUSAN_TS1",
+   "N_LULUSAN_TS",
+   "RT_IPK_TS2",
+   "RT_IPK_TS1",
+   "RT_IPK_TS"
+  ]
  },
  {
   "kode": "RMS",
@@ -80,7 +121,11 @@
   "ekspresi": "rata-rata masa studi mahasiswa (semester/tahun sesuai ketentuan)",
   "variabel": {},
   "skor": "3,5 < RMS <= 4,0 -> 4; 4 < RMS <= 5 -> berskala; RMS > 5 -> 1",
-  "jendela": "TS-2 s.d. TS"
+  "jendela": "TS-2 s.d. TS",
+  "catatan": "Skor menunggu jawaban LAMDIK; nilai tetap dihitung",
+  "variabel_dkps": [
+   "RT_MS_LULUSAN"
+  ]
  },
  {
   "kode": "PKMS",
@@ -89,16 +134,34 @@
   "ekspresi": "(lulus / total angkatan) * 100",
   "variabel": {},
   "skor": "45% <= PKMS < 85% -> ((80 * PKMS) - 24) / 11 (PKMS dalam desimal)",
-  "jendela": "TS-2 s.d. TS"
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_LULUSAN_ANGKATAN",
+   "N_DITERIMA_ANGKATAN"
+  ]
  },
  {
   "kode": "WTMP",
   "nama": "Waktu tunggu mendapatkan pekerjaan (bulan)",
   "elemen": 43,
-  "ekspresi": "rata-rata waktu tunggu lulusan sampai pekerjaan pertama",
-  "variabel": {},
+  "ekspresi": "WTMP = ((3 * NWT6) + (9 * NWT612) + (15 * NWT12)) / (NWT6 + NWT612 + NWT12)",
+  "variabel": {
+   "NWT6": "Lulusan terlacak dengan waktu tunggu < 6 bulan (titik tengah 3)",
+   "NWT612": "Lulusan terlacak dengan waktu tunggu 6-12 bulan (titik tengah 9)",
+   "NWT12": "Lulusan terlacak dengan waktu tunggu > 12 bulan (titik tengah 15)",
+   "NL": "Jumlah lulusan TS-4 s.d. TS-2",
+   "NJ": "Jumlah lulusan terlacak TS-4 s.d. TS-2"
+  },
   "skor": "WTMP < 6 -> 4; 6 <= WTMP <= 12 -> (18 - WTMP) / 3; WTMP > 12 -> 1",
-  "jendela": "TS-4 s.d. TS-2"
+  "jendela": "TS-4 s.d. TS-2",
+  "catatan": "Aturan responden: Prmin = 0,3 bila NL >= 150, selain itu 0,5 - (NL/150) * 0,2; PJ = NJ/NL; bila PJ < Prmin skor dikali PJ/Prmin.",
+  "variabel_dkps": [
+   "N_LULUSAN_WT_6BLN",
+   "N_LULUSAN_WT_612BLN",
+   "N_LULUSAN_WT_12BLN",
+   "N_LULUSAN_3TH",
+   "N_LULUSAN_TERLACAK_3TH"
+  ]
  },
  {
   "kode": "TKM",
@@ -114,18 +177,87 @@
   },
   "skor": "TKM >= 75% -> 4; 50-75% -> 3; 25-50% -> 2; < 25% -> 1",
   "jendela": "setiap akhir semester",
-  "catatan": "Skor elemen = (skor(a) + 3*skor(b)) / 4, dengan a = pemenuhan 6 aspek pelaksanaan."
+  "catatan": "Skor elemen = (skor(a) + 3*skor(b)) / 4, dengan a = pemenuhan 6 aspek pelaksanaan.",
+  "variabel_dkps": [
+   "RELIABILITY_SB",
+   "RELIABILITY_B",
+   "RELIABILITY_C",
+   "RELIABILITY_KB",
+   "RESPONSIVENESS_SB",
+   "RESPONSIVENESS_B",
+   "RESPONSIVENESS_C",
+   "RESPONSIVENESS_KB",
+   "ASSURANCE_SB",
+   "ASSURANCE_B",
+   "ASSURANCE_C",
+   "ASSURANCE_KB",
+   "EMPATHY_SB",
+   "EMPATHY_B",
+   "EMPATHY_C",
+   "EMPATHY_KB",
+   "TANGIBLE_SB",
+   "TANGIBLE_B",
+   "TANGIBLE_C",
+   "TANGIBLE_KB"
+  ]
  },
  {
   "kode": "TKi",
   "nama": "Tingkat kepuasan pengguna lulusan",
   "elemen": 44,
-  "ekspresi": "Skor = TKi / 9",
+  "ekspresi": "Skor = sum(TKi) / 9 ; TKi = (4*ai) + (3*bi) + (2*ci) + di, ai..di dalam pecahan",
   "variabel": {
-   "aspek": "9 aspek: etika, keahlian bidang ilmu, bahasa asing, penggunaan TI, komunikasi, kerja sama, pengembangan diri, berpikir kritis, kreativitas"
+   "ai": "pecahan Sangat Baik",
+   "bi": "pecahan Baik",
+   "ci": "pecahan Cukup",
+   "di": "pecahan Kurang",
+   "aspek": "9 aspek: etika, keahlian bidang ilmu, bahasa asing, penggunaan TI, komunikasi, kerja sama, pengembangan diri, berpikir kritis, kreativitas",
+   "NL": "Jumlah lulusan TS-4 s.d. TS-2",
+   "NJ": "Jumlah tanggapan pengguna lulusan TS-4 s.d. TS-2"
   },
   "skor": "Skor = TKi / 9",
-  "jendela": "TS-4 s.d. TS-2"
+  "jendela": "TS-4 s.d. TS-2",
+  "catatan": "TKi tidak dibagi 4 (berbeda dari TKM). Aturan responden: Prmin = 0,3 bila NL >= 150, selain itu 0,5 - (NL/150) * 0,2; PJ = NJ/NL; bila PJ < Prmin skor dikali PJ/Prmin.",
+  "variabel_dkps": [
+   "ETIKA_SB",
+   "ETIKA_B",
+   "ETIKA_C",
+   "ETIKA_K",
+   "KU_SB",
+   "KU_B",
+   "KU_C",
+   "KU_K",
+   "BHS_SB",
+   "BHS_B",
+   "BHS_C",
+   "BHS_K",
+   "TI_SB",
+   "TI_B",
+   "TI_C",
+   "TI_K",
+   "KOM_SB",
+   "KOM_B",
+   "KOM_C",
+   "KOM_K",
+   "TIM_SB",
+   "TIM_B",
+   "TIM_C",
+   "TIM_K",
+   "PD_SB",
+   "PD_B",
+   "PD_C",
+   "PD_K",
+   "BKRITIS_SB",
+   "BKRITIS_B",
+   "BKRITIS_C",
+   "BKRITIS_K",
+   "KREATIVITAS_SB",
+   "KREATIVITAS_B",
+   "KREATIVITAS_C",
+   "KREATIVITAS_K",
+   "N_LULUSAN_TKP_3TH",
+   "N_TKP_TERLACAK_3TH"
+  ]
  },
  {
   "kode": "NDTPSPK",
@@ -134,7 +266,11 @@
   "ekspresi": "(DTPS yang mengikuti pengembangan kompetensi / NDTPS) * 100",
   "variabel": {},
   "skor": ">= 80% -> 4; 70-80% -> 3; 60-70% -> 2; < 60% -> 1",
-  "jendela": "TS-2 s.d. TS"
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_DTPS_PK",
+   "N_DTPS"
+  ]
  },
  {
   "kode": "NTENDIKPK",
@@ -143,7 +279,11 @@
   "ekspresi": "(tendik yang mengikuti pengembangan kompetensi / total tendik) * 100",
   "variabel": {},
   "skor": ">= 40% -> 4; 25-40% -> 3; 10-25% -> 2; < 10% -> 1",
-  "jendela": "TS-2 s.d. TS"
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_TENDIK_PK",
+   "N_TENDIK"
+  ]
  },
  {
   "kode": "RRD",
@@ -152,7 +292,11 @@
   "ekspresi": "jumlah pengakuan kepakaran / NDTPS",
   "variabel": {},
   "skor": "RRD >= 1 -> 4; RRD < 1 -> 2 + (2 * RRD)",
-  "jendela": "TS-2 s.d. TS"
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_REKOGNISI_DTPS",
+   "N_DTPS"
+  ]
  },
  {
   "kode": "NA",
@@ -165,6 +309,263 @@
   },
   "skor": "NA >= 361 syarat nilai untuk Unggul 5 tahun; 321 <= NA < 361 maksimal Unggul 3 tahun; 200 <= NA < 321 Terakreditasi; NA < 200 Tidak Terakreditasi",
   "jendela": "-",
-  "catatan": "Surplus = NA - 300. Target surplus >= 61."
+  "catatan": "Surplus = NA - 300. Target surplus >= 61.",
+  "variabel_dkps": []
+ },
+ {
+  "kode": "PRESMA",
+  "nama": "Prestasi mahasiswa",
+  "elemen": 12,
+  "ekspresi": "RI = NI / NM; RN = NN / NM; RW = NW / NM",
+  "variabel": {
+   "NI": "Jumlah prestasi tingkat internasional",
+   "NN": "Jumlah prestasi tingkat nasional",
+   "NW": "Jumlah prestasi tingkat wilayah/lokal",
+   "NM": "Jumlah mahasiswa aktif PPG saat TS"
+  },
+  "skor": "RI >= a -> 4; RI < a dan RN >= b -> 3 + (RI/a); 0 < RI < a atau 0 < RN < b -> 2 + (RI/a) + (RN/b) - ((RI * RN)/(a * b)); RI = 0, RN = 0, RW >= c -> 2; selain itu max(1, 2 * RW/c); a = 0,005, b = 0,05, c = 0,1",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_PRESTASI_INTERNASIONAL",
+   "N_PRESTASI_NASIONAL",
+   "N_PRESTASI_LOKAL",
+   "N_MHS_PPG"
+  ]
+ },
+ {
+  "kode": "PKIM",
+  "nama": "Persentase karya inovatif mahasiswa",
+  "elemen": 13,
+  "ekspresi": "PKIM = min(1, (NPATEN + NBUKU + NSENI + NPUB) / NM)",
+  "variabel": {
+   "NPATEN": "Mahasiswa berkarya paten/paten sederhana",
+   "NBUKU": "Mahasiswa berkarya buku ber-ISBN/book chapter",
+   "NSENI": "Mahasiswa berkarya seni yang dipamerkan/dipagelarkan",
+   "NPUB": "Mahasiswa berpublikasi pada jurnal minimal SINTA 5",
+   "NM": "Jumlah mahasiswa aktif PPG saat TS"
+  },
+  "skor": "PKIM >= 0,2 -> 4; 0,15 <= PKIM < 0,2 -> 3; 0,1 <= PKIM < 0,15 -> 2; PKIM < 0,1 -> 1",
+  "jendela": "5 tahun terakhir",
+  "variabel_dkps": [
+   "N_MHS_PATEN",
+   "N_MHS_BUKU_ISBN",
+   "N_MHS_SENI",
+   "N_MHS_PUBLIKASI_MIN_SINTA5",
+   "N_MHS_PPG"
+  ]
+ },
+ {
+  "kode": "BKD",
+  "nama": "Beban kerja DTPS",
+  "elemen": 18,
+  "ekspresi": "BKD = rata-rata sks DTPS per semester",
+  "variabel": {
+   "RBK": "Rata-rata beban kerja DTPS (sks per semester)"
+  },
+  "skor": "12 <= BKD <= 16 -> 4; 6 <= BKD < 12 -> max(1, ((2 * BKD) - 12) / 3); 16 < BKD <= 18 -> max(1, 36 - (2 * BKD)); BKD < 6 atau BKD > 18 -> 1",
+  "jendela": "saat TS",
+  "catatan": "Buku 4 memberi 0 pada BKD = 18 dan 6; SIGAP memakai lantai 1 (pertanyaan ke LAMDIK).",
+  "variabel_dkps": [
+   "RBK_DTPS"
+  ]
+ },
+ {
+  "kode": "RGP",
+  "nama": "Rasio dan kualifikasi guru pamong",
+  "elemen": 22,
+  "ekspresi": "RGPBS = NGP / NBS; RGPMD = NGPMD / NGP; RGPMU = NGPMU / NGP; RGPGP = NGPGP / NGP",
+  "variabel": {
+   "NGP": "Jumlah guru pamong",
+   "NBS": "Jumlah bidang studi",
+   "NGPMD": "Guru pamong berkualifikasi magister/doktor",
+   "NGPMU": "Guru pamong berjabatan Guru Madya/Utama",
+   "NGPGP": "Guru pamong bersertifikat pendidik"
+  },
+  "skor": "Rumus sel E348 kertas kerja dengan ambang a = 0,3, b = 0,4, c = 0,5, d = 0,6; hasil dibulatkan 2 desimal",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_GP",
+   "N_BIDANG_STUDI",
+   "N_GP_MAGISTER_DOKTOR",
+   "N_GP_MADYA_UTAMA",
+   "N_GP_SERDIK"
+  ]
+ },
+ {
+  "kode": "DANA",
+  "nama": "Kecukupan dana operasional, penelitian, dan PkM",
+  "elemen": 25,
+  "ekspresi": "ROP = B_OP / NM; RPD = B_PENELITIAN / NDTPS; RPkMD = B_PKM / NDTPS (rupiah per tahun)",
+  "variabel": {
+   "B_OP": "Rata-rata biaya operasional pendidikan per tahun",
+   "B_PENELITIAN": "Rata-rata dana penelitian per tahun",
+   "B_PKM": "Rata-rata dana PkM per tahun",
+   "NM": "Jumlah mahasiswa aktif PPG saat TS",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "ROP >= 18 jt -> 4; >= 10 jt -> 3; >= 5 jt -> 2; selain itu 1. RPD >= 10 jt -> 4; >= 7 jt -> 3; >= 4 jt -> 2; selain itu 1. RPkMD >= 5 jt -> 4; >= 3 jt -> 3; >= 1 jt -> 2; selain itu 1. Skor A = rata ketiganya",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "B_OP",
+   "B_PENELITIAN",
+   "B_PKM",
+   "N_MHS_PPG",
+   "N_DTPS"
+  ]
+ },
+ {
+  "kode": "PDIPPKM",
+  "nama": "Persentase DTPS yang mengintegrasikan penelitian/PkM dalam pembelajaran",
+  "elemen": 32,
+  "ekspresi": "(NDIPPKM / NDTPS) * 100",
+  "variabel": {
+   "NDIPPKM": "DTPS yang mengintegrasikan penelitian/PkM",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "PDIPPKM >= 50 -> 4; 30 <= PDIPPKM < 50 -> 3; 10 <= PDIPPKM < 30 -> 2; PDIPPKM < 10 -> 1",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_INTEGRASI",
+   "N_DTPS"
+  ]
+ },
+ {
+  "kode": "PMKI",
+  "nama": "Persentase mata kuliah yang memuat integrasi penelitian/PkM",
+  "elemen": 32,
+  "ekspresi": "PMKI = min(1, NMKI / NMK)",
+  "variabel": {
+   "NMKI": "Mata kuliah yang memuat integrasi penelitian/PkM",
+   "NMK": "Jumlah mata kuliah inti"
+  },
+  "skor": "≥ 0,25 → 4; 0,15–0,25 → 3; selain itu 2 (kertas kerja E496)",
+  "jendela": "TS-2 s.d. TS",
+  "catatan": "Rumus Buku 4 untuk pita 3 jatuh di bawah 3; SIGAP memakai tangga kertas kerja (pertanyaan ke LAMDIK).",
+  "variabel_dkps": [
+   "N_INTEGRASI_MK",
+   "N_MK_KU"
+  ]
+ },
+ {
+  "kode": "RPPL",
+  "nama": "Rata-rata pertemuan pembimbingan PPL",
+  "elemen": 36,
+  "ekspresi": "RPPL = jumlah pertemuan pembimbingan / jumlah sel pertemuan yang terisi (per dosen per tahun)",
+  "variabel": {
+   "RPPL": "Rata-rata pertemuan pembimbingan PPL per dosen per tahun"
+  },
+  "skor": "RPPL >= 4 -> 4; 3 <= RPPL < 4 -> 3; 2 <= RPPL < 3 -> 2; RPPL < 2 -> 1",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "RT_PEMBIMBINGAN_PPL"
+  ]
+ },
+ {
+  "kode": "PMTK",
+  "nama": "Persentase mahasiswa lulus tepat waktu",
+  "elemen": 40,
+  "ekspresi": "PMTK = (NL_TS1 + NL_TS) / (ND_TS1 + ND_TS)",
+  "variabel": {
+   "ND_TS1": "Mahasiswa diterima angkatan TS-1",
+   "ND_TS": "Mahasiswa diterima angkatan TS",
+   "NL_TS1": "Angkatan TS-1 yang lulus pada akhir TS-1",
+   "NL_TS": "Angkatan TS yang lulus pada akhir TS"
+  },
+  "skor": "PMTK >= 0,5 -> 4; PMTK < 0,5 -> 1 + (6 * PMTK)",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_MHS_DITERIMA_TS1",
+   "N_MHS_DITERIMA_TS",
+   "N_LULUS_PADA_TS1",
+   "N_LULUS_PADA_TS"
+  ]
+ },
+ {
+  "kode": "RMKCPL",
+  "nama": "Rasio mata kuliah inti dengan asesmen CPL",
+  "elemen": 45,
+  "ekspresi": "RMKCPL = min(1, NMKCPL / NMK)",
+  "variabel": {
+   "NMKCPL": "Mata kuliah inti dengan tautan asesmen CPL",
+   "NMK": "Jumlah mata kuliah inti"
+  },
+  "skor": "RMKCPL >= 0,2 -> 4; 0,15 <= RMKCPL < 0,2 -> 3; 0 < RMKCPL < 0,15 -> 2; RMKCPL = 0 -> 1",
+  "jendela": "saat TS",
+  "variabel_dkps": [
+   "N_MK_CPL",
+   "N_MK_KU"
+  ]
+ },
+ {
+  "kode": "RPEN",
+  "nama": "Penelitian DTPS",
+  "elemen": 49,
+  "ekspresi": "RI = NI / 3 / NDTPS; RN = NN / 3 / NDTPS; RL = NL / 3 / NDTPS",
+  "variabel": {
+   "NI": "Penelitian bersumber dana lembaga luar negeri",
+   "NN": "Penelitian bersumber dana lembaga dalam negeri",
+   "NL": "Penelitian bersumber dana perguruan tinggi/mandiri",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "RI >= a -> 4; RI < a dan RN >= b -> 3 + (RI/a); 0 < RI < a atau 0 < RN < b -> 2 + (RI/a) + (RN/b) - ((RI * RN)/(a * b)); RI = 0, RN = 0, RL >= c -> 2; selain itu max(1, 2 * RL/c); a = 0,05, b = 0,3, c = 1",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_PENELITIAN_SB_LN",
+   "N_PENELITIAN_SB_DN",
+   "N_PENELITIAN_SB_PT",
+   "N_DTPS"
+  ]
+ },
+ {
+  "kode": "RPUB",
+  "nama": "Publikasi ilmiah DTPS",
+  "elemen": 50,
+  "ekspresi": "RW = (NA1 + NB1 + NC1) / NDTPS; RN = (NA2 + NA3 + NB2 + NC2 + ND1 + ND2) / NDTPS; RI = (NA4 + NB3 + NC3) / NDTPS",
+  "variabel": {
+   "NA1..NA4": "Publikasi jurnal (nasional tidak terakreditasi s.d. internasional bereputasi)",
+   "NB1..NB3": "Publikasi seminar (wilayah, nasional, internasional)",
+   "NC1..NC3": "Tulisan di media massa (wilayah, nasional, internasional)",
+   "ND1": "Buku ber-ISBN/book chapter",
+   "ND2": "Paten/paten sederhana",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "RI >= a -> 4; RI < a dan RN >= b -> 3 + (RI/a); 0 < RI < a atau 0 < RN < b -> 2 + (RI/a) + (RN/b) - ((RI * RN)/(a * b)); RI = 0, RN = 0, RW >= c -> 2; selain itu max(1, 2 * RW/c); a = 0,1, b = 1, c = 2",
+  "jendela": "TS-2 s.d. TS",
+  "catatan": "RN menyertakan ND1 + ND2 sesuai kertas kerja (Buku 4 tidak menyebutnya).",
+  "variabel_dkps": [
+   "NA1",
+   "NA2",
+   "NA3",
+   "NA4",
+   "NB1",
+   "NB2",
+   "NB3",
+   "NC1",
+   "NC2",
+   "NC3",
+   "ND1",
+   "ND2",
+   "N_DTPS"
+  ]
+ },
+ {
+  "kode": "RPKM",
+  "nama": "PkM DTPS",
+  "elemen": 54,
+  "ekspresi": "RI = NI / 3 / NDTPS; RN = NN / 3 / NDTPS; RL = NL / 3 / NDTPS",
+  "variabel": {
+   "NI": "PkM bersumber dana lembaga luar negeri",
+   "NN": "PkM bersumber dana lembaga dalam negeri",
+   "NL": "PkM bersumber dana perguruan tinggi/mandiri",
+   "NDTPS": "Jumlah DTPS"
+  },
+  "skor": "RI >= a -> 4; RI < a dan RN >= b -> 3 + (RI/a); 0 < RI < a atau 0 < RN < b -> 2 + (RI/a) + (RN/b) - ((RI * RN)/(a * b)); RI = 0, RN = 0, RL >= c -> 2; selain itu max(1, 2 * RL/c); a = 0,05, b = 0,3, c = 1",
+  "jendela": "TS-2 s.d. TS",
+  "variabel_dkps": [
+   "N_PKM_SB_LN",
+   "N_PKM_SB_DN",
+   "N_PKM_SB_PT",
+   "N_DTPS"
+  ]
  }
 ]

@@ -2,6 +2,37 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PeranPengguna;
+use App\Enums\StatusTagihan;
+use App\Models\Bukti;
+use App\Models\BuktiElemen;
+use App\Models\DkpsBaris;
+use App\Models\DkpsButir;
+use App\Models\Elemen;
+use App\Models\ImpersonasiSesi;
+use App\Models\ImporBatch;
+use App\Models\Izin;
+use App\Models\Komentar;
+use App\Models\Kriteria;
+use App\Models\LogAktivitas;
+use App\Models\Narasi;
+use App\Models\NarasiVersi;
+use App\Models\NilaiRumus;
+use App\Models\Penilaian;
+use App\Models\Periode;
+use App\Models\Pokja;
+use App\Models\Prodi;
+use App\Models\Rumus;
+use App\Models\Simulasi;
+use App\Models\StatusSyaratPerlu;
+use App\Models\SyaratPerlu;
+use App\Models\Tagihan;
+use App\Models\TagihanRiwayat;
+use App\Models\User;
+use App\Models\VariabelDkps;
+use App\Policies\ReferensiPolicy;
+use App\Services\RingkasanProgres;
+use Database\Seeders\DemoSeeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,38 +66,39 @@ class PenghapusanDataTest extends TestCase
 
     /** @var array<string, class-string<Model>> */
     private const LUNAK = [
-        'prodi' => \App\Models\Prodi::class,
-        'periode' => \App\Models\Periode::class,
-        'pokja' => \App\Models\Pokja::class,
-        'users' => \App\Models\User::class,
-        'tagihan' => \App\Models\Tagihan::class,
-        'bukti' => \App\Models\Bukti::class,
-        'narasi' => \App\Models\Narasi::class,
-        'dkps_baris' => \App\Models\DkpsBaris::class,
-        'penilaian' => \App\Models\Penilaian::class,
-        'komentar' => \App\Models\Komentar::class,
-        'simulasi' => \App\Models\Simulasi::class,
+        'prodi' => Prodi::class,
+        'periode' => Periode::class,
+        'pokja' => Pokja::class,
+        'users' => User::class,
+        'tagihan' => Tagihan::class,
+        'bukti' => Bukti::class,
+        'narasi' => Narasi::class,
+        'dkps_baris' => DkpsBaris::class,
+        'penilaian' => Penilaian::class,
+        'komentar' => Komentar::class,
+        'simulasi' => Simulasi::class,
     ];
 
     /** @var array<string, class-string<Model>> */
     private const TOLAK = [
-        'tagihan_riwayat' => \App\Models\TagihanRiwayat::class,
-        'narasi_versi' => \App\Models\NarasiVersi::class,
-        'log_aktivitas' => \App\Models\LogAktivitas::class,
-        'nilai_rumus' => \App\Models\NilaiRumus::class,
-        'status_syarat_perlu' => \App\Models\StatusSyaratPerlu::class,
-        'impor_batch' => \App\Models\ImporBatch::class,
-        'impersonasi_sesi' => \App\Models\ImpersonasiSesi::class,
+        'tagihan_riwayat' => TagihanRiwayat::class,
+        'narasi_versi' => NarasiVersi::class,
+        'log_aktivitas' => LogAktivitas::class,
+        'nilai_rumus' => NilaiRumus::class,
+        'status_syarat_perlu' => StatusSyaratPerlu::class,
+        'impor_batch' => ImporBatch::class,
+        'impersonasi_sesi' => ImpersonasiSesi::class,
     ];
 
     /** Referensi instrumen: tidak bisa ditulis sama sekali dari layar. */
     private const REFERENSI = [
-        'elemen' => \App\Models\Elemen::class,
-        'kriteria' => \App\Models\Kriteria::class,
-        'rumus' => \App\Models\Rumus::class,
-        'syarat_perlu' => \App\Models\SyaratPerlu::class,
-        'dkps_butir' => \App\Models\DkpsButir::class,
-        'izin' => \App\Models\Izin::class,
+        'elemen' => Elemen::class,
+        'kriteria' => Kriteria::class,
+        'rumus' => Rumus::class,
+        'syarat_perlu' => SyaratPerlu::class,
+        'dkps_butir' => DkpsButir::class,
+        'variabel_dkps' => VariabelDkps::class,
+        'izin' => Izin::class,
     ];
 
     /** @return array<string, array{string, string}> */
@@ -156,23 +188,23 @@ class PenghapusanDataTest extends TestCase
         // tertahan. Menghapus tagihan penahannya harus membuat elemen itu
         // terhitung selesai dan bobotnya masuk. Kalau kueri progres tidak
         // menghormati deleted_at, angkanya tidak akan bergerak sama sekali.
-        $this->seed(\Database\Seeders\DemoSeeder::class);
+        $this->seed(DemoSeeder::class);
 
-        $periode = \App\Models\Periode::aktif()->firstOrFail();
-        $progres = app(\App\Services\RingkasanProgres::class);
+        $periode = Periode::aktif()->firstOrFail();
+        $progres = app(RingkasanProgres::class);
 
-        $elemen = \App\Models\Elemen::whereIn(
+        $elemen = Elemen::whereIn(
             'id',
-            \App\Models\Tagihan::where('periode_id', $periode->id)
+            Tagihan::where('periode_id', $periode->id)
                 ->whereNotNull('elemen_id')
-                ->where('status', '!=', \App\Enums\StatusTagihan::Disetujui)
+                ->where('status', '!=', StatusTagihan::Disetujui)
                 ->pluck('elemen_id')
                 ->unique(),
         )->firstOrFail();
 
-        $penahan = \App\Models\Tagihan::where('periode_id', $periode->id)
+        $penahan = Tagihan::where('periode_id', $periode->id)
             ->where('elemen_id', $elemen->id)
-            ->where('status', '!=', \App\Enums\StatusTagihan::Disetujui)
+            ->where('status', '!=', StatusTagihan::Disetujui)
             ->get();
 
         $sebelum = $progres->bobotSelesai($periode);
@@ -195,16 +227,16 @@ class PenghapusanDataTest extends TestCase
     #[Test]
     public function bukti_terhapus_keluar_dari_hitungan_elemen_tanpa_bukti(): void
     {
-        $this->seed(\Database\Seeders\DemoSeeder::class);
+        $this->seed(DemoSeeder::class);
 
-        $periode = \App\Models\Periode::aktif()->firstOrFail();
-        $progres = app(\App\Services\RingkasanProgres::class);
+        $periode = Periode::aktif()->firstOrFail();
+        $progres = app(RingkasanProgres::class);
 
         $sebelum = $progres->elemenTanpaBukti($periode)->count();
 
         // Satu bukti yang menopang tepat satu elemen; menghapusnya harus
         // membuat elemen itu kembali dihitung sebagai elemen tanpa bukti.
-        $bukti = \App\Models\Bukti::where('periode_id', $periode->id)
+        $bukti = Bukti::where('periode_id', $periode->id)
             ->withCount('elemen')
             ->having('elemen_count', '=', 1)
             ->first();
@@ -227,7 +259,7 @@ class PenghapusanDataTest extends TestCase
             array_values(self::TOLAK),
             array_values(self::REFERENSI),
             // Pivot murni: tidak punya model sendiri, ikut induknya.
-            [\App\Models\BuktiElemen::class],
+            [BuktiElemen::class],
         );
 
         $semua = collect(glob(app_path('Models/*.php')))
@@ -245,15 +277,15 @@ class PenghapusanDataTest extends TestCase
     #[Test]
     public function tabel_referensi_tidak_bisa_ditulis_dari_layar(): void
     {
-        $u = \App\Models\User::factory()->peran(\App\Enums\PeranPengguna::Ketua)->create([
-            'prodi_id' => \App\Models\Prodi::create([
+        $u = User::factory()->peran(PeranPengguna::Ketua)->create([
+            'prodi_id' => Prodi::create([
                 'kode' => 'PPG-UJI', 'nama' => 'PPG Uji', 'jenjang' => 'ppg',
                 'upps' => 'FKIP', 'perguruan_tinggi' => 'Unsil', 'aktif' => true,
             ])->id,
         ]);
 
-        $policy = new \App\Policies\ReferensiPolicy;
-        $palsu = new \App\Models\Elemen;
+        $policy = new ReferensiPolicy;
+        $palsu = new Elemen;
 
         $this->assertFalse($policy->create($u));
         $this->assertFalse($policy->delete($u, $palsu));
@@ -264,47 +296,47 @@ class PenghapusanDataTest extends TestCase
 
     private function satuBaris(string $kelas): ?Model
     {
-        $this->seed(\Database\Seeders\DemoSeeder::class);
+        $this->seed(DemoSeeder::class);
 
         return match ($kelas) {
-            \App\Models\Prodi::class => \App\Models\Prodi::first(),
-            \App\Models\Periode::class => \App\Models\Periode::first(),
-            \App\Models\Pokja::class => \App\Models\Pokja::first(),
-            \App\Models\User::class => \App\Models\User::first(),
-            \App\Models\Tagihan::class => \App\Models\Tagihan::first(),
-            \App\Models\Bukti::class => \App\Models\Bukti::first(),
-            \App\Models\Narasi::class => \App\Models\Narasi::first(),
-            \App\Models\DkpsBaris::class => \App\Models\DkpsBaris::first(),
-            \App\Models\Penilaian::class => \App\Models\Penilaian::first(),
-            \App\Models\NilaiRumus::class => \App\Models\NilaiRumus::first(),
-            \App\Models\StatusSyaratPerlu::class => \App\Models\StatusSyaratPerlu::first(),
-            \App\Models\TagihanRiwayat::class => \App\Models\TagihanRiwayat::first(),
-            \App\Models\NarasiVersi::class => \App\Models\NarasiVersi::first(),
-            \App\Models\Komentar::class => \App\Models\Komentar::create([
-                'commentable_type' => \App\Models\Tagihan::class,
-                'commentable_id' => \App\Models\Tagihan::first()->id,
-                'user_id' => \App\Models\User::first()->id,
+            Prodi::class => Prodi::first(),
+            Periode::class => Periode::first(),
+            Pokja::class => Pokja::first(),
+            User::class => User::first(),
+            Tagihan::class => Tagihan::first(),
+            Bukti::class => Bukti::first(),
+            Narasi::class => Narasi::first(),
+            DkpsBaris::class => DkpsBaris::first(),
+            Penilaian::class => Penilaian::first(),
+            NilaiRumus::class => NilaiRumus::first(),
+            StatusSyaratPerlu::class => StatusSyaratPerlu::first(),
+            TagihanRiwayat::class => TagihanRiwayat::first(),
+            NarasiVersi::class => NarasiVersi::first(),
+            Komentar::class => Komentar::create([
+                'commentable_type' => Tagihan::class,
+                'commentable_id' => Tagihan::first()->id,
+                'user_id' => User::first()->id,
                 'isi' => 'Catatan uji.',
             ]),
-            \App\Models\Simulasi::class => \App\Models\Simulasi::create([
-                'prodi_id' => \App\Models\Prodi::first()->id,
-                'periode_id' => \App\Models\Periode::first()->id,
+            Simulasi::class => Simulasi::create([
+                'prodi_id' => Prodi::first()->id,
+                'periode_id' => Periode::first()->id,
                 'jenis' => 'skor', 'nama' => 'Uji',
-                'dibuat_oleh' => \App\Models\User::first()->id,
+                'dibuat_oleh' => User::first()->id,
             ]),
-            \App\Models\LogAktivitas::class => \App\Models\LogAktivitas::create([
-                'user_id' => \App\Models\User::first()->id,
+            LogAktivitas::class => LogAktivitas::create([
+                'user_id' => User::first()->id,
                 'aksi' => 'uji.catat',
             ]),
-            \App\Models\ImpersonasiSesi::class => \App\Models\ImpersonasiSesi::create([
-                'admin_id' => \App\Models\User::first()->id,
-                'target_id' => \App\Models\User::skip(1)->first()->id,
+            ImpersonasiSesi::class => ImpersonasiSesi::create([
+                'admin_id' => User::first()->id,
+                'target_id' => User::skip(1)->first()->id,
                 'alasan' => 'uji',
             ]),
-            \App\Models\ImporBatch::class => \App\Models\ImporBatch::create([
-                'periode_id' => \App\Models\Periode::first()->id,
+            ImporBatch::class => ImporBatch::create([
+                'periode_id' => Periode::first()->id,
                 'profil' => 'bukti',
-                'dijalankan_oleh' => \App\Models\User::first()->id,
+                'dijalankan_oleh' => User::first()->id,
             ]),
             default => null,
         };

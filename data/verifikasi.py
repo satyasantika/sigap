@@ -50,7 +50,7 @@ elpok = {e["no"]: e["pokja"] for e in el}
 chk("pokja di elemen.json konsisten dengan pokja.json",
     not [n for p in pk for n in p["elemen"] if elpok[n] != p["kode"]])
 
-chk("15 rumus", len(rm) == 15, len(rm))
+chk("28 rumus", len(rm) == 28, len(rm))
 chk("rumus inti ada", {"PDS3", "PGBLKL", "PPDTPS", "RSA", "RK", "NA"} <= {r["kode"] for r in rm})
 chk("29 tabel DKPS bernomor 1..29", [d["no"] for d in dk] == list(range(1, 30)))
 chk("kode tabel DKPS unik dan sama dengan nomornya", [d["kode"] for d in dk] == [str(i) for i in range(1, 30)])
@@ -78,6 +78,28 @@ chk("lembar berbaris bebas punya kunci duplikasi",
     all(l.get("kunci") or l.get("baris_tetap") for l in lembar))
 chk("tahun_dari baris_tetap hanya pada lembar berbaris tetap",
     all(l.get("baris_tetap") for l in lembar if l["tahun_dari"] == "baris_tetap"))
+
+# --- katalog variabel DKPS ---
+vd = L("variabel-dkps.json")
+kodevd = [v["kode"] for v in vd]
+kodelembar = {l["kode"] for l in lembar}
+CARA = {"cacah_baris", "cacah_centang", "cacah_pilihan", "cacah_terisi", "cacah_unik",
+        "jumlah_kolom", "rata_kolom", "nilai_sel", "jumlah_sel", "khusus"}
+chk("kode variabel DKPS unik", len(set(kodevd)) == len(kodevd))
+chk("setiap rumus punya variabel_dkps", all("variabel_dkps" in r for r in rm))
+chk("NA tidak membaca DKPS", [r["variabel_dkps"] for r in rm if r["kode"] == "NA"] == [[]])
+chk("variabel_dkps rumus ada di katalog",
+    not [(r["kode"], k) for r in rm for k in r["variabel_dkps"] if k not in kodevd],
+    [(r["kode"], k) for r in rm for k in r["variabel_dkps"] if k not in kodevd])
+kodermm = {r["kode"] for r in rm}
+chk("rumus di katalog ada di rumus.json",
+    not [(v["kode"], k) for v in vd for k in v["rumus"] if k not in kodermm])
+chk("tautan rumus <-> variabel searah bolak-balik",
+    sorted((r["kode"], k) for r in rm for k in r["variabel_dkps"])
+    == sorted((k, v["kode"]) for v in vd for k in v["rumus"]))
+chk("lembar variabel ada di DKPS", not [(v["kode"], l) for v in vd for l in v["lembar"] if l not in kodelembar])
+chk("cara variabel dikenal", not [v["kode"] for v in vd if v["cara"] not in CARA])
+
 chk("6 peran", len(pr) == 6)
 chk("6 status tagihan", len(st) == 6)
 
@@ -85,8 +107,8 @@ chk("6 status tagihan", len(st) == 6)
 peran = iz["peran"]
 aksi = iz["aksi"]
 chk("6 peran di izin.json", peran == ["admin", "ketua", "pimpinan", "koordinator", "anggota", "auditor"])
-chk("25 aksi izin", len(aksi) == 25, len(aksi))
-chk("150 sel izin (25 x 6)", len(aksi) * len(peran) == 150)
+chk("26 aksi izin", len(aksi) == 26, len(aksi))
+chk("156 sel izin (26 x 6)", len(aksi) * len(peran) == 156)
 chk("kode aksi unik", len({a["kode"] for a in aksi}) == len(aksi))
 sah = set(iz["lingkup"])
 chk("semua nilai sel memakai kosakata yang sah",
@@ -108,6 +130,21 @@ chk("validasi bukti: ketua ya, koordinator pokjanya, sisanya tidak",
     and all(byk["bukti.validasi"][p] == "tidak" for p in ("admin", "pimpinan", "anggota", "auditor")))
 chk("impor massal tunduk izin yang sama dengan membuat satu baris",
     byk["impor.jalankan"]["ketua"] == "ya" and byk["impor.jalankan"]["pimpinan"] == "tidak")
+chk("hitung rumus dari DKPS: ketua ya, koordinator pokja_data, sisanya tidak",
+    byk["nilai_rumus.hitung"]["ketua"] == "ya" and byk["nilai_rumus.hitung"]["koordinator"] == "pokja_data"
+    and all(byk["nilai_rumus.hitung"][p] == "tidak" for p in ("admin", "pimpinan", "anggota", "auditor")))
+
+# --- matriks menu ---
+mn = L("menu.json")
+menu = mn["menu"]
+chk("22 menu", len(menu) == 22, len(menu))
+chk("kode menu unik", len({m["kode"] for m in menu}) == len(menu))
+chk("peran di menu.json sama dengan izin.json", mn["peran"] == peran)
+chk("semua sel menu memakai kosakata yang sah",
+    not [m["kode"] for m in menu for p in mn["peran"] if m[p] not in mn["lingkup"]])
+bym = {m["kode"]: m for m in menu}
+chk("menu Variabel DKPS bersel sama dengan Nilai Rumus",
+    all(bym["variabel_dkps"][p] == bym["nilai_rumus"][p] for p in mn["peran"]))
 
 # Patokan yang dipakai uji otomatis di aplikasi
 chk("patokan NA: rubrik+refleksi skor 4, data skor 3 = 363,25",

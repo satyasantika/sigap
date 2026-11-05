@@ -272,6 +272,16 @@
    "koordinator": "ya",
    "anggota": "ya",
    "auditor": "ya"
+  },
+  {
+   "kode": "nilai_rumus.hitung",
+   "label": "Menghitung rumus dari DKPS",
+   "admin": "tidak",
+   "ketua": "ya",
+   "pimpinan": "tidak",
+   "koordinator": "pokja_data",
+   "anggota": "tidak",
+   "auditor": "tidak"
   }
  ]
 }

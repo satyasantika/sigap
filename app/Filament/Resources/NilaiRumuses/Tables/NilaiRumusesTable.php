@@ -26,6 +26,9 @@ class NilaiRumusesTable
                         4 => 'success', 3 => 'info', 2 => 'warning', 1 => 'danger', default => 'gray',
                     })
                     ->placeholder('—'),
+                TextColumn::make('skor_tepat')->label('Skor A')->sortable()
+                    ->numeric(decimalPlaces: 2, decimalSeparator: ',', thousandsSeparator: '.')
+                    ->placeholder('—'),
 
                 // Ambang 3 dan 5 tahun BERDAMPINGAN dengan nilai terukur.
                 // Menampilkan skor saja membuat orang menyimpulkan "skor 4,
@@ -47,6 +50,16 @@ class NilaiRumusesTable
                     ->color(fn (NilaiRumus $record) => $record->memenuhi_syarat_5_tahun === null
                         ? null : ($record->memenuhi_syarat_5_tahun ? 'success' : 'danger')),
 
+                // Variabel DKPS yang dipakai, supaya angka bisa dilacak ke lembar
+                // sumbernya. Hasil hitungan lama (sebelum katalog variabel) tidak
+                // punya kunci `variabel` dan tampil kosong. State dibentuk
+                // langsung menjadi teks: kolom berstate larik dipecah Filament
+                // menjadi satu entri per elemen, bukan satu daftar.
+                TextColumn::make('variabel_dkps')->label('Variabel DKPS')->wrap()->toggleable()
+                    ->state(fn (NilaiRumus $record) => self::daftarVariabel($record->komponen))
+                    ->html()
+                    ->placeholder('—'),
+
                 TextColumn::make('dihitung_pada')->label('Dihitung')->dateTime('d M Y, H:i')->sortable(),
                 TextColumn::make('catatan')->label('Catatan')->wrap()->toggleable()
                     ->color('warning')->placeholder('—'),
@@ -65,6 +78,39 @@ class NilaiRumusesTable
             ->defaultSort('dihitung_pada', 'desc')
             ->emptyStateHeading('Belum ada perhitungan')
             ->emptyStateDescription('Nilai muncul setelah data DKPS diisi dan rumusnya dihitung.');
+    }
+
+    /**
+     * `komponen['variabel']` sebagai baris "KODE = nilai (lembar)".
+     *
+     * @param  array<string, mixed>|null  $komponen  null atau tanpa `variabel` ⇒ null
+     */
+    public static function daftarVariabel(?array $komponen): ?string
+    {
+        $variabel = $komponen['variabel'] ?? null;
+
+        if (! is_array($variabel) || $variabel === []) {
+            return null;
+        }
+
+        return collect($variabel)
+            ->map(fn (array $v) => e(sprintf('%s = %s (%s)',
+                $v['kode'] ?? '?',
+                self::angka($v['nilai'] ?? null),
+                implode(', ', (array) ($v['lembar'] ?? [])))))
+            ->implode('<br>');
+    }
+
+    /** Bulat tanpa desimal, selain itu dua desimal berkoma; null ⇒ "—". */
+    public static function angka(int|float|null $n): string
+    {
+        if ($n === null) {
+            return '—';
+        }
+
+        return floor((float) $n) === (float) $n
+            ? number_format((float) $n, 0, ',', '.')
+            : number_format((float) $n, 2, ',', '.');
     }
 
     /** Ambang syarat perlu elemen yang ditopang rumus ini. */
