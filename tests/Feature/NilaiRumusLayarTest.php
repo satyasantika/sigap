@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\PeranPengguna;
 use App\Enums\SumberData;
+use App\Filament\Pages\VariabelDkpsLayar;
 use App\Filament\Resources\NilaiRumuses\Pages\ListNilaiRumuses;
 use App\Filament\Resources\NilaiRumuses\Tables\NilaiRumusesTable;
 use App\Models\DkpsButir;
@@ -17,6 +18,7 @@ use Database\Seeders\DatabaseSeeder;
 use Filament\Notifications\Livewire\Notifications;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -124,6 +126,69 @@ class NilaiRumusLayarTest extends TestCase
         $this->actingAs($this->pengguna(PeranPengguna::Anggota, 'POKJA-DIK'));
 
         Livewire::test(ListNilaiRumuses::class)->assertActionHidden('hitung');
+    }
+
+    /**
+     * Pengguna yang bisa membuka layar Nilai Rumus tetapi tidak punya
+     * `nilai_rumus.hitung` (izin.json: `tidak`).
+     *
+     * @return array<string, array{PeranPengguna, ?string}>
+     */
+    public static function bolehMembukaTanpaIzinHitung(): array
+    {
+        return [
+            'pimpinan' => [PeranPengguna::Pimpinan, null],
+            'anggota POKJA-DATA' => [PeranPengguna::Anggota, 'POKJA-DATA'],
+        ];
+    }
+
+    /**
+     * Aturan izin.json untuk `tidak`: penolakan harus dibuktikan, bukan
+     * sekadar tombol disembunyikan. Pembantu uji `callAction` Filament
+     * berhenti di assertActionVisible, jadi permintaan Livewire dikirim
+     * langsung — seperti yang bisa dilakukan siapa pun dari konsol peramban.
+     */
+    #[Test]
+    #[DataProvider('bolehMembukaTanpaIzinHitung')]
+    public function pengguna_tanpa_izin_tidak_bisa_memanggil_aksi_hitung(PeranPengguna $peran, ?string $pokja): void
+    {
+        $this->fixture();
+        $this->actingAs($this->pengguna($peran, $pokja));
+
+        Livewire::test(ListNilaiRumuses::class)
+            ->assertSuccessful()
+            ->assertActionHidden('hitung')
+            // Filament menolak memasang aksi tersembunyi: daftarnya tetap kosong.
+            ->call('mountAction', 'hitung')
+            ->assertSet('mountedActions', [])
+            ->call('callMountedAction')
+            // Muatan yang dirusak (aksi dipasang paksa) pun ditolak saat dijalankan.
+            ->set('mountedActions', [['name' => 'hitung', 'arguments' => [], 'context' => []]])
+            ->call('callMountedAction');
+
+        $this->assertSame(0, NilaiRumus::count(),
+            'Fixture yang sama menghasilkan RK bagi ketua; di sini aksinya tidak boleh berjalan.');
+    }
+
+    #[Test]
+    public function koordinator_pokja_lain_tidak_membuka_layar_variabel_maupun_menjalankan_hitung(): void
+    {
+        $this->fixture();
+        $this->actingAs($this->pengguna(PeranPengguna::Koordinator, 'POKJA-DIK'));
+
+        // Menu `pokja_data`: tanpa keanggotaan POKJA-DATA halaman Variabel DKPS ditolak.
+        $this->get(VariabelDkpsLayar::getUrl())->assertForbidden();
+
+        // Layar Nilai Rumus sendiri terbuka (viewAny = dasbor.lihat), tetapi
+        // aksi hitung (`pokja_data`) tidak terpasang dan tidak berjalan.
+        Livewire::test(ListNilaiRumuses::class)
+            ->assertActionHidden('hitung')
+            ->call('mountAction', 'hitung')
+            ->assertSet('mountedActions', [])
+            ->set('mountedActions', [['name' => 'hitung', 'arguments' => [], 'context' => []]])
+            ->call('callMountedAction');
+
+        $this->assertSame(0, NilaiRumus::count());
     }
 
     #[Test]
