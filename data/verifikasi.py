@@ -107,8 +107,8 @@ chk("6 status tagihan", len(st) == 6)
 peran = iz["peran"]
 aksi = iz["aksi"]
 chk("6 peran di izin.json", peran == ["admin", "ketua", "pimpinan", "koordinator", "anggota", "auditor"])
-chk("25 aksi izin", len(aksi) == 25, len(aksi))
-chk("150 sel izin (25 x 6)", len(aksi) * len(peran) == 150)
+chk("26 aksi izin", len(aksi) == 26, len(aksi))
+chk("156 sel izin (26 x 6)", len(aksi) * len(peran) == 156)
 chk("kode aksi unik", len({a["kode"] for a in aksi}) == len(aksi))
 sah = set(iz["lingkup"])
 chk("semua nilai sel memakai kosakata yang sah",
@@ -130,6 +130,21 @@ chk("validasi bukti: ketua ya, koordinator pokjanya, sisanya tidak",
     and all(byk["bukti.validasi"][p] == "tidak" for p in ("admin", "pimpinan", "anggota", "auditor")))
 chk("impor massal tunduk izin yang sama dengan membuat satu baris",
     byk["impor.jalankan"]["ketua"] == "ya" and byk["impor.jalankan"]["pimpinan"] == "tidak")
+chk("hitung rumus dari DKPS: ketua ya, koordinator pokja_data, sisanya tidak",
+    byk["nilai_rumus.hitung"]["ketua"] == "ya" and byk["nilai_rumus.hitung"]["koordinator"] == "pokja_data"
+    and all(byk["nilai_rumus.hitung"][p] == "tidak" for p in ("admin", "pimpinan", "anggota", "auditor")))
+
+# --- matriks menu ---
+mn = L("menu.json")
+menu = mn["menu"]
+chk("22 menu", len(menu) == 22, len(menu))
+chk("kode menu unik", len({m["kode"] for m in menu}) == len(menu))
+chk("peran di menu.json sama dengan izin.json", mn["peran"] == peran)
+chk("semua sel menu memakai kosakata yang sah",
+    not [m["kode"] for m in menu for p in mn["peran"] if m[p] not in mn["lingkup"]])
+bym = {m["kode"]: m for m in menu}
+chk("menu Variabel DKPS bersel sama dengan Nilai Rumus",
+    all(bym["variabel_dkps"][p] == bym["nilai_rumus"][p] for p in mn["peran"]))
 
 # Patokan yang dipakai uji otomatis di aplikasi
 chk("patokan NA: rubrik+refleksi skor 4, data skor 3 = 363,25",
