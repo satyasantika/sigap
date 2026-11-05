@@ -659,7 +659,9 @@ Ringkasnya:
 
 Yang terakhir perlu penjelasan. Keduanya tidak bisa bersamaan: status "Unggul
 3 tahun" menuntut **kelima** syarat perlu sekurangnya berlevel `tiga`, jadi
-dengan satu `belum`, NA 332,75 tetap berujung "Terakreditasi 5 tahun". Penilaian E58 diturunkan ke 2 sebagai dasar level `Belum`, dan E17 berlevel `Tiga` karena PDS3 41,67 memenuhi syarat 3 tahun saja.
+dengan satu `belum`, NA 332,75 tetap berujung "Terakreditasi 5 tahun".
+Penilaian E58 diturunkan ke 2 sebagai dasar level `Belum`, dan E17 berlevel
+`Tiga` karena PDS3 41,67 memenuhi syarat 3 tahun saja.
 
 `DemoSeeder` memilih sebaran syarat perlunya justru karena hasilnya lebih
 mengajar: angka NA yang bagus tidak menjamin apa pun selama satu syarat perlu

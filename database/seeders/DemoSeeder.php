@@ -45,7 +45,7 @@ use RuntimeException;
  *   1 syarat perlu `lima` (E34), 3 `tiga` (E17, E45, E51), 1 `belum` (E58)
  *
  * CATATAN PERTENTANGAN. Prompt tahap 7 meminta dua hal yang tidak bisa
- * bersamaan: NA di kisaran 330–340 yang menghasilkan "Unggul 3 tahun", DAN
+ * bersamaan: NA di kisaran 330–350 yang menghasilkan "Unggul 3 tahun", DAN
  * satu syarat perlu berlevel `belum`. Status "Unggul 3 tahun" menuntut KELIMA
  * syarat perlu sekurangnya berlevel `tiga`; dengan satu `belum`, NA 332,75 tetap
  * berujung "Terakreditasi 5 tahun".
@@ -429,8 +429,8 @@ class DemoSeeder extends Seeder
 
         $elemen = Elemen::orderBy('no')->get();
 
-        // Sasaran NA sekitar 333 (hasil ukur 332,75): surplus 40 di atas 300, artinya sekitar 40
-        // bobot berskor 4 dan sisanya 3.
+        // Sasaran NA sekitar 333 (hasil ukur 332,75): surplus 40 di atas 300,
+        // artinya sekitar 40 bobot berskor 4 dan sisanya 3.
         $bobotSkor4 = 0.0;
 
         foreach ($elemen as $e) {
