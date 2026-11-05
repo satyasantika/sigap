@@ -69,12 +69,12 @@ class BerandaController extends Controller
                 'dkps' => [
                     'nilai' => (string) count($this->baca('dkps-tabel.json')),
                     'label' => 'tabel DKPS',
-                    'catatan' => 'Tabel kuantitatif yang menyuapi 15 rumus penilaian.',
+                    'catatan' => 'Tabel kuantitatif yang menyuapi 28 rumus penilaian.',
                 ],
                 'izin' => [
                     'nilai' => (string) (count($this->baca('izin.json')['aksi']) * count($this->baca('peran.json'))),
                     'label' => 'sel matriks izin',
-                    'catatan' => '25 aksi × 6 peran, semuanya bisa diperiksa dari dalam sistem.',
+                    'catatan' => '26 aksi × 6 peran, semuanya bisa diperiksa dari dalam sistem.',
                 ],
             ];
         });

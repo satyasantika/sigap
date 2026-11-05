@@ -80,7 +80,7 @@ PERAN = {
                 melainkan mengisi dan memverifikasi DKPS.</p>
             """),
             ("05-matriks-izin", "Matriks izin", """
-                <p>Halaman hanya-baca berisi 144 sel: 24 aksi &times; 6 peran. Inilah
+                <p>Halaman hanya-baca berisi 156 sel: 26 aksi &times; 6 peran. Inilah
                 jawaban atas pertanyaan "kenapa tombol itu tidak muncul di layar saya".
                 Siapa pun boleh membukanya sendiri tanpa bertanya.</p>
                 <p>Matriks tidak bisa disunting dari layar. Mengubahnya berarti
@@ -227,10 +227,42 @@ PERAN = {
                 "Unggul" atau berhenti di "Terakreditasi".</p>
             """),
             ("07-nilai-rumus", "Nilai rumus", """
-                <p>Tujuh rumus LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK —
-                dihitung dari isian DKPS. Hasilnya menunjukkan skor sekaligus apakah
-                syarat tiga atau lima tahun terpenuhi; keduanya angka yang berbeda dan
-                ditampilkan terpisah.</p>
+                <p>Rumus kuantitatif LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK,
+                dan rumus AK 3.0 lainnya — dihitung dari isian DKPS. Hasilnya
+                menunjukkan skor sekaligus apakah syarat tiga atau lima tahun
+                terpenuhi; keduanya angka yang berbeda dan ditampilkan terpisah.</p>
+                <p>Tombol <strong>Hitung dari DKPS</strong> menghitung ulang semua
+                rumus dari isian DKPS periode aktif. Hasil lama tidak pernah ditimpa:
+                rumus yang hasilnya berubah menambah baris baru, rumus yang hasilnya
+                sama tidak disimpan dua kali. Sesudahnya muncul satu dari tiga
+                pemberitahuan:</p>
+                <ul>
+                    <li><strong>Hijau</strong> — "Disimpan …, tidak berubah …,
+                    dilewati 0": semua rumus terhitung.</li>
+                    <li><strong>Kuning</strong>, tetap terbuka sampai ditutup —
+                    sebagian rumus <em>dilewati</em>, dengan alasan per rumus
+                    (biasanya lembar DKPS yang belum terisi). Rumus yang dilewati
+                    tidak dihitung dengan nol; lengkapi lembarnya lalu tekan tombol
+                    ini lagi.</li>
+                    <li><strong>Merah</strong> — tidak ada periode aktif, atau
+                    perhitungan gagal sama sekali. Tidak ada baris yang disimpan.</li>
+                </ul>
+                <p>Skor A yang dihitung di sini juga muncul di formulir Asesmen
+                mandiri sebagai <em>Skor A dari rumus</em>, sebagai rujukan bagi
+                penilai.</p>
+            """),
+            ("07b-variabel-dkps", "Variabel DKPS", """
+                <p>Halaman <strong>Variabel DKPS</strong> (menu Data) menjawab
+                pertanyaan "angka ini datang dari mana?". Setiap baris adalah satu
+                variabel yang dibaca rumus — misalnya cacah DTPS bergelar doktor —
+                beserta nilainya pada periode aktif, lembar DKPS sumbernya (bisa
+                diklik), jumlah baris, berapa baris yang belum terverifikasi, dan
+                rumus yang memakainya.</p>
+                <p>Daftarnya mengikuti lembar <em>5. DKPS</em> pada kertas kerja
+                asesor AK 3.0, jadi saat asesmen lapangan angka di sini bisa
+                dicocokkan langsung dengan kertas kerja asesor. Tanda "—" berarti
+                lembar sumbernya belum berisi baris, berbeda dari 0. Bukalah halaman
+                ini sebelum menekan Hitung dari DKPS.</p>
             """),
             ("08-simulasi", "Simulasi", """
                 <p>Anda bisa membaca hasil simulasi, tetapi membuat dan menghapusnya
@@ -278,7 +310,7 @@ PERAN = {
                 sepuluh tagihan ringan yang juga terlambat.</p>
             """),
             ("04-nilai-rumus", "Nilai rumus", """
-                <p>Tujuh rumus LAMDIK beserta hasilnya. Angka di sini datang dari isian
+                <p>Rumus kuantitatif LAMDIK beserta hasilnya. Angka di sini datang dari isian
                 DKPS, jadi rumus yang hasilnya mengejutkan biasanya menandakan isian
                 DKPS yang belum lengkap, bukan kinerja yang buruk.</p>
             """),
@@ -301,9 +333,10 @@ PERAN = {
             <p>Anda menugaskan, mengubah tenggat, mereviu, dan mengembalikan tagihan —
             tetapi <strong>persetujuan akhir ada pada ketua</strong>. Reviu Anda adalah
             saringan pertama, bukan keputusan terakhir.</p>
-            <p>Menu <strong>Isian DKPS</strong> dan <strong>Nilai Rumus</strong> hanya
-            muncul bila pokja Anda berkode POKJA-DATA. Bila Anda memimpin pokja lain,
-            keduanya memang bukan urusan Anda.</p>
+            <p>Menu <strong>Isian DKPS</strong>, <strong>Nilai Rumus</strong>, dan
+            <strong>Variabel DKPS</strong> hanya muncul bila pokja Anda berkode
+            POKJA-DATA. Bila Anda memimpin pokja lain, ketiganya memang bukan urusan
+            Anda.</p>
         """,
         "bagian": [
             ("01-dasbor", "Dasbor", """
@@ -341,6 +374,23 @@ PERAN = {
                 <strong>Selisih</strong> menandai elemen yang dinilai berbeda oleh dua
                 penilai — dan itulah yang paling berguna didiskusikan sebelum asesor
                 datang.</p>
+            """),
+            ("07-nilai-rumus", "Nilai rumus dan Variabel DKPS", """
+                <p>Khusus koordinator POKJA-DATA. Di halaman <strong>Nilai
+                Rumus</strong> Anda boleh menekan <strong>Hitung dari DKPS</strong>,
+                sama seperti ketua: semua rumus dihitung ulang dari isian DKPS
+                periode aktif, dan hanya hasil yang berubah yang menambah baris
+                baru. Pemberitahuan hijau berarti semua rumus terhitung; kuning
+                berarti sebagian dilewati karena lembar DKPS-nya belum terisi
+                (alasannya disebut per rumus); merah berarti tidak ada periode
+                aktif atau perhitungan gagal, dan tidak ada yang disimpan.</p>
+                <p>Halaman <strong>Variabel DKPS</strong> menampilkan setiap variabel
+                yang dibaca rumus, nilainya, lembar sumbernya, dan berapa baris yang
+                belum terverifikasi. Daftarnya mengikuti lembar <em>5. DKPS</em>
+                kertas kerja asesor AK 3.0, jadi saat asesmen lapangan angkanya bisa
+                dicocokkan langsung. Periksa halaman ini sebelum menghitung: rumus
+                yang mengejutkan hampir selalu berasal dari satu lembar yang belum
+                lengkap.</p>
             """),
         ],
     },
@@ -713,7 +763,7 @@ def halaman_indeks() -> str:
 
     badan = f"""
   <p>SIGAP membagi wewenang ke enam peran. Setiap orang hanya melihat apa yang
-  menjadi urusannya, dan pembagian itu ditentukan satu matriks 144 sel yang bisa
+  menjadi urusannya, dan pembagian itu ditentukan satu matriks 156 sel yang bisa
   dibuka siapa pun lewat menu <em>Matriks Izin</em>. Bila sebuah tombol tidak muncul
   di layar Anda, jawabannya ada di sana — bukan pada kesalahan sistem.</p>
 

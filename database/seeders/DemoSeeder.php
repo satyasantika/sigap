@@ -435,7 +435,7 @@ class DemoSeeder extends Seeder
         $k->simpan($k->pds3(nds3: 5, ndtps: 12, ndlk: 3, ndgb: 1), $periode, $ketua);
         $k->simpan($k->pgblkl(ndgb: 1, ndlk: 3, ndl: 4, ndtps: 12), $periode, $ketua);
         $k->simpan($k->ppdtps(dosenBerpublikasi: 3, ndtps: 12, jumlahArtikel: 20), $periode, $ketua);
-        $k->simpan($k->rk(n1: 2, n2: 3, n3: 4, ndtps: 12), $periode, $ketua);
+        $k->simpan($k->rk(n1: 2, n2: 3, n3: 4, ni: 1, nn: 3, nw: 5, ndtps: 12), $periode, $ketua);
         $k->simpan($k->rsa(nas: 100, ndtps: 12), $periode, $ketua);
         $k->simpan($k->ripk(3.31), $periode, $ketua);
         $k->simpan($k->tkm([['a' => 55, 'b' => 30, 'c' => 12, 'd' => 3]]), $periode, $ketua);

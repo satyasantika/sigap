@@ -14,7 +14,7 @@ use RuntimeException;
 /**
  * SATU-SATUNYA tempat keputusan otorisasi diambil.
  *
- * Membaca tabel `izin` (150 baris, disemai dari data/izin.json). Policy
+ * Membaca tabel `izin` (156 baris, disemai dari data/izin.json). Policy
  * meneruskan ke sini; tidak ada perbandingan peran di controller, Resource,
  * atau Blade; tidak ada Gate::before; tidak ada peran super.
  *
@@ -109,7 +109,7 @@ class Izin
      * Wewenang PENGELOLAAN SISTEM: impersonasi dan simulasi.
      *
      * Matriks terpisah (`data/izin-sistem.json`) karena jumlah sel di
-     * `izin.json` dipatok 25 x 6 = 150 dan dijaga `data/verifikasi.py`;
+     * `izin.json` dipatok 26 x 6 = 156 dan dijaga `data/verifikasi.py`;
      * menambah aksi di sana akan memecah angka itu. Yang penting tetap
      * terjaga: keputusannya lahir di kelas ini, bukan dari perbandingan peran
      * yang berserakan di Resource atau Blade (aturan proyek 10).
@@ -132,7 +132,7 @@ class Izin
      *
      * Dibaca langsung dari berkas, bukan dari tabel: isinya hanya menyangkut
      * wewenang admin atas sistem, tidak pernah disunting lewat antarmuka, dan
-     * menyemainya ke tabel `izin` akan merusak hitungan 150 baris.
+     * menyemainya ke tabel `izin` akan merusak hitungan 156 baris.
      *
      * @return array<string, array<string, string>>
      */

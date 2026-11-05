@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ElemenSeeder::class,
             SyaratPerluSeeder::class,
             RumusSeeder::class,
+            VariabelDkpsSeeder::class,
             DkpsButirSeeder::class,
             OrganisasiSeeder::class,
         ]);
