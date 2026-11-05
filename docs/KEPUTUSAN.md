@@ -92,7 +92,10 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
    Pembulatan bisa mendorong Skor A melewati ambang yang belum dicapai:
    PGBLKL 69,84 % memberi `2 + 20 × 0,6984 / 7 = 3,995…`; dibulatkan menjadi
    4,00, dipotong menjadi **3,99**. Yang benar 3,99, karena ambang skor 4
-   adalah 70 %. Lihat `KalkulatorRumus::potong2()`.
+   adalah 70 %. Lihat `KalkulatorRumus::potong2()`. Pemotongan ini aturan
+   SIGAP sendiri, juga ketika diterapkan pada sub-skor (misalnya tiga sub-skor
+   RGP); kertas kerja hanya membulatkan skor akhir, jadi selisihnya paling
+   besar 0,01.
 
 10. **Ambang selalu dibandingkan pada rasio mentah; pembulatan hanya untuk
     tampilan.** 1504 / 7521 = 19,997 % tampil sebagai "20,0" di layar, tetapi
@@ -111,6 +114,10 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
     tetapi semua sel yang dirata kosong, `PembacaVariabelDkps` mengembalikan
     null, sehingga rumusnya dilewati menurut butir 11. Rata 0 akan berarti
     "masa studi nol tahun" atau "IPK nol", dua hal yang tidak pernah benar.
+    Begitu pula kolom hitung yang semua kolom masukannya kosong (jumlah sks
+    Tabel 8 tanpa isian bukan 0 sks), dan sel kosong pada baris tetap yang
+    sudah ada (catatannya menyebut tabel, baris, dan kolomnya). Baris tetap
+    yang tidak ada sama sekali tetap dibaca 0.
 
 ---
 
@@ -118,8 +125,8 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
 
 Normalisasi TKM tidak lagi di sini: kertas kerja AK IAPSK 3.0 sudah
 menjawabnya (lihat bagian 1). Kertas kerja yang sama justru memunculkan dua
-pertanyaan baru, keduanya cacat pada berkas resmi, bukan pada SIGAP. Rencana
-"Rumus kuantitatif AK 3.0" menambah delapan tafsir lagi, dikumpulkan di
+pertanyaan baru, keduanya cacat pada berkas resmi, bukan pada SIGAP. Pekerjaan
+"Rumus kuantitatif AK 3.0" menambah sembilan tafsir lagi, dikumpulkan di
 subbagian tersendiri di bawah.
 
 ### Rujukan `F264` pada rumus PGBLKL (elemen E17)
@@ -177,7 +184,8 @@ berubah hanya metode terkait di `KalkulatorRumus` dan ujinya.
    keputusan dosen 5 November 2026 (bagian 1), tetapi tetap perlu ditanyakan
    karena Buku 4 tidak menyebut keduanya.
 
-6. **RGP (E22) pada kasus yang tak punya pita.** Saat RGPBS = 2 dan RGPMD
+6. **RGP (E22) pada kasus yang tak punya pita.** Saat RGPBS = 2 (tepat dua
+   guru pamong per bidang studi) dan RGPMD
    ≥ 30 % tetapi RGPMU ≥ 40 % atau RGPGP ≥ 50 %, rumus kertas kerja sel E348
    jatuh ke skor 2, padahal rasio yang sama dengan nilai lebih buruk memberi 3.
    Buku 4 tidak punya pita untuk kasus ini. SIGAP memberi **3**, dengan tafsir
@@ -191,7 +199,15 @@ berubah hanya metode terkait di `KalkulatorRumus` dan ujinya.
 
 8. **RMS** dihitung tanpa skor; lihat subbagian RMS di atas.
 
-### Dua hal lain yang sebaiknya ditanyakan
+9. **PKMS (E41) memakai dua kohort terakhir (TS-1 dan TS)** mengikuti kertas
+   kerja E612–E616; Buku 4 tidak menyebut jendela kohort; konsisten dengan
+   RMS. Baris TS-2 Tabel 22 tidak ikut dalam `N_DITERIMA_ANGKATAN` maupun
+   `N_LULUSAN_ANGKATAN`.
+
+### Hal lain yang sebaiknya ditanyakan
+
+- **Kertas kerja sel E739 (skor akhir E44) merujuk E727** (sel "% Baik"),
+  bukan E732. SIGAP mengikuti E732.
 
 - **Patokan PDS3 di dokumen 03 tidak lengkap.** Ia menyebut "NDS3=6, NDTPS=12 →
   syarat 5 tahun terpenuhi" tanpa memberikan NDLK dan NDGB, padahal syaratnya
