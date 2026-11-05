@@ -20,6 +20,44 @@
 @source '../../../../resources/views/livewire/**/*';
 
 /*
+ * Lembar DKPS bergaya Excel (resources/views/livewire/lembar-dkps.blade.php).
+ * Sel kuning = diisi, abu-abu = dihitung, arsir = tidak diisi untuk baris
+ * itu — sama dengan warna berkas Excel LAMDIK, supaya pengisi yang terbiasa
+ * dengan Excel langsung tahu sel mana yang menjadi tugasnya.
+ */
+.sigap-dkps{border-collapse:collapse;font-size:.8125rem}
+.sigap-dkps th,.sigap-dkps td{border:1px solid rgb(203 213 225);padding:.25rem .375rem;vertical-align:top}
+.sigap-dkps thead th{background:rgb(241 245 249);text-align:center;font-weight:600}
+.sigap-dkps .sigap-nomor-excel th{font-weight:400;font-size:.75rem;color:rgb(100 116 139)}
+.sigap-dkps input,.sigap-dkps select,.sigap-dkps textarea{width:100%;min-width:6rem;border:0;background:transparent;padding:0;font-size:inherit;box-shadow:none}
+.sigap-dkps textarea{min-width:10rem;resize:none;field-sizing:content}
+.sigap-dkps input:focus,.sigap-dkps select:focus,.sigap-dkps textarea:focus{outline:2px solid rgb(37 99 235);outline-offset:1px}
+.sigap-dkps .sigap-centang{display:flex;align-items:center;justify-content:center;gap:.25rem}
+.sigap-dkps .sigap-centang input{width:auto;min-width:0}
+.sigap-sel-label{white-space:normal;min-width:2.5rem}
+.sigap-sel-isian{background:#fff9c4}
+.sigap-sel-hitung{background:rgb(229 231 235);text-align:right}
+.sigap-sel-nonaktif{background:repeating-linear-gradient(45deg,#e5e7eb 0 4px,#f3f4f6 4px 8px)}
+.sigap-sel-galat{border-color:rgb(220 38 38)!important;background:#fee2e2}
+.sigap-pesan-galat{margin-top:.125rem;font-size:.75rem;color:rgb(185 28 28)}
+.sigap-baris-kelompok{background:rgb(248 250 252);font-weight:600}
+.sigap-baris-ringkasan td{font-weight:600}
+.sigap-dkps .sigap-kolom-tambahan{background:rgb(239 246 255);white-space:nowrap}
+.sigap-dkps .sigap-kolom-tambahan-awal{border-left:3px solid rgb(100 116 139)}
+.sigap-tombol-kecil{margin-left:.25rem;font-size:.75rem;font-weight:500;color:rgb(37 99 235)}
+.sigap-tombol-kecil:hover{text-decoration:underline}
+.sigap-tombol-bahaya{color:rgb(220 38 38)}
+.dark .sigap-dkps th,.dark .sigap-dkps td{border-color:rgb(255 255 255 / .12)}
+.dark .sigap-dkps thead th{background:rgb(255 255 255 / .06)}
+.dark .sigap-sel-isian{background:rgb(250 204 21 / .14)}
+.dark .sigap-sel-hitung{background:rgb(255 255 255 / .08)}
+.dark .sigap-sel-nonaktif{background:repeating-linear-gradient(45deg,rgb(255 255 255 / .08) 0 4px,rgb(255 255 255 / .03) 4px 8px)}
+.dark .sigap-sel-galat{background:rgb(220 38 38 / .2)}
+.dark .sigap-pesan-galat{color:rgb(252 165 165)}
+.dark .sigap-baris-kelompok{background:rgb(255 255 255 / .04)}
+.dark .sigap-dkps .sigap-kolom-tambahan{background:rgb(59 130 246 / .1)}
+
+/*
  * Halaman masuk: dua panel (merek | formulir), bahasa visual sama dengan
  * landing page. Tata letaknya di resources/views/sigap/layout/masuk.blade.php.
  * Dasbor panel tidak tersentuh.

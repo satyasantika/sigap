@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\DkpsBaris;
 
-use App\Filament\Resources\DkpsBaris\Pages\CreateDkpsBaris;
-use App\Filament\Resources\DkpsBaris\Pages\EditDkpsBaris;
 use App\Filament\Resources\DkpsBaris\Pages\ListDkpsBaris;
 use App\Filament\Resources\DkpsBaris\Pages\ViewDkpsBaris;
 use App\Filament\Resources\DkpsBaris\Schemas\DkpsBarisForm;
@@ -25,9 +23,9 @@ class DkpsBarisResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Data';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 20;
 
-    protected static ?string $navigationLabel = 'Isian DKPS';
+    protected static ?string $navigationLabel = 'Verifikasi DKPS';
 
     protected static ?string $modelLabel = 'baris DKPS';
 
@@ -54,13 +52,20 @@ class DkpsBarisResource extends Resource
         return auth()->check() && Izin::bolehMenu(auth()->user(), 'dkps_baris');
     }
 
+    /**
+     * Hanya daftar dan tampilan: menu ini untuk verifikasi, bukan pengisian.
+     *
+     * Baris DKPS ditulis lewat grid Tabel DKPS (App\Services\PengisiDkps),
+     * yang memeriksa skema lembar, pokja pemilik tabel, dan pencabutan
+     * verifikasi. Halaman buat/sunting bawaan Filament melewati semua itu —
+     * policy `create` tanpa obyek tidak tahu tabel milik pokja mana — jadi
+     * sengaja tidak didaftarkan.
+     */
     public static function getPages(): array
     {
         return [
             'index' => ListDkpsBaris::route('/'),
-            'create' => CreateDkpsBaris::route('/create'),
             'view' => ViewDkpsBaris::route('/{record}'),
-            'edit' => EditDkpsBaris::route('/{record}/edit'),
         ];
     }
 

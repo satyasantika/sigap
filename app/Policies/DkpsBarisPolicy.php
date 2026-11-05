@@ -7,9 +7,9 @@ use App\Models\User;
 use App\Support\Izin;
 
 /**
- * Lingkup `pokja_data` bergantung keanggotaan di POKJA-DATA, bukan pada peran.
- * Seorang koordinator POKJA-DIK ditolak mengisi DKPS, sementara anggota biasa
- * POKJA-DATA justru boleh.
+ * Lingkup `pokjanya` bergantung pada pokja pemilik tabel (`pokja_id` baris),
+ * bukan pada peran saja: koordinator POKJA-DIK boleh mengisi Tabel 18–24,
+ * tetapi ditolak mengisi Tabel 7 milik POKJA-SDM.
  */
 class DkpsBarisPolicy extends BasePolicy
 {

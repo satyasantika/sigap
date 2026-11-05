@@ -12,6 +12,7 @@ use App\Models\Periode;
 use App\Models\Pokja;
 use App\Models\Tagihan;
 use App\Models\TagihanRiwayat;
+use App\Support\Dkps\SkemaLembar;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 
@@ -68,7 +69,7 @@ class RingkasanProgres
      *
      * POKJA-DATA dilaporkan dengan ukuran DKPS, bukan bobot: ia memang tidak
      * memegang elemen, dan menampilkannya nol akan dibaca sebagai "belum
-     * mengerjakan apa-apa" padahal ia memegang 28 butir DKPS.
+     * mengerjakan apa-apa" padahal ia mengawal 35 lembar DKPS.
      *
      * @return array<int, array{kode: string, nama: string, selesai: float, total: float, rasio: float, pakai_dkps: bool, syarat_perlu: bool}>
      */
@@ -167,23 +168,138 @@ class RingkasanProgres
      * Kesiapan DKPS — TERPISAH dari progres bobot.
      *
      * Butir DKPS tidak berbobot; mencampurnya ke dalam progres bobot akan
-     * menggeser angka yang seharusnya berjumlah 100.
+     * menggeser angka yang seharusnya berjumlah 100. Satuannya lembar (35),
+     * bukan tabel: Tabel 1 dengan satu dari tiga lembarnya terverifikasi
+     * belum siap dibaca asesor.
      *
      * @return array{terverifikasi: int, total: int, rasio: float}
      */
     public function progresDkps(Periode $periode): array
     {
-        $total = DkpsButir::count();
+        $statusLembar = $this->semuaStatusLembar($periode)->flatMap(fn (array $t) => $t['lembar']);
 
-        $terverifikasi = DkpsBaris::where('periode_id', $periode->id)
-            ->terverifikasi()
-            ->distinct('dkps_butir_id')
-            ->count('dkps_butir_id');
+        $total = $statusLembar->count();
+        $terverifikasi = $statusLembar->where('status', 'terverifikasi')->count();
 
         return [
             'terverifikasi' => $terverifikasi,
             'total' => $total,
             'rasio' => $total > 0 ? round($terverifikasi / $total, 4) : 0.0,
+        ];
+    }
+
+    /**
+     * Progres DKPS per pokja pemilik tabel, terurut kode pokja. `terisi`,
+     * `lengkap`, dan `terverifikasi` bersifat menumpuk: lembar terverifikasi
+     * juga terhitung lengkap dan terisi.
+     *
+     * @return array<int, array{kode: string, nama: string, total: int, terisi: int, lengkap: int, terverifikasi: int, rasio: float, tabel: array<int, array{butir: DkpsButir, lembar: array<string, array>}>}>
+     */
+    public function progresDkpsPerPokja(Periode $periode): array
+    {
+        $nama = Pokja::withoutGlobalScope('lingkup_periode')
+            ->where('periode_id', $periode->id)->pluck('nama', 'kode');
+
+        return $this->semuaStatusLembar($periode)
+            ->groupBy(fn (array $t) => $t['butir']->pokja_kode)
+            ->sortKeys()
+            ->map(function (Collection $tabel, string $kode) use ($nama) {
+                $status = $tabel->flatMap(fn (array $t) => array_column($t['lembar'], 'status'));
+                $total = $status->count();
+                $terverifikasi = $status->filter(fn ($s) => $s === 'terverifikasi')->count();
+
+                return [
+                    'kode' => $kode,
+                    'nama' => (string) ($nama[$kode] ?? $kode),
+                    'total' => $total,
+                    'terisi' => $status->reject(fn ($s) => $s === 'kosong')->count(),
+                    'lengkap' => $status->filter(fn ($s) => in_array($s, ['lengkap', 'terverifikasi'], true))->count(),
+                    'terverifikasi' => $terverifikasi,
+                    'rasio' => $total > 0 ? round($terverifikasi / $total, 4) : 0.0,
+                    'tabel' => $tabel->values()->all(),
+                ];
+            })->values()->all();
+    }
+
+    /**
+     * Status satu lembar DKPS pada satu periode (spesifikasi B.6).
+     *
+     * @return array{baris: int, lengkap: int, terverifikasi: int, target: ?int, status: 'kosong'|'terisi'|'lengkap'|'terverifikasi'}
+     */
+    public function statusLembar(Periode $periode, DkpsButir $butir, string $kodeLembar): array
+    {
+        $baris = DkpsBaris::where('periode_id', $periode->id)
+            ->where('dkps_butir_id', $butir->id)
+            ->where('lembar_kode', $kodeLembar)
+            ->get();
+
+        return $this->hitungStatusLembar($butir->skema($kodeLembar), $baris);
+    }
+
+    /**
+     * Seluruh tabel milik pokja beserta status tiap lembarnya. Baris periode
+     * dimuat sekali, lalu dikelompokkan per tabel dan lembar.
+     *
+     * @return Collection<int, array{butir: DkpsButir, lembar: array<string, array>}>
+     */
+    private function semuaStatusLembar(Periode $periode): Collection
+    {
+        $baris = DkpsBaris::where('periode_id', $periode->id)->get()
+            ->groupBy(fn (DkpsBaris $b) => $b->dkps_butir_id.'|'.$b->lembar_kode);
+
+        return DkpsButir::whereNotNull('pokja_kode')->orderBy('no')->get()
+            ->map(fn (DkpsButir $butir) => [
+                'butir' => $butir,
+                'lembar' => collect($butir->kodeLembar())->mapWithKeys(fn (string $kode) => [
+                    $kode => $this->hitungStatusLembar($butir->skema($kode), $baris->get($butir->id.'|'.$kode, collect())),
+                ])->all(),
+            ]);
+    }
+
+    /**
+     * @param  Collection<int, DkpsBaris>  $baris
+     * @return array{baris: int, lengkap: int, terverifikasi: int, target: ?int, status: string}
+     */
+    private function hitungStatusLembar(SkemaLembar $skema, Collection $baris): array
+    {
+        $kunciTetap = array_column($skema->barisTetap(), 'kunci');
+        $target = $skema->adaBarisTetap() ? count($kunciTetap) : null;
+
+        $lengkap = $baris->filter(function (DkpsBaris $b) use ($skema, $kunciTetap) {
+            $data = $b->data ?? [];
+
+            // Isian sebelum DKPS 3.0 (kunci baris asing, atau tak satu kunci
+            // pun dikenal skema) tidak pernah lengkap — dan tidak boleh
+            // membuat SkemaLembar melempar.
+            if ($skema->adaBarisTetap()
+                ? ! in_array($data['_baris'] ?? null, $kunciTetap, true)
+                : array_intersect(array_keys($data), array_column($skema->kolom(), 'kunci')) === []) {
+                return false;
+            }
+
+            return $skema->lengkap($data, $b->nilai('_baris'));
+        });
+
+        $jumlah = $baris->count();
+        $cacahLengkap = $lengkap->count();
+        $terverifikasi = $baris->filter(fn (DkpsBaris $b) => $b->terverifikasi())->count();
+
+        $semuaLengkap = $cacahLengkap === $jumlah
+            && ($target === null || $lengkap->map(fn (DkpsBaris $b) => $b->nilai('_baris'))->unique()->count() === $target);
+
+        $status = match (true) {
+            $jumlah === 0 => 'kosong',
+            ! $semuaLengkap => 'terisi',
+            $terverifikasi === $jumlah => 'terverifikasi',
+            default => 'lengkap',
+        };
+
+        return [
+            'baris' => $jumlah,
+            'lengkap' => $cacahLengkap,
+            'terverifikasi' => $terverifikasi,
+            'target' => $target,
+            'status' => $status,
         ];
     }
 

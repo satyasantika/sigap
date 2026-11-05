@@ -277,12 +277,17 @@ class DemoSeeder extends Seeder
                 continue;
             }
 
+            // Lembar pertama; satu isian pada kolom teks pertamanya (atau kolom pertama).
+            $lembar = $butir->lembarMentah($butir->kodeLembar()[0]);
+            $kolom = collect($lembar['kolom'])->firstWhere('tipe', 'teks') ?? $lembar['kolom'][0];
+
             $baris = DkpsBaris::create([
                 'prodi_id' => $periode->prodi_id,
                 'periode_id' => $periode->id,
                 'dkps_butir_id' => $butir->id,
+                'lembar_kode' => $lembar['kode'],
                 'tahun_acuan' => 'TS',
-                'data' => ['jumlah' => random_int(5, 120), 'keterangan' => 'Data contoh demonstrasi.'],
+                'data' => [$kolom['kunci'] => 'Contoh demonstrasi '.$i],
                 'sumber' => $i % 3 === 0 ? SumberData::Manual : SumberData::Siakad,
             ]);
 

@@ -204,17 +204,19 @@ class KalkulatorRumus
     /**
      * Tingkat kepuasan mahasiswa.
      *
-     * ASUMSI YANG BELUM DIKONFIRMASI KE LAMDIK:
      * TKMi = (4×ai) + (3×bi) + (2×ci) + di, dengan a..d dalam PERSEN, sehingga
-     * hasilnya berskala 100–400. Sementara ambangnya dinyatakan sebagai
-     * persentase (TKM ≥ 75%). Keduanya tidak sebanding.
+     * hasil mentahnya berskala 100–400, sementara ambangnya dinyatakan sebagai
+     * persentase. Nilai mentah DIBAGI 4 sebelum dibandingkan, sehingga 400
+     * menjadi 100% dan 300 menjadi 75%.
      *
-     * Tafsir yang dipakai: BAGI 4 sebelum dibandingkan, sehingga 400 menjadi
-     * 100% dan 300 menjadi 75%. Ini konsisten — "seluruh responden menjawab
-     * Sangat Baik" wajar bernilai 100%.
+     * Normalisasi /4 sesuai kertas kerja AK IAPSK 3.0 (sel E207): kertas kerja
+     * resmi menghitung `(4·SB/100 + 3·B/100 + 2·C/100 + K/100) / 4` per
+     * dimensi. Tafsir ini tidak lagi menunggu konfirmasi LAMDIK — lihat
+     * docs/KEPUTUSAN.md bagian 1.
      *
-     * Tafsir ini BELUM DIKONFIRMASI. Layar Nilai Rumus menandainya. Bila LAMDIK
-     * menjawab berbeda, yang berubah hanya metode ini dan satu peringatan.
+     * Ambang skor juga mengikuti kertas kerja (sel D229–D231, E232) dan
+     * `data/rumus.json`: TKM ≥ 0,75 → 4; ≥ 0,5 → 3; ≥ 0,25 → 2; selain itu 1,
+     * di sini dalam persen (75 / 50 / 25).
      *
      * @param  array<int, array{a: float, b: float, c: float, d: float}>  $dimensi  persentase per dimensi
      */
@@ -232,9 +234,9 @@ class KalkulatorRumus
         $nilai = round($rataMentah / 4, 2);
 
         $skor = match (true) {
-            $nilai >= 90.0 => 4,
-            $nilai >= 75.0 => 3,
-            $nilai >= 60.0 => 2,
+            $nilai >= 75.0 => 4,
+            $nilai >= 50.0 => 3,
+            $nilai >= 25.0 => 2,
             default => 1,
         };
 
@@ -248,8 +250,7 @@ class KalkulatorRumus
                 'rata_mentah' => round($rataMentah, 2),
                 'pembagi_normalisasi' => 4,
             ],
-            catatan: 'ASUMSI BELUM DIKONFIRMASI: nilai mentah berskala 100–400 dibagi 4 '
-                .'agar sebanding dengan ambang persentase. Konfirmasikan ke LAMDIK.',
+            catatan: 'Normalisasi /4 sesuai kertas kerja AK IAPSK 3.0 (sel E207)',
         );
     }
 

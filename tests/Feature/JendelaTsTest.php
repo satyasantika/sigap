@@ -128,4 +128,20 @@ class JendelaTsTest extends TestCase
             $this->assertIsArray(JendelaTs::rentang($p, $j), "Jendela `{$j}` dari rumus tidak dikenali.");
         }
     }
+
+    #[Test]
+    public function label_dari_tahun_dan_tahun_dalam_jendela(): void
+    {
+        $p = $this->periode();
+
+        $this->assertSame('TS', JendelaTs::labelDariTahun($p, 2027));
+        $this->assertSame('TS-2', JendelaTs::labelDariTahun($p, 2025));
+        $this->assertSame('TS-4', JendelaTs::labelDariTahun($p, 2023));
+        // Di luar TS-4..TS tidak ada label yang sah untuk tahun_acuan.
+        $this->assertNull(JendelaTs::labelDariTahun($p, 2022));
+        $this->assertNull(JendelaTs::labelDariTahun($p, 2028));
+
+        $this->assertTrue(JendelaTs::tahunDalamJendela($p, 'TS-4 s.d. TS-2', 2024));
+        $this->assertFalse(JendelaTs::tahunDalamJendela($p, 'TS-4 s.d. TS-2', 2026));
+    }
 }

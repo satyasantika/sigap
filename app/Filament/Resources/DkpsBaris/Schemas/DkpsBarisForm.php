@@ -20,6 +20,9 @@ use Illuminate\Support\HtmlString;
  * `keterangan` dan `jendela_data` butir ditampilkan di layar supaya pengisi
  * tahu tahun mana yang diminta tanpa membuka Buku 3 — dan itulah satu-satunya
  * cara memastikan ia mengisi jendela yang benar.
+ *
+ * Kini hanya dipakai halaman lihat (baca saja). Pengisian lewat grid Tabel
+ * DKPS — App\Services\PengisiDkps — bukan lewat formulir ini.
  */
 class DkpsBarisForm
 {

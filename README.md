@@ -125,6 +125,17 @@ Aturan yang mengikat untuk pengembangan lanjutan. Ringkasnya:
 - **Isi `storage/app/bukti/` tidak pernah masuk riwayat git.** Isinya nama
   dosen, nomor serdik, dan dokumen bertanda tangan.
 
+**Tabel DKPS per pokja.** DKPS mengikuti `DKPS PPG.xlsx` v3.0: 29 tabel dalam
+35 lembar isian, masing-masing dimiliki satu pokja dan diisi di
+`/panel/dkps/tabel/{kode}` dengan kolom tetap seperti berkas Excel LAMDIK.
+Skemanya — kolom, kepala bertingkat, daftar pilihan, kolom rumus — ada di
+`data/dkps-tabel.json` dan **dibangkitkan** dari berkas Excel resmi oleh
+`tools/dkps-skema-dari-xlsx.py`; jangan menyuntingnya dengan tangan. Butir
+dicocokkan lewat `kode` (nomor tabel DKPS 3.0), bukan `no`, karena penomoran
+DKPS 3.0 bergeser dari Buku 3. Baris lama dari sebelum DKPS 3.0 tidak dihapus:
+ia tetap tampil di layar Verifikasi DKPS, dan di layar lembar muncul di bagian
+"Baris lama yang perlu dipindahkan" bila kuncinya tak cocok skema.
+
 Dokumen rancangan lengkap dan prompt bertahap ada di `vibecoding/` (lokal,
 tidak terlacak git).
 
@@ -183,7 +194,7 @@ sekarang hanya ada satu prodi.
 2. Buat periode untuk prodi itu, lalu pokja-pokjanya, lalu bangkitkan tagihan.
 3. Tetapkan `prodi_id` pengguna yang bekerja di prodi itu.
 
-Instrumen (59 elemen, 9 kriteria, 15 rumus, 28 butir DKPS) **dipakai bersama**
+Instrumen (59 elemen, 9 kriteria, 15 rumus, 29 tabel DKPS (35 lembar)) **dipakai bersama**
 seluruh prodi — ia berasal dari dokumen LAMDIK, bukan milik satu prodi.
 
 ### Mencadangkan
@@ -352,6 +363,29 @@ sebagai gerbang di skrip penggelaran. Baris `PERIKSA` adalah hal yang hanya
 manusia bisa pastikan — cron berjalan, pekerja antrean hidup, jalur keluar ke
 internet terbuka.
 
+### Pasca-penggelaran DKPS 3.0
+
+Penggelaran pertama yang membawa Tabel DKPS per pokja wajib diikuti:
+
+```bash
+php artisan migrate --force && php artisan db:seed --class=DkpsButirSeeder --force && php artisan dkps:selaraskan
+```
+
+Seeder mengganti referensi ke 29 tabel / 35 lembar. `dkps:selaraskan` lalu:
+
+- mengisi `lembar_kode` dan `pokja_id` baris DKPS lama supaya tampil di layar
+  pokjanya, dan memindahkan baris yang lembarnya tidak dikenal tabelnya (mis.
+  `24`, padahal Tabel 24 kini berlembar 24.1/24.2) ke lembar pertama tabel itu;
+- memindahkan tagihan DKPS yang sudah ada ke pokja pemilik tabelnya (dulu
+  semuanya milik POKJA-DATA) dan menulis ulang judulnya, lalu menambah
+  tagihan DKPS yang kurang — misalnya Tabel 4, yang baru di DKPS 3.0. Hanya
+  periode yang **sudah** punya tagihan yang disentuh; periode tanpa tagihan
+  tetap menunggu `tagihan:bangkitkan {periode}`.
+
+Perintah itu hanya membetulkan yang belum selaras, jadi aman diulang. Tanpanya
+`sigap:cek-kesiapan` gagal pada "Tidak ada baris DKPS tanpa pokja" atau
+"Tidak ada baris DKPS dengan lembar_kode asing".
+
 ### Yang wajib disetel untuk subfolder
 
 Salin blok penggelaran di akhir `.env.example`. Tiga yang paling menentukan:
@@ -406,7 +440,7 @@ atas MariaDB 10.11 pada setiap dorongan dan setiap pull request.
 | Tahap | Isi | Status |
 |---|---|---|
 | 1 | Fondasi: login, peran, prodi, periode, pokja, matriks izin | **selesai** |
-| 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 28 butir DKPS | **selesai** |
+| 2 | Referensi instrumen: 59 elemen, 5 syarat perlu, 15 rumus, 29 tabel DKPS (35 lembar) | **selesai** |
 | 3 | Tagihan, penugasan, alur status, riwayat | **selesai** |
 | 4 | Bukti, tautan Drive, narasi LED | **selesai** |
 | 5 | DKPS dan perhitungan rumus | **selesai** |
@@ -417,6 +451,7 @@ atas MariaDB 10.11 pada setiap dorongan dan setiap pull request.
 | + | Halaman muka publik dengan tautan ke manual | **selesai** |
 | + | Kesiapan penggelaran: subfolder, pemeriksa, GitHub Actions | **selesai** |
 | + | Pemisahan periode, tur terpandu, dan demo hidup bergerbang kode | **selesai** |
+| + | Tabel DKPS 3.0 per pokja: 29 tabel, 35 lembar bergaya Excel | **selesai** |
 
 ## Sebelum menyerahkan ke orang lain
 

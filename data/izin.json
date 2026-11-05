@@ -159,8 +159,8 @@
    "admin": "tidak",
    "ketua": "ya",
    "pimpinan": "tidak",
-   "koordinator": "pokja_data",
-   "anggota": "pokja_data",
+   "koordinator": "pokjanya",
+   "anggota": "pokjanya",
    "auditor": "tidak"
   },
   {
@@ -179,7 +179,7 @@
    "admin": "tidak",
    "ketua": "ya",
    "pimpinan": "tidak",
-   "koordinator": "pokja_data",
+   "koordinator": "pokjanya",
    "anggota": "tidak",
    "auditor": "tidak"
   },

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
  * tanpa merusak riwayat periode sebelumnya.
  *
  * POKJA-DATA sengaja tidak memegang elemen satu pun (bobot 0,00). Ia memegang
- * 28 butir DKPS, penetapan TS, dan seluruh perhitungan rumus. Jangan menulis
+ * 29 tabel DKPS, penetapan TS, dan seluruh perhitungan rumus. Jangan menulis
  * uji yang menuntut setiap pokja punya minimal satu elemen — yang benar adalah
  * menguji keenam pokja membagi habis elemen 1..59.
  */

@@ -3,7 +3,7 @@
 namespace App\Support\Impor;
 
 /**
- * Daftar dosen tetap program studi, mendarat di butir DKPS 6
+ * Daftar dosen tetap program studi, mendarat di tabel DKPS 7
  * (Dosen Bidang Studi dan Dosen Pengampu).
  *
  * Kunci duplikasinya NIDN. Dua baris dengan NIDN sama adalah orang yang sama,
@@ -20,9 +20,9 @@ class ImporDtps extends ProfilDkpsDasar
         return 'Daftar DTPS';
     }
 
-    protected function nomorButir(): int
+    protected function kodeButir(): string
     {
-        return 6;
+        return '7';
     }
 
     public function medan(): array

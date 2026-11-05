@@ -4,11 +4,33 @@ namespace Tests\Feature;
 
 use App\Enums\PeranPengguna;
 use App\Filament\Pages\Dasbor;
+use App\Filament\Pages\DkpsLayar;
+use App\Filament\Pages\LogAktivitasLayar;
+use App\Filament\Pages\MatriksIzin;
+use App\Filament\Pages\SimulasiLayar;
+use App\Filament\Pages\SyaratPerluLayar;
+use App\Filament\Pages\TagihanSaya;
+use App\Filament\Resources\Buktis\BuktiResource;
+use App\Filament\Resources\DkpsBaris\DkpsBarisResource;
+use App\Filament\Resources\DkpsButirs\DkpsButirResource;
+use App\Filament\Resources\Elemens\ElemenResource;
+use App\Filament\Resources\Kriterias\KriteriaResource;
+use App\Filament\Resources\Narasis\NarasiResource;
+use App\Filament\Resources\NilaiRumuses\NilaiRumusResource;
+use App\Filament\Resources\Penilaians\PenilaianResource;
+use App\Filament\Resources\Periodes\PeriodeResource;
+use App\Filament\Resources\Pokjas\PokjaResource;
+use App\Filament\Resources\Prodis\ProdiResource;
+use App\Filament\Resources\Rumuses\RumusResource;
+use App\Filament\Resources\Tagihans\TagihanResource;
+use App\Filament\Resources\Users\UserResource;
+use App\Models\Periode;
 use App\Models\Pokja;
 use App\Models\Prodi;
 use App\Models\User;
 use App\Support\Izin;
 use Database\Seeders\DemoSeeder;
+use Database\Seeders\IzinSeeder;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -16,7 +38,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Menu yang muncul harus sesuai peran — seluruh 120 sel ditelusuri.
+ * Menu yang muncul harus sesuai peran — seluruh 126 sel ditelusuri.
  *
  * Sebelum uji ini ada, `viewAny` pada enam Policy dipetakan ke `dasbor.lihat`
  * yang bernilai `ya` untuk semua peran. Akibatnya anggota pokja melihat menu
@@ -36,25 +58,26 @@ class MenuPeranTest extends TestCase
     /** Peta kode menu ke kelas Filament yang mendaftarkannya. */
     private const KELAS = [
         'dasbor' => Dasbor::class,
-        'tagihan_saya' => \App\Filament\Pages\TagihanSaya::class,
-        'tagihan' => \App\Filament\Resources\Tagihans\TagihanResource::class,
-        'bukti' => \App\Filament\Resources\Buktis\BuktiResource::class,
-        'narasi' => \App\Filament\Resources\Narasis\NarasiResource::class,
-        'penilaian' => \App\Filament\Resources\Penilaians\PenilaianResource::class,
-        'syarat_perlu' => \App\Filament\Pages\SyaratPerluLayar::class,
-        'simulasi' => \App\Filament\Pages\SimulasiLayar::class,
-        'dkps_baris' => \App\Filament\Resources\DkpsBaris\DkpsBarisResource::class,
-        'nilai_rumus' => \App\Filament\Resources\NilaiRumuses\NilaiRumusResource::class,
-        'elemen' => \App\Filament\Resources\Elemens\ElemenResource::class,
-        'kriteria' => \App\Filament\Resources\Kriterias\KriteriaResource::class,
-        'rumus' => \App\Filament\Resources\Rumuses\RumusResource::class,
-        'dkps_butir' => \App\Filament\Resources\DkpsButirs\DkpsButirResource::class,
-        'periode' => \App\Filament\Resources\Periodes\PeriodeResource::class,
-        'pokja' => \App\Filament\Resources\Pokjas\PokjaResource::class,
-        'pengguna' => \App\Filament\Resources\Users\UserResource::class,
-        'prodi' => \App\Filament\Resources\Prodis\ProdiResource::class,
-        'matriks_izin' => \App\Filament\Pages\MatriksIzin::class,
-        'log_aktivitas' => \App\Filament\Pages\LogAktivitasLayar::class,
+        'tagihan_saya' => TagihanSaya::class,
+        'tagihan' => TagihanResource::class,
+        'bukti' => BuktiResource::class,
+        'narasi' => NarasiResource::class,
+        'penilaian' => PenilaianResource::class,
+        'syarat_perlu' => SyaratPerluLayar::class,
+        'simulasi' => SimulasiLayar::class,
+        'dkps_lembar' => DkpsLayar::class,
+        'dkps_baris' => DkpsBarisResource::class,
+        'nilai_rumus' => NilaiRumusResource::class,
+        'elemen' => ElemenResource::class,
+        'kriteria' => KriteriaResource::class,
+        'rumus' => RumusResource::class,
+        'dkps_butir' => DkpsButirResource::class,
+        'periode' => PeriodeResource::class,
+        'pokja' => PokjaResource::class,
+        'pengguna' => UserResource::class,
+        'prodi' => ProdiResource::class,
+        'matriks_izin' => MatriksIzin::class,
+        'log_aktivitas' => LogAktivitasLayar::class,
     ];
 
     /**
@@ -85,7 +108,7 @@ class MenuPeranTest extends TestCase
 
     private function dunia(): Prodi
     {
-        $this->seed(\Database\Seeders\IzinSeeder::class);
+        $this->seed(IzinSeeder::class);
 
         return Prodi::create([
             'kode' => 'PPG-UJI', 'nama' => 'PPG Uji', 'jenjang' => 'ppg',
@@ -106,7 +129,7 @@ class MenuPeranTest extends TestCase
             $this->assertFalse(Izin::bolehMenu($u, $menu),
                 "Sel {$menu}.{$peran} berlingkup pokja_data, jadi tanpa keanggotaan harus tersembunyi.");
 
-            $periode = \App\Models\Periode::create([
+            $periode = Periode::create([
                 'prodi_id' => $prodi->id, 'nama' => 'PPG Uji', 'ts_tahun' => 2027,
                 'versi_instrumen' => 'IAPSK 3.0', 'status' => 'berjalan',
             ]);

@@ -202,11 +202,26 @@
                     <x-filament::section>
                         <x-slot name="heading">Kesiapan DKPS</x-slot>
                         <div class="text-4xl font-bold tabular-nums">
-                            {{ $dkps['terverifikasi'] }} / {{ $dkps['total'] }}
+                            {{ $dkps['terverifikasi'] }} / {{ $dkps['total'] }} lembar
                         </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">butir terverifikasi</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">lembar terverifikasi</p>
+                        <div class="mt-3 space-y-1.5">
+                            @foreach ($this->dkpsPerPokja() as $p)
+                                <div>
+                                    <div class="flex justify-between gap-2 text-xs">
+                                        <span>{{ \Illuminate\Support\Str::after($p['kode'], 'POKJA-') }}</span>
+                                        <span class="tabular-nums text-gray-600 dark:text-gray-400">{{ $p['terverifikasi'] }}/{{ $p['total'] }}</span>
+                                    </div>
+                                    <div class="mt-0.5 h-1.5 rounded-full bg-gray-200 dark:bg-white/10">
+                                        <div class="h-1.5 rounded-full bg-success-500" style="width: {{ $p['rasio'] * 100 }}%"></div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <a href="{{ \App\Filament\Pages\DkpsLayar::getUrl() }}"
+                            class="mt-3 inline-block text-sm text-primary-600 hover:underline dark:text-primary-400">Buka Tabel DKPS</a>
                         <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                            Butir DKPS tidak berbobot, jadi tidak ikut dihitung ke progres bobot.
+                            Lembar DKPS tidak berbobot, jadi tidak ikut dihitung ke progres bobot.
                         </p>
                     </x-filament::section>
                 </div>
@@ -229,7 +244,7 @@
                                         </span>
                                         <span class="tabular-nums text-gray-600 dark:text-gray-400">
                                             @if ($p['pakai_dkps'])
-                                                {{ (int) $p['selesai'] }} / {{ (int) $p['total'] }} butir DKPS
+                                                {{ (int) $p['selesai'] }} / {{ (int) $p['total'] }} lembar DKPS
                                             @else
                                                 {{ $this->angka($p['selesai']) }} dari {{ $this->angka($p['total']) }} bobot
                                             @endif

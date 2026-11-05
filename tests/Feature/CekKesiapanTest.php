@@ -3,6 +3,11 @@
 namespace Tests\Feature;
 
 use App\Enums\PeranPengguna;
+use App\Enums\SumberData;
+use App\Models\DkpsBaris;
+use App\Models\DkpsButir;
+use App\Models\Periode;
+use App\Models\Pokja;
 use App\Models\Prodi;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
@@ -90,6 +95,52 @@ class CekKesiapanTest extends TestCase
         $this->artisan('sigap:cek-kesiapan')
             ->expectsOutputToContain('Total bobot elemen 100,00')
             ->expectsOutputToContain('150 sel izin tersemai')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function menemukan_baris_dkps_tanpa_pokja_lalu_lulus_setelah_diselaraskan(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        User::query()->get()->each(
+            fn (User $u) => $u->forceFill(['password' => Hash::make('sandi-yang-panjang-dan-acak')])->save()
+        );
+
+        $periode = Periode::firstOrFail();
+        $butir = DkpsButir::dariKode('28');
+        $baris = DkpsBaris::create([
+            'prodi_id' => Prodi::firstOrFail()->id, 'periode_id' => $periode->id,
+            'dkps_butir_id' => $butir->id, 'tahun_acuan' => 'TS',
+            'data' => ['penulis' => 'Dr. Lama'], 'sumber' => SumberData::Manual,
+        ]);
+
+        // Baris dari sebelum DKPS 3.0: belum punya lembar maupun pokja.
+        DkpsBaris::withoutGlobalScopes()->whereKey($baris->id)
+            ->update(['pokja_id' => null, 'lembar_kode' => null]);
+
+        $this->artisan('sigap:cek-kesiapan')
+            ->expectsOutputToContain('35 lembar DKPS')
+            ->expectsOutputToContain('dkps:selaraskan')
+            ->assertFailed();
+
+        $this->artisan('dkps:selaraskan')
+            ->expectsOutputToContain('Diselaraskan: 1')
+            ->assertSuccessful();
+
+        $baris->refresh();
+        $this->assertSame('28', $baris->lembar_kode);
+        $this->assertSame(
+            Pokja::where('periode_id', $periode->id)->where('kode', $butir->pokja_kode)->value('id'),
+            $baris->pokja_id,
+        );
+
+        // Idempoten: putaran kedua tidak menyentuh apa pun.
+        $this->artisan('dkps:selaraskan')
+            ->expectsOutputToContain('Diselaraskan: 0')
+            ->assertSuccessful();
+
+        $this->artisan('sigap:cek-kesiapan')
+            ->expectsOutputToContain('Tidak ada baris DKPS tanpa pokja')
             ->assertSuccessful();
     }
 }

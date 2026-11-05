@@ -22,7 +22,7 @@ class DkpsBaris extends Model
 
     protected $fillable = [
         'prodi_id', 'periode_id', 'dkps_butir_id', 'tahun_acuan',
-        'data', 'sumber', 'kunci_normal', 'impor_batch_id',
+        'data', 'sumber', 'kunci_normal', 'impor_batch_id', 'lembar_kode', 'pokja_id',
     ];
 
     /** Verifikasi hanya lewat VerifikatorDkps, tidak lewat pembaruan biasa. */
@@ -35,6 +35,26 @@ class DkpsBaris extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::creating(function (self $baris): void {
+            $butir = $baris->butir;
+
+            if (blank($baris->lembar_kode)) {
+                $baris->lembar_kode = $butir?->kodeLembar()[0] ?? null;
+            }
+
+            if (blank($baris->pokja_id) && $butir?->pokja_kode !== null) {
+                // Tanpa lingkup periode: pokja dicari menurut periode baris,
+                // bukan menurut periode yang sedang dilihat pengguna.
+                $baris->pokja_id = Pokja::withoutGlobalScope('lingkup_periode')
+                    ->where('periode_id', $baris->periode_id)
+                    ->where('kode', $butir->pokja_kode)
+                    ->value('id');
+            }
+        });
+    }
+
     public function periode(): BelongsTo
     {
         return $this->belongsTo(Periode::class);
@@ -43,6 +63,11 @@ class DkpsBaris extends Model
     public function butir(): BelongsTo
     {
         return $this->belongsTo(DkpsButir::class, 'dkps_butir_id');
+    }
+
+    public function pokja(): BelongsTo
+    {
+        return $this->belongsTo(Pokja::class);
     }
 
     public function verifikator(): BelongsTo
@@ -75,14 +100,15 @@ class DkpsBaris extends Model
     public function calonSelisih(): bool
     {
         return $this->sumber === SumberData::Manual
-            && in_array($this->butir?->no, self::BUTIR_DARI_SIAKAD, true);
+            && in_array($this->butir?->kode, self::KODE_DARI_SIAKAD, true);
     }
 
     /**
-     * Butir DKPS yang datanya ada di SIAKAD: mahasiswa, dosen, beban kerja,
-     * kurikulum, IPK, masa studi.
+     * Tabel DKPS 3.0 yang datanya ada di SIAKAD: 2 Mahasiswa, 3 Prestasi,
+     * 6 DPP, 7 DBS, 8 BKD, 11 Tendik, 18 Kurikulum, 20 PPL, 21 IPK,
+     * 22 Masa studi.
      */
-    public const BUTIR_DARI_SIAKAD = [2, 3, 5, 6, 7, 10, 17, 19, 20, 21];
+    public const KODE_DARI_SIAKAD = ['2', '3', '6', '7', '8', '11', '18', '20', '21', '22'];
 
     /** Nilai satu kolom di dalam json, tanpa whereJsonContains. */
     public function nilai(string $kunci, mixed $bawaan = null): mixed

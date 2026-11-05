@@ -52,7 +52,32 @@ chk("pokja di elemen.json konsisten dengan pokja.json",
 
 chk("15 rumus", len(rm) == 15, len(rm))
 chk("rumus inti ada", {"PDS3", "PGBLKL", "PPDTPS", "RSA", "RK", "NA"} <= {r["kode"] for r in rm})
-chk("28 butir DKPS bernomor 1..28", [d["no"] for d in dk] == list(range(1, 29)))
+chk("29 tabel DKPS bernomor 1..29", [d["no"] for d in dk] == list(range(1, 30)))
+chk("kode tabel DKPS unik dan sama dengan nomornya", [d["kode"] for d in dk] == [str(i) for i in range(1, 30)])
+lembar = [l for d in dk for l in d["lembar"]]
+chk("35 lembar DKPS", len(lembar) == 35, len(lembar))
+chk("kode lembar unik", len({l["kode"] for l in lembar}) == 35)
+chk("Tabel 1 tiga lembar, Tabel 4 empat lembar, Tabel 24 dua lembar",
+    [len(d["lembar"]) for d in dk if d["kode"] in ("1", "4", "24")] == [3, 4, 2])
+kodepok = {p["kode"] for p in pk}
+chk("pokja pemilik tiap tabel ada di pokja.json", all(d["pokja"] in kodepok for d in dk))
+chk("POKJA-DATA tidak memiliki tabel", not [d for d in dk if d["pokja"] == "POKJA-DATA"])
+chk("elemen rujukan tabel ada di 1..59", all(1 <= n <= 59 for d in dk for n in d["elemen"]))
+chk("jendela tiap tabel dikenal",
+    all(d["jendela_data"] in ("saat TS", "TS-2 s.d. TS", "TS-4 s.d. TS-2", "5 tahun terakhir") for d in dk))
+TIPE = {"teks", "angka", "desimal", "tanggal", "tahun", "pilihan", "centang", "tautan", "hitung"}
+chk("tipe kolom dikenal", all(c["tipe"] in TIPE for l in lembar for c in l["kolom"]))
+chk("kunci kolom unik per lembar",
+    all(len({c["kunci"] for c in l["kolom"]}) == len(l["kolom"]) for l in lembar))
+chk("tiap lembar punya kolom isian", all(any(c["tipe"] != "hitung" for c in l["kolom"]) for l in lembar))
+chk("kolom pilihan punya daftar pilihan", all(c.get("pilihan") for l in lembar for c in l["kolom"] if c["tipe"] == "pilihan"))
+chk("tahun_dari sah", all(l["tahun_dari"] in ("TS", "baris_tetap") or (
+    l["tahun_dari"].startswith("kolom:") and l["tahun_dari"][6:] in {c["kunci"] for c in l["kolom"] if c["tipe"] in ("tanggal", "tahun")})
+    for l in lembar))
+chk("lembar berbaris bebas punya kunci duplikasi",
+    all(l.get("kunci") or l.get("baris_tetap") for l in lembar))
+chk("tahun_dari baris_tetap hanya pada lembar berbaris tetap",
+    all(l.get("baris_tetap") for l in lembar if l["tahun_dari"] == "baris_tetap"))
 chk("6 peran", len(pr) == 6)
 chk("6 status tagihan", len(st) == 6)
 

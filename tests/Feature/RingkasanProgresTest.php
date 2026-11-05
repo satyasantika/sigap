@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Enums\PeranPengguna;
 use App\Enums\StatusTagihan;
+use App\Enums\SumberData;
+use App\Models\DkpsBaris;
+use App\Models\DkpsButir;
 use App\Models\Elemen;
 use App\Models\Periode;
 use App\Models\Prodi;
@@ -147,9 +150,9 @@ class RingkasanProgresTest extends TestCase
         $data = $pokja->firstWhere('kode', 'POKJA-DATA');
 
         // Menampilkannya nol akan dibaca sebagai "belum mengerjakan apa-apa",
-        // padahal ia memegang 28 butir DKPS.
+        // padahal ia mengawal 35 lembar DKPS.
         $this->assertTrue($data['pakai_dkps']);
-        $this->assertSame(28.0, $data['total']);
+        $this->assertSame(35.0, $data['total']);
     }
 
     #[Test]
@@ -232,13 +235,94 @@ class RingkasanProgresTest extends TestCase
     }
 
     #[Test]
-    public function kesiapan_dkps_dihitung_dari_butir_terverifikasi(): void
+    public function kesiapan_dkps_dihitung_dari_lembar_terverifikasi(): void
     {
         $d = $this->ringkasan()->progresDkps($this->periode);
 
-        $this->assertSame(28, $d['total']);
+        $this->assertSame(35, $d['total']);
         $this->assertSame(0, $d['terverifikasi']);
         $this->assertSame(0.0, $d['rasio']);
+    }
+
+    /** Satu baris DKPS langsung ke basis data; datanya sudah berbentuk normal. */
+    private function barisDkps(string $kodeTabel, array $data, ?string $kodeLembar = null): DkpsBaris
+    {
+        return DkpsBaris::create([
+            'prodi_id' => $this->prodi->id, 'periode_id' => $this->periode->id,
+            'dkps_butir_id' => DkpsButir::dariKode($kodeTabel)->id,
+            'lembar_kode' => $kodeLembar ?? $kodeTabel,
+            'tahun_acuan' => $data['_baris'] ?? 'TS', 'data' => $data,
+            'sumber' => SumberData::Manual,
+        ]);
+    }
+
+    #[Test]
+    public function status_lembar_mengikuti_kelengkapan_dan_verifikasi(): void
+    {
+        $t28 = DkpsButir::dariKode('28');
+
+        $s = $this->ringkasan()->statusLembar($this->periode, $t28, '28');
+        $this->assertSame('kosong', $s['status']);
+        $this->assertSame(0, $s['baris']);
+        $this->assertNull($s['target']);
+
+        $b = $this->barisDkps('28', ['nama_dtps' => 'Dr. A', 'judul_artikel' => 'Artikel', 'jumlah_sitasi' => 4]);
+
+        $s = $this->ringkasan()->statusLembar($this->periode, $t28, '28');
+        $this->assertSame('lengkap', $s['status']);
+        $this->assertSame(1, $s['lengkap']);
+        $this->assertSame(0, $s['terverifikasi']);
+
+        // Baris tanpa satu pun kunci skema (isian sebelum DKPS 3.0) tidak
+        // membuat status tumbang, tetapi menahan lembar di `terisi`.
+        $lama = $this->barisDkps('28', ['penulis' => 'Dr. Lama']);
+        $s = $this->ringkasan()->statusLembar($this->periode, $t28, '28');
+        $this->assertSame('terisi', $s['status']);
+        $this->assertSame(2, $s['baris']);
+        $this->assertSame(1, $s['lengkap']);
+        $lama->delete();
+
+        $b->forceFill(['diverifikasi_pada' => now(), 'diverifikasi_oleh' => $this->ketua->id])->save();
+
+        $s = $this->ringkasan()->statusLembar($this->periode, $t28, '28');
+        $this->assertSame('terverifikasi', $s['status']);
+        $this->assertSame(1, $s['terverifikasi']);
+
+        // Tabel 21 berbaris tetap TS-2, TS-1, TS: satu baris lengkap belum cukup.
+        $this->barisDkps('21', ['_baris' => 'TS-2', 'jumlah_lulusan' => 20, 'ipk_min' => 3.0, 'ipk_rata' => 3.4, 'ipk_maks' => 3.9]);
+
+        $s = $this->ringkasan()->statusLembar($this->periode, DkpsButir::dariKode('21'), '21');
+        $this->assertSame('terisi', $s['status']);
+        $this->assertSame(3, $s['target']);
+        $this->assertSame(1, $s['lengkap']);
+    }
+
+    #[Test]
+    public function progres_dkps_dihitung_per_lembar_dari_35(): void
+    {
+        $this->assertSame(35, $this->ringkasan()->progresDkps($this->periode)['total']);
+
+        $b = $this->barisDkps('28', ['nama_dtps' => 'Dr. A', 'judul_artikel' => 'Artikel', 'jumlah_sitasi' => 4]);
+        $b->forceFill(['diverifikasi_pada' => now(), 'diverifikasi_oleh' => $this->ketua->id])->save();
+
+        $d = $this->ringkasan()->progresDkps($this->periode);
+        $this->assertSame(1, $d['terverifikasi']);
+        $this->assertSame(round(1 / 35, 4), $d['rasio']);
+
+        $sdm = collect($this->ringkasan()->progresDkpsPerPokja($this->periode))->firstWhere('kode', 'POKJA-SDM');
+        $this->assertSame(1, $sdm['terverifikasi']);
+        $this->assertSame(1, $sdm['terisi']);
+    }
+
+    #[Test]
+    public function progres_dkps_per_pokja_hanya_pokja_pemilik_tabel(): void
+    {
+        $p = collect($this->ringkasan()->progresDkpsPerPokja($this->periode));
+
+        $this->assertSame(['POKJA-DIK', 'POKJA-MAWA', 'POKJA-MUTU', 'POKJA-SARPRAS', 'POKJA-SDM'], $p->pluck('kode')->all());
+        $this->assertSame(3, $p->firstWhere('kode', 'POKJA-MUTU')['total']);     // 1.1, 1.2, 1.3
+        $this->assertSame(13, $p->firstWhere('kode', 'POKJA-SDM')['total']);     // 6–13 (8) + 25–29 (5)
+        $this->assertSame(35, $p->sum('total'));
     }
 
     // ---- Daftar kerja ----------------------------------------------------
@@ -261,7 +345,7 @@ class RingkasanProgresTest extends TestCase
     {
         $daftar = $this->ringkasan()->tagihanTanpaPj($this->periode);
 
-        $this->assertSame(137, $daftar->count(), 'Seluruh tagihan belum ditugaskan.');
+        $this->assertSame(138, $daftar->count(), 'Seluruh tagihan belum ditugaskan.');
 
         $bobot = $daftar->pluck('bobot_terkait')->map(fn ($b) => (float) $b);
         $this->assertSame($bobot->sortDesc()->values()->all(), $bobot->values()->all());

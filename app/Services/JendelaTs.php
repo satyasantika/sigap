@@ -79,6 +79,29 @@ class JendelaTs
         return (int) $periode->ts_tahun - (int) $cocok[1];
     }
 
+    /**
+     * Label relatif ("TS", "TS-1", … "TS-4") untuk tahun sesungguhnya, atau
+     * `null` bila tahun itu di luar TS-4..TS — rentang yang bisa disimpan di
+     * `dkps_baris.tahun_acuan`.
+     */
+    public static function labelDariTahun(Periode $periode, int $tahun): ?string
+    {
+        $selisih = (int) $periode->ts_tahun - $tahun;
+
+        return match (true) {
+            $selisih === 0 => 'TS',
+            $selisih >= 1 && $selisih <= 4 => "TS-{$selisih}",
+            default => null,
+        };
+    }
+
+    public static function tahunDalamJendela(Periode $periode, string $jendela, int $tahun): bool
+    {
+        [$awal, $akhir] = self::rentang($periode, $jendela);
+
+        return $tahun >= $awal && $tahun <= $akhir;
+    }
+
     /** Label relatif yang sah untuk satu jendela, terurut dari yang terlama. */
     public static function labelDalamJendela(string $jendela): array
     {

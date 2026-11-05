@@ -5,10 +5,12 @@ namespace App\Livewire;
 use App\Models\ImporBatch;
 use App\Models\Periode;
 use App\Services\PelaksanaImpor;
+use App\Support\Impor\ImporLembarDkps;
 use App\Support\Impor\MemilikiSandiBaru;
 use App\Support\Impor\PenguraiTempelan;
 use App\Support\Impor\PratinjauImpor;
 use App\Support\Impor\ProfilImpor;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Throwable;
 
@@ -68,13 +70,23 @@ class ImporTempel extends Component
      */
     public array $sandiBaru = [];
 
+    /*
+     * Ketiga properti berikut ditetapkan server saat mount dan DIKUNCI:
+     * tanpa #[Locked], klien bisa $wire.set('profilArgs.penggunaId', ...)
+     * atau mengganti kode tabel/periode, lalu mengimpor atas nama orang lain
+     * ke tabel pokja lain.
+     */
+
     /** Kelas profil impor, mis. App\Support\Impor\ImporBukti::class. */
+    #[Locked]
     public string $profilKelas = '';
 
     /** Argumen konstruktor profil, dalam urutan yang diterimanya. */
+    #[Locked]
     public array $profilArgs = [];
 
     /** Periode akreditasi; null bila profilnya tidak terikat periode (mis. pengguna). */
+    #[Locked]
     public ?string $periodeId = null;
 
     public function mount(string $profilKelas, array $profilArgs = [], ?string $periodeId = null): void
@@ -194,6 +206,7 @@ class ImporTempel extends Component
                 ."{$batch->jumlah_perbarui} diperbarui, {$batch->jumlah_lewati} dilewati.";
             $this->sandiBaru = $profil instanceof MemilikiSandiBaru ? $profil->sandiBaruDibuat() : [];
             $this->langkah = 4;
+            $this->kabariGrid($profil);
         } catch (Throwable $e) {
             // Satu baris gagal berarti tidak ada yang tersimpan, dan pesannya
             // menyebut apa yang salah -- impor separuh jalan jauh lebih buruk.
@@ -209,8 +222,22 @@ class ImporTempel extends Component
             return;
         }
 
-        app(PelaksanaImpor::class)->batalkan($batch, $this->profil(), auth()->user());
+        $profil = $this->profil();
+        app(PelaksanaImpor::class)->batalkan($batch, $profil, auth()->user());
         $this->hasil = 'Impor dibatalkan. Baris yang dibuat dihapus, baris yang diperbarui dikembalikan.';
+        $this->kabariGrid($profil);
+    }
+
+    /**
+     * Grid LembarDkps di halaman yang sama memuat ulang barisnya; tanpa ini
+     * hasil impor baru terlihat setelah halaman disegarkan, dan orang
+     * mengira impornya gagal lalu mengulanginya.
+     */
+    private function kabariGrid(ProfilImpor $profil): void
+    {
+        if ($profil instanceof ImporLembarDkps) {
+            $this->dispatch('dkps-diimpor');
+        }
     }
 
     public function ulangi(): void

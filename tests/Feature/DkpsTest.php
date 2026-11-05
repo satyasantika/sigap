@@ -84,36 +84,37 @@ class DkpsTest extends TestCase
         return $b->refresh();
     }
 
-    // ---- Wewenang: pokja_data bergantung keanggotaan --------------------
+    // ---- Wewenang: lingkup pokja pemilik tabel --------------------
 
     #[Test]
-    public function anggota_pokja_data_boleh_mengisi_dkps(): void
+    public function anggota_pokja_pemilik_boleh_mengisi_tabelnya_dan_bukan_tabel_pokja_lain(): void
     {
-        $u = $this->pengguna(PeranPengguna::Anggota, 'POKJA-DATA');
+        $sdm = $this->pengguna(PeranPengguna::Anggota, 'POKJA-SDM');
+        $barisSdm = $this->baris(7);     // Tabel 7 milik POKJA-SDM
+        $barisDik = $this->baris(18);    // Tabel 18 milik POKJA-DIK
 
-        $this->assertTrue(Izin::boleh($u, 'dkps.isi'));
+        $this->assertTrue(Izin::boleh($sdm, 'dkps.isi', $barisSdm));
+        $this->assertFalse(Izin::boleh($sdm, 'dkps.isi', $barisDik));
+        $this->assertTrue(Izin::boleh($sdm, 'dkps.isi'), 'Tanpa obyek: boleh membuka halaman daftar.');
     }
 
     #[Test]
-    public function koordinator_di_luar_pokja_data_tidak_boleh_mengisi_dkps(): void
+    public function anggota_pokja_data_tidak_lagi_otomatis_boleh_mengisi_semua_tabel(): void
     {
-        // Lingkup `pokja_data` bergantung keanggotaan, BUKAN peran. Seorang
-        // koordinator POKJA-DIK ditolak; anggota biasa POKJA-DATA justru boleh.
-        $u = $this->pengguna(PeranPengguna::Koordinator, 'POKJA-DIK');
+        $data = $this->pengguna(PeranPengguna::Anggota, 'POKJA-DATA');
 
-        $this->assertFalse(Izin::boleh($u, 'dkps.isi'));
+        $this->assertFalse(Izin::boleh($data, 'dkps.isi', $this->baris(7)));
     }
 
     #[Test]
-    public function anggota_pokja_data_tidak_boleh_memverifikasi(): void
+    public function verifikasi_milik_koordinator_pokja_pemilik_dan_ketua(): void
     {
-        // Mengisi dan memverifikasi dipisah: yang mengisi tidak boleh
-        // menyatakan isiannya sendiri sudah benar.
-        $anggota = $this->pengguna(PeranPengguna::Anggota, 'POKJA-DATA');
-        $koordinator = $this->pengguna(PeranPengguna::Koordinator, 'POKJA-DATA');
+        $baris = $this->baris(7);
 
-        $this->assertFalse(Izin::boleh($anggota, 'dkps.verifikasi'));
-        $this->assertTrue(Izin::boleh($koordinator, 'dkps.verifikasi'));
+        $this->assertTrue(Izin::boleh($this->pengguna(PeranPengguna::Koordinator, 'POKJA-SDM'), 'dkps.verifikasi', $baris));
+        $this->assertFalse(Izin::boleh($this->pengguna(PeranPengguna::Koordinator, 'POKJA-DIK'), 'dkps.verifikasi', $baris));
+        $this->assertFalse(Izin::boleh($this->pengguna(PeranPengguna::Anggota, 'POKJA-SDM'), 'dkps.verifikasi', $baris));
+        $this->assertTrue(Izin::boleh($this->pengguna(PeranPengguna::Ketua), 'dkps.verifikasi', $baris));
     }
 
     // ---- Verifikasi menuntut bukti terbuka DAN sah ----------------------
@@ -193,13 +194,23 @@ class DkpsTest extends TestCase
     // ---- Penandaan calon selisih ----------------------------------------
 
     #[Test]
+    public function baris_baru_mewarisi_pokja_dan_lembar_dari_butirnya(): void
+    {
+        $baris = $this->baris(7);   // Tabel 7 milik POKJA-SDM
+
+        $this->assertSame('7', $baris->lembar_kode);
+        $this->assertSame(Pokja::where('kode', 'POKJA-SDM')->firstOrFail()->id, $baris->pokja_id);
+        $this->assertSame('1.1', $this->baris(1)->lembar_kode);
+    }
+
+    #[Test]
     public function baris_manual_yang_seharusnya_dari_siakad_ditandai(): void
     {
         // Butir 2 (Mahasiswa) ada di SIAKAD; baris manual di sana adalah calon
         // selisih pada asesmen lapangan.
         $manual = $this->baris(2, ['sumber' => SumberData::Manual]);
         $siakad = $this->baris(2, ['sumber' => SumberData::Siakad, 'tahun_acuan' => 'TS-1']);
-        // Butir 13 (Penggunaan Dana) memang tidak ada di SIAKAD.
+        // Butir 13 (Guru Pamong) memang tidak ada di SIAKAD.
         $wajar = $this->baris(13, ['sumber' => SumberData::Manual]);
 
         $this->assertTrue($manual->fresh()->calonSelisih());
@@ -324,9 +335,9 @@ class DkpsTest extends TestCase
 
         $baris = DkpsBaris::where('impor_batch_id', $batch->id)->firstOrFail();
 
-        // Mendarat di butir 6, bukan di tabel dosen tersendiri — keputusan yang
-        // diambil karena tabel dosen sengaja belum dibuat.
-        $this->assertSame(6, $baris->butir->no);
+        // Mendarat di Tabel 7 (DBS), bukan di tabel dosen tersendiri — keputusan
+        // yang diambil karena tabel dosen sengaja belum dibuat.
+        $this->assertSame('7', $baris->butir->kode);
         $this->assertSame('0412088001', $baris->nilai('nidn'));
         $this->assertSame('S3', $baris->nilai('pendidikan'));
 
