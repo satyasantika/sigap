@@ -107,9 +107,18 @@ class SyaratPerluLayar extends Page
             return null;
         }
 
-        $nilai = NilaiRumus::where('periode_id', $periode->id)
+        // Satu elemen bisa punya beberapa rumus (E17: PDS3 dan PGBLKL). Ambil
+        // hasil terbaru per kode, lalu dahulukan yang terkait syarat perlu;
+        // kalau tidak ada satu pun, pakai yang terbaru. Tanpa ini, rumus tanpa
+        // penanda syarat yang dihitung belakangan menutupi PDS3 (41,67).
+        $terbaruPerKode = NilaiRumus::where('periode_id', $periode->id)
             ->whereIn('rumus_kode', $rumus)
-            ->orderByDesc('id')->first();
+            ->orderByDesc('dihitung_pada')->orderByDesc('id')
+            ->get()->unique('rumus_kode');
+
+        $nilai = $terbaruPerKode->first(fn (NilaiRumus $n) => $n->memenuhi_syarat_3_tahun !== null
+                || $n->memenuhi_syarat_5_tahun !== null)
+            ?? $terbaruPerKode->first();
 
         if ($nilai === null) {
             return null;

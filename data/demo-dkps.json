@@ -1,0 +1,2566 @@
+{
+ "1.1": {
+  "baris": [
+   {
+    "lembaga_mitra": "Universiti Pendidikan Seri Mahkota (Malaysia)",
+    "internasional": true,
+    "judul_kegiatan": "Program pertukaran dosen pembimbing PPL 1",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-01-01",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/001"
+   },
+   {
+    "lembaga_mitra": "Nusantara Teachers College (Brunei)",
+    "internasional": true,
+    "judul_kegiatan": "Penempatan mahasiswa PPL 2",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-03-04",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/002"
+   },
+   {
+    "lembaga_mitra": "Universitas Cahaya Bangsa",
+    "nasional": true,
+    "judul_kegiatan": "Pengembangan kurikulum PPG bersama 3",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS}-05-07",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/003"
+   },
+   {
+    "lembaga_mitra": "Institut Keguruan Lembah Hijau",
+    "nasional": true,
+    "judul_kegiatan": "Kuliah tamu praktisi pendidikan 4",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-07-10",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/004"
+   },
+   {
+    "lembaga_mitra": "Universitas Pelita Timur",
+    "nasional": true,
+    "judul_kegiatan": "Lokakarya perangkat ajar 5",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-09-13",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/005"
+   },
+   {
+    "lembaga_mitra": "Universitas Samudra Raya",
+    "nasional": true,
+    "judul_kegiatan": "Program pertukaran dosen pembimbing PPL 6",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS}-11-16",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/006"
+   },
+   {
+    "lembaga_mitra": "Balai Guru Penggerak Wilayah Tengah",
+    "nasional": true,
+    "judul_kegiatan": "Penempatan mahasiswa PPL 7",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-02-19",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/007"
+   },
+   {
+    "lembaga_mitra": "Yayasan Literasi Anak Negeri",
+    "nasional": true,
+    "judul_kegiatan": "Pengembangan kurikulum PPG bersama 8",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-04-22",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/008"
+   },
+   {
+    "lembaga_mitra": "Universitas Tanjung Harapan",
+    "nasional": true,
+    "judul_kegiatan": "Kuliah tamu praktisi pendidikan 9",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS}-06-25",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/009"
+   },
+   {
+    "lembaga_mitra": "Pusat Kurikulum Mandiri",
+    "nasional": true,
+    "judul_kegiatan": "Lokakarya perangkat ajar 10",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-08-01",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/010"
+   },
+   {
+    "lembaga_mitra": "SD Negeri 1 Sukamaju",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Program pertukaran dosen pembimbing PPL 11",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-10-04",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/011"
+   },
+   {
+    "lembaga_mitra": "SD Negeri 4 Cibeureum",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Penempatan mahasiswa PPL 12",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS}-01-07",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/012"
+   },
+   {
+    "lembaga_mitra": "SMP Negeri 2 Mekarjaya",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pengembangan kurikulum PPG bersama 13",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-03-10",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/013"
+   },
+   {
+    "lembaga_mitra": "SMP Negeri 5 Tawangsari",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Kuliah tamu praktisi pendidikan 14",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-05-13",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/014"
+   },
+   {
+    "lembaga_mitra": "SMA Negeri 3 Sindangkasih",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Lokakarya perangkat ajar 15",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS}-07-16",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/015"
+   },
+   {
+    "lembaga_mitra": "Dinas Pendidikan Kota Cemerlang",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Program pertukaran dosen pembimbing PPL 16",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-09-19",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/016"
+   },
+   {
+    "lembaga_mitra": "MGMP Matematika Kota Cemerlang",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Penempatan mahasiswa PPL 17",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-11-22",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/017"
+   },
+   {
+    "lembaga_mitra": "KKG Gugus 7 Kecamatan Indihiang Baru",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pengembangan kurikulum PPG bersama 18",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS}-02-25",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/018"
+   },
+   {
+    "lembaga_mitra": "SD Islam Terpadu Al-Hikmah Sukasari",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Kuliah tamu praktisi pendidikan 19",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-04-01",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/019"
+   },
+   {
+    "lembaga_mitra": "SMP Plus Bina Insani",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Lokakarya perangkat ajar 20",
+    "manfaat": "Penguatan kompetensi pedagogik calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-06-04",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.1/020"
+   }
+  ]
+ },
+ "1.2": {
+  "baris": [
+   {
+    "lembaga_mitra": "Universitas Samudra Raya",
+    "nasional": true,
+    "judul_kegiatan": "Penelitian tindakan kelas kolaboratif 1",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-01-01",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/001"
+   },
+   {
+    "lembaga_mitra": "Balai Guru Penggerak Wilayah Tengah",
+    "nasional": true,
+    "judul_kegiatan": "Riset asesmen diagnostik 2",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-03-04",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/002"
+   },
+   {
+    "lembaga_mitra": "Yayasan Literasi Anak Negeri",
+    "nasional": true,
+    "judul_kegiatan": "Kajian implementasi Kurikulum Merdeka 3",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS}-05-07",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/003"
+   },
+   {
+    "lembaga_mitra": "Universitas Tanjung Harapan",
+    "nasional": true,
+    "judul_kegiatan": "Penelitian tindakan kelas kolaboratif 4",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-07-10",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/004"
+   },
+   {
+    "lembaga_mitra": "SMP Negeri 5 Tawangsari",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Riset asesmen diagnostik 5",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-09-13",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/005"
+   },
+   {
+    "lembaga_mitra": "SMA Negeri 3 Sindangkasih",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Kajian implementasi Kurikulum Merdeka 6",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS}-11-16",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/006"
+   },
+   {
+    "lembaga_mitra": "Dinas Pendidikan Kota Cemerlang",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Penelitian tindakan kelas kolaboratif 7",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-02-19",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/007"
+   },
+   {
+    "lembaga_mitra": "MGMP Matematika Kota Cemerlang",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Riset asesmen diagnostik 8",
+    "manfaat": "Penguatan budaya riset calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-04-22",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.2/008"
+   }
+  ]
+ },
+ "1.3": {
+  "baris": [
+   {
+    "lembaga_mitra": "Yayasan Literasi Anak Negeri",
+    "nasional": true,
+    "judul_kegiatan": "Pendampingan guru menyusun modul ajar 1",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-01-01",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/001"
+   },
+   {
+    "lembaga_mitra": "Universitas Tanjung Harapan",
+    "nasional": true,
+    "judul_kegiatan": "Pelatihan literasi numerasi 2",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-03-04",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/002"
+   },
+   {
+    "lembaga_mitra": "Pusat Kurikulum Mandiri",
+    "nasional": true,
+    "judul_kegiatan": "Sekolah ramah anak 3",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS}-05-07",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/003"
+   },
+   {
+    "lembaga_mitra": "Dinas Pendidikan Kota Cemerlang",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pendampingan guru menyusun modul ajar 4",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-07-10",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/004"
+   },
+   {
+    "lembaga_mitra": "MGMP Matematika Kota Cemerlang",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pelatihan literasi numerasi 5",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-09-13",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/005"
+   },
+   {
+    "lembaga_mitra": "KKG Gugus 7 Kecamatan Indihiang Baru",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Sekolah ramah anak 6",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS}-11-16",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/006"
+   },
+   {
+    "lembaga_mitra": "SD Islam Terpadu Al-Hikmah Sukasari",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pendampingan guru menyusun modul ajar 7",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-02-19",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/007"
+   },
+   {
+    "lembaga_mitra": "SMP Plus Bina Insani",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pelatihan literasi numerasi 8",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-1}-04-22",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/008"
+   },
+   {
+    "lembaga_mitra": "SD Negeri 1 Sukamaju",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Sekolah ramah anak 9",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS}-06-25",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/009"
+   },
+   {
+    "lembaga_mitra": "SD Negeri 4 Cibeureum",
+    "wilayah_lokal": true,
+    "judul_kegiatan": "Pendampingan guru menyusun modul ajar 10",
+    "manfaat": "Penguatan layanan kepada sekolah calon guru dan mitra",
+    "tanggal_awal": "{TS-2}-08-01",
+    "tanggal_akhir": "{TS}-12-31",
+    "bukti_kerjasama": "https://ppg.example.org/MoA/1.3/010"
+   }
+  ]
+ },
+ "2": {
+  "baris": [
+   {
+    "_baris": "TS-2",
+    "kuota": 150,
+    "lulus_seleksi_calon_guru": 110,
+    "lulus_seleksi_guru_tertentu": 30,
+    "lapor_diri_calon_guru": 105,
+    "lapor_diri_guru_tertentu": 28,
+    "aktif_calon_guru": 102,
+    "aktif_guru_tertentu": 28,
+    "jumlah_pddikti_ts": 130
+   },
+   {
+    "_baris": "TS-1",
+    "kuota": 160,
+    "lulus_seleksi_calon_guru": 118,
+    "lulus_seleksi_guru_tertentu": 32,
+    "lapor_diri_calon_guru": 114,
+    "lapor_diri_guru_tertentu": 29,
+    "aktif_calon_guru": 111,
+    "aktif_guru_tertentu": 29,
+    "jumlah_pddikti_ts": 140
+   },
+   {
+    "_baris": "TS",
+    "kuota": 170,
+    "lulus_seleksi_calon_guru": 128,
+    "lulus_seleksi_guru_tertentu": 34,
+    "lapor_diri_calon_guru": 123,
+    "lapor_diri_guru_tertentu": 31,
+    "aktif_calon_guru": 120,
+    "aktif_guru_tertentu": 30,
+    "jumlah_pddikti_ts": 150
+   }
+  ]
+ },
+ "3": {
+  "baris": [
+   {
+    "nama_kegiatan": "Olimpiade Inovasi Pembelajaran ASEAN",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS-2}-03-10",
+    "internasional": true,
+    "prestasi_dicapai": "Medali Perak"
+   },
+   {
+    "nama_kegiatan": "Lomba Inovasi Pembelajaran Nasional",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS-1}-04-11",
+    "nasional": true,
+    "prestasi_dicapai": "Juara 2"
+   },
+   {
+    "nama_kegiatan": "Kompetisi Media Ajar Digital Nasional",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS}-05-12",
+    "nasional": true,
+    "prestasi_dicapai": "Juara 3"
+   },
+   {
+    "nama_kegiatan": "Festival Seni Guru Muda Nasional",
+    "jenis_prestasi": "Non-akademik",
+    "tanggal_perolehan": "{TS-2}-06-13",
+    "nasional": true,
+    "prestasi_dicapai": "Penyaji Terbaik"
+   },
+   {
+    "nama_kegiatan": "Lomba Esai Pendidikan Nasional",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS-1}-07-14",
+    "nasional": true,
+    "prestasi_dicapai": "Juara Harapan 1"
+   },
+   {
+    "nama_kegiatan": "Lomba Karya Tulis Pendidikan Provinsi",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS}-08-15",
+    "wilayah_lokal": true,
+    "prestasi_dicapai": "Juara 1"
+   },
+   {
+    "nama_kegiatan": "Pekan Olahraga Mahasiswa Provinsi (Bulu Tangkis)",
+    "jenis_prestasi": "Non-akademik",
+    "tanggal_perolehan": "{TS-2}-09-16",
+    "wilayah_lokal": true,
+    "prestasi_dicapai": "Juara 2"
+   },
+   {
+    "nama_kegiatan": "Lomba Bercerita Dongeng Daerah",
+    "jenis_prestasi": "Non-akademik",
+    "tanggal_perolehan": "{TS-1}-10-17",
+    "wilayah_lokal": true,
+    "prestasi_dicapai": "Juara 1"
+   },
+   {
+    "nama_kegiatan": "Kompetisi Modul Ajar Kota",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS}-11-18",
+    "wilayah_lokal": true,
+    "prestasi_dicapai": "Juara 3"
+   },
+   {
+    "nama_kegiatan": "Lomba Paduan Suara Antarkampus Kota",
+    "jenis_prestasi": "Non-akademik",
+    "tanggal_perolehan": "{TS-2}-03-19",
+    "wilayah_lokal": true,
+    "prestasi_dicapai": "Juara 2"
+   },
+   {
+    "nama_kegiatan": "Lomba Video Pembelajaran Kota",
+    "jenis_prestasi": "Akademik",
+    "tanggal_perolehan": "{TS-1}-04-20",
+    "wilayah_lokal": true,
+    "prestasi_dicapai": "Juara 1"
+   }
+  ]
+ },
+ "4.1": {
+  "baris": [
+   {
+    "nim": "2401000101",
+    "nama_mahasiswa": "Aulia Pratama",
+    "judul_karya": "Alat peraga pecahan magnetik untuk SD",
+    "tahun": "{TS-1}-06-15",
+    "no_paten": "S0020201201"
+   },
+   {
+    "nim": "2401000102",
+    "nama_mahasiswa": "Bayu Permatasari",
+    "judul_karya": "Aplikasi kartu kosakata bahasa daerah",
+    "tahun": "{TS}-06-15",
+    "no_paten": "S0030201202"
+   }
+  ]
+ },
+ "4.2": {
+  "baris": [
+   {
+    "nim": "2401000103",
+    "nama_mahasiswa": "Citra Firmansyah",
+    "judul_karya": "Antologi Cerita Anak Nusantara",
+    "tahun": "{TS-4}-02-10",
+    "keterangan_isbn": "ISBN 978-623-0000-10-0"
+   },
+   {
+    "nim": "2401000104",
+    "nama_mahasiswa": "Dimas Saputra",
+    "judul_karya": "Buku Saku Asesmen Formatif",
+    "tahun": "{TS-3}-03-11",
+    "keterangan_isbn": "ISBN 978-623-0000-11-1"
+   },
+   {
+    "nim": "2401000105",
+    "nama_mahasiswa": "Elsa Fitriani",
+    "judul_karya": "Bunga Rampai Praktik Baik PPL",
+    "tahun": "{TS-2}-04-12",
+    "keterangan_isbn": "ISBN 978-623-0000-12-2"
+   },
+   {
+    "nim": "2401000106",
+    "nama_mahasiswa": "Fajar Gunawan",
+    "judul_karya": "Modul Numerasi Kontekstual",
+    "tahun": "{TS-1}-05-13",
+    "keterangan_isbn": "ISBN 978-623-0000-13-3"
+   },
+   {
+    "nim": "2401000107",
+    "nama_mahasiswa": "Gita Nugraha",
+    "judul_karya": "Panduan Kelas Inklusif",
+    "tahun": "{TS}-06-14",
+    "keterangan_isbn": "ISBN 978-623-0000-14-4"
+   },
+   {
+    "nim": "2401000108",
+    "nama_mahasiswa": "Hanif Wijayanti",
+    "judul_karya": "Kumpulan Puisi Guru Muda",
+    "tahun": "{TS-4}-07-15",
+    "keterangan_isbn": "ISBN 978-623-0000-15-5"
+   },
+   {
+    "nim": "2401000109",
+    "nama_mahasiswa": "Intan Maharani",
+    "judul_karya": "Buku Ajar Literasi Sains SD",
+    "tahun": "{TS-3}-08-16",
+    "keterangan_isbn": "ISBN 978-623-0000-16-6"
+   },
+   {
+    "nim": "2401000110",
+    "nama_mahasiswa": "Jaka Ramadhan",
+    "judul_karya": "Book Chapter: Refleksi Pembelajaran Berdiferensiasi",
+    "tahun": "{TS-2}-09-17",
+    "keterangan_isbn": "ISBN 978-623-0000-17-7"
+   }
+  ]
+ },
+ "4.3": {
+  "baris": [
+   {
+    "nim": "2401000111",
+    "nama_mahasiswa": "Kirana Rahayu",
+    "judul_karya": "Pagelaran Tari Kreasi Ronggeng Guru",
+    "tahun": "{TS-3}-04-05",
+    "bukti": "https://ppg.example.org/karya-seni/1"
+   },
+   {
+    "nim": "2401000112",
+    "nama_mahasiswa": "Luthfi Anggraeni",
+    "judul_karya": "Pameran Lukis Ruang Kelas Impian",
+    "tahun": "{TS-2}-05-06",
+    "bukti": "https://ppg.example.org/karya-seni/2"
+   },
+   {
+    "nim": "2401000113",
+    "nama_mahasiswa": "Mega Kusuma",
+    "judul_karya": "Pentas Drama Musikal Anak Negeri",
+    "tahun": "{TS-1}-06-07",
+    "bukti": "https://ppg.example.org/karya-seni/3"
+   },
+   {
+    "nim": "2401000114",
+    "nama_mahasiswa": "Nanda Pratama",
+    "judul_karya": "Pameran Fotografi Sekolah Pinggiran",
+    "tahun": "{TS}-07-08",
+    "bukti": "https://ppg.example.org/karya-seni/4"
+   },
+   {
+    "nim": "2401000115",
+    "nama_mahasiswa": "Oki Permatasari",
+    "judul_karya": "Konser Angklung Kolaboratif",
+    "tahun": "{TS-3}-08-09",
+    "bukti": "https://ppg.example.org/karya-seni/5"
+   },
+   {
+    "nim": "2401000116",
+    "nama_mahasiswa": "Putri Firmansyah",
+    "judul_karya": "Pameran Kriya Media Ajar Daur Ulang",
+    "tahun": "{TS-2}-09-10",
+    "bukti": "https://ppg.example.org/karya-seni/6"
+   }
+  ]
+ },
+ "4.4": {
+  "baris": [
+   {
+    "nim": "2401000117",
+    "nama_mahasiswa": "Raka Saputra",
+    "judul_artikel": "Penerapan asesmen diagnostik pada pembelajaran pecahan",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 5 No. 1",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 3)",
+    "tahun_terbit": "{TS-4}-03-12",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/1"
+   },
+   {
+    "nim": "2401000118",
+    "nama_mahasiswa": "Salma Fitriani",
+    "judul_artikel": "Media cerita bergambar untuk literasi awal",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 6 No. 2",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 4)",
+    "tahun_terbit": "{TS-3}-04-13",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/2"
+   },
+   {
+    "nim": "2401000119",
+    "nama_mahasiswa": "Tegar Gunawan",
+    "judul_artikel": "Pembelajaran berdiferensiasi di kelas rangkap",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 7 No. 1",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 5)",
+    "tahun_terbit": "{TS-2}-05-14",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/3"
+   },
+   {
+    "nim": "2401000120",
+    "nama_mahasiswa": "Ulfa Nugraha",
+    "judul_artikel": "Refleksi calon guru tentang PPL daring",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 5 No. 2",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 4)",
+    "tahun_terbit": "{TS-1}-06-15",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/4"
+   },
+   {
+    "nim": "2401000121",
+    "nama_mahasiswa": "Vina Wijayanti",
+    "judul_artikel": "Etnomatematika permainan tradisional",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 6 No. 1",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 3)",
+    "tahun_terbit": "{TS}-07-16",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/5"
+   },
+   {
+    "nim": "2401000122",
+    "nama_mahasiswa": "Wahyu Maharani",
+    "judul_artikel": "Strategi umpan balik dalam menulis teks deskripsi",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 7 No. 2",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 5)",
+    "tahun_terbit": "{TS-4}-08-17",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/6"
+   },
+   {
+    "nim": "2401000123",
+    "nama_mahasiswa": "Yuni Ramadhan",
+    "judul_artikel": "Kesiapan calon guru menghadapi kelas inklusif",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 5 No. 1",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 4)",
+    "tahun_terbit": "{TS-3}-09-18",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/7"
+   },
+   {
+    "nim": "2401000124",
+    "nama_mahasiswa": "Zaki Rahayu",
+    "judul_artikel": "Pre-service teachers' noticing in mathematics lessons",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 6 No. 2",
+    "peringkat_jurnal": "Jurnal Internasional",
+    "tahun_terbit": "{TS-2}-10-19",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/8"
+   },
+   {
+    "nim": "2401000125",
+    "nama_mahasiswa": "Anisa Anggraeni",
+    "judul_artikel": "Penggunaan kuis daring untuk asesmen formatif",
+    "keterangan_jurnal": "Jurnal Pendidikan Contoh Vol. 7 No. 1",
+    "peringkat_jurnal": "Jurnal Nasional (SINTA 3)",
+    "tahun_terbit": "{TS-1}-11-20",
+    "tautan_artikel": "https://ppg.example.org/artikel-mahasiswa/9"
+   }
+  ]
+ },
+ "5": {
+  "baris": [
+   {
+    "_baris": "reliability",
+    "sangat_baik": 60,
+    "baik": 30,
+    "cukup": 8,
+    "kurang_baik": 2,
+    "rencana_tindak_lanjut": "Pertahankan; tindak lanjuti 2% responden kurang puas lewat forum mahasiswa"
+   },
+   {
+    "_baris": "responsiveness",
+    "sangat_baik": 60,
+    "baik": 30,
+    "cukup": 8,
+    "kurang_baik": 2,
+    "rencana_tindak_lanjut": "Pertahankan; tindak lanjuti 2% responden kurang puas lewat forum mahasiswa"
+   },
+   {
+    "_baris": "assurance",
+    "sangat_baik": 60,
+    "baik": 30,
+    "cukup": 8,
+    "kurang_baik": 2,
+    "rencana_tindak_lanjut": "Pertahankan; tindak lanjuti 2% responden kurang puas lewat forum mahasiswa"
+   },
+   {
+    "_baris": "empathy",
+    "sangat_baik": 60,
+    "baik": 30,
+    "cukup": 8,
+    "kurang_baik": 2,
+    "rencana_tindak_lanjut": "Pertahankan; tindak lanjuti 2% responden kurang puas lewat forum mahasiswa"
+   },
+   {
+    "_baris": "tangible",
+    "sangat_baik": 60,
+    "baik": 30,
+    "cukup": 8,
+    "kurang_baik": 2,
+    "rencana_tindak_lanjut": "Pertahankan; tindak lanjuti 2% responden kurang puas lewat forum mahasiswa"
+   }
+  ]
+ },
+ "6": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "nidn_nidk": "0410126501",
+    "nuptk": "7712650007",
+    "magister": "Pendidikan Dasar",
+    "doktor": "Pendidikan Dasar",
+    "bidang_keahlian": "Kurikulum dan Pembelajaran",
+    "jabatan_akademik": "Guru Besar",
+    "sertifikat_pendidik": "SD-0410126501",
+    "mk_diampu_ps": "Pemahaman tentang Peserta Didik dan Pembelajarannya; Prinsip Pengajaran dan Asesmen I"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "nidn_nidk": "0415037202",
+    "nuptk": "7703720014",
+    "magister": "Pendidikan Matematika",
+    "doktor": "Pendidikan Matematika",
+    "bidang_keahlian": "Asesmen Pembelajaran",
+    "jabatan_akademik": "Lektor Kepala",
+    "sertifikat_pendidik": "SD-0415037202",
+    "mk_diampu_ps": "Prinsip Pengajaran dan Asesmen I; Pendidikan Inklusif"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "nidn_nidk": "0402087403",
+    "nuptk": "7708740021",
+    "magister": "Psikologi Pendidikan",
+    "doktor": "Psikologi Pendidikan",
+    "bidang_keahlian": "Psikologi Perkembangan",
+    "jabatan_akademik": "Lektor Kepala",
+    "sertifikat_pendidik": "SD-0402087403",
+    "mk_diampu_ps": "Pendidikan Inklusif; Praktik Pengalaman Lapangan I"
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "nidn_nidk": "0421058104",
+    "nuptk": "7705810028",
+    "magister": "Teknologi Pendidikan",
+    "bidang_keahlian": "Teknologi Pembelajaran",
+    "jabatan_akademik": "Lektor",
+    "sertifikat_pendidik": "SD-0421058104",
+    "mk_diampu_ps": "Praktik Pengalaman Lapangan I; Prinsip Pengajaran dan Asesmen II"
+   },
+   {
+    "nama_dtps": "Agus Permana, M.Pd.",
+    "nidn_nidk": "0408118205",
+    "nuptk": "7711820035",
+    "magister": "Administrasi Pendidikan",
+    "bidang_keahlian": "Manajemen Pendidikan",
+    "jabatan_akademik": "Lektor",
+    "sertifikat_pendidik": "SD-0408118205",
+    "mk_diampu_ps": "Prinsip Pengajaran dan Asesmen II; Pengembangan Perangkat Pembelajaran Bidang Studi"
+   },
+   {
+    "nama_dtps": "Dewi Kurniasih, M.Pd.",
+    "nidn_nidk": "0419098806",
+    "nuptk": "7709880042",
+    "magister": "Bimbingan dan Konseling",
+    "bidang_keahlian": "Bimbingan dan Konseling",
+    "jabatan_akademik": "Asisten Ahli",
+    "sertifikat_pendidik": "SD-0419098806",
+    "mk_diampu_ps": "Pengembangan Perangkat Pembelajaran Bidang Studi; Praktik Pengalaman Lapangan II"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "nidn_nidk": "0405067507",
+    "nuptk": "7706750049",
+    "magister": "Pendidikan Dasar",
+    "doktor": "Pendidikan Dasar",
+    "bidang_keahlian": "Pembelajaran IPA SD",
+    "jabatan_akademik": "Lektor Kepala",
+    "sertifikat_pendidik": "SD-0405067507",
+    "mk_diampu_ps": "Praktik Pengalaman Lapangan II; Seminar Pendidikan Profesi Guru"
+   },
+   {
+    "nama_dtps": "Rina Marlina, M.Pd.",
+    "nidn_nidk": "0427028308",
+    "nuptk": "7702830056",
+    "magister": "Pendidikan Dasar",
+    "bidang_keahlian": "Literasi Awal",
+    "jabatan_akademik": "Lektor",
+    "sertifikat_pendidik": "SD-0427028308",
+    "mk_diampu_ps": "Seminar Pendidikan Profesi Guru; Proyek Kepemimpinan"
+   }
+  ]
+ },
+ "7": {
+  "baris": [
+   {
+    "nama_bidang_studi": "PGSD",
+    "nama_dosen": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "nidn_nidk": "0405067507",
+    "nuptk": "7706750049",
+    "magister": "Pendidikan Dasar",
+    "doktor": "Pendidikan Dasar",
+    "bidang_keahlian": "Pembelajaran IPA SD",
+    "jabatan_akademik": "Lektor Kepala",
+    "sertifikat_pendidik": "SD-0405067507",
+    "mk_diampu_ps": "Praktik Pengalaman Lapangan II; Seminar Pendidikan Profesi Guru",
+    "kesesuaian_bidang": true,
+    "prodi_homebase": "S1 PGSD"
+   },
+   {
+    "nama_bidang_studi": "PGSD",
+    "nama_dosen": "Rina Marlina, M.Pd.",
+    "nidn_nidk": "0427028308",
+    "nuptk": "7702830056",
+    "magister": "Pendidikan Dasar",
+    "bidang_keahlian": "Literasi Awal",
+    "jabatan_akademik": "Lektor",
+    "sertifikat_pendidik": "SD-0427028308",
+    "mk_diampu_ps": "Seminar Pendidikan Profesi Guru; Proyek Kepemimpinan",
+    "kesesuaian_bidang": true,
+    "prodi_homebase": "S1 PGSD"
+   },
+   {
+    "nama_bidang_studi": "Pendidikan Matematika",
+    "nama_dosen": "Dr. Taufik Rahmansyah, M.Pd.",
+    "nidn_nidk": "0413108609",
+    "nuptk": "7710860063",
+    "magister": "Pendidikan Matematika",
+    "doktor": "Pendidikan Matematika",
+    "bidang_keahlian": "Pemecahan Masalah Matematis",
+    "jabatan_akademik": "Asisten Ahli",
+    "sertifikat_pendidik": "SD-0413108609",
+    "mk_diampu_ps": "Proyek Kepemimpinan; Filosofi Pendidikan Indonesia",
+    "kesesuaian_bidang": true,
+    "prodi_homebase": "S1 Pendidikan Matematika"
+   },
+   {
+    "nama_bidang_studi": "Pendidikan Matematika",
+    "nama_dosen": "Euis Komalasari, M.Pd.",
+    "nidn_nidk": "0430048410",
+    "nuptk": "7704840070",
+    "magister": "Pendidikan Matematika",
+    "bidang_keahlian": "Etnomatematika",
+    "jabatan_akademik": "Lektor",
+    "sertifikat_pendidik": "SD-0430048410",
+    "mk_diampu_ps": "Filosofi Pendidikan Indonesia; Pemahaman tentang Peserta Didik dan Pembelajarannya",
+    "kesesuaian_bidang": true,
+    "prodi_homebase": "S1 Pendidikan Matematika"
+   },
+   {
+    "nama_bidang_studi": "Pendidikan Bahasa Indonesia",
+    "nama_dosen": "Dadan Ramdani, M.Pd.",
+    "nidn_nidk": "0411078911",
+    "nuptk": "7707890077",
+    "magister": "Pendidikan Bahasa Indonesia",
+    "bidang_keahlian": "Keterampilan Menulis",
+    "jabatan_akademik": "Asisten Ahli",
+    "sertifikat_pendidik": "SD-0411078911",
+    "mk_diampu_ps": "Pemahaman tentang Peserta Didik dan Pembelajarannya; Prinsip Pengajaran dan Asesmen I",
+    "kesesuaian_bidang": true,
+    "prodi_homebase": "S1 Pendidikan Bahasa Indonesia"
+   },
+   {
+    "nama_bidang_studi": "Pendidikan Bahasa Indonesia",
+    "nama_dosen": "Neng Sri Wulandari, M.Pd.",
+    "nidn_nidk": "0424129012",
+    "nuptk": "7712900084",
+    "magister": "Pendidikan Bahasa Indonesia",
+    "bidang_keahlian": "Sastra Anak",
+    "jabatan_akademik": "Asisten Ahli",
+    "sertifikat_pendidik": "SD-0424129012",
+    "mk_diampu_ps": "Prinsip Pengajaran dan Asesmen I; Pendidikan Inklusif",
+    "kesesuaian_bidang": true,
+    "prodi_homebase": "S1 Pendidikan Bahasa Indonesia"
+   }
+  ]
+ },
+ "8": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "sks_ps_diakreditasi": 10,
+    "sks_ps_lain_dalam_pt": 2,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 4.0,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 6.0,
+    "bukti": "https://ppg.example.org/bkd/D01"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "sks_ps_diakreditasi": 11,
+    "sks_ps_lain_dalam_pt": 3,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 4.5,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 5.5,
+    "bukti": "https://ppg.example.org/bkd/D02"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "sks_ps_diakreditasi": 12,
+    "sks_ps_lain_dalam_pt": 2,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 5.0,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 7.0,
+    "bukti": "https://ppg.example.org/bkd/D03"
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "sks_ps_diakreditasi": 10,
+    "sks_ps_lain_dalam_pt": 3,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 5.5,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 3.5,
+    "bukti": "https://ppg.example.org/bkd/D04"
+   },
+   {
+    "nama_dtps": "Agus Permana, M.Pd.",
+    "sks_ps_diakreditasi": 11,
+    "sks_ps_lain_dalam_pt": 2,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 4.0,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 7.0,
+    "bukti": "https://ppg.example.org/bkd/D05"
+   },
+   {
+    "nama_dtps": "Dewi Kurniasih, M.Pd.",
+    "sks_ps_diakreditasi": 12,
+    "sks_ps_lain_dalam_pt": 3,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 4.5,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 6.5,
+    "bukti": "https://ppg.example.org/bkd/D06"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "sks_ps_diakreditasi": 10,
+    "sks_ps_lain_dalam_pt": 2,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 5.0,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 5.0,
+    "bukti": "https://ppg.example.org/bkd/D07"
+   },
+   {
+    "nama_dtps": "Rina Marlina, M.Pd.",
+    "sks_ps_diakreditasi": 11,
+    "sks_ps_lain_dalam_pt": 3,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 5.5,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 4.5,
+    "bukti": "https://ppg.example.org/bkd/D08"
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "sks_ps_diakreditasi": 12,
+    "sks_ps_lain_dalam_pt": 2,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 4.0,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 8.0,
+    "bukti": "https://ppg.example.org/bkd/D09"
+   },
+   {
+    "nama_dtps": "Euis Komalasari, M.Pd.",
+    "sks_ps_diakreditasi": 10,
+    "sks_ps_lain_dalam_pt": 3,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 4.5,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 4.5,
+    "bukti": "https://ppg.example.org/bkd/D10"
+   },
+   {
+    "nama_dtps": "Dadan Ramdani, M.Pd.",
+    "sks_ps_diakreditasi": 11,
+    "sks_ps_lain_dalam_pt": 2,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 5.0,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 6.0,
+    "bukti": "https://ppg.example.org/bkd/D11"
+   },
+   {
+    "nama_dtps": "Neng Sri Wulandari, M.Pd.",
+    "sks_ps_diakreditasi": 12,
+    "sks_ps_lain_dalam_pt": 3,
+    "sks_ps_lain_luar_pt": 0,
+    "sks_penelitian": 5.5,
+    "sks_pkm": 3,
+    "sks_tugas_tambahan": 5.5,
+    "bukti": "https://ppg.example.org/bkd/D12"
+   }
+  ]
+ },
+ "9": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "bidang_keahlian": "Kurikulum dan Pembelajaran",
+    "deskripsi_rekognisi": "Keynote speaker Konferensi Internasional Pendidikan Guru",
+    "jenis_rekognisi": "Keynote speaker/invited speaker",
+    "tahun": "{TS-1}",
+    "tingkat": "Internasional",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/1"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "bidang_keahlian": "Kurikulum dan Pembelajaran",
+    "deskripsi_rekognisi": "Staf ahli penyusunan standar PPG",
+    "jenis_rekognisi": "Staf ahli/narasumber",
+    "tahun": "{TS-2}",
+    "tingkat": "Nasional",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/2"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "bidang_keahlian": "Asesmen Pembelajaran",
+    "deskripsi_rekognisi": "Mitra bestari Jurnal Pendidikan Matematika Nusantara",
+    "jenis_rekognisi": "Editor atau mitra bestari",
+    "tahun": "{TS}",
+    "tingkat": "Nasional",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/3"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "bidang_keahlian": "Asesmen Pembelajaran",
+    "deskripsi_rekognisi": "Visiting scholar di universitas mitra Malaysia",
+    "jenis_rekognisi": "Visiting lecturer atau visiting scholar",
+    "tahun": "{TS-1}",
+    "tingkat": "Internasional",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/4"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "bidang_keahlian": "Psikologi Perkembangan",
+    "deskripsi_rekognisi": "Narasumber pelatihan guru BK provinsi",
+    "jenis_rekognisi": "Staf ahli/narasumber",
+    "tahun": "{TS-2}",
+    "tingkat": "Lokal/Wilayah",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/5"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "bidang_keahlian": "Pembelajaran IPA SD",
+    "deskripsi_rekognisi": "Penghargaan dosen berprestasi tingkat universitas",
+    "jenis_rekognisi": "Penghargaan atas prestasi dan kinerja",
+    "tahun": "{TS-1}",
+    "tingkat": "Lokal/Wilayah",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/6"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "bidang_keahlian": "Pembelajaran IPA SD",
+    "deskripsi_rekognisi": "Invited speaker seminar nasional pendidikan dasar",
+    "jenis_rekognisi": "Keynote speaker/invited speaker",
+    "tahun": "{TS}",
+    "tingkat": "Nasional",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/7"
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "bidang_keahlian": "Pemecahan Masalah Matematis",
+    "deskripsi_rekognisi": "Editor jurnal pemecahan masalah matematis",
+    "jenis_rekognisi": "Editor atau mitra bestari",
+    "tahun": "{TS}",
+    "tingkat": "Nasional",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/8"
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "bidang_keahlian": "Teknologi Pembelajaran",
+    "deskripsi_rekognisi": "Narasumber teknologi pembelajaran dinas pendidikan",
+    "jenis_rekognisi": "Staf ahli/narasumber",
+    "tahun": "{TS-1}",
+    "tingkat": "Lokal/Wilayah",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/9"
+   },
+   {
+    "nama_dtps": "Euis Komalasari, M.Pd.",
+    "bidang_keahlian": "Etnomatematika",
+    "deskripsi_rekognisi": "Narasumber etnomatematika pada MGMP kota",
+    "jenis_rekognisi": "Staf ahli/narasumber",
+    "tahun": "{TS-2}",
+    "tingkat": "Lokal/Wilayah",
+    "bukti_pendukung": "https://ppg.example.org/rekognisi/10"
+   }
+  ]
+ },
+ "10": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "deskripsi_kegiatan": "Pelatihan asesmen autentik (angkatan 1)",
+    "tempat": "Jakarta",
+    "waktu_pelaksanaan": "{TS-2}-02-03",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/1"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "deskripsi_kegiatan": "Lokakarya pembelajaran berdiferensiasi (angkatan 2)",
+    "tempat": "Bandung",
+    "waktu_pelaksanaan": "{TS-1}-03-05",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/2"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "deskripsi_kegiatan": "Sertifikasi asesor PPG (angkatan 3)",
+    "tempat": "Yogyakarta",
+    "waktu_pelaksanaan": "{TS}-04-07",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/3"
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "deskripsi_kegiatan": "Pelatihan penulisan artikel bereputasi (angkatan 4)",
+    "tempat": "Surabaya",
+    "waktu_pelaksanaan": "{TS-2}-05-09",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/4"
+   },
+   {
+    "nama_dtps": "Agus Permana, M.Pd.",
+    "deskripsi_kegiatan": "Bimtek pembimbingan PPL (angkatan 5)",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS-1}-06-11",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/5"
+   },
+   {
+    "nama_dtps": "Dewi Kurniasih, M.Pd.",
+    "deskripsi_kegiatan": "Pelatihan pembelajaran sosial emosional (angkatan 6)",
+    "tempat": "Jakarta",
+    "waktu_pelaksanaan": "{TS}-07-13",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/6"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "deskripsi_kegiatan": "Kursus singkat literasi digital (angkatan 7)",
+    "tempat": "Bandung",
+    "waktu_pelaksanaan": "{TS-2}-08-15",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/7"
+   },
+   {
+    "nama_dtps": "Rina Marlina, M.Pd.",
+    "deskripsi_kegiatan": "Magang dosen di sekolah mitra (angkatan 8)",
+    "tempat": "Yogyakarta",
+    "waktu_pelaksanaan": "{TS-1}-09-17",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/8"
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "deskripsi_kegiatan": "Pelatihan etnomatematika (angkatan 9)",
+    "tempat": "Surabaya",
+    "waktu_pelaksanaan": "{TS}-10-19",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/9"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "deskripsi_kegiatan": "Pelatihan asesmen autentik (angkatan 10)",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS-2}-11-21",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/10"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "deskripsi_kegiatan": "Lokakarya pembelajaran berdiferensiasi (angkatan 11)",
+    "tempat": "Jakarta",
+    "waktu_pelaksanaan": "{TS-1}-02-23",
+    "manfaat_kegiatan": "Peningkatan kompetensi pembimbingan calon guru",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-dosen/11"
+   }
+  ]
+ },
+ "11": {
+  "baris": [
+   {
+    "_baris": "pustakawan",
+    "s1": 1,
+    "d3": 1,
+    "unit_kerja": "Perpustakaan Fakultas"
+   },
+   {
+    "_baris": "laboran_teknisi",
+    "s1": 1,
+    "d3": 2,
+    "unit_kerja": "Laboratorium Microteaching"
+   },
+   {
+    "_baris": "administrasi",
+    "s2": 1,
+    "s1": 4,
+    "sma_smk": 1,
+    "unit_kerja": "Tata Usaha Prodi PPG"
+   },
+   {
+    "_baris": "lainnya",
+    "sma_smk": 1,
+    "unit_kerja": "Pengemudi dan Kurir Dokumen PPL"
+   }
+  ]
+ },
+ "12": {
+  "baris": [
+   {
+    "nama_tendik": "Lina Herlina, A.Md.",
+    "deskripsi_kegiatan": "Pelatihan otomasi perpustakaan",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS-2}-04-08",
+    "manfaat_kegiatan": "Peningkatan layanan tendik",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-tendik/1"
+   },
+   {
+    "nama_tendik": "Asep Saepudin, S.Kom.",
+    "deskripsi_kegiatan": "Pelatihan administrator LMS",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS-1}-05-09",
+    "manfaat_kegiatan": "Peningkatan layanan tendik",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-tendik/2"
+   },
+   {
+    "nama_tendik": "Yuliani Sari, S.E.",
+    "deskripsi_kegiatan": "Pelatihan pengelolaan keuangan BLU",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS}-06-10",
+    "manfaat_kegiatan": "Peningkatan layanan tendik",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-tendik/3"
+   },
+   {
+    "nama_tendik": "Iwan Setiawan, S.Pd.",
+    "deskripsi_kegiatan": "Pelatihan tata kelola data PDDikti",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS-2}-07-11",
+    "manfaat_kegiatan": "Peningkatan layanan tendik",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-tendik/4"
+   },
+   {
+    "nama_tendik": "Asep Saepudin, S.Kom.",
+    "deskripsi_kegiatan": "Sertifikasi teknisi jaringan dasar",
+    "tempat": "Kampus Utama",
+    "waktu_pelaksanaan": "{TS-1}-08-12",
+    "manfaat_kegiatan": "Peningkatan layanan tendik",
+    "bukti_kegiatan": "https://ppg.example.org/sertifikat-tendik/5"
+   }
+  ]
+ },
+ "13": {
+  "baris": [
+   {
+    "bidang_studi": "PGSD",
+    "nama_guru_pamong": "Ratna Juwita, M.Pd.",
+    "jabatan_fungsional": "Guru Madya",
+    "pendidikan_tertinggi": "Magister/Magister Terapan",
+    "no_serdik": "181000020231",
+    "nama_sekolah": "SD Negeri 1 Sukamaju",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/1",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/1"
+   },
+   {
+    "bidang_studi": "PGSD",
+    "nama_guru_pamong": "Ujang Sukmana, S.Pd.",
+    "jabatan_fungsional": "Guru Muda",
+    "pendidikan_tertinggi": "Sarjana/Sarjana Terapan",
+    "no_serdik": "181000020268",
+    "nama_sekolah": "SD Negeri 4 Cibeureum",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/2",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/2"
+   },
+   {
+    "bidang_studi": "PGSD",
+    "nama_guru_pamong": "Heni Rohaeni, M.Pd.",
+    "jabatan_fungsional": "Guru Muda",
+    "pendidikan_tertinggi": "Magister/Magister Terapan",
+    "no_serdik": "181000020305",
+    "nama_sekolah": "SD Islam Terpadu Al-Hikmah Sukasari",
+    "akreditasi_sekolah": "B (Baik)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/3",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/3"
+   },
+   {
+    "bidang_studi": "Pendidikan Matematika",
+    "nama_guru_pamong": "Dedi Supriadi, M.Pd.",
+    "jabatan_fungsional": "Guru Utama",
+    "pendidikan_tertinggi": "Magister/Magister Terapan",
+    "no_serdik": "181000020342",
+    "nama_sekolah": "SMP Negeri 2 Mekarjaya",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/4",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/4"
+   },
+   {
+    "bidang_studi": "Pendidikan Matematika",
+    "nama_guru_pamong": "Nurlaela, S.Pd.",
+    "jabatan_fungsional": "Guru Pertama",
+    "pendidikan_tertinggi": "Sarjana/Sarjana Terapan",
+    "no_serdik": "181000020379",
+    "nama_sekolah": "SMP Negeri 5 Tawangsari",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/5",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/5"
+   },
+   {
+    "bidang_studi": "Pendidikan Matematika",
+    "nama_guru_pamong": "Wawan Kurniawan, M.Pd.",
+    "jabatan_fungsional": "Guru Madya",
+    "pendidikan_tertinggi": "Magister/Magister Terapan",
+    "no_serdik": "181000020416",
+    "nama_sekolah": "SMA Negeri 3 Sindangkasih",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/6",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/6"
+   },
+   {
+    "bidang_studi": "Pendidikan Bahasa Indonesia",
+    "nama_guru_pamong": "Sri Mulyati, M.Pd.",
+    "jabatan_fungsional": "Guru Madya",
+    "pendidikan_tertinggi": "Magister/Magister Terapan",
+    "no_serdik": "181000020453",
+    "nama_sekolah": "SMP Plus Bina Insani",
+    "akreditasi_sekolah": "B (Baik)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/7",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/7"
+   },
+   {
+    "bidang_studi": "Pendidikan Bahasa Indonesia",
+    "nama_guru_pamong": "Tatang Sutarman, S.Pd.",
+    "jabatan_fungsional": "Guru Muda",
+    "pendidikan_tertinggi": "Sarjana/Sarjana Terapan",
+    "no_serdik": "181000020490",
+    "nama_sekolah": "SMA Negeri 3 Sindangkasih",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/8",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/8"
+   },
+   {
+    "bidang_studi": "Pendidikan Bahasa Indonesia",
+    "nama_guru_pamong": "Imas Masitoh, M.Pd.",
+    "jabatan_fungsional": "Guru Muda",
+    "pendidikan_tertinggi": "Magister/Magister Terapan",
+    "no_serdik": "181000020527",
+    "nama_sekolah": "SMP Negeri 2 Mekarjaya",
+    "akreditasi_sekolah": "A (Unggul)",
+    "bukti_kerjasama": "https://ppg.example.org/pks-sekolah/9",
+    "st_guru_pamong": "https://ppg.example.org/st-gp/9"
+   }
+  ]
+ },
+ "14": {
+  "baris": [
+   {
+    "_baris": "biaya_dosen",
+    "upps_ts2": 4560000000,
+    "upps_ts1": 4800000000,
+    "upps_ts": 5040000000,
+    "ps_ts2": 1140000000,
+    "ps_ts1": 1200000000,
+    "ps_ts": 1260000000
+   },
+   {
+    "_baris": "biaya_tendik",
+    "upps_ts2": 1140000000,
+    "upps_ts1": 1200000000,
+    "upps_ts": 1260000000,
+    "ps_ts2": 285000000,
+    "ps_ts1": 300000000,
+    "ps_ts": 315000000
+   },
+   {
+    "_baris": "biaya_operasional_pembelajaran",
+    "upps_ts2": 2052000000,
+    "upps_ts1": 2160000000,
+    "upps_ts": 2268000000,
+    "ps_ts2": 513000000,
+    "ps_ts1": 540000000,
+    "ps_ts": 567000000
+   },
+   {
+    "_baris": "biaya_operasional_tidak_langsung",
+    "upps_ts2": 912000000,
+    "upps_ts1": 960000000,
+    "upps_ts": 1008000000,
+    "ps_ts2": 228000000,
+    "ps_ts1": 240000000,
+    "ps_ts": 252000000
+   },
+   {
+    "_baris": "biaya_kemahasiswaan",
+    "upps_ts2": 456000000,
+    "upps_ts1": 480000000,
+    "upps_ts": 504000000,
+    "ps_ts2": 114000000,
+    "ps_ts1": 120000000,
+    "ps_ts": 126000000
+   },
+   {
+    "_baris": "biaya_penelitian",
+    "upps_ts2": 364800000,
+    "upps_ts1": 384000000,
+    "upps_ts": 403200000,
+    "ps_ts2": 91200000,
+    "ps_ts1": 96000000,
+    "ps_ts": 100800000
+   },
+   {
+    "_baris": "biaya_pkm",
+    "upps_ts2": 182400000,
+    "upps_ts1": 192000000,
+    "upps_ts": 201600000,
+    "ps_ts2": 45600000,
+    "ps_ts1": 48000000,
+    "ps_ts": 50400000
+   },
+   {
+    "_baris": "investasi_sdm",
+    "upps_ts2": 228000000,
+    "upps_ts1": 240000000,
+    "upps_ts": 252000000,
+    "ps_ts2": 57000000,
+    "ps_ts1": 60000000,
+    "ps_ts": 63000000
+   },
+   {
+    "_baris": "investasi_sarana",
+    "upps_ts2": 684000000,
+    "upps_ts1": 720000000,
+    "upps_ts": 756000000,
+    "ps_ts2": 171000000,
+    "ps_ts1": 180000000,
+    "ps_ts": 189000000
+   },
+   {
+    "_baris": "investasi_prasarana",
+    "upps_ts2": 1140000000,
+    "upps_ts1": 1200000000,
+    "upps_ts": 1260000000,
+    "ps_ts2": 285000000,
+    "ps_ts1": 300000000,
+    "ps_ts": 315000000
+   }
+  ]
+ },
+ "15": {
+  "baris": [
+   {
+    "nama_ruang": "Laboratorium Microteaching",
+    "nama_alat": "Kamera perekam dan monitor",
+    "kualitas": "Sangat Baik",
+    "jumlah": 6,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat",
+    "jam_per_minggu": 30
+   },
+   {
+    "nama_ruang": "Laboratorium Microteaching",
+    "nama_alat": "Papan interaktif",
+    "kualitas": "Baik",
+    "jumlah": 2,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat",
+    "jam_per_minggu": 25
+   },
+   {
+    "nama_ruang": "Laboratorium Komputer PPG",
+    "nama_alat": "Komputer meja",
+    "kualitas": "Baik",
+    "jumlah": 40,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat",
+    "jam_per_minggu": 36
+   },
+   {
+    "nama_ruang": "Laboratorium Matematika",
+    "nama_alat": "Alat peraga geometri",
+    "kualitas": "Baik",
+    "jumlah": 15,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat",
+    "jam_per_minggu": 12
+   },
+   {
+    "nama_ruang": "Ruang Sumber Belajar",
+    "nama_alat": "Koleksi buku bacaan anak",
+    "kualitas": "Sangat Baik",
+    "jumlah": 850,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat",
+    "jam_per_minggu": 20
+   }
+  ]
+ },
+ "16": {
+  "baris": [
+   {
+    "nama_prasarana": "Ruang kuliah PPG",
+    "fungsi": "Perkuliahan tatap muka dan lokakarya",
+    "jumlah_unit": 8,
+    "total_luas_m2": 560.0,
+    "kualitas": "Sangat Baik",
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   },
+   {
+    "nama_prasarana": "Ruang microteaching",
+    "fungsi": "Praktik mengajar terbimbing",
+    "jumlah_unit": 3,
+    "total_luas_m2": 180.0,
+    "kualitas": "Baik",
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   },
+   {
+    "nama_prasarana": "Ruang dosen",
+    "fungsi": "Kerja dan konsultasi dosen",
+    "jumlah_unit": 1,
+    "total_luas_m2": 120.0,
+    "kualitas": "Baik",
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   },
+   {
+    "nama_prasarana": "Aula seminar",
+    "fungsi": "Seminar PPG dan ujian kinerja",
+    "jumlah_unit": 1,
+    "total_luas_m2": 300.0,
+    "kualitas": "Baik",
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   }
+  ]
+ },
+ "17": {
+  "baris": [
+   {
+    "nama_sistem": "Sistem Informasi Akademik",
+    "deskripsi": "Pengelolaan KRS, nilai, dan transkrip",
+    "jumlah": 1,
+    "terintegrasi": "Terintegrasi Penuh",
+    "mutakhir": "Mutahir",
+    "ketersediaan_panduan": true,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   },
+   {
+    "nama_sistem": "Learning Management System",
+    "deskripsi": "Perkuliahan daring dan penugasan",
+    "jumlah": 1,
+    "terintegrasi": "Terintegrasi Penuh",
+    "mutakhir": "Mutahir",
+    "ketersediaan_panduan": true,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   },
+   {
+    "nama_sistem": "Sistem Informasi PPL",
+    "deskripsi": "Penempatan dan jurnal PPL",
+    "jumlah": 1,
+    "terintegrasi": "Terintegrasi Sebagian",
+    "mutakhir": "Mutahir",
+    "ketersediaan_panduan": true,
+    "kepemilikan": "Milik Sendiri",
+    "kondisi": "Terawat"
+   },
+   {
+    "nama_sistem": "Perpustakaan Digital",
+    "deskripsi": "Akses jurnal dan e-book",
+    "jumlah": 1,
+    "terintegrasi": "Terintegrasi Sebagian",
+    "mutakhir": "Mutahir",
+    "ketersediaan_panduan": true,
+    "kepemilikan": "Sewa",
+    "kondisi": "Terawat"
+   }
+  ]
+ },
+ "18": {
+  "baris": [
+   {
+    "semester": 1,
+    "kode_mk": "PPG101",
+    "nama_mk": "Filosofi Pendidikan Indonesia",
+    "mk_inti": true,
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG101",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG101"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG102",
+    "nama_mk": "Pemahaman tentang Peserta Didik dan Pembelajarannya",
+    "mk_inti": true,
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG102",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG102"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG103",
+    "nama_mk": "Prinsip Pengajaran dan Asesmen I",
+    "mk_inti": true,
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 1,
+    "tautan_rps": "https://ppg.example.org/rps/PPG103",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG103"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG104",
+    "nama_mk": "Pendidikan Inklusif",
+    "mk_inti": true,
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG104",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG104"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG105",
+    "nama_mk": "Praktik Pengalaman Lapangan I",
+    "mk_inti": true,
+    "sks_kuliah": 0,
+    "sks_seminar": 0,
+    "sks_praktikum": 4,
+    "tautan_rps": "https://ppg.example.org/rps/PPG105",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG105"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG201",
+    "nama_mk": "Prinsip Pengajaran dan Asesmen II",
+    "mk_inti": true,
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 1,
+    "tautan_rps": "https://ppg.example.org/rps/PPG201",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG201"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG202",
+    "nama_mk": "Pengembangan Perangkat Pembelajaran Bidang Studi",
+    "mk_inti": true,
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 1,
+    "tautan_rps": "https://ppg.example.org/rps/PPG202",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG202"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG203",
+    "nama_mk": "Praktik Pengalaman Lapangan II",
+    "mk_inti": true,
+    "sks_kuliah": 0,
+    "sks_seminar": 0,
+    "sks_praktikum": 6,
+    "tautan_rps": "https://ppg.example.org/rps/PPG203",
+    "tautan_asesmen_cpl": "https://ppg.example.org/asesmen-cpl/PPG203"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG204",
+    "nama_mk": "Seminar Pendidikan Profesi Guru",
+    "mk_inti": true,
+    "sks_kuliah": 0,
+    "sks_seminar": 2,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG204"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG205",
+    "nama_mk": "Proyek Kepemimpinan",
+    "mk_inti": true,
+    "sks_kuliah": 1,
+    "sks_seminar": 0,
+    "sks_praktikum": 1,
+    "tautan_rps": "https://ppg.example.org/rps/PPG205"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG106",
+    "nama_mk": "Pembelajaran Sosial Emosional",
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG106"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG107",
+    "nama_mk": "Literasi Digital dalam Pembelajaran",
+    "sks_kuliah": 1,
+    "sks_seminar": 0,
+    "sks_praktikum": 1,
+    "tautan_rps": "https://ppg.example.org/rps/PPG107"
+   },
+   {
+    "semester": 1,
+    "kode_mk": "PPG108",
+    "nama_mk": "Etika Profesi Guru",
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG108"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG206",
+    "nama_mk": "Bimbingan dan Konseling di Sekolah",
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG206"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG207",
+    "nama_mk": "Teknologi Baru dalam Pembelajaran",
+    "sks_kuliah": 1,
+    "sks_seminar": 0,
+    "sks_praktikum": 1,
+    "tautan_rps": "https://ppg.example.org/rps/PPG207"
+   },
+   {
+    "semester": 2,
+    "kode_mk": "PPG208",
+    "nama_mk": "Kepemimpinan Sekolah",
+    "sks_kuliah": 2,
+    "sks_seminar": 0,
+    "sks_praktikum": 0,
+    "tautan_rps": "https://ppg.example.org/rps/PPG208"
+   }
+  ]
+ },
+ "19": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_penelitian_pkm": "Model kurikulum operasional sekolah penggerak",
+    "mata_kuliah": "Filosofi Pendidikan Indonesia",
+    "bentuk_integrasi": "Bab/Subab dalam Buku Ajar",
+    "ts2": true,
+    "bukti": "https://ppg.example.org/integrasi/1"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_penelitian_pkm": "Asesmen diagnostik numerasi calon guru",
+    "mata_kuliah": "Prinsip Pengajaran dan Asesmen I",
+    "bentuk_integrasi": "Studi Kasus",
+    "ts1": true,
+    "bukti": "https://ppg.example.org/integrasi/2"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_penelitian_pkm": "Umpan balik formatif pada praktik mengajar",
+    "mata_kuliah": "Prinsip Pengajaran dan Asesmen I",
+    "bentuk_integrasi": "Tambahan Materi Perkuliahan",
+    "ts": true,
+    "bukti": "https://ppg.example.org/integrasi/3"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_penelitian_pkm": "Profil perkembangan sosial emosional siswa SD",
+    "mata_kuliah": "Pemahaman tentang Peserta Didik dan Pembelajarannya",
+    "bentuk_integrasi": "Bahan Ajar",
+    "ts2": true,
+    "ts1": true,
+    "bukti": "https://ppg.example.org/integrasi/4"
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "judul_penelitian_pkm": "Pemanfaatan video refleksi dalam microteaching",
+    "mata_kuliah": "Pengembangan Perangkat Pembelajaran Bidang Studi",
+    "bentuk_integrasi": "Tambahan Materi Perkuliahan",
+    "ts1": true,
+    "bukti": "https://ppg.example.org/integrasi/5"
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "judul_penelitian_pkm": "Pendampingan guru IPA SD dalam inkuiri terbimbing",
+    "mata_kuliah": "Pengembangan Perangkat Pembelajaran Bidang Studi",
+    "bentuk_integrasi": "Studi Kasus",
+    "ts": true,
+    "bukti": "https://ppg.example.org/integrasi/6"
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "judul_penelitian_pkm": "Pemecahan masalah matematis berbasis konteks lokal",
+    "mata_kuliah": "Prinsip Pengajaran dan Asesmen I",
+    "bentuk_integrasi": "Bahan Ajar",
+    "ts1": true,
+    "ts": true,
+    "bukti": "https://ppg.example.org/integrasi/7"
+   },
+   {
+    "nama_dtps": "Euis Komalasari, M.Pd.",
+    "judul_penelitian_pkm": "Etnomatematika permainan tradisional Sunda",
+    "mata_kuliah": "Pemahaman tentang Peserta Didik dan Pembelajarannya",
+    "bentuk_integrasi": "Bentuk Lain yang Relevan",
+    "ts2": true,
+    "bukti": "https://ppg.example.org/integrasi/8"
+   }
+  ]
+ },
+ "20": {
+  "baris": [
+   {
+    "nama_dosen_pembimbing": "Siti Nurhalimah, M.Pd.",
+    "bimbingan_ts2": 24,
+    "bimbingan_ts1": 26,
+    "bimbingan_ts": 28,
+    "pertemuan_ts2": 5,
+    "pertemuan_ts1": 5,
+    "pertemuan_ts": 6,
+    "lama_ppl_bulan": 4.0
+   },
+   {
+    "nama_dosen_pembimbing": "Agus Permana, M.Pd.",
+    "bimbingan_ts2": 22,
+    "bimbingan_ts1": 24,
+    "bimbingan_ts": 25,
+    "pertemuan_ts2": 4,
+    "pertemuan_ts1": 5,
+    "pertemuan_ts": 5,
+    "lama_ppl_bulan": 4.0
+   },
+   {
+    "nama_dosen_pembimbing": "Dewi Kurniasih, M.Pd.",
+    "bimbingan_ts2": 20,
+    "bimbingan_ts1": 22,
+    "bimbingan_ts": 24,
+    "pertemuan_ts2": 4,
+    "pertemuan_ts1": 4,
+    "pertemuan_ts": 5,
+    "lama_ppl_bulan": 4.0
+   },
+   {
+    "nama_dosen_pembimbing": "Rina Marlina, M.Pd.",
+    "bimbingan_ts2": 23,
+    "bimbingan_ts1": 25,
+    "bimbingan_ts": 26,
+    "pertemuan_ts2": 5,
+    "pertemuan_ts1": 6,
+    "pertemuan_ts": 6,
+    "lama_ppl_bulan": 4.0
+   },
+   {
+    "nama_dosen_pembimbing": "Dadan Ramdani, M.Pd.",
+    "bimbingan_ts2": 21,
+    "bimbingan_ts1": 22,
+    "bimbingan_ts": 24,
+    "pertemuan_ts2": 4,
+    "pertemuan_ts1": 5,
+    "pertemuan_ts": 4,
+    "lama_ppl_bulan": 4.0
+   },
+   {
+    "nama_dosen_pembimbing": "Neng Sri Wulandari, M.Pd.",
+    "bimbingan_ts2": 20,
+    "bimbingan_ts1": 21,
+    "bimbingan_ts": 23,
+    "pertemuan_ts2": 5,
+    "pertemuan_ts1": 4,
+    "pertemuan_ts": 5,
+    "lama_ppl_bulan": 4.0
+   }
+  ]
+ },
+ "21": {
+  "baris": [
+   {
+    "_baris": "TS-2",
+    "jumlah_lulusan": 125,
+    "ipk_min": 3.21,
+    "ipk_rata": 3.62,
+    "ipk_maks": 3.96
+   },
+   {
+    "_baris": "TS-1",
+    "jumlah_lulusan": 135,
+    "ipk_min": 3.3,
+    "ipk_rata": 3.7,
+    "ipk_maks": 3.98
+   },
+   {
+    "_baris": "TS",
+    "jumlah_lulusan": 145,
+    "ipk_min": 3.34,
+    "ipk_rata": 3.75,
+    "ipk_maks": 4.0
+   }
+  ]
+ },
+ "22": {
+  "baris": [
+   {
+    "_baris": "TS-2",
+    "diterima": 130,
+    "lulus_akhir_ts2": 125
+   },
+   {
+    "_baris": "TS-1",
+    "diterima": 140,
+    "lulus_akhir_ts1": 135
+   },
+   {
+    "_baris": "TS",
+    "diterima": 150,
+    "lulus_akhir_ts": 145
+   }
+  ]
+ },
+ "23": {
+  "baris": [
+   {
+    "_baris": "TS-4",
+    "jumlah_lulusan": 100,
+    "terlacak": 60,
+    "wt_kurang_6": 50,
+    "wt_6_12": 8,
+    "wt_lebih_12": 2
+   },
+   {
+    "_baris": "TS-3",
+    "jumlah_lulusan": 110,
+    "terlacak": 70,
+    "wt_kurang_6": 60,
+    "wt_6_12": 8,
+    "wt_lebih_12": 2
+   },
+   {
+    "_baris": "TS-2",
+    "jumlah_lulusan": 125,
+    "terlacak": 85,
+    "wt_kurang_6": 75,
+    "wt_6_12": 8,
+    "wt_lebih_12": 2
+   }
+  ]
+ },
+ "24.1": {
+  "baris": [
+   {
+    "_baris": "etika",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "keahlian_bidang_ilmu",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "bahasa_asing",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "teknologi_informasi",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "komunikasi",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "kerjasama_tim",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "pengembangan_diri",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "berpikir_kritis",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   },
+   {
+    "_baris": "kreativitas",
+    "sangat_baik": 55,
+    "baik": 35,
+    "cukup": 8,
+    "kurang": 2,
+    "rencana_tindak_lanjut": "Masukan pengguna dibahas dalam rapat tinjauan kurikulum tahunan"
+   }
+  ]
+ },
+ "24.2": {
+  "baris": [
+   {
+    "_baris": "TS-4",
+    "jumlah_lulusan": 100,
+    "jumlah_tanggapan": 60
+   },
+   {
+    "_baris": "TS-3",
+    "jumlah_lulusan": 110,
+    "jumlah_tanggapan": 70
+   },
+   {
+    "_baris": "TS-2",
+    "jumlah_lulusan": 125,
+    "jumlah_tanggapan": 85
+   }
+  ]
+ },
+ "25": {
+  "baris": [
+   {
+    "_baris": "pt_mandiri",
+    "ts2": 6,
+    "ts1": 7,
+    "ts": 7
+   },
+   {
+    "_baris": "dalam_negeri",
+    "ts2": 4,
+    "ts1": 4,
+    "ts": 4
+   },
+   {
+    "_baris": "luar_negeri",
+    "ts2": 0,
+    "ts1": 0,
+    "ts": 1
+   }
+  ]
+ },
+ "26": {
+  "baris": [
+   {
+    "_baris": "na1",
+    "ts2": 0,
+    "ts1": 0,
+    "ts": 0
+   },
+   {
+    "_baris": "na2",
+    "ts2": 3,
+    "ts1": 3,
+    "ts": 4
+   },
+   {
+    "_baris": "na3",
+    "ts2": 1,
+    "ts1": 1,
+    "ts": 1
+   },
+   {
+    "_baris": "na4",
+    "ts2": 0,
+    "ts1": 1,
+    "ts": 1
+   },
+   {
+    "_baris": "nb1",
+    "ts2": 0,
+    "ts1": 0,
+    "ts": 0
+   },
+   {
+    "_baris": "nb2",
+    "ts2": 2,
+    "ts1": 2,
+    "ts": 2
+   },
+   {
+    "_baris": "nb3",
+    "ts2": 0,
+    "ts1": 1,
+    "ts": 1
+   },
+   {
+    "_baris": "nc1",
+    "ts2": 1,
+    "ts1": 1,
+    "ts": 2
+   },
+   {
+    "_baris": "nc2",
+    "ts2": 0,
+    "ts1": 1,
+    "ts": 1
+   },
+   {
+    "_baris": "nc3",
+    "ts2": 0,
+    "ts1": 0,
+    "ts": 0
+   },
+   {
+    "_baris": "nd1",
+    "ts2": 1,
+    "ts1": 2,
+    "ts": 2
+   },
+   {
+    "_baris": "nd2",
+    "ts2": 0,
+    "ts1": 0,
+    "ts": 0
+   }
+  ]
+ },
+ "27": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Kajian asesmen formatif pada program ppg (1)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS-2}-01-01"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Model pembelajaran berdiferensiasi berbasis kelas nyata (2)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q3",
+    "tanggal_terbit": "{TS-1}-02-04"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Analisis literasi numerasi di sekolah mitra (3)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS}-03-07"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Pengaruh kesiapan mengajar calon guru terhadap hasil ppl (4)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd., tim PPG",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 1",
+    "tanggal_terbit": "{TS-2}-04-10"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Kajian refleksi praktik mengajar pada program ppg (5)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q4",
+    "tanggal_terbit": "{TS-1}-05-13"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Model pendidikan inklusif berbasis kelas nyata (6)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS}-06-16"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Analisis kurikulum operasional sekolah di sekolah mitra (7)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q3",
+    "tanggal_terbit": "{TS-2}-07-19"
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Pengaruh efikasi diri guru terhadap hasil ppl (8)",
+    "nama_penulis": "Prof. Dr. Hendarsih Wiradinata, M.Pd., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS-1}-08-22"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Kajian umpan balik sejawat pada program ppg (9)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd.",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 1",
+    "tanggal_terbit": "{TS}-09-25"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Model komunitas belajar guru berbasis kelas nyata (10)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd., tim PPG",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q4",
+    "tanggal_terbit": "{TS-2}-10-28"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Analisis asesmen formatif di sekolah mitra (11)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd.",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS-1}-11-03"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Pengaruh pembelajaran berdiferensiasi terhadap hasil ppl (12)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q3",
+    "tanggal_terbit": "{TS}-12-06"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Kajian literasi numerasi pada program ppg (13)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd.",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS-2}-01-09"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Model kesiapan mengajar calon guru berbasis kelas nyata (14)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 1",
+    "tanggal_terbit": "{TS-1}-02-12"
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Analisis refleksi praktik mengajar di sekolah mitra (15)",
+    "nama_penulis": "Dr. Ani Lestari, M.Pd.",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q4",
+    "tanggal_terbit": "{TS}-03-15"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Pengaruh pendidikan inklusif terhadap hasil ppl (16)",
+    "nama_penulis": "Dr. Rudi Kartawijaya, M.Si., tim PPG",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS-2}-04-18"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Kajian kurikulum operasional sekolah pada program ppg (17)",
+    "nama_penulis": "Dr. Rudi Kartawijaya, M.Si.",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q3",
+    "tanggal_terbit": "{TS-1}-05-21"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Model efikasi diri guru berbasis kelas nyata (18)",
+    "nama_penulis": "Dr. Rudi Kartawijaya, M.Si., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 2",
+    "tanggal_terbit": "{TS}-06-24"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Analisis umpan balik sejawat di sekolah mitra (19)",
+    "nama_penulis": "Dr. Rudi Kartawijaya, M.Si.",
+    "peran_penulis": "Corresponding author",
+    "jenis_jurnal": "Jurnal Nasional",
+    "terindeks": "SINTA 1",
+    "tanggal_terbit": "{TS-2}-07-27"
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Pengaruh komunitas belajar guru terhadap hasil ppl (20)",
+    "nama_penulis": "Dr. Rudi Kartawijaya, M.Si., tim PPG",
+    "peran_penulis": "Penulis Pertama",
+    "jenis_jurnal": "Jurnal Internasional",
+    "terindeks": "Scopus Q4",
+    "tanggal_terbit": "{TS-1}-08-02"
+   }
+  ]
+ },
+ "28": {
+  "baris": [
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Studi asesmen untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 3
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Studi refleksi untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 7
+   },
+   {
+    "nama_dtps": "Prof. Dr. Hendarsih Wiradinata, M.Pd.",
+    "judul_artikel": "Studi psikologi belajar untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 11
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Studi literasi untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 10
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Studi microteaching untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 14
+   },
+   {
+    "nama_dtps": "Dr. Ani Lestari, M.Pd.",
+    "judul_artikel": "Studi kepemimpinan sekolah untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 18
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Studi numerasi untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 17
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Studi PPL daring untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 21
+   },
+   {
+    "nama_dtps": "Dr. Rudi Kartawijaya, M.Si.",
+    "judul_artikel": "Studi asesmen untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 25
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "judul_artikel": "Studi inklusi untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 24
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "judul_artikel": "Studi etnomatematika untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 3
+   },
+   {
+    "nama_dtps": "Siti Nurhalimah, M.Pd.",
+    "judul_artikel": "Studi literasi untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 7
+   },
+   {
+    "nama_dtps": "Agus Permana, M.Pd.",
+    "judul_artikel": "Studi kurikulum untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 6
+   },
+   {
+    "nama_dtps": "Agus Permana, M.Pd.",
+    "judul_artikel": "Studi sastra anak untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 10
+   },
+   {
+    "nama_dtps": "Agus Permana, M.Pd.",
+    "judul_artikel": "Studi numerasi untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 14
+   },
+   {
+    "nama_dtps": "Dewi Kurniasih, M.Pd.",
+    "judul_artikel": "Studi refleksi untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 13
+   },
+   {
+    "nama_dtps": "Dewi Kurniasih, M.Pd.",
+    "judul_artikel": "Studi psikologi belajar untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 17
+   },
+   {
+    "nama_dtps": "Dewi Kurniasih, M.Pd.",
+    "judul_artikel": "Studi inklusi untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 21
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "judul_artikel": "Studi microteaching untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 20
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "judul_artikel": "Studi kepemimpinan sekolah untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 24
+   },
+   {
+    "nama_dtps": "Dr. Yayan Sopyan Hidayat, M.Pd.",
+    "judul_artikel": "Studi kurikulum untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 3
+   },
+   {
+    "nama_dtps": "Rina Marlina, M.Pd.",
+    "judul_artikel": "Studi PPL daring untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 27
+   },
+   {
+    "nama_dtps": "Rina Marlina, M.Pd.",
+    "judul_artikel": "Studi asesmen untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 6
+   },
+   {
+    "nama_dtps": "Rina Marlina, M.Pd.",
+    "judul_artikel": "Studi refleksi untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 10
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "judul_artikel": "Studi etnomatematika untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 9
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "judul_artikel": "Studi literasi untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 13
+   },
+   {
+    "nama_dtps": "Dr. Taufik Rahmansyah, M.Pd.",
+    "judul_artikel": "Studi microteaching untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 17
+   },
+   {
+    "nama_dtps": "Euis Komalasari, M.Pd.",
+    "judul_artikel": "Studi sastra anak untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 16
+   },
+   {
+    "nama_dtps": "Euis Komalasari, M.Pd.",
+    "judul_artikel": "Studi numerasi untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 20
+   },
+   {
+    "nama_dtps": "Euis Komalasari, M.Pd.",
+    "judul_artikel": "Studi PPL daring untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 24
+   },
+   {
+    "nama_dtps": "Dadan Ramdani, M.Pd.",
+    "judul_artikel": "Studi psikologi belajar untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 23
+   },
+   {
+    "nama_dtps": "Dadan Ramdani, M.Pd.",
+    "judul_artikel": "Studi inklusi untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 27
+   },
+   {
+    "nama_dtps": "Dadan Ramdani, M.Pd.",
+    "judul_artikel": "Studi etnomatematika untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 6
+   },
+   {
+    "nama_dtps": "Neng Sri Wulandari, M.Pd.",
+    "judul_artikel": "Studi kepemimpinan sekolah untuk penguatan profesi guru, seri 1",
+    "jumlah_sitasi": 5
+   },
+   {
+    "nama_dtps": "Neng Sri Wulandari, M.Pd.",
+    "judul_artikel": "Studi kurikulum untuk penguatan profesi guru, seri 2",
+    "jumlah_sitasi": 9
+   },
+   {
+    "nama_dtps": "Neng Sri Wulandari, M.Pd.",
+    "judul_artikel": "Studi sastra anak untuk penguatan profesi guru, seri 3",
+    "jumlah_sitasi": 13
+   }
+  ]
+ },
+ "29": {
+  "baris": [
+   {
+    "_baris": "pt_mandiri",
+    "ts2": 8,
+    "ts1": 8,
+    "ts": 8
+   },
+   {
+    "_baris": "dalam_negeri",
+    "ts2": 2,
+    "ts1": 2,
+    "ts": 2
+   },
+   {
+    "_baris": "luar_negeri",
+    "ts2": 0,
+    "ts1": 0,
+    "ts": 0
+   }
+  ]
+ }
+}

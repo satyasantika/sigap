@@ -8,6 +8,8 @@ use App\Enums\PeranPengguna;
 use App\Enums\StatusTagihan;
 use App\Enums\SumberData;
 use App\Enums\ValidasiBukti;
+use App\Exceptions\IsianDkpsTidakSah;
+use App\Exceptions\TahunDiLuarJendela;
 use App\Models\Bukti;
 use App\Models\DkpsBaris;
 use App\Models\DkpsButir;
@@ -21,11 +23,16 @@ use App\Models\StatusSyaratPerlu;
 use App\Models\Tagihan;
 use App\Models\TagihanRiwayat;
 use App\Models\User;
+use App\Services\JendelaTs;
 use App\Services\KalkulatorNa;
-use App\Services\KalkulatorRumus;
 use App\Services\PembangkitTagihan;
+use App\Services\PenghitungRumusDkps;
+use App\Services\PengisiDkps;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Data demonstrasi yang SENGAJA TIDAK SERBA HIJAU.
@@ -35,23 +42,27 @@ use Illuminate\Support\Str;
  * Keadaan yang ditiru di sini adalah posisi yang paling mungkin di pertengahan
  * periode dan paling berguna untuk didiskusikan:
  *
- *   NA proyeksi 330–350
- *   2 syarat perlu `lima`, 2 `tiga`, 1 `belum`
+ *   NA proyeksi di atas 321
+ *   1 syarat perlu `lima` (E34), 3 `tiga` (E17, E45, E51), 1 `belum` (E58)
  *
  * CATATAN PERTENTANGAN. Prompt tahap 7 meminta dua hal yang tidak bisa
  * bersamaan: NA di kisaran 330–350 yang menghasilkan "Unggul 3 tahun", DAN
  * satu syarat perlu berlevel `belum`. Status "Unggul 3 tahun" menuntut KELIMA
- * syarat perlu sekurangnya berlevel `tiga`; dengan satu `belum`, NA 335 tetap
+ * syarat perlu sekurangnya berlevel `tiga`; dengan satu `belum`, NA 332,75 tetap
  * berujung "Terakreditasi 5 tahun".
  *
  * Yang dipilih di sini adalah sebaran syarat perlunya, bukan label statusnya —
- * justru karena hasilnya lebih mengajar: NA 335,75 sudah cukup untuk Unggul
+ * justru karena hasilnya lebih mengajar: NA-nya sudah cukup untuk Unggul
  * 3 tahun, tetapi satu syarat perlu yang belum terpenuhi membatalkannya. Itu
  * persis kegagalan yang seluruh sistem ini dibangun untuk mencegah, dan
  * demonstrasi yang menyembunyikannya justru memberi rasa aman palsu.
  *   sekitar 40% tagihan disetujui, TIDAK merata antarpokja
  *   beberapa tagihan terlambat, beberapa tanpa penanggung jawab
- *   sekitar setengah butir DKPS terisi, sebagian belum terverifikasi
+ *   seluruh 35 lembar DKPS terisi dari data/demo-dkps.json lewat PengisiDkps,
+ *   sepertiga barisnya belum terverifikasi
+ *   seluruh rumus dihitung dari DKPS lewat PenghitungRumusDkps; Skor A
+ *   campuran 2 sampai 4, dan PDS3 41,67 memenuhi syarat 3 tahun tetapi
+ *   BELUM syarat 5 tahun
  *   beberapa bukti tidak bisa dibuka asesor
  *
  * Jalankan dengan:
@@ -82,6 +93,9 @@ class DemoSeeder extends Seeder
             ElemenSeeder::class,
             SyaratPerluSeeder::class,
             RumusSeeder::class,
+            // Katalog variabel wajib ada sebelum hitungRumus(); tanpanya
+            // PenghitungRumusDkps melempar LogicException.
+            VariabelDkpsSeeder::class,
             DkpsButirSeeder::class,
             OrganisasiSeeder::class,
         ]);
@@ -267,38 +281,94 @@ class DemoSeeder extends Seeder
         )).'.';
     }
 
-    /** Sekitar setengah butir DKPS terisi; sebagian belum diverifikasi. */
+    /**
+     * Seluruh lembar DKPS diisi dari `data/demo-dkps.json` lewat PengisiDkps —
+     * jalur yang sama dengan formulir, sehingga baris demo lolos skema yang
+     * sama dan tahun acuannya dihitung dengan cara yang sama.
+     *
+     * `sumber` bergantian (indeks baris global modulo 3 → Manual, sisanya
+     * Siakad), termasuk pada tabel yang semestinya dari SIAKAD, supaya
+     * saringan "calon selisih" punya baris. Dua pertiga baris diverifikasi
+     * langsung lewat forceFill: verifikasi lewat layanan menuntut bukti sah
+     * per baris, dan itu di luar maksud data demo.
+     *
+     * Baris yang ditolak skema menggagalkan seeder dengan menyebut lembar dan
+     * barisnya — demo yang diam-diam kehilangan baris adalah kegagalan.
+     */
     private function isiDkps(Periode $periode): void
     {
-        $verifikator = User::where('peran', PeranPengguna::Ketua)->firstOrFail();
+        $ketua = User::where('peran', PeranPengguna::Ketua)->firstOrFail();
+        $pengisi = app(PengisiDkps::class);
 
-        foreach (DkpsButir::orderBy('no')->get() as $i => $butir) {
-            if ($i % 2 === 1) {
+        $demo = json_decode(file_get_contents(base_path('data/demo-dkps.json')), true, flags: JSON_THROW_ON_ERROR);
+
+        if (count($demo) !== 35) {
+            throw new RuntimeException('data/demo-dkps.json harus berisi 35 lembar, ditemukan '.count($demo).'.');
+        }
+
+        $i = 0;
+
+        foreach ($demo as $kodeLembar => $lembar) {
+            $kodeLembar = (string) $kodeLembar;
+
+            try {
+                $butir = DkpsButir::dariKode(explode('.', $kodeLembar)[0]);
+            } catch (ModelNotFoundException $e) {
+                throw new RuntimeException('Demo DKPS lembar '.$kodeLembar.': butir tidak dikenal', previous: $e);
+            }
+
+            foreach ($lembar['baris'] as $n => $data) {
+                $data = $this->gantiToken($data, $periode);
+
+                try {
+                    $baris = $pengisi->simpan(
+                        $butir, $kodeLembar, $periode, $data,
+                        $i % 3 === 0 ? SumberData::Manual : SumberData::Siakad,
+                        $ketua,
+                        kunciBaris: $data['_baris'] ?? null,
+                    );
+                } catch (IsianDkpsTidakSah|TahunDiLuarJendela|InvalidArgumentException $e) {
+                    $pesan = $e instanceof IsianDkpsTidakSah
+                        ? json_encode($e->galat, JSON_UNESCAPED_UNICODE)
+                        : $e->getMessage();
+
+                    throw new RuntimeException('Demo DKPS lembar '.$kodeLembar.' baris '.($n + 1).': '.$pesan, previous: $e);
+                }
+
+                // Dua pertiga baris sudah diverifikasi; tanggalnya tersebar
+                // secara tetap supaya hasil seeding bisa diulang.
+                if ($i % 3 !== 2) {
+                    $baris->forceFill([
+                        'diverifikasi_oleh' => $ketua->id,
+                        'diverifikasi_pada' => now()->subDays(($i % 25) + 1),
+                    ])->save();
+                }
+
+                $i++;
+            }
+        }
+    }
+
+    /**
+     * Mengganti token tahun relatif dengan tahun absolut dari jendela TS:
+     * `{TS-1}` menjadi bilangan tahun, `{TS-1}-05-20` menjadi tanggal penuh.
+     * Berkas demo tidak memuat tahun absolut supaya tetap sah saat TS bergeser.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    private function gantiToken(array $data, Periode $periode): array
+    {
+        foreach ($data as $kunci => $nilai) {
+            if (! is_string($nilai) || preg_match('/^\{(TS(?:-[1-4])?)\}(-\d{2}-\d{2})?$/', $nilai, $cocok) !== 1) {
                 continue;
             }
 
-            // Lembar pertama; satu isian pada kolom teks pertamanya (atau kolom pertama).
-            $lembar = $butir->lembarMentah($butir->kodeLembar()[0]);
-            $kolom = collect($lembar['kolom'])->firstWhere('tipe', 'teks') ?? $lembar['kolom'][0];
-
-            $baris = DkpsBaris::create([
-                'prodi_id' => $periode->prodi_id,
-                'periode_id' => $periode->id,
-                'dkps_butir_id' => $butir->id,
-                'lembar_kode' => $lembar['kode'],
-                'tahun_acuan' => 'TS',
-                'data' => [$kolom['kunci'] => 'Contoh demonstrasi '.$i],
-                'sumber' => $i % 3 === 0 ? SumberData::Manual : SumberData::Siakad,
-            ]);
-
-            // Sekitar dua pertiga yang terisi sudah diverifikasi.
-            if ($i % 3 !== 2) {
-                $baris->forceFill([
-                    'diverifikasi_oleh' => $verifikator->id,
-                    'diverifikasi_pada' => now()->subDays(random_int(1, 25)),
-                ])->save();
-            }
+            $tahun = JendelaTs::tahunDariLabel($periode, $cocok[1]);
+            $data[$kunci] = isset($cocok[2]) && $cocok[2] !== '' ? $tahun.$cocok[2] : $tahun;
         }
+
+        return $data;
     }
 
     /**
@@ -351,10 +421,11 @@ class DemoSeeder extends Seeder
     }
 
     /**
-     * Asesmen mandiri diisi sebagian sehingga NA proyeksi mendarat di 330-350
-     * — "Unggul 3 tahun, belum 5 tahun".
+     * Asesmen mandiri diisi sebagian sehingga NA proyeksi mendarat sekitar
+     * 333: cukup untuk "Unggul 3 tahun" menurut angka, tetapi satu syarat
+     * perlu `belum` membuat statusnya "Terakreditasi 5 tahun".
      *
-     * Kisaran itu dipilih karena inilah posisi paling mungkin di pertengahan
+     * Angka itu dipilih karena inilah posisi paling mungkin di pertengahan
      * periode: cukup baik untuk membuktikan sistemnya bekerja, cukup kurang
      * untuk memancing pertanyaan yang benar.
      */
@@ -365,8 +436,8 @@ class DemoSeeder extends Seeder
 
         $elemen = Elemen::orderBy('no')->get();
 
-        // Sasaran NA sekitar 340: surplus 40 di atas 300, artinya sekitar 40
-        // bobot berskor 4 dan sisanya 3.
+        // Sasaran NA sekitar 333 (hasil ukur 332,75): surplus 40 di atas 300,
+        // artinya sekitar 40 bobot berskor 4 dan sisanya 3.
         $bobotSkor4 = 0.0;
 
         foreach ($elemen as $e) {
@@ -383,6 +454,14 @@ class DemoSeeder extends Seeder
             ]);
         }
 
+        // E58 diturunkan ke skor 2: syarat perlunya berlevel `belum`
+        // (tetapkanSyaratPerlu), dan ambang 3 tahun E58 adalah skor >= 3.
+        // Tanpa ini level `belum` tidak punya dasar pada Penilaian ketua.
+        Penilaian::where('periode_id', $periode->id)
+            ->where('penilai_id', $ketua->id)
+            ->where('elemen_id', $elemen->firstWhere('no', 58)?->id)
+            ->update(['skor' => 2]);
+
         // Penilai kedua menskor sebagian, dan sengaja berselisih pada beberapa
         // elemen — itulah yang paling berguna didiskusikan sebelum asesor datang.
         foreach ($elemen->take(20) as $i => $e) {
@@ -397,13 +476,18 @@ class DemoSeeder extends Seeder
         }
     }
 
-    /** Dua `lima`, dua `tiga`, satu `belum` — bukan lima-limanya hijau. */
+    /**
+     * Satu `lima` (E34), tiga `tiga` (E17, E45, E51), satu `belum` (E58) —
+     * bukan lima-limanya hijau. E17 `tiga`, bukan `lima`, karena PDS3 demo
+     * 41,67 memenuhi syarat 3 tahun tetapi belum syarat 5 tahun.
+     */
     private function tetapkanSyaratPerlu(Periode $periode): void
     {
         $ketua = User::where('peran', PeranPengguna::Ketua)->firstOrFail();
 
+        // Urut nomor elemen: E17, E34, E45, E51, E58.
         $level = [
-            LevelSyaratPerlu::Lima,
+            LevelSyaratPerlu::Tiga,
             LevelSyaratPerlu::Lima,
             LevelSyaratPerlu::Tiga,
             LevelSyaratPerlu::Tiga,
@@ -423,22 +507,26 @@ class DemoSeeder extends Seeder
         }
     }
 
-    /** Beberapa rumus dihitung supaya layar Nilai Rumus tidak kosong. */
+    /**
+     * Seluruh rumus dihitung dari DKPS lewat PenghitungRumusDkps, bukan
+     * diketik. Perangkap PDS3 41,67 (skor 4, syarat 5 tahun belum) lahir dari
+     * data Tabel 6–7. Rumus yang dilewati menggagalkan seeder: demo yang
+     * diam-diam kehilangan rumus adalah kegagalan.
+     */
     private function hitungRumus(Periode $periode): void
     {
-        $k = app(KalkulatorRumus::class);
         $ketua = User::where('peran', PeranPengguna::Ketua)->firstOrFail();
 
-        // PDS3 41,67: skor penuh tetapi syarat lima tahun BELUM terpenuhi.
-        // Sengaja dipilih supaya perangkap paling penting instrumen ini
-        // terlihat sejak demonstrasi pertama.
-        $k->simpan($k->pds3(nds3: 5, ndtps: 12, ndlk: 3, ndgb: 1), $periode, $ketua);
-        $k->simpan($k->pgblkl(ndgb: 1, ndlk: 3, ndl: 4, ndtps: 12), $periode, $ketua);
-        $k->simpan($k->ppdtps(dosenBerpublikasi: 3, ndtps: 12, jumlahArtikel: 20), $periode, $ketua);
-        $k->simpan($k->rk(n1: 2, n2: 3, n3: 4, ni: 1, nn: 3, nw: 5, ndtps: 12), $periode, $ketua);
-        $k->simpan($k->rsa(nas: 100, ndtps: 12), $periode, $ketua);
-        $k->simpan($k->ripk(3.31), $periode, $ketua);
-        $k->simpan($k->tkm([['a' => 55, 'b' => 30, 'c' => 12, 'd' => 3]]), $periode, $ketua);
+        $laporan = app(PenghitungRumusDkps::class)->hitungSemua($periode, $ketua);
+
+        if ($laporan->dilewati !== []) {
+            throw new RuntimeException('Demo: rumus dilewati — '.implode('; ', array_map(
+                fn (string $kode, string $alasan) => "{$kode}: {$alasan}",
+                array_keys($laporan->dilewati), $laporan->dilewati,
+            )));
+        }
+
+        $this->command?->info('Demo: rumus DKPS — '.$laporan->ringkasan());
     }
 
     private function laporkan(Periode $periode): void
