@@ -225,7 +225,10 @@ docker exec sigap-php php artisan migrate:fresh --seed --seeder=Database\\Seeder
 
 Menghasilkan keadaan pertengahan periode yang **sengaja tidak serba hijau**:
 ada tagihan terlambat, bukti yang tidak bisa dibuka asesor, dan satu syarat
-perlu yang belum terpenuhi. **Jangan dijalankan di basis data sungguhan** —
+perlu yang belum terpenuhi. Data DKPS demo berasal dari `data/demo-dkps.json`
+yang dibangkitkan `python3 -P tools/bangkitkan-demo-dkps.py`. Untuk mengubah
+angka demo, ubah skripnya, bangkitkan ulang, jalankan
+`python3 -P data/verifikasi.py`, lalu seeding ulang. **Jangan dijalankan di basis data sungguhan** —
 `migrate:fresh` menghapus seluruh isinya.
 
 ### Menu per peran

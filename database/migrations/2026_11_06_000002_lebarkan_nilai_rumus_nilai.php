@@ -22,6 +22,10 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Pembalikan ditolak bila ada baris bernilai 1.000.000 atau lebih; baris
+     * itu harus dikosongkan lebih dulu.
+     */
     public function down(): void
     {
         Schema::table('nilai_rumus', function (Blueprint $table) {

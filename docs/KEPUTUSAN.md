@@ -124,6 +124,11 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
     kepuasan) membuat variabelnya null dengan catatan yang menyebut tabel,
     baris, dan kolomnya. Baris tetap yang tidak ada sama sekali dibaca 0.
 
+13. **Data DKPS demo hidup di `data/demo-dkps.json`**, dibangkitkan oleh
+    `tools/bangkitkan-demo-dkps.py`. Seeder menempuh jalur produksi
+    (`PengisiDkps` dan `PenghitungRumusDkps`) dan gagal bila ada rumus yang
+    dilewati.
+
 ---
 
 ## 2. Asumsi yang perlu dikonfirmasi ke LAMDIK
@@ -654,7 +659,7 @@ Ringkasnya:
 
 Yang terakhir perlu penjelasan. Keduanya tidak bisa bersamaan: status "Unggul
 3 tahun" menuntut **kelima** syarat perlu sekurangnya berlevel `tiga`, jadi
-dengan satu `belum`, NA 335,75 tetap berujung "Terakreditasi 5 tahun".
+dengan satu `belum`, NA 332,75 tetap berujung "Terakreditasi 5 tahun". Penilaian E58 diturunkan ke 2 sebagai dasar level `Belum`, dan E17 berlevel `Tiga` karena PDS3 41,67 memenuhi syarat 3 tahun saja.
 
 `DemoSeeder` memilih sebaran syarat perlunya justru karena hasilnya lebih
 mengajar: angka NA yang bagus tidak menjamin apa pun selama satu syarat perlu
