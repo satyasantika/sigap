@@ -12,7 +12,9 @@
   "jendela": "saat TS",
   "variabel_dkps": [
    "N_DTPS_DOKTOR",
-   "N_DTPS"
+   "N_DTPS",
+   "N_DTPS_LK",
+   "N_DTPS_GB"
   ]
  },
  {
@@ -75,7 +77,8 @@
   "catatan": "Skor(a) di atas digabung skor(b) analisis tren: Skor = (3*a + b)/4. Syarat perlu unggul 5 tahun menuntut PPDTPS >= 40, jauh di atas ambang skor 4.",
   "variabel_dkps": [
    "N_DTPS_PUBLIKASI",
-   "N_DTPS"
+   "N_DTPS",
+   "N_ARTIKEL_PUBLIKASI"
   ]
  },
  {
