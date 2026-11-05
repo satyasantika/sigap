@@ -153,5 +153,78 @@ b58 = [e["bobot"] for e in el if e["no"] == 58][0]
 chk("E58 berbobot 3,00 dan merupakan bobot tunggal terbesar",
     b58 == 3.0 and b58 == max(e["bobot"] for e in el))
 
+# --- demo-dkps ---
+# Data demo DKPS dibangkitkan tools/bangkitkan-demo-dkps.py; di sini hanya
+# diperiksa terhadap skema lembar supaya PengisiDkps tidak menolaknya saat seeding.
+import re
+lembar = {l["kode"]: l for t in dk for l in t["lembar"]}
+ada_demo = os.path.exists(os.path.join(D, "demo-dkps.json"))
+chk("demo: berkas demo-dkps.json ada", ada_demo)
+if ada_demo:
+    demo = L("demo-dkps.json")
+    chk("demo: 35 lembar", set(demo) == set(lembar), sorted(set(demo) ^ set(lembar)))
+    chk("demo: setiap lembar berisi baris",
+        all(demo[k].get("baris") for k in demo), [k for k in demo if not demo[k].get("baris")])
+    pola_token = re.compile(r"^\{TS(-[1-4])?\}(-\d{2}-\d{2})?$")
+    asing, hitung, baris_salah, pilihan_salah, token_salah = [], [], [], [], []
+    for kode, isi in demo.items():
+        if kode not in lembar:
+            continue
+        skema = lembar[kode]
+        kolom = {k["kunci"]: k for k in skema["kolom"]}
+        tetap = [b["kunci"] for b in skema.get("baris_tetap", {}).get("baris", [])]
+        for i, b in enumerate(isi.get("baris", [])):
+            tempat = f"{kode}#{i}"
+            if tetap and b.get("_baris") not in tetap:
+                baris_salah.append(f"{tempat}:{b.get('_baris')}")
+            if not tetap and "_baris" in b:
+                baris_salah.append(f"{tempat}:_baris pada lembar bebas")
+            for k, v in b.items():
+                if k == "_baris":
+                    continue
+                if k not in kolom:
+                    asing.append(f"{tempat}.{k}")
+                    continue
+                tipe = kolom[k]["tipe"]
+                if tipe == "hitung":
+                    hitung.append(f"{tempat}.{k}")
+                elif tipe == "pilihan" and v not in kolom[k].get("pilihan", []):
+                    pilihan_salah.append(f"{tempat}.{k}={v}")
+                elif tipe in ("tahun", "tanggal"):
+                    m = pola_token.match(v) if isinstance(v, str) else None
+                    if not m or (tipe == "tanggal") != (m.group(2) is not None):
+                        token_salah.append(f"{tempat}.{k}={v}")
+    chk("demo: semua kolom ada di skema lembar", not asing, asing[:10])
+    chk("demo: kolom hitung tidak ditulis", not hitung, hitung[:10])
+    chk("demo: _baris sah dan wajib pada lembar berbaris tetap", not baris_salah, baris_salah[:10])
+    chk("demo: nilai pilihan ada di daftar skema", not pilihan_salah, pilihan_salah[:10])
+    chk("demo: tahun/tanggal berbentuk token {TS…} (tanggal ber -MM-DD, tahun tanpa)",
+        not token_salah, token_salah[:10])
+
+    def baris_demo(kode): return demo.get(kode, {}).get("baris", [])
+    tingkat = ["wilayah_lokal", "nasional", "internasional"]
+    salah_tingkat = [f"{k}#{i}" for k in ("1.1", "1.2", "1.3", "3")
+                     for i, b in enumerate(baris_demo(k))
+                     if sum(b.get(t) is True for t in tingkat) != 1]
+    chk("demo: Tabel 1.1–1.3 dan 3 tepat satu tingkat tercentang", not salah_tingkat, salah_tingkat)
+
+    persen = {"5": ["sangat_baik", "baik", "cukup", "kurang_baik"],
+              "24.1": ["sangat_baik", "baik", "cukup", "kurang"]}
+    salah_persen = [f"{k}:{b.get('_baris')}={sum(b.get(c, 0) for c in kol)}"
+                    for k, kol in persen.items() for b in baris_demo(k)
+                    if abs(sum(b.get(c, 0) for c in kol) - 100) > 0.01]
+    chk("demo: Tabel 5 dan 24.1 persen berjumlah 100", not salah_persen, salah_persen)
+
+    diagonal = {"TS-2": "lulus_akhir_ts2", "TS-1": "lulus_akhir_ts1", "TS": "lulus_akhir_ts"}
+    salah_diag = [f"{b.get('_baris')}:{k}" for b in baris_demo("22") for k in b
+                  if k.startswith("lulus_akhir_") and k != diagonal.get(b.get("_baris"))]
+    chk("demo: Tabel 22 hanya sel diagonal lulus_akhir_* terisi", not salah_diag, salah_diag)
+
+    salah_23 = [b.get("_baris") for b in baris_demo("23")
+                if not (b.get("terlacak", 0) <= b.get("jumlah_lulusan", 0)
+                        and b.get("wt_kurang_6", 0) + b.get("wt_6_12", 0) + b.get("wt_lebih_12", 0)
+                        == b.get("terlacak", 0))]
+    chk("demo: Tabel 23 terlacak ≤ lulusan dan waktu tunggu berjumlah terlacak", not salah_23, salah_23)
+
 print("\nHASIL:", "SEMUA KONSISTEN" if ok else "ADA YANG GAGAL — jangan lanjutkan")
 sys.exit(0 if ok else 1)
