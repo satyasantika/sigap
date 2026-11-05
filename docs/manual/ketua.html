@@ -47,6 +47,7 @@
       <li><a href="#05-penilaian">Asesmen mandiri</a></li>
       <li><a href="#06-syarat-perlu">Syarat perlu</a></li>
       <li><a href="#07-nilai-rumus">Nilai rumus</a></li>
+      <li><a href="#07b-variabel-dkps">Variabel DKPS</a></li>
       <li><a href="#08-simulasi">Simulasi</a></li>
     </ol>
   </nav>
@@ -144,15 +145,48 @@
   </figure>
   <h2 id="07-nilai-rumus">Nilai rumus</h2>
 
-                <p>Tujuh rumus LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK —
-                dihitung dari isian DKPS. Hasilnya menunjukkan skor sekaligus apakah
-                syarat tiga atau lima tahun terpenuhi; keduanya angka yang berbeda dan
-                ditampilkan terpisah.</p>
+                <p>Rumus kuantitatif LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK,
+                dan rumus AK 3.0 lainnya — dihitung dari isian DKPS. Hasilnya
+                menunjukkan skor sekaligus apakah syarat tiga atau lima tahun
+                terpenuhi; keduanya angka yang berbeda dan ditampilkan terpisah.</p>
+                <p>Tombol <strong>Hitung dari DKPS</strong> menghitung ulang semua
+                rumus dari isian DKPS periode aktif. Hasil lama tidak pernah ditimpa:
+                rumus yang hasilnya berubah menambah baris baru, rumus yang hasilnya
+                sama tidak disimpan dua kali. Sesudahnya muncul satu dari tiga
+                pemberitahuan:</p>
+                <ul>
+                    <li><strong>Hijau</strong> — "Disimpan …, tidak berubah …,
+                    dilewati 0": semua rumus terhitung.</li>
+                    <li><strong>Kuning</strong>, tetap terbuka sampai ditutup —
+                    sebagian rumus <em>dilewati</em>, dengan alasan per rumus
+                    (biasanya lembar DKPS yang belum terisi). Rumus yang dilewati
+                    tidak dihitung dengan nol; lengkapi lembarnya lalu tekan tombol
+                    ini lagi.</li>
+                    <li><strong>Merah</strong> — tidak ada periode aktif, atau
+                    perhitungan gagal sama sekali. Tidak ada baris yang disimpan.</li>
+                </ul>
+                <p>Skor A yang dihitung di sini juga muncul di formulir Asesmen
+                mandiri sebagai <em>Skor A dari rumus</em>, sebagai rujukan bagi
+                penilai.</p>
             
   <figure>
     <img src="gambar/ketua/07-nilai-rumus.png" alt="Nilai rumus pada SIGAP" loading="lazy">
     <figcaption>Nilai rumus — tangkapan layar SIGAP dengan data contoh.</figcaption>
   </figure>
+  <h2 id="07b-variabel-dkps">Variabel DKPS</h2>
+
+                <p>Halaman <strong>Variabel DKPS</strong> (menu Data) menjawab
+                pertanyaan "angka ini datang dari mana?". Setiap baris adalah satu
+                variabel yang dibaca rumus — misalnya cacah DTPS bergelar doktor —
+                beserta nilainya pada periode aktif, lembar DKPS sumbernya (bisa
+                diklik), jumlah baris, berapa baris yang belum terverifikasi, dan
+                rumus yang memakainya.</p>
+                <p>Daftarnya mengikuti lembar <em>5. DKPS</em> pada kertas kerja
+                asesor AK 3.0, jadi saat asesmen lapangan angka di sini bisa
+                dicocokkan langsung dengan kertas kerja asesor. Tanda "—" berarti
+                lembar sumbernya belum berisi baris, berbeda dari 0. Bukalah halaman
+                ini sebelum menekan Hitung dari DKPS.</p>
+            
   <h2 id="08-simulasi">Simulasi</h2>
 
                 <p>Anda bisa membaca hasil simulasi, tetapi membuat dan menghapusnya

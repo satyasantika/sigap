@@ -20,6 +20,10 @@ secara bertentangan. Keputusannya sudah diambil dan tidak perlu diadili ulang.
 | `Izin::boleh` tanpa obyek | Mengembalikan **true** | Menolak akan menghilangkan menu dari koordinator dan anggota; konsekuensinya tiap kueri daftar wajib menyaring sendiri |
 | `ImporDtps`, `ImporKerjaSama` | Menyimpan ke `dkps_baris.data` | `docs/02` menyatakan tabel dosen sengaja belum dibuat, dan rumus DTPS memang membaca dari DKPS |
 | Normalisasi TKM | Dibagi 4 | **Terkonfirmasi** oleh kertas kerja resmi `AK Kosong PPG.xlsx`, sel E207 — lihat di bawah tabel |
+| Sumber rumus kuantitatif AK 3.0 | **Buku 4 patokan utama**, kertas kerja `AK Kosong PPG.xlsx` untuk operasionalisasi | Buku 4 dokumen resmi yang dipublikasikan; kertas kerja dipakai bila Buku 4 hanya menulis kalimat, tidak menyebut tabel DKPS, atau rumusnya tidak konsisten secara matematis (5 November 2026) |
+| RN pada E50 | **Ikut kertas kerja**: ND1 + ND2 (buku ber-ISBN, paten) disertakan | Keputusan dosen 5 November 2026; tetap ditanyakan ke LAMDIK, lihat bagian 2 |
+| `RT_PEMBIMBINGAN_PPL` | **Rerata per dosen per tahun**: Σ pertemuan ÷ jumlah sel pertemuan yang terisi pada Tabel 20 | Keputusan dosen 5 November 2026 |
+| NDTPS | **NIDN/NIDK unik gabungan Tabel 6 dan 7** | Dosen yang muncul di kedua tabel dihitung sekali (5 November 2026) |
 
 **Normalisasi TKM, dari asumsi menjadi keputusan.** `vibecoding/docs/03-perhitungan.md`
 menetapkan `TKMi = (4×ai) + (3×bi) + (2×ci) + di` dengan a..d dalam persen.
@@ -84,13 +88,39 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
    bukan di `Izin`. Ia tampilan, bukan wewenang — keenam peran boleh membuka
    dasbor. Penyaringan daftar K9 justru diturunkan dari lingkup izin.
 
+9. **`skor_tepat` selalu dipotong ke bawah dua desimal, tidak dibulatkan.**
+   Pembulatan bisa mendorong Skor A melewati ambang yang belum dicapai:
+   PGBLKL 69,84 % memberi `2 + 20 × 0,6984 / 7 = 3,995…`; dibulatkan menjadi
+   4,00, dipotong menjadi **3,99**. Yang benar 3,99, karena ambang skor 4
+   adalah 70 %. Lihat `KalkulatorRumus::potong2()`.
+
+10. **Ambang selalu dibandingkan pada rasio mentah; pembulatan hanya untuk
+    tampilan.** 1504 / 7521 = 19,997 % tampil sebagai "20,0" di layar, tetapi
+    skornya tetap **3**, bukan skor milik ambang 20 %. Kolom `nilai` disimpan
+    sudah dibulatkan; jangan dipakai untuk menghitung ulang skor.
+
+11. **Variabel kosong membuat rumus dilewati, bukan dihitung dengan nol.**
+    `PenghitungRumusDkps` mencatat rumus itu sebagai "dilewati" beserta
+    alasannya (lembar atau kolom mana yang belum terisi). Menghitung dengan nol akan
+    memberi skor terendah yang tampak sah padahal datanya belum diisi. Hasil
+    yang identik dengan baris `nilai_rumus` terakhir tidak disimpan dua kali,
+    sehingga `rumus:hitung` dan tombol "Hitung dari DKPS" boleh dijalankan
+    berulang.
+
+12. **Rata yang tak terdefinisi dibaca null, bukan 0.** Bila lembarnya terisi
+    tetapi semua sel yang dirata kosong, `PembacaVariabelDkps` mengembalikan
+    null, sehingga rumusnya dilewati menurut butir 11. Rata 0 akan berarti
+    "masa studi nol tahun" atau "IPK nol", dua hal yang tidak pernah benar.
+
 ---
 
 ## 2. Asumsi yang perlu dikonfirmasi ke LAMDIK
 
 Normalisasi TKM tidak lagi di sini: kertas kerja AK IAPSK 3.0 sudah
 menjawabnya (lihat bagian 1). Kertas kerja yang sama justru memunculkan dua
-pertanyaan baru, keduanya cacat pada berkas resmi, bukan pada SIGAP.
+pertanyaan baru, keduanya cacat pada berkas resmi, bukan pada SIGAP. Rencana
+"Rumus kuantitatif AK 3.0" menambah delapan tafsir lagi, dikumpulkan di
+subbagian tersendiri di bawah.
 
 ### Rujukan `F264` pada rumus PGBLKL (elemen E17)
 
@@ -108,18 +138,58 @@ Rentang itu milik program sarjana empat tahun. Untuk PPG yang masa studinya
 **satu tahun**, setiap lulusan yang tepat waktu jatuh ke "selain itu" dan
 memberi **skor 1**. Ini cacat instrumen; jangan ditiru apa adanya sebelum LAMDIK
 menjawab. `data/rumus.json` tetap menyebutnya "berskala".
+SIGAP menghitung nilainya (rata masa studi, `rms()`) tetapi tidak memberi skor
+sampai LAMDIK menjawab; baris `nilai_rumus`-nya berskor kosong dengan catatan
+yang merujuk ke bagian ini.
 
-### Rumus kuantitatif yang belum ada di SIGAP
+### Rumus kuantitatif AK 3.0: tafsir yang menunggu LAMDIK
 
-Bukan pertanyaan ke LAMDIK, tetapi dicatat di sini karena sama-sama
-menggantung: kertas kerja punya rumus kuantitatif untuk E7 (RK dua bagian),
-E12, E13, E18, E22, E25, E32, E36, E40, E45, E49, E50, dan E54, ditambah aturan
-responden minimum E43/E44, yang belum ada di `data/rumus.json`. Ambangnya
-sudah dicatat di spesifikasi
-`docs/superpowers/specs/2026-11-04-tabel-dkps-per-pokja-design.md` bagian A.3,
-dan semuanya menunggu rencana berikutnya, "Rumus kuantitatif AK 3.0". Sampai
-itu selesai, E7 dihitung dengan tafsir N1/N2/N3 lama dan elemen lainnya hanya
-memakai skor asesor.
+Sejak rencana "Rumus kuantitatif AK 3.0" (spesifikasi
+`docs/superpowers/specs/2026-11-05-rumus-kuantitatif-ak-3-design.md`),
+`data/rumus.json` memuat 28 rumus dan `KalkulatorRumus` menghitung semuanya
+dari DKPS. Buku 4 patokan utamanya, tetapi di beberapa tempat Buku 4 dan kertas
+kerja berbeda, atau Buku 4 sendiri tidak konsisten. Di setiap tempat itu kami
+memilih satu tafsir dan menuliskannya di bawah. Bila LAMDIK menjawab lain, yang
+berubah hanya metode terkait di `KalkulatorRumus` dan ujinya.
+
+1. **Koefisien pita 2–3 pola RI/RN/RW** (E7 A.2, E12, E49, E50, E54). Buku 4
+   menulis `2 + (2 × RI/a) + RN/b − (RI × RN)/(a × b)`, kertas kerja
+   `2 + 1 × RI/a + …`. SIGAP memakai **1**: dengan koefisien 2, pita "2–3"
+   bisa melampaui 3 (RI = 0,9a dan RN = 0,9b memberi 3,89), sedangkan dengan
+   koefisien 1 nilainya selalu di antara 2 dan 3.
+
+2. **Pita bawah 1–2 diinterpolasi.** Buku 4 menulis "RI = 0, RN = 0, RW < c →
+   Skor = 1"; kertas kerja menulis `max(1, 2 × RW/c)`. SIGAP mengikuti kertas
+   kerja karena Buku 4 sendiri menamai pita itu "1–2", yang menyiratkan
+   rentang, bukan nilai tunggal.
+
+3. **Ujung BKD.** Rumus Buku 4 memberi 0 pada BKD = 18 dan tidak sambung di
+   antara 6 dan 7. Buku 4 hanya mengenal skor 1–4, jadi SIGAP memberi lantai 1
+   (`max(1, …)`) di kedua ujung.
+
+4. **PMKI (E32) bertangga 4/3/2.** Rumus Buku 4 untuk pita 3,
+   `3 + (x − 0,25)/0,10`, memberi 2–3 untuk 0,15 ≤ x < 0,25, jatuh di bawah 3
+   meski pitanya bernama "3". SIGAP mengikuti kertas kerja sel E496: ≥ 0,25 →
+   4, 0,15 ≤ x < 0,25 → 3, selain itu 2.
+
+5. **RN pada E50 menyertakan ND1 + ND2** (buku ber-ISBN, paten), seperti
+   kertas kerja. Buku 4 hanya menjumlahkan `NA2 + NA3 + NB2 + NC2`. Ini
+   keputusan dosen 5 November 2026 (bagian 1), tetapi tetap perlu ditanyakan
+   karena Buku 4 tidak menyebut keduanya.
+
+6. **RGP (E22) pada kasus yang tak punya pita.** Saat RGPBS = 2 dan RGPMD
+   ≥ 30 % tetapi RGPMU ≥ 40 % atau RGPGP ≥ 50 %, rumus kertas kerja sel E348
+   jatuh ke skor 2, padahal rasio yang sama dengan nilai lebih buruk memberi 3.
+   Buku 4 tidak punya pita untuk kasus ini. SIGAP memberi **3**, dengan tafsir
+   monoton: rasio yang lebih baik tidak boleh menurunkan skor.
+
+7. **Lantai 1 untuk WTMP dan TKi setelah faktor responden.** Kertas kerja sel
+   E667 menulis `PJ/Prmin × Skor` apa adanya, yang bisa memberi 0 (misalnya
+   bila responden nol karena tidak ada lulusan yang terlacak).
+   Buku 4 hanya mengenal skor 1–4, jadi SIGAP memberi lantai 1 setelah faktor
+   responden diterapkan.
+
+8. **RMS** dihitung tanpa skor; lihat subbagian RMS di atas.
 
 ### Dua hal lain yang sebaiknya ditanyakan
 

@@ -106,7 +106,7 @@
     {
      "gambar": "ketua/07-nilai-rumus.png",
      "judul": "Nilai rumus",
-     "isi": "<p>Tujuh rumus LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK — dihitung dari isian DKPS. Hasilnya menunjukkan skor sekaligus apakah syarat tiga atau lima tahun terpenuhi; keduanya angka yang berbeda dan ditampilkan terpisah.</p>"
+     "isi": "<p>Rumus kuantitatif LAMDIK — PDS3, PGBLKL, PPDTPS, RK, RSA, TKM, RIPK, dan rumus AK 3.0 lainnya — dihitung dari isian DKPS. Hasilnya menunjukkan skor sekaligus apakah syarat tiga atau lima tahun terpenuhi; keduanya angka yang berbeda dan ditampilkan terpisah.</p> <p>Tombol <strong>Hitung dari DKPS</strong> menghitung ulang semua rumus dari isian DKPS periode aktif. Hasil lama tidak pernah ditimpa: rumus yang hasilnya berubah menambah baris baru, rumus yang hasilnya sama tidak disimpan dua kali. Sesudahnya muncul satu dari tiga pemberitahuan:</p> <ul> <li><strong>Hijau</strong> — \"Disimpan …, tidak berubah …, dilewati 0\": semua rumus terhitung.</li> <li><strong>Kuning</strong>, tetap terbuka sampai ditutup — sebagian rumus <em>dilewati</em>, dengan alasan per rumus (biasanya lembar DKPS yang belum terisi). Rumus yang dilewati tidak dihitung dengan nol; lengkapi lembarnya lalu tekan tombol ini lagi.</li> <li><strong>Merah</strong> — tidak ada periode aktif, atau perhitungan gagal sama sekali. Tidak ada baris yang disimpan.</li> </ul> <p>Skor A yang dihitung di sini juga muncul di formulir Asesmen mandiri sebagai <em>Skor A dari rumus</em>, sebagai rujukan bagi penilai.</p>"
     },
     {
      "gambar": "ketua/08-simulasi.png",
@@ -138,7 +138,7 @@
     {
      "gambar": "pimpinan/04-nilai-rumus.png",
      "judul": "Nilai rumus",
-     "isi": "<p>Tujuh rumus LAMDIK beserta hasilnya. Angka di sini datang dari isian DKPS, jadi rumus yang hasilnya mengejutkan biasanya menandakan isian DKPS yang belum lengkap, bukan kinerja yang buruk.</p>"
+     "isi": "<p>Rumus kuantitatif LAMDIK beserta hasilnya. Angka di sini datang dari isian DKPS, jadi rumus yang hasilnya mengejutkan biasanya menandakan isian DKPS yang belum lengkap, bukan kinerja yang buruk.</p>"
     },
     {
      "gambar": "pimpinan/05-simulasi.png",
@@ -150,7 +150,7 @@
   "koordinator": {
    "judul": "Koordinator Pokja",
    "ringkas": "Memimpin satu pokja, dari penugasan sampai reviu.",
-   "pembuka": "<p>Koordinator bekerja dalam lingkup pokjanya. Hampir seluruh wewenang Anda bertuliskan <code>pokjanya</code> di matriks izin, yang berarti: hanya baris yang pokjanya sama dengan pokja tempat Anda terdaftar.</p> <p>Anda menugaskan, mengubah tenggat, mereviu, dan mengembalikan tagihan — tetapi <strong>persetujuan akhir ada pada ketua</strong>. Reviu Anda adalah saringan pertama, bukan keputusan terakhir.</p> <p>Menu <strong>Isian DKPS</strong> dan <strong>Nilai Rumus</strong> hanya muncul bila pokja Anda berkode POKJA-DATA. Bila Anda memimpin pokja lain, keduanya memang bukan urusan Anda.</p>",
+   "pembuka": "<p>Koordinator bekerja dalam lingkup pokjanya. Hampir seluruh wewenang Anda bertuliskan <code>pokjanya</code> di matriks izin, yang berarti: hanya baris yang pokjanya sama dengan pokja tempat Anda terdaftar.</p> <p>Anda menugaskan, mengubah tenggat, mereviu, dan mengembalikan tagihan — tetapi <strong>persetujuan akhir ada pada ketua</strong>. Reviu Anda adalah saringan pertama, bukan keputusan terakhir.</p> <p>Menu <strong>Isian DKPS</strong>, <strong>Nilai Rumus</strong>, dan <strong>Variabel DKPS</strong> hanya muncul bila pokja Anda berkode POKJA-DATA. Bila Anda memimpin pokja lain, ketiganya memang bukan urusan Anda.</p>",
    "langkah": [
     {
      "gambar": "koordinator/01-dasbor.png",

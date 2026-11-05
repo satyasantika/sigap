@@ -82,6 +82,11 @@ menambahkan `ND1 + ND2` (buku ber-ISBN, paten). **Keputusan dosen
 (5 November 2026): ikut kertas kerja**, RN menyertakan ND1 + ND2. Dicatat
 sebagai pertanyaan ke LAMDIK karena Buku 4 tidak menyebut keduanya.
 
+E32 PMKI: Buku 4 menulis pita 3 sebagai `3 + (x − 0,25)/0,10`, yang untuk
+0,15 ≤ x < 0,25 memberi 2–3, jatuh di bawah 3 meski pitanya bernama "3".
+**SIGAP mengikuti tangga 4/3/2 kertas kerja (sel E496)**: ≥ 0,25 → 4,
+0,15 ≤ x < 0,25 → 3, selain itu 2, dan mencatatnya sebagai pertanyaan ke LAMDIK.
+
 E44 TKi: Buku 4 dan kertas kerja sepakat `TKi = 4a + 3b + 2c + d` dengan
 a..d dalam pecahan (0–1), **tanpa** dibagi 4, dan Skor = Σ TKi / 9. Ini
 berbeda dari TKM (E14) yang memang dibagi 4. Keduanya benar menurut
@@ -278,7 +283,7 @@ seperti yang ada. Kode dan ambang (Buku 4, dioperasionalkan kertas kerja):
 | `RGP` | 22 | NGP, NBS, NGPMD, NGPMU, NGPGP | RGPBS = NGP/NBS; RGPMD, RGPMU, RGPGP (pecahan, maks 1) | rumus sel E348 kertas kerja, ambang a..d = 0,3 / 0,4 / 0,5 / 0,6, hasil dibulatkan 2 desimal |
 | `DANA` | 25 | B_OP, B_PENELITIAN, B_PKM, NM, NDTPS | ROP = B_OP/NM; RPD = B_PENELITIAN/NDTPS; RPkMD = B_PKM/NDTPS (rupiah/tahun) | tiga sub-skor (18/10/5 jt; 10/7/4 jt; 5/3/1 jt), **Skor A = rata ketiganya** |
 | `PDIPPKM` | 32 | N_INTEGRASI, NDTPS | persen | ≥50 → 4; ≥30 → 3; ≥10 → 2; selain itu 1 |
-| `PMKI` | 32 | N_INTEGRASI_MK, N_MK_KU | pecahan, maks 1 | ≥0,25 → 4; 0,15 ≤ x < 0,25 → 3 + (x − 0,25)/0,10 (Buku 4), selain itu 2 |
+| `PMKI` | 32 | N_INTEGRASI_MK, N_MK_KU | pecahan, maks 1 | ≥ 0,25 → 4; 0,15 ≤ x < 0,25 → 3; selain itu 2 (kertas kerja E496) |
 | `RPPL` | 36 | RT_PEMBIMBINGAN_PPL | rata pertemuan | ≥4 → 4; ≥3 → 3; ≥2 → 2; selain itu 1 |
 | `PMTK` | 40 | N_MHS_DITERIMA_TS1, N_MHS_DITERIMA_TS, N_LULUS_PADA_TS1, N_LULUS_PADA_TS | pecahan | ≥0,5 → 4; selain itu 1 + 6·PMTK |
 | `WTMP` (diganti) | 43 | WTMP, N_LULUSAN_TS4..TS2, N_LULUSAN_TERLACAK_TS4..TS2 | bulan | <6 → 4; 6–12 → (18−x)/3; >12 → 1; **dikali PJ/Prmin bila responden < Prmin** |
