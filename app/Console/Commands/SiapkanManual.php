@@ -6,6 +6,7 @@ use App\Enums\LevelSyaratPerlu;
 use App\Enums\PeranPengguna;
 use App\Models\Elemen;
 use App\Models\Periode;
+use App\Models\Pokja;
 use App\Models\Simulasi;
 use App\Models\User;
 use App\Services\Simulator;
@@ -69,6 +70,20 @@ class SiapkanManual extends Command
         }
 
         $this->info("{$jumlah} pengguna contoh disiapkan (sandi: password).");
+
+        // Menu Nilai Rumus dan Variabel DKPS hanya muncul bagi koordinator
+        // POKJA-DATA (data/menu.json). Koordinator contoh dari OrganisasiSeeder
+        // berpokja DIK; untuk manual ia didaftarkan juga ke POKJA-DATA supaya
+        // kedua layar itu bisa ditangkap. Keanggotaan ganda memang diizinkan.
+        $koordinator = User::where('email', 'koordinator@sigap.test')->first();
+        $pokjaData = Pokja::where('kode', 'POKJA-DATA')->first();
+
+        if ($koordinator !== null && $pokjaData !== null) {
+            $koordinator->pokja()->syncWithoutDetaching([
+                $pokjaData->id => ['peran_dalam_pokja' => 'koordinator'],
+            ]);
+            $this->info('Koordinator contoh didaftarkan ke POKJA-DATA.');
+        }
 
         $admin = User::berperan(PeranPengguna::Admin)->first();
         $periode = Periode::aktif()->first();
