@@ -14,6 +14,8 @@ Prasyarat:
 Menjalankan:
     python3 tools/tangkap-layar.py
     python3 tools/tangkap-layar.py --peran admin ketua
+    python3 tools/tangkap-layar.py --alamat http://172.18.0.49:8022
+        # server sementara di basis data samping; lihat README "Manual pengguna"
 
 Catatan pemasangan peramban (sekali saja, tanpa root):
     python3 -m pip install --user --break-system-packages playwright
@@ -66,6 +68,7 @@ LAYAR: dict[str, list[tuple[str, str, str]]] = {
         ("05-penilaian", "/panel/penilaians", "Penilaian"),
         ("06-syarat-perlu", "/panel/syarat-perlu", "Syarat perlu"),
         ("07-nilai-rumus", "/panel/nilai-rumuses", "Nilai rumus"),
+        ("07b-variabel-dkps", "/panel/dkps/variabel", "Variabel DKPS"),
         ("08-simulasi", "/panel/simulasi", "Simulasi"),
     ],
     "pimpinan": [
@@ -82,6 +85,9 @@ LAYAR: dict[str, list[tuple[str, str, str]]] = {
         ("04-narasi", "/panel/narasis", "Narasi pokja"),
         ("05-bukti", "/panel/buktis", "Bukti pokja"),
         ("06-penilaian", "/panel/penilaians", "Asesmen mandiri"),
+        # Hanya koordinator POKJA-DATA yang punya menu ini; sigap:siapkan-manual
+        # mendaftarkan koordinator contoh ke POKJA-DATA supaya layarnya tertangkap.
+        ("07-nilai-rumus", "/panel/nilai-rumuses", "Nilai rumus"),
     ],
     "anggota": [
         ("01-tagihan-saya", "/panel/tagihan-saya", "Tagihan Saya"),

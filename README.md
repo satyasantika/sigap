@@ -329,6 +329,21 @@ python3 tools/tangkap-layar.py
 python3 tools/susun-manual.py
 ```
 
+Bila `db_sigap` berisi akun yang tidak boleh hilang, pakai basis data samping
+dan server sementara di dalam kontainer; `artisan serve` menyaring variabel
+lingkungan, jadi gunakan server bawaan PHP langsung:
+
+```bash
+mysql -h 127.0.0.1 -u app -p -e 'CREATE DATABASE IF NOT EXISTS db_sigap_manual CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+docker exec -e DB_DATABASE=db_sigap_manual sigap-php php artisan migrate --seed --seeder=Database\\Seeders\\DemoSeeder
+docker exec -e DB_DATABASE=db_sigap_manual sigap-php php artisan sigap:siapkan-manual
+IP=$(docker inspect sigap-php --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')
+docker exec -d -w /var/www/html/public -e DB_DATABASE=db_sigap_manual -e APP_URL=http://$IP:8022 sigap-php \
+  php -S 0.0.0.0:8022 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
+python3 tools/tangkap-layar.py --alamat http://$IP:8022
+python3 tools/susun-manual.py
+```
+
 Bila `chrome-headless-shell` mengeluh `libnspr4.so` hilang dan Anda tidak punya
 `sudo`, unduh pustakanya sebagai pengguna biasa:
 
