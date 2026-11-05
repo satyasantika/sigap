@@ -10,6 +10,7 @@ use App\Filament\Pages\MatriksIzin;
 use App\Filament\Pages\SimulasiLayar;
 use App\Filament\Pages\SyaratPerluLayar;
 use App\Filament\Pages\TagihanSaya;
+use App\Filament\Pages\VariabelDkpsLayar;
 use App\Filament\Resources\Buktis\BuktiResource;
 use App\Filament\Resources\DkpsBaris\DkpsBarisResource;
 use App\Filament\Resources\DkpsButirs\DkpsButirResource;
@@ -38,7 +39,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Menu yang muncul harus sesuai peran — seluruh 126 sel ditelusuri.
+ * Menu yang muncul harus sesuai peran — seluruh 132 sel ditelusuri.
  *
  * Sebelum uji ini ada, `viewAny` pada enam Policy dipetakan ke `dasbor.lihat`
  * yang bernilai `ya` untuk semua peran. Akibatnya anggota pokja melihat menu
@@ -68,6 +69,7 @@ class MenuPeranTest extends TestCase
         'dkps_lembar' => DkpsLayar::class,
         'dkps_baris' => DkpsBarisResource::class,
         'nilai_rumus' => NilaiRumusResource::class,
+        'variabel_dkps' => VariabelDkpsLayar::class,
         'elemen' => ElemenResource::class,
         'kriteria' => KriteriaResource::class,
         'rumus' => RumusResource::class,
