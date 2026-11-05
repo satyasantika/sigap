@@ -173,10 +173,7 @@ class PembacaVariabelDkpsTest extends TestCase
     #[Test]
     public function sel_baris_tetap_yang_hilang_dibaca_nol_bila_lembar_terisi(): void
     {
-        // Baris TS-4 dan TS-3 tidak ada → 0. Sel kosong pada baris TS-2 yang
-        // ada justru membuat variabelnya null (lihat uji sel kosong di bawah),
-        // jadi nol pada baris yang ada ditulis eksplisit.
-        $this->isi('23', ['jumlah_lulusan' => 104, 'terlacak' => 87, 'wt_kurang_6' => 87, 'wt_6_12' => 0, 'wt_lebih_12' => 0], 'TS-2');
+        $this->isi('23', ['jumlah_lulusan' => 104, 'terlacak' => 87, 'wt_kurang_6' => 87], 'TS-2');
 
         $this->assertSame(104.0, $this->nilai('N_LULUSAN_3TH'));
         $this->assertSame(87.0, $this->nilai('N_LULUSAN_WT_6BLN'));
@@ -266,6 +263,17 @@ class PembacaVariabelDkpsTest extends TestCase
         $this->assertStringContainsString('Tabel 21 baris TS:', $hasil->catatan);
         $this->assertStringContainsString('Rata-rata belum terisi', $hasil->catatan);
         $this->assertSame(3.5, $this->nilai('RT_IPK_TS1'));
+    }
+
+    #[Test]
+    public function sel_angka_kosong_pada_baris_yang_ada_dibaca_nol(): void
+    {
+        // Sel cacah (`angka`) yang kosong berarti "tidak ada", bukan belum terisi.
+        $this->isi('23', ['jumlah_lulusan' => 104, 'terlacak' => 87, 'wt_kurang_6' => 87], 'TS-2');
+
+        $hasil = $this->pembaca->satu($this->periode, 'N_LULUSAN_WT_12BLN');
+        $this->assertSame(0.0, $hasil->nilai);
+        $this->assertNull($hasil->catatan);
     }
 
     #[Test]

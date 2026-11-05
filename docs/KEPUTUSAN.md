@@ -115,9 +115,11 @@ Semuanya rutin, tetapi semuanya mengubah perilaku sistem.
     null, sehingga rumusnya dilewati menurut butir 11. Rata 0 akan berarti
     "masa studi nol tahun" atau "IPK nol", dua hal yang tidak pernah benar.
     Begitu pula kolom hitung yang semua kolom masukannya kosong (jumlah sks
-    Tabel 8 tanpa isian bukan 0 sks), dan sel kosong pada baris tetap yang
-    sudah ada (catatannya menyebut tabel, baris, dan kolomnya). Baris tetap
-    yang tidak ada sama sekali tetap dibaca 0.
+    Tabel 8 tanpa isian bukan 0 sks). Pada baris tetap yang sudah ada, sel
+    kosong bertipe `angka` (cacah: lulusan, terlacak, waktu tunggu) dibaca 0
+    seperti Excel, sedangkan sel kosong bertipe `desimal` (ukuran: IPK, persen
+    kepuasan) membuat variabelnya null dengan catatan yang menyebut tabel,
+    baris, dan kolomnya. Baris tetap yang tidak ada sama sekali dibaca 0.
 
 ---
 

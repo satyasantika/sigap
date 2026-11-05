@@ -220,7 +220,7 @@ class PenghitungRumusDkpsTest extends TestCase
 
         // Pembagi nol sungguhan: Tabel 23 terisi tetapi lulusan tiga tahun 0 —
         // InvalidArgumentException kalkulator menjadi alasan lewat.
-        $this->isi('23', ['jumlah_lulusan' => 0, 'terlacak' => 0, 'wt_kurang_6' => 0, 'wt_6_12' => 0, 'wt_lebih_12' => 0], 'TS-2');
+        $this->isi('23', ['jumlah_lulusan' => 0, 'terlacak' => 0, 'wt_kurang_6' => 0], 'TS-2');
         $laporan = $this->penghitung->hitungSemua($this->periode);
 
         $this->assertSame('Jumlah lulusan tiga tahun nol; aturan responden tidak bisa diterapkan.', $laporan->dilewati['WTMP']);

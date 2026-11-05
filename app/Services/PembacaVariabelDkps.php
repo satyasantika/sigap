@@ -314,9 +314,12 @@ final class PembacaVariabelDkps
     /**
      * Jumlah sel baris tetap. Baris tetap yang belum ada dibaca 0 — lembarnya
      * sudah terisi (lembar kosong sudah menjadi null di baca()), jadi baris
-     * yang tidak ada berarti memang tidak diisi. Baris yang ADA tetapi sel
-     * rujukannya kosong lain soal: pengisi membuka baris itu dan belum
-     * mengisi selnya, jadi variabelnya null dengan catatan, bukan 0.
+     * yang tidak ada berarti memang tidak diisi. Pada baris yang ADA, sel
+     * kosong bertipe `angka` (cacah: lulusan, terlacak, wt_*) berarti "tidak
+     * ada" dan dibaca 0, seperti Excel; sel kosong bertipe `desimal` (ukuran:
+     * IPK, persen kepuasan) belum terisi, jadi variabelnya null dengan
+     * catatan. Kolom `hitung` mengikuti sel(): null bila semua masukannya
+     * kosong.
      *
      * @param  array<int, array{0: string, 1: string}>  $sel  [kunci baris, kolom]
      */
@@ -336,7 +339,8 @@ final class PembacaVariabelDkps
                     continue;
                 }
 
-                $angka = self::angka($this->sel($lembar, $b, $kolom));
+                $isi = $this->sel($lembar, $b, $kolom);
+                $angka = self::angka($isi) ?? (blank($isi) && $this->kolomCacah($lembar, $kolom) ? 0.0 : null);
 
                 if ($angka === null) {
                     $kosong[] = $this->namaSel($lembar, $baris, $kolom);
@@ -353,6 +357,12 @@ final class PembacaVariabelDkps
         }
 
         return $this->hasil($v, $jumlah, $dibaca);
+    }
+
+    /** Kolom isian bertipe `angka` (cacah), menurut skema. */
+    private function kolomCacah(string $lembar, string $kunciKolom): bool
+    {
+        return (collect($this->skema($lembar)->kolom())->firstWhere('kunci', $kunciKolom)['tipe'] ?? null) === 'angka';
     }
 
     /**
