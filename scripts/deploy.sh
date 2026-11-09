@@ -124,7 +124,7 @@ rilis() {
   log "rilis $sha ($versi) — $(git log -1 --pretty=%s)"
 
   log "build image (php + web)"
-  APP_VERSION="$sha" "${COMPOSE[@]}" build
+  APP_VERSION="$sha" "${COMPOSE[@]}" build php web
 
   # Migrasi memakai image BARU, sebelum container diganti. Migrasi harus kompatibel mundur
   # (rilis lama masih melayani permintaan sampai up -d selesai).
