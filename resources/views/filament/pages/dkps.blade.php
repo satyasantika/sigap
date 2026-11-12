@@ -1,6 +1,7 @@
 {{--
     Daftar Tabel DKPS per pokja pemilik. Satu kartu per pokja; satu baris per
-    lembar, tertaut ke layar tabelnya. Hanya-baca: isian ada di TabelDkpsLayar.
+    lembar, tertaut ke layar tabelnya. Isian ada di TabelDkpsLayar; di sini hanya
+    delegasi: tombol Anggota per pokja dan ikon Tugaskan per tabel.
 --}}
 <x-filament-panels::page>
     @php
@@ -22,14 +23,23 @@
         @foreach ($progres as $p)
             <x-filament::section>
                 <x-slot name="heading">{{ $p['kode'] }} · {{ $p['nama'] }}</x-slot>
-                <x-slot name="description">
-                    {{ $p['terverifikasi'] }} / {{ $p['total'] }} lembar terverifikasi
-                    · {{ $p['lengkap'] }} lengkap · {{ $p['terisi'] }} terisi
-                </x-slot>
+                @if ($p['sebagian'])
+                    {{-- Pokja lain: hanya tabel yang dititipkan, tanpa angka progres pokjanya. --}}
+                    <x-slot name="description">Ditugaskan kepada Anda</x-slot>
+                @else
+                    <x-slot name="description">
+                        {{ $p['terverifikasi'] }} / {{ $p['total'] }} lembar terverifikasi
+                        · {{ $p['lengkap'] }} lengkap · {{ $p['terisi'] }} terisi
+                    </x-slot>
 
-                <div class="mb-3 h-2 rounded-full bg-gray-200 dark:bg-white/10">
-                    <div class="h-2 rounded-full bg-success-500" style="width: {{ $p['rasio'] * 100 }}%"></div>
-                </div>
+                    <x-slot name="afterHeader">
+                        {{ ($this->anggotaAction)(['pokja' => $p['kode']]) }}
+                    </x-slot>
+
+                    <div class="mb-3 h-2 rounded-full bg-gray-200 dark:bg-white/10">
+                        <div class="h-2 rounded-full bg-success-500" style="width: {{ $p['rasio'] * 100 }}%"></div>
+                    </div>
+                @endif
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
@@ -69,7 +79,16 @@
                                                 {{ $tagihan?->tenggat?->translatedFormat('d F Y') ?? '—' }}
                                             </td>
                                             <td class="py-2 align-top" rowspan="{{ count($t['lembar']) }}">
-                                                {{ $tagihan?->penanggungJawab?->nama_lengkap ?? '—' }}
+                                                <div class="flex items-center gap-1">
+                                                    @if ($tagihan?->penanggungJawab)
+                                                        <span>{{ $tagihan->penanggungJawab->nama_lengkap }}</span>
+                                                    @elseif ($tagihan)
+                                                        <span class="text-gray-500 dark:text-gray-400">Seluruh pokja</span>
+                                                    @else
+                                                        <span>—</span>
+                                                    @endif
+                                                    {{ ($this->tugaskanAction)(['butir' => $t['butir']->id]) }}
+                                                </div>
                                             </td>
                                         @endif
                                     </tr>
