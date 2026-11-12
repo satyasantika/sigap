@@ -2,10 +2,13 @@
 
 namespace App\Support;
 
+use App\Enums\JenisTagihan;
 use App\Enums\PeranPengguna;
+use App\Models\DkpsBaris;
 use App\Models\Izin as ModelIzin;
 use App\Models\Periode;
 use App\Models\Pokja;
+use App\Models\Tagihan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -97,12 +100,36 @@ class Izin
                     $obyek instanceof Pokja ? $obyek->getKey() : $obyek->getAttribute('pokja_id'),
                     $u->idPokjanya(),
                     true,
-                ),
+                ) || self::penanggungJawabTabel($u, $aksi, $obyek),
             'miliknya' => $obyek === null
                 ? true
                 : $obyek->getAttribute('penanggung_jawab_id') === $u->getKey(),
             default => false,
         };
+    }
+
+    /**
+     * Penanggung jawab sebuah tabel DKPS boleh MENGISI tabel itu walau bukan
+     * anggota pokja pemiliknya — begitulah ketua menitipkan satu tabel kepada
+     * orang dari pokja lain tanpa membuka tabel lain di pokja itu.
+     *
+     * Sengaja hanya `dkps.isi`: verifikasi tetap milik pokja pemilik, kalau
+     * tidak orang yang dititipi bisa mengesahkan isiannya sendiri. Dan hanya
+     * berlaku bagi peran yang lingkupnya `pokjanya` (koordinator, anggota);
+     * peran yang ditolak matriks tetap ditolak.
+     */
+    private static function penanggungJawabTabel(User $u, string $aksi, Model $obyek): bool
+    {
+        if ($aksi !== 'dkps.isi' || ! $obyek instanceof DkpsBaris || blank($obyek->dkps_butir_id)) {
+            return false;
+        }
+
+        return Tagihan::withoutGlobalScope('lingkup_periode')
+            ->where('periode_id', $obyek->periode_id)
+            ->where('jenis', JenisTagihan::DataDkps)
+            ->where('dkps_butir_id', $obyek->dkps_butir_id)
+            ->where('penanggung_jawab_id', $u->getKey())
+            ->exists();
     }
 
     /**

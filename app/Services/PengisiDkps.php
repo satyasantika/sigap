@@ -116,7 +116,10 @@ class PengisiDkps
 
         // periode_id ikut diisi supaya Izin memeriksa penguncian periode;
         // tanpanya baris baru lolos ke periode yang sudah dikunci.
+        // dkps_butir_id ikut diisi supaya Izin mengenali penanggung jawab
+        // tabel yang bukan anggota pokja pemiliknya.
         $calon = $baris ?? new DkpsBaris([
+            'dkps_butir_id' => $butir->id,
             'pokja_id' => $this->pokjaId($butir, $periode),
             'periode_id' => $periode->id,
         ]);
