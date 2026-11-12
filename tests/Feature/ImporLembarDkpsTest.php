@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\PeranPengguna;
 use App\Livewire\ImporTempel;
 use App\Models\DkpsBaris;
+use App\Models\DkpsButir;
 use App\Models\ImporBatch;
 use App\Models\Periode;
 use App\Models\Pokja;
@@ -83,8 +84,117 @@ class ImporLembarDkpsTest extends TestCase
     {
         $p = $this->profil('28', '28');
 
-        $this->assertSame(['sumber', 'nama_dtps', 'judul_artikel', 'jumlah_sitasi'], array_keys($p->medan()));
+        // Urutannya urutan kolom tabel; "Sumber data" bukan kolom tabel, jadi
+        // diletakkan paling akhir dan tidak wajib (kosong berarti manual).
+        $this->assertSame(['nama_dtps', 'judul_artikel', 'jumlah_sitasi', 'sumber'], array_keys($p->medan()));
         $this->assertTrue($p->medan()['jumlah_sitasi']['wajib']);
+        $this->assertFalse($p->medan()['sumber']['wajib']);
+    }
+
+    #[Test]
+    public function label_kembar_dalam_satu_lembar_dibedakan_dengan_kelompoknya(): void
+    {
+        // Tabel 2 punya tiga pasang "Calon Guru"/"Guru Tertentu"; tanpa nama
+        // kelompok, tebakan pemetaan menunjuk kolom tempelan yang sama.
+        $medan = $this->profil('2', '2')->medan();
+        $label = array_column($medan, 'label');
+
+        $this->assertSame($label, array_values(array_unique($label)));
+        $this->assertSame('Lulus Seleksi — Calon Guru', $medan['lulus_seleksi_calon_guru']['label']);
+
+        $peta = PenguraiTempelan::tebakPemetaan($label, $medan);
+        $this->assertSame(range(0, count($medan) - 1), array_values($peta));
+    }
+
+    #[Test]
+    public function templat_tempelan_mengikuti_kolom_tabel_yang_dibuka(): void
+    {
+        $this->actingAs($this->ketua);
+
+        $uji = Livewire::test(ImporTempel::class, $this->argumenTabel('6', '6'))
+            ->assertSee('Nama DTPS')
+            ->assertSee('NIDN/NIDK')
+            ->assertSee('Jabatan Akademik')
+            ->assertDontSee('Tanggal kejadian');
+
+        $this->assertStringStartsWith("Nama DTPS\tNIDN/NIDK\tNUPTK\tMagister", $uji->instance()->templat());
+
+        // Tempelan persis kolom tabel, tanpa kolom "Sumber data".
+        $uji->set('tempelan', "Nama DTPS\tNIDN/NIDK\tJabatan Akademik\nDr. Ani\t0412088001\tLektor")
+            ->call('uraikan')
+            ->call('pratinjaukan')
+            ->assertSet('galat', null)
+            ->assertSet('langkah', 3)
+            ->assertSee('Jabatan Akademik')
+            ->assertSee('Dr. Ani')
+            ->assertSee('Lektor')
+            ->assertDontSee('Tautan')
+            ->call('jalankan')
+            ->assertSet('galat', null)
+            ->assertSet('langkah', 4);
+
+        $this->assertSame('Dr. Ani', DkpsBaris::where('lembar_kode', '6')->sole()->nilai('nama_dtps'));
+    }
+
+    #[Test]
+    public function tempelan_tanpa_baris_judul_dipetakan_menurut_urutan_kolom_tabel(): void
+    {
+        $this->actingAs($this->ketua);
+
+        Livewire::test(ImporTempel::class, $this->argumenTabel('28', '28'))
+            ->set('barisPertamaKepala', false)
+            ->set('tempelan', "Prof. Firmansyah\tFactors affecting\t65")
+            ->call('uraikan')
+            ->assertSet('kepala', ['Kolom 1', 'Kolom 2', 'Kolom 3'])
+            ->assertSet('pemetaan', ['nama_dtps' => 0, 'judul_artikel' => 1, 'jumlah_sitasi' => 2, 'sumber' => null])
+            ->call('pratinjaukan')
+            ->assertSet('galat', null)
+            ->assertSet('langkah', 3);
+    }
+
+    #[Test]
+    public function setiap_lembar_dkps_punya_templat_yang_cocok_dengan_kolomnya(): void
+    {
+        $this->actingAs($this->ketua);
+
+        foreach (DkpsButir::orderBy('no')->get() as $butir) {
+            foreach ($butir->kodeLembar() as $lembar) {
+                $skema = $butir->skema($lembar);
+                $medan = $this->profil($butir->kode, $lembar)->medan();
+                $label = array_column($medan, 'label');
+                $pesan = "Tabel {$butir->kode} lembar {$lembar}";
+
+                // Persis kolom isian lembar, dalam urutan yang sama.
+                $this->assertSame(
+                    [...($skema->adaBarisTetap() ? ['_baris'] : []), ...array_column($skema->kolomInput(), 'kunci'), 'sumber'],
+                    array_keys($medan), $pesan,
+                );
+                $this->assertSame(count($label), count(array_unique(array_map('mb_strtolower', $label))), "{$pesan}: label kembar");
+
+                // Baris judul templat ditebak kembali ke kolomnya sendiri.
+                $this->assertSame(
+                    range(0, count($medan) - 1),
+                    array_values(PenguraiTempelan::tebakPemetaan($label, $medan)), $pesan,
+                );
+
+                Livewire::test(ImporTempel::class, $this->argumenTabel($butir->kode, $lembar))
+                    ->assertSee($skema->kolomInput()[0]['label'])
+                    ->assertDontSee('Tanggal kejadian');
+            }
+        }
+    }
+
+    /** @return array<string, mixed> */
+    private function argumenTabel(string $tabel, string $lembar): array
+    {
+        return [
+            'profilKelas' => ImporLembarDkps::class,
+            'profilArgs' => [
+                'periodeId' => $this->periode->id, 'prodiId' => $this->prodi->id,
+                'penggunaId' => $this->ketua->id, 'kodeTabel' => $tabel, 'kodeLembar' => $lembar,
+            ],
+            'periodeId' => $this->periode->id,
+        ];
     }
 
     #[Test]

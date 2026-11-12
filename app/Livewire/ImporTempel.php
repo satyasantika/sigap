@@ -111,6 +111,32 @@ class ImporTempel extends Component
         return $this->profil()->medan();
     }
 
+    /**
+     * Baris judul yang diharapkan, bertab, siap disalin ke Excel. Diturunkan
+     * dari medan profil, jadi selalu sama dengan kolom tabel yang dibuka.
+     */
+    public function templat(): string
+    {
+        return implode("\t", array_column($this->medan(), 'label'));
+    }
+
+    /** Baris contoh di bawah templat; hanya ilustrasi, tidak ikut disalin. */
+    public function contohBaris(): string
+    {
+        return implode("\t", array_column($this->medan(), 'contoh'));
+    }
+
+    /** Nilai satu sel pratinjau sebagai teks. */
+    public function tampil(mixed $nilai): string
+    {
+        return match (true) {
+            $nilai === null, $nilai === '' => '—',
+            is_bool($nilai) => $nilai ? 'ya' : 'tidak',
+            is_scalar($nilai) => (string) $nilai,
+            default => (string) json_encode($nilai),
+        };
+    }
+
     /** Langkah 1 -> 2: uraikan tempelan dan tebak pemetaannya. */
     public function uraikan(): void
     {
@@ -119,9 +145,20 @@ class ImporTempel extends Component
         try {
             $hasil = PenguraiTempelan::urai($this->tempelan, $this->barisPertamaKepala);
 
-            $this->kepala = $hasil['kepala'];
             $this->barisMentah = $hasil['baris'];
-            $this->pemetaan = PenguraiTempelan::tebakPemetaan($this->kepala, $this->medan());
+
+            if ($this->barisPertamaKepala) {
+                $this->kepala = $hasil['kepala'];
+                $this->pemetaan = PenguraiTempelan::tebakPemetaan($this->kepala, $this->medan());
+            } else {
+                // Tanpa baris judul tidak ada yang bisa dicocokkan dengan
+                // nama; kolom dinomori dan dipetakan menurut urutan kolom
+                // tabel, lalu bisa dibetulkan di langkah 2.
+                $lebar = max([0, ...array_map('count', $this->barisMentah)]);
+                $this->kepala = array_map(fn (int $i) => 'Kolom '.($i + 1), range(0, max($lebar - 1, 0)));
+                $this->pemetaan = PenguraiTempelan::petaUrut($lebar, $this->medan());
+            }
+
             $this->langkah = 2;
         } catch (Throwable $e) {
             $this->galat = $e->getMessage();
