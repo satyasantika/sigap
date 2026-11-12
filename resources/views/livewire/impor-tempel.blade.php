@@ -13,13 +13,50 @@
     {{-- Langkah 1: tempel --}}
     @if ($langkah === 1)
         <div class="space-y-3">
+            @php $medan = $this->medan(); @endphp
             <p class="text-sm text-gray-600 dark:text-gray-400">
                 Salin dari Excel atau Google Sheets, lalu tempel di sini. Pemisah tab, titik koma,
                 dan koma dikenali otomatis. Maksimal {{ \App\Support\Impor\PenguraiTempelan::BATAS_BARIS }} baris.
             </p>
+
+            <div class="space-y-2 rounded-lg border border-gray-200 p-3 dark:border-white/10" x-data="{ tersalin: false }">
+                <div class="flex items-center justify-between gap-2">
+                    <p class="text-sm font-medium">Kolom yang diharapkan — {{ $this->profil()->nama() }}</p>
+                    <x-filament::button size="xs" color="gray"
+                        x-on:click="navigator.clipboard.writeText(@js($this->templat())).then(() => { tersalin = true; setTimeout(() => tersalin = false, 2000) })">
+                        <span x-show="! tersalin">Salin baris judul</span>
+                        <span x-show="tersalin" x-cloak>Tersalin</span>
+                    </x-filament::button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="text-xs">
+                        <thead>
+                            <tr>
+                                @foreach ($medan as $def)
+                                    <th class="whitespace-nowrap border border-gray-200 bg-gray-50 px-2 py-1 text-left font-medium dark:border-white/10 dark:bg-white/5">
+                                        {{ $def['label'] }}@if ($def['wajib'])<span class="text-danger-600"> *</span>@endif
+                                    </th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @foreach ($medan as $def)
+                                    <td class="whitespace-nowrap border border-gray-200 px-2 py-1 font-mono text-gray-500 dark:border-white/10">{{ $def['contoh'] !== '' ? $def['contoh'] : '…' }}</td>
+                                @endforeach
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-gray-500">
+                    Bertanda <span class="text-danger-600">*</span> wajib ada. Urutan kolom bebas selama baris judulnya ikut ditempel;
+                    tanpa baris judul, kolom dibaca menurut urutan di atas.
+                </p>
+            </div>
+
             <textarea wire:model="tempelan" rows="12"
                 class="w-full rounded-lg border-gray-300 font-mono text-xs dark:border-white/10 dark:bg-white/5"
-                placeholder="Judul&#9;Tautan&#9;Tanggal kejadian&#9;Sumber"></textarea>
+                placeholder="{{ $this->templat() }}"></textarea>
             <label class="flex items-center gap-2 text-sm">
                 <input type="checkbox" wire:model="barisPertamaKepala" class="rounded">
                 Baris pertama adalah judul kolom
@@ -94,8 +131,9 @@
                         <tr>
                             <th class="p-2 text-left">#</th>
                             <th class="p-2 text-left">Status</th>
-                            <th class="p-2 text-left">Judul</th>
-                            <th class="p-2 text-left">Tautan</th>
+                            @foreach ($this->medan() as $def)
+                                <th class="whitespace-nowrap p-2 text-left">{{ $def['label'] }}</th>
+                            @endforeach
                             <th class="p-2 text-left">Tindakan</th>
                         </tr>
                     </thead>
@@ -117,8 +155,9 @@
                                         <div class="mt-1 text-[11px]">{{ implode(' ', $baris['galat']) }}</div>
                                     @endif
                                 </td>
-                                <td class="p-2">{{ $baris['data']['judul'] ?? $baris['data']['nama_lengkap'] ?? '—' }}</td>
-                                <td class="p-2 font-mono text-[11px]">{{ \Illuminate\Support\Str::limit($baris['data']['url_kanonik'] ?? $baris['data']['email'] ?? '—', 48) }}</td>
+                                @foreach ($this->medan() as $kunci => $def)
+                                    <td class="p-2">{{ \Illuminate\Support\Str::limit($this->tampil($baris['data'][$kunci] ?? null), 48) }}</td>
+                                @endforeach
                                 <td class="p-2">
                                     @if ($baris['status'] === 'galat')
                                         <span class="text-gray-400">dilewati</span>

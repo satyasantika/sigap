@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Tables;
 
 use App\Enums\PeranPengguna;
 use App\Filament\Actions\AksiMasukSebagai;
+use App\Models\User;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -17,20 +18,25 @@ class UsersTable
     {
         return $table
             ->columns([
-                TextColumn::make('nama_lengkap')->label('Nama')->searchable()->sortable(),
-                TextColumn::make('email')->label('Surel')->searchable()->toggleable(),
+                // Surel menumpang di bawah nama: satu kolom lebih sedikit, dan
+                // pencarian tetap menjangkau keduanya.
+                TextColumn::make('nama_lengkap')->label('Nama')
+                    ->description(fn (User $record) => $record->email)
+                    ->searchable(['nama_lengkap', 'email'])->sortable(),
+                // Peran tambahan menumpang di bawah peran utama, seperti surel
+                // di bawah nama; kosong bila tidak ada.
                 TextColumn::make('peran')->label('Peran')->badge()
                     ->formatStateUsing(fn (PeranPengguna $state) => $state->label())
-                    ->color(fn (PeranPengguna $state) => $state->warna()),
-                TextColumn::make('peran_tambahan')->label('Peran tambahan')->badge()
-                    ->formatStateUsing(fn (string $state) => PeranPengguna::tryFrom($state)?->label() ?? $state)
-                    ->color(fn (string $state) => PeranPengguna::tryFrom($state)?->warna() ?? 'gray')
-                    ->placeholder('—')->toggleable(),
-                TextColumn::make('jabatan')->label('Jabatan')->placeholder('—')->toggleable(),
+                    ->color(fn (PeranPengguna $state) => $state->warna())
+                    ->description(fn (User $record) => filled($record->peran_tambahan)
+                        ? '+ '.collect($record->peran_tambahan)
+                            ->map(fn (string $p) => PeranPengguna::tryFrom($p)?->label() ?? $p)->join(', ')
+                        : null),
+                TextColumn::make('jabatan')->label('Jabatan')->placeholder('—')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('nidn')->label('NIDN')->placeholder('—')->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('aktif')->label('Aktif')->boolean(),
                 TextColumn::make('terakhir_masuk_pada')->label('Terakhir masuk')
-                    ->dateTime('d F Y, H:i')->placeholder('belum pernah')->toggleable(),
+                    ->since()->dateTimeTooltip('d F Y, H:i')->placeholder('belum pernah')->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('peran')->label('Peran')->options(PeranPengguna::pilihan())
@@ -43,8 +49,9 @@ class UsersTable
                     ->placeholder('Semua'),
             ])
             ->recordActions([
-                EditAction::make()->label('Sunting'),
-                AksiMasukSebagai::buat(),
+                // Ikon saja; labelnya tetap ada sebagai tooltip dan nama aksesibel.
+                EditAction::make()->label('Sunting')->iconButton()->tooltip('Sunting'),
+                AksiMasukSebagai::buat()->iconButton()->tooltip('Masuk sebagai'),
             ])
             ->defaultSort('nama_lengkap')
             ->emptyStateHeading('Belum ada pengguna')

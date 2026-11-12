@@ -11,6 +11,7 @@ use App\Models\Periode;
 use App\Models\User;
 use App\Services\PengisiDkps;
 use App\Support\Dkps\SkemaLembar;
+use App\Support\Dkps\TipeKolom;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
@@ -41,30 +42,57 @@ class ImporLembarDkps implements ProfilImpor
         return $this->skema()->judul();
     }
 
+    /**
+     * Urutannya urutan kolom tabel di layar, supaya tabel yang disalin dari
+     * Excel bisa ditempel apa adanya. "Sumber data" bukan kolom tabel: ia
+     * diletakkan paling akhir dan boleh dikosongkan (dianggap manual).
+     */
     public function medan(): array
     {
         $skema = $this->skema();
-
-        $medan = [
-            'sumber' => ['label' => 'Sumber data', 'wajib' => true, 'tipe' => 'pilihan',
-                'contoh' => SumberData::Manual->value],
-        ];
+        $medan = [];
 
         if ($skema->adaBarisTetap()) {
             $medan['_baris'] = ['label' => (string) $skema->labelKolomBaris(), 'wajib' => true,
-                'tipe' => 'pilihan', 'contoh' => $skema->barisTetap()[0]['kunci'] ?? ''];
+                'tipe' => 'pilihan', 'contoh' => $skema->barisTetap()[0]['label'] ?? ''];
         }
 
-        foreach ($skema->kolomInput() as $kolom) {
-            $medan[$kolom['kunci']] = [
-                'label' => $kolom['label'],
-                'wajib' => (bool) ($kolom['wajib'] ?? false),
-                'tipe' => $kolom['tipe'],
-                'contoh' => (string) ($kolom['pilihan'][0] ?? ''),
+        $kolom = $skema->kolomInput();
+        $cacahLabel = array_count_values(array_map(fn (array $k) => mb_strtolower($k['label']), $kolom));
+
+        foreach ($kolom as $k) {
+            // Label yang muncul lebih dari sekali ("TS-2" di bawah dua
+            // kelompok) diawali nama kelompoknya; kalau tidak, tebakan
+            // pemetaan menunjuk kolom tempelan yang sama untuk keduanya.
+            $kembar = $cacahLabel[mb_strtolower($k['label'])] > 1 && filled($k['kelompok'] ?? null);
+
+            $medan[$k['kunci']] = [
+                'label' => $kembar ? implode(' — ', [...$k['kelompok'], $k['label']]) : $k['label'],
+                'wajib' => (bool) ($k['wajib'] ?? false),
+                'tipe' => $k['tipe'],
+                'contoh' => $this->contoh($k),
             ];
         }
 
+        $medan['sumber'] = ['label' => 'Sumber data', 'wajib' => false, 'tipe' => 'pilihan',
+            'contoh' => SumberData::Manual->value];
+
         return $medan;
+    }
+
+    /** Contoh isian satu sel, sesuai tipe kolomnya; tahun tidak ditulis mati. */
+    private function contoh(array $kolom): string
+    {
+        return match (TipeKolom::from($kolom['tipe'])) {
+            TipeKolom::Pilihan => (string) ($kolom['pilihan'][0] ?? ''),
+            TipeKolom::Angka => '10',
+            TipeKolom::Desimal => '3,5',
+            TipeKolom::Tanggal => now()->subYear()->format('d/m/Y'),
+            TipeKolom::Tahun => (string) now()->subYear()->year,
+            TipeKolom::Centang => 'ya',
+            TipeKolom::Tautan => 'https://contoh.ac.id/dokumen',
+            default => '',
+        };
     }
 
     public function kunciDuplikat(array $baris): ?string

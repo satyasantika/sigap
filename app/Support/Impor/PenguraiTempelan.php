@@ -146,21 +146,43 @@ class PenguraiTempelan
 
         $kepalaRapi = collect($kepala)->map($rapikan);
         $peta = [];
+        $terpakai = [];
 
         foreach ($medan as $kunci => $def) {
             $calon = [$rapikan($kunci), $rapikan($def['label'])];
             $indeks = null;
 
+            // Kolom tempelan yang sudah dipakai medan lain dilewati: dua
+            // medan yang menunjuk kolom yang sama hampir pasti salah tebak.
             foreach ($calon as $c) {
-                $ketemu = $kepalaRapi->search($c);
+                $ketemu = $kepalaRapi->search(fn (string $k, int $i) => $k === $c && ! isset($terpakai[$i]));
 
                 if ($ketemu !== false) {
                     $indeks = $ketemu;
+                    $terpakai[$ketemu] = true;
                     break;
                 }
             }
 
             $peta[$kunci] = $indeks;
+        }
+
+        return $peta;
+    }
+
+    /**
+     * Pemetaan untuk tempelan tanpa baris judul: kolom ke-n tempelan menjadi
+     * medan ke-n, menurut urutan medan profilnya (yaitu urutan kolom tabel).
+     *
+     * @param  array<string, array{label: string, wajib: bool, tipe: string, contoh: string}>  $medan
+     * @return array<string, int|null>
+     */
+    public static function petaUrut(int $jumlahKolom, array $medan): array
+    {
+        $peta = [];
+
+        foreach (array_keys($medan) as $i => $kunci) {
+            $peta[$kunci] = $i < $jumlahKolom ? $i : null;
         }
 
         return $peta;
